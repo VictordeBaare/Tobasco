@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Entity name="ChildObject">
+  <Properties>
+    <Property name="TestChildProp1" required="true">
+      <DataType name="String" size="100"></DataType>
+    </Property>
+  </Properties>
+</Entity>

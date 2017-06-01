@@ -1,0 +1,16 @@
+﻿<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ assembly name="$(SolutionDir)Tobasco\bin\Debug\Tobasco.dll" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ output extension=".cs" #>
+<#@ import namespace="System.Diagnostics" #>
+<#@ import namespace="Tobasco" #>
+<#@ import namespace="Tobasco.Enums" #>
+<# //System.Diagnostics.Debugger.Launch(); 
+#>
+<#
+	var processor = FileProcessor.Create(this);
+	processor.BeginProcessing(Host.ResolvePath(string.Empty));
+#>

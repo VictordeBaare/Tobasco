@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Entity name="FileMetOvererving">
+  <Properties>
+    <Property name="TestChildProp1" required="true">
+      <DataType name="String" size="100"></DataType>
+    </Property>
+    <Property name="TestChildProp2" required="false">
+      <DataType name="Int" min="10" max="20"></DataType>
+    </Property>
+    <Property name="TestChildProp3" required="false">
+      <DataType name="Long"></DataType>
+    </Property>
+    <Property name="TestChildProp4" required="false">
+      <DataType name="Datetime"></DataType>
+    </Property>
+    <Property name="TestChildProp5" required="false">
+      <DataType name="Enum" type="GeslachtType"></DataType>
+    </Property>
+    <Property name="TestChildProp6" required="false">
+      <DataType name="Decimal" precision="12" scale="2"></DataType>
+    </Property>
+    <Property name="TestChildProp7" required="false">
+      <DataType name="Child" type="ChildObject"></DataType>
+    </Property>
+    <Property name="TestChildProp8" required="true">
+      <DataType name="ChildCollection" type="ChildCollectionObject"></DataType>
+    </Property>
+  </Properties>
+</Entity>
