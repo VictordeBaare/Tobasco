@@ -1,0 +1,88 @@
+﻿<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ assembly name="$(SolutionDir)Tobasco\bin\Debug\Tobasco.dll" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ output extension=".cs" #>
+<#@ import namespace="System.Diagnostics" #>
+<#@ import namespace="Tobasco" #>
+<#@ import namespace="Tobasco.Enums" #>
+<# //System.Diagnostics.Debugger.Launch(); 
+#>
+<#
+var manager = TemplateFileManager.Create(this);
+var loader = new XmlLoader(this);
+var mainHandler = loader.Load(Host.ResolvePath(string.Empty));
+foreach(var entry in mainHandler.EntityHandlers) { 
+	var entiteitNaam = entry.Key;
+    var xmlhelper = entry.Value;
+	foreach(var location in xmlhelper.GetEntityLocations)
+    {
+		var builder = xmlhelper.GetClassBuilder(location);
+
+		manager.StartNewFile(entiteitNaam + ".cs", location.Project, location.Folder);
+#>
+<#= builder.BuildClass()#>
+<#
+		manager.EndBlock();
+    } // entities build step
+
+	var repositorybuilder = xmlhelper.GetRepositoryBuilder;
+	var repositoryLocation = xmlhelper.GetRepository;
+
+	manager.StartNewFile(repositorybuilder.GetRepositoryName + ".cs", repositoryLocation.Project, repositoryLocation.Folder);
+#>
+<#= repositorybuilder.GetRepository() #>
+<#
+		manager.EndBlock();
+#>
+<#
+	var interfaceLoc = repositoryLocation.InterfaceLocation;
+	manager.StartNewFile(repositorybuilder.GetRepositoryInterfaceName + ".cs", interfaceLoc.Project, interfaceLoc.Folder);
+#>
+<#= repositorybuilder.GetRepositoryInterface() #>
+<#
+	manager.EndBlock();
+#>
+<#
+} // loader.Load foreach
+
+var connectionFactory = mainHandler.ConnectionFactoryBuilder;
+var genericRepository = mainHandler.GenericRepositoryBuilder;
+#>
+<#
+manager.StartNewFile(connectionFactory.GetConnectionFactoryInterfaceName + ".cs", connectionFactory.interfacelocation.Project, connectionFactory.interfacelocation.Folder);
+#>
+<#= connectionFactory.GetConnectionFactoryInterface() #>
+<#
+manager.EndBlock();
+#>
+
+<#
+manager.StartNewFile(connectionFactory.GetConnectionFactoryName + ".cs", connectionFactory.classlocation.Project, connectionFactory.classlocation.Folder);
+#>
+<#= connectionFactory.GetConnectionFactory() #>
+<#
+manager.EndBlock();
+#>
+
+<#
+manager.StartNewFile(genericRepository.GetInterfaceGenericRepositoryName + ".cs", genericRepository.interfacelocation.Project, genericRepository.interfacelocation.Folder);
+#>
+<#= genericRepository.GetInterfaceGenericRepository() #>
+<#
+manager.EndBlock();
+#>
+
+<#
+manager.StartNewFile(genericRepository.GetGenericRepositoryName + ".cs", genericRepository.classlocation.Project, genericRepository.classlocation.Folder);
+#>
+<#= genericRepository.GetGenericRepository() #>
+<#
+manager.EndBlock();
+#>
+
+<#
+manager.Process();
+#>
