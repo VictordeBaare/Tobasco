@@ -16,7 +16,7 @@ namespace Tobasco.Model.Builders
 
         public FileBuilder.OutputFile Build(Module module)
         {
-            var classFile = (ClassFile)FileManager.StartNewFile(module.Name + "Module", module.FileLocation.Project, module.FileLocation.Folder, Enums.FileType.Class);
+            var classFile = FileManager.StartNewClassFile(module.Name + "Module", module.FileLocation.Project, module.FileLocation.Folder);
             classFile.BaseClass = ": NinjectModule";
             classFile.Namespaces.AddRange(new[] { "Ninject", "Ninject.Modules" });
             classFile.OwnNamespace = module.FileLocation.GetNamespace;

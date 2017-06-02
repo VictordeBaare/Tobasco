@@ -36,7 +36,7 @@ namespace Tobasco.Model.Builders
 
         public IEnumerable<FileBuilder.OutputFile> Build()
         {
-            var classFile = (ClassFile)FileManager.StartNewFile(GetConnectionFactoryName, classlocation.Project, classlocation.Folder, Enums.FileType.Class);
+            var classFile = FileManager.StartNewClassFile(GetConnectionFactoryName, classlocation.Project, classlocation.Folder);
             classFile.Namespaces.AddRange(new[] { "System.Configuration", "System.Data.SqlClient", interfacelocation.GetProjectLocation });
             classFile.OwnNamespace = _information.Repository.GetNamespace;
             classFile.BaseClass = $": {GetConnectionFactoryInterfaceName}";
@@ -45,7 +45,7 @@ namespace Tobasco.Model.Builders
             classFile.Constructor.CustomImplementation.Add("_connectionstring = ConfigurationManager.ConnectionStrings[databasenaam].ConnectionString;");
             classFile.Methods.Add(GetConnectionMethod());
 
-            var interfaceFile = (InterfaceFile)FileManager.StartNewFile(GetConnectionFactoryInterfaceName, interfacelocation.Project, interfacelocation.Folder, Enums.FileType.Interface);
+            var interfaceFile = FileManager.StartNewInterfaceFile(GetConnectionFactoryInterfaceName, interfacelocation.Project, interfacelocation.Folder);
             interfaceFile.Namespaces.Add("System.Data.SqlClient");
             interfaceFile.OwnNamespace = _information.Repository.InterfaceLocation.GetNamespace;
             interfaceFile.Methods.Add("SqlConnection GetConnection();");

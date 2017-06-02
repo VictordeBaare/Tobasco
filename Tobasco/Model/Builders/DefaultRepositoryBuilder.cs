@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,7 +17,7 @@ namespace Tobasco.Model.Builders
         {
         }
         
-        private StringBuilder GetTransaction(StringBuilder builder, Func<StringBuilder, int, StringBuilder> implementation)
+        protected virtual StringBuilder GetTransaction(StringBuilder builder, Func<StringBuilder, int, StringBuilder> implementation)
         {
             var tabs = 3;
             var trans = Information.Repository.Transaction;
@@ -31,7 +32,7 @@ namespace Tobasco.Model.Builders
             return implementation(builder, tabs);
         }
         
-        private string GetSaveMethod()
+        protected virtual string GetSaveMethod()
         {
             var builder = new StringBuilder();
             builder.AppendLineWithTabs($"public {Entity.Entity.Name} Save({Entity.Entity.Name} {Entity.Entity.Name.ToLower()})", 0);
@@ -42,24 +43,35 @@ namespace Tobasco.Model.Builders
             return builder.ToString();
         }
 
-        public override IEnumerable<FileBuilder.OutputFile> Build(DynamicTextTransformation2 textTransformation)
+        protected virtual ClassFile GetClassFile()
         {
-            textTransformation.WriteLine($"// Build {GetRepositoryName} for {Entity.GetRepository.GetProjectLocation}");
-            var classFile = (ClassFile)FileManager.StartNewFile(GetRepositoryName, Entity.GetRepository.Project, Entity.GetRepository.Folder, Enums.FileType.Class);
-
+            var classFile = FileManager.StartNewClassFile(GetRepositoryName, Entity.GetRepository.Project, Entity.GetRepository.Folder);
             classFile.Namespaces.AddRange(GetRepositoryNamespaces);
             classFile.Namespaces.Add(Information.Repository.InterfaceLocation.GetProjectLocation);
             classFile.OwnNamespace = Information.Repository.GetNamespace;
             classFile.Constructor.ParameterWithField.AddRange(GetFieldWithParameters());
             classFile.BaseClass = $": {GetRepositoryInterfaceName}";
             classFile.Methods.Add(GetSaveMethod());
+            return classFile;
+        }
 
-            textTransformation.WriteLine($"// Build {GetRepositoryInterfaceName} for {Entity.GetRepository.InterfaceLocation.GetProjectLocation}");
-            var interfaceFile = (InterfaceFile)FileManager.StartNewFile(GetRepositoryInterfaceName, Entity.GetRepository.InterfaceLocation.Project, Entity.GetRepository.InterfaceLocation.Folder, Enums.FileType.Interface);
+        protected virtual InterfaceFile GetInterfaceFile()
+        {
+            var interfaceFile = FileManager.StartNewInterfaceFile(GetRepositoryInterfaceName, Entity.GetRepository.InterfaceLocation.Project, Entity.GetRepository.InterfaceLocation.Folder);
             interfaceFile.Namespaces.Add(Information.Repository.InterfaceLocation.GetProjectLocation);
             interfaceFile.Namespaces.AddRange(GetRepositoryNamespaces);
-            interfaceFile.OwnNamespace = Information.Repository.InterfaceLocation.GetNamespace;        
+            interfaceFile.OwnNamespace = Information.Repository.InterfaceLocation.GetNamespace;
             interfaceFile.Methods.Add($"{Entity.Entity.Name} Save({Entity.Entity.Name} {Entity.Entity.Name.ToLower()});");
+            return interfaceFile;
+        }
+
+        public override IEnumerable<FileBuilder.OutputFile> Build(DynamicTextTransformation2 textTransformation)
+        {
+            textTransformation.WriteLine($"// Build {GetRepositoryName} for {Entity.GetRepository.GetProjectLocation}");
+            var classFile = GetClassFile();
+
+            textTransformation.WriteLine($"// Build {GetRepositoryInterfaceName} for {Entity.GetRepository.InterfaceLocation.GetProjectLocation}");
+            var interfaceFile = GetInterfaceFile();
 
             return new List<FileBuilder.OutputFile> { classFile, interfaceFile };
         }
@@ -79,7 +91,7 @@ namespace Tobasco.Model.Builders
             return fields;
         }
 
-        private StringBuilder GetSaveImplementation(StringBuilder builder, int tabs)
+        protected virtual StringBuilder GetSaveImplementation(StringBuilder builder, int tabs)
         {
             foreach (var itemToSave in Entity.Entity.Properties.Where(x => x.DataType.Datatype == Enums.Datatype.Child))
             {

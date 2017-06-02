@@ -128,7 +128,7 @@ namespace Tobasco.Model.Builders
         public FileBuilder.OutputFile Build(DynamicTextTransformation2 textTransformation)
         {
             textTransformation.WriteLine($"// Build {_entity.Name} for {_location.GetProjectLocation}");
-            var file = (ClassFile)FileManager.StartNewFile(_entity.Name, _location.Project, _location.Folder, FileType.Class);
+            var file = FileManager.StartNewClassFile(_entity.Name, _location.Project, _location.Folder);
             file.IsAbstract = _entity.IsAbstract;
             file.BaseClass = _location.GetBaseClass;
             file.Namespaces.AddRange(_location.Namespaces.Select(x => x.Value).Concat(_information.Namespaces.Select(x => x.Value)));

@@ -64,7 +64,7 @@ namespace Tobasco.Model.Builders
 
         public IEnumerable<FileBuilder.OutputFile> Build(Mapper mapper)
         {
-            var classFile = (ClassFile)FileManager.StartNewFile(MapperName, mapper.MapperLocation.Project, mapper.MapperLocation.Folder, FileType.Class);
+            var classFile = FileManager.StartNewClassFile(MapperName, mapper.MapperLocation.Project, mapper.MapperLocation.Folder);
             var fromEntityLocation = _entity.GetEntityLocationOnId(mapper.FromTo.From).GetProjectLocation;
             classFile.BaseClass = $": {SelectMapperInterface}";
             classFile.OwnNamespace = mapper.MapperLocation.GetNamespace;
@@ -81,7 +81,7 @@ namespace Tobasco.Model.Builders
             }
             classFile.Methods.Add(MappingMethod(mapper));
 
-            var interfacefile = (InterfaceFile)FileManager.StartNewFile(SelectMapperInterface, mapper.MapperLocation.Project, mapper.MapperLocation.Folder, FileType.Interface);
+            var interfacefile = FileManager.StartNewInterfaceFile(SelectMapperInterface, mapper.MapperLocation.Project, mapper.MapperLocation.Folder);
             var mapToLocation = _entity.GetEntityLocationOnId(mapper.FromTo.To).GetProjectLocation;
             interfacefile.Namespaces.Add(fromEntityLocation);
             interfacefile.OwnNamespace = mapper.InterfaceLocation.GetNamespace;

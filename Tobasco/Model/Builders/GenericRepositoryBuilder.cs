@@ -150,7 +150,7 @@ namespace Tobasco.Model.Builders
 
         public IEnumerable<FileBuilder.OutputFile> Build()
         {
-            var classFile = (ClassFile)FileManager.StartNewFile(GetGenericRepositoryName, classlocation.Project, classlocation.Folder, Enums.FileType.Class);
+            var classFile = FileManager.StartNewClassFile(GetGenericRepositoryName, classlocation.Project, classlocation.Folder);
             classFile.Namespaces.AddRange(new[] { "System.Configuration", "System.Data.SqlClient", "Dapper", "System.Data", _information.Repository.InterfaceLocation.GetProjectLocation });
             classFile.Namespaces.AddRange(_information.Repository.Namespaces.Select(x => x.Value));
             classFile.Namespaces.Add("System.Globalization");
@@ -166,7 +166,7 @@ namespace Tobasco.Model.Builders
             classFile.Methods.Add(DeleteMethod());
             classFile.Methods.Add(ToAnonymousMethod());
 
-            var interfaceFile = (InterfaceFile)FileManager.StartNewFile(GetInterfaceGenericRepositoryName, interfacelocation.Project, interfacelocation.Folder, Enums.FileType.Interface);
+            var interfaceFile = FileManager.StartNewInterfaceFile(GetInterfaceGenericRepositoryName, interfacelocation.Project, interfacelocation.Folder);
             interfaceFile.Namespaces.AddRange(new [] { "System.Configuration", "System.Data.SqlClient", _information.Repository.InterfaceLocation.GetProjectLocation });
             interfaceFile.Namespaces.AddRange(_information.Repository.Namespaces.Select(x => x.Value));
             interfaceFile.OwnNamespace = _information.Repository.InterfaceLocation.GetNamespace;

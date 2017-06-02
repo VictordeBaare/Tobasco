@@ -350,7 +350,7 @@ namespace Tobasco.Model.Builders
             if (_entity.GetDatabase.Tables.Generate)
             {
                 textTransformation.WriteLine($"// Generate Table for {_entity.Entity.Name}");
-                var tableFile = (TableFile)FileManager.StartNewFile(_entity.Entity.Name, _entity.GetDatabase.Project, _entity.GetDatabase.Tables.Folder, FileType.Table);
+                var tableFile = FileManager.StartNewSqlTableFile(_entity.Entity.Name, _entity.GetDatabase.Project, _entity.GetDatabase.Tables.Folder);
                 tableFile.Content = GetTable();
                 if (_entity.GetDatabase.Tables.Generate && _entity.GetDatabase.Tables.GenerateHistorie.Generate)
                 {
@@ -374,7 +374,7 @@ namespace Tobasco.Model.Builders
             
             if (_entity.GetDatabase.StoredProcedures.Generate)
             {
-                var crudFile = (StpFile)FileManager.StartNewFile(_entity.Entity.Name + "_CRUD", _entity.GetDatabase.Project, _entity.GetDatabase.StoredProcedures.Folder, FileType.Stp);
+                var crudFile = FileManager.StartNewSqlStpFile(_entity.Entity.Name + "_CRUD", _entity.GetDatabase.Project, _entity.GetDatabase.StoredProcedures.Folder);
                 
                 var builder = new StringBuilder();
 
