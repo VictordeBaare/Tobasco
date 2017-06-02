@@ -2,23 +2,25 @@
 using System.Collections.Generic;
 using System.Linq;
 using Tobasco.Enums;
+using Tobasco.Manager;
 using Tobasco.Model;
 using Tobasco.Model.Builders;
+using Tobasco.Model.Builders.Base;
 
 namespace Tobasco
 {
     public class EntityHandler
     {
-        private Entity entity;
-        private EntityInformation mainInformation;
+        private readonly Entity _entity;
+        private readonly EntityInformation _mainInformation;
         private DatabaseBuilder _database;
-        private Dictionary<string, ClassBuilder> _classBuilderDictionary;
-        private Func<string, EntityHandler> _getHandlerOnName;
+        private readonly Dictionary<string, ClassBuilder> _classBuilderDictionary;
+        private readonly Func<string, EntityHandler> _getHandlerOnName;
 
         public EntityHandler(Entity entity, EntityInformation mainInformation, Func<string, EntityHandler> getHandlerOnName)
         {
-            this.entity = entity;
-            this.mainInformation = mainInformation;
+            _entity = entity;
+            _mainInformation = mainInformation;
             _classBuilderDictionary = new Dictionary<string, ClassBuilder>();
             _getHandlerOnName = getHandlerOnName;
         }
@@ -67,7 +69,7 @@ namespace Tobasco
         public IEnumerable<string> SelectChildRepositoryInterfaces()
         {
             List<string> childRepositories = new List<string>();
-            foreach (var childProp in entity.Properties.Where(x => x.DataType.Datatype == Enums.Datatype.ChildCollection || x.DataType.Datatype == Enums.Datatype.Child))
+            foreach (var childProp in _entity.Properties.Where(x => x.DataType.Datatype == Enums.Datatype.ChildCollection || x.DataType.Datatype == Enums.Datatype.Child))
             {
                 childRepositories.Add(GetRepositoryInterface(childProp.DataType.Type));
             }
@@ -77,7 +79,7 @@ namespace Tobasco
         public IEnumerable<string> GetChildProjectLocationNames()
         {
             List<string> childRepositories = new List<string>();
-            foreach (var childProp in entity.Properties.Where(x => x.DataType.Datatype == Enums.Datatype.ChildCollection || x.DataType.Datatype == Enums.Datatype.Child))
+            foreach (var childProp in _entity.Properties.Where(x => x.DataType.Datatype == Enums.Datatype.ChildCollection || x.DataType.Datatype == Enums.Datatype.Child))
             {
                 childRepositories.Add(GetRepositoryInterface(childProp.DataType.Type));
             }
@@ -89,11 +91,11 @@ namespace Tobasco
         {
             get
             {
-                if(entity.EntityLocations != null && entity.EntityLocations.Any())
+                if(_entity.EntityLocations != null && _entity.EntityLocations.Any())
                 {
-                    return entity.EntityLocations;
+                    return _entity.EntityLocations;
                 }
-                return mainInformation.EntityLocations;
+                return _mainInformation.EntityLocations;
             }
         }
 
@@ -101,11 +103,11 @@ namespace Tobasco
         {
             get
             {
-                if(entity.Repository != null)
+                if(_entity.Repository != null)
                 {
-                    return entity.Repository;
+                    return _entity.Repository;
                 }
-                return mainInformation.Repository;
+                return _mainInformation.Repository;
             }
         }
 
@@ -113,11 +115,11 @@ namespace Tobasco
         {
             get
             {
-                if (entity.Database != null)
+                if (_entity.Database != null)
                 {
-                    return entity.Database;
+                    return _entity.Database;
                 }
-                return mainInformation.Database;
+                return _mainInformation.Database;
             }
         }
 
@@ -125,11 +127,11 @@ namespace Tobasco
         {
             get
             {
-                if (entity.Mappers != null)
+                if (_entity.Mappers != null)
                 {
-                    return entity.Mappers;
+                    return _entity.Mappers;
                 }
-                return mainInformation.Mappers;
+                return _mainInformation.Mappers;
             }
         }
 
@@ -143,7 +145,7 @@ namespace Tobasco
             throw new ArgumentException();
         }
 
-        public Entity Entity => entity;
+        public Entity Entity => _entity;
 
 
         public ClassBuilder GetClassBuilder(EntityLocation entitylocation)
@@ -152,7 +154,7 @@ namespace Tobasco
             {
                 return _classBuilderDictionary[entitylocation.Id];
             }
-            var classBuilder = new ClassBuilder(entity, entitylocation, mainInformation);
+            var classBuilder = new ClassBuilder(_entity, entitylocation, _mainInformation);
             var id = entitylocation.Id ?? "LocationId" + _classBuilderDictionary.Count + 1;
             _classBuilderDictionary.Add(id, classBuilder);
             return classBuilder;
@@ -164,16 +166,18 @@ namespace Tobasco
             {
                 return _classBuilderDictionary[id];
             }
-            else
-            {
-                throw new ArgumentException();
-            }
+            throw new ArgumentException();
         }
 
         public DatabaseBuilder GetDatabaseBuilder => _database ?? (_database = new DatabaseBuilder(this));
         public MapperBuilder GetMapperBuilder => new MapperBuilder(this);
-        public RepositoryBuilder GetRepositoryBuilder => new RepositoryBuilder(this, mainInformation);
-
-
+        public RepositoryBuilderBase GetRepositoryBuilder
+        {
+            get
+            {
+                var type = BuilderManager.Get(_mainInformation.Repository.Id, "Repository");
+                return BuilderManager.InitializeBuilder<RepositoryBuilderBase>(type, new object[] {this, _mainInformation});
+            }
+        }
     }
 }

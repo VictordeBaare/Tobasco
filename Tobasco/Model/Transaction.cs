@@ -6,8 +6,5 @@ namespace Tobasco.Model
     {
         [XmlAttribute("useTransaction")]
          public bool UseTransaction { get; set; }
-
-        [XmlElement("InterfaceImplementation")]
-        public InterfaceImplementation InterfaceImplementation { get; set; }
     }
 }

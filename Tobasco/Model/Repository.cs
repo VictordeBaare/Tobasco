@@ -22,5 +22,8 @@ namespace Tobasco.Model
 
         [XmlAttribute("generate")]
         public bool Generate { get; set; }
+
+        [XmlAttribute("id")]
+        public string Id { get; set; }
     }
 }

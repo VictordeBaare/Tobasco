@@ -90,14 +90,16 @@
     <Compile Include="FileProcessor.cs" />
     <Compile Include="IDeadlockRetryHelper.cs" />
     <Compile Include="MainHandler.cs" />
+    <Compile Include="Manager\BuilderManager.cs" />
     <Compile Include="Model\BaseProperty.cs" />
+    <Compile Include="Model\Builders\Base\RepositoryBuilderBase.cs" />
     <Compile Include="Model\Builders\ClassBuilder.cs" />
     <Compile Include="Model\Builders\ConnectionfactoryBuilder.cs" />
     <Compile Include="Model\Builders\DatabaseBuilder.cs" />
     <Compile Include="Model\Builders\DependencyInjectionBuilder.cs" />
     <Compile Include="Model\Builders\GenericRepositoryBuilder.cs" />
     <Compile Include="Model\Builders\MapperBuilder.cs" />
-    <Compile Include="Model\Builders\RepositoryBuilder.cs" />
+    <Compile Include="Model\Builders\DefaultRepositoryBuilder.cs" />
     <Compile Include="Model\DatabaseProperties\DatabaseProperty.cs" />
     <Compile Include="Model\DatabaseProperties\DecimalProperty.cs" />
     <Compile Include="Model\DatabaseProperties\StringProperty.cs" />

@@ -65,6 +65,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="BuilderOverrides\RepositoryOverrideBuilder.cs" />
     <Compile Include="DeadlockRetryHelperImplementation.cs" />
     <Compile Include="DependencyInjection\RepositoryModule_Generated.cs">
       <DependentUpon>TestGenerator2.txt4</DependentUpon>
@@ -124,12 +125,12 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>TestGenerator.tt</DependentUpon>
     </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestGenerator2.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>TestGenerator2.tt</DependentUpon>
     </Compile>
-    <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="TestChildCollectionObject.xml" />

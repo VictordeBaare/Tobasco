@@ -4,6 +4,7 @@
 // Build ChildCollectionObject for TobascoTest.GeneratedEntity
 // Build ChildCollectionObject for TobascoTest.GeneratedEntity2
 // --------------------- Start generating repository -----------------------------
+// Hier komt een mooi stukje tekst. Je zou een override gedaan moeten hebben.
 // Build ChildCollectionObjectRepository for TobascoTest.GeneratedRepositoy
 // Build IChildCollectionObjectRepository for TobascoTest.IGenerateRepository
 // ---------------------- Start generating database ------------------------------
@@ -16,6 +17,7 @@
 // Build ChildObject for TobascoTest.GeneratedEntity
 // Build ChildObject for TobascoTest.GeneratedEntity2
 // --------------------- Start generating repository -----------------------------
+// Hier komt een mooi stukje tekst. Je zou een override gedaan moeten hebben.
 // Build ChildObjectRepository for TobascoTest.GeneratedRepositoy
 // Build IChildObjectRepository for TobascoTest.IGenerateRepository
 // ---------------------- Start generating database ------------------------------
@@ -28,6 +30,7 @@
 // Build FileMetOvererving for TobascoTest.GeneratedEntity
 // Build FileMetOvererving for TobascoTest.GeneratedEntity2
 // --------------------- Start generating repository -----------------------------
+// Hier komt een mooi stukje tekst. Je zou een override gedaan moeten hebben.
 // Build FileMetOverervingRepository for TobascoTest.GeneratedRepositoy
 // Build IFileMetOverervingRepository for TobascoTest.IGenerateRepository
 // ---------------------- Start generating database ------------------------------
@@ -37,7 +40,6 @@
 // Generate Update stp for FileMetOvererving
 // Generate Delete stp for FileMetOvererving
 // Start generating dependency injection
-// FileContent is different for: D:\Tobasco\Tobasco\TobascoTest\GeneratedRepositoy\GenericRepository_Generated.cs
 // File D:\Tobasco\Tobasco\TobascoTest\GeneratedDatabase\ChildCollectionObject_Generated.sql shall not be processed.
 // File D:\Tobasco\Tobasco\TobascoTest\GeneratedDatabase\ChildCollectionObject_CRUD_Generated.sql shall not be processed.
 // File D:\Tobasco\Tobasco\TobascoTest\GeneratedDatabase\ChildObject_Generated.sql shall not be processed.

@@ -39,12 +39,8 @@
             <Historie generate="true"></Historie>
         </Tables>
     </Database>
-    <Repository project="TobascoTest" folder="GeneratedRepositoy" EntityId="dataobject" generate="true">
-        <Transaction useTransaction="false">
-            <!--<InterfaceImplementation>
-                <Name value="DeadlockRetryHelperImplementation"></Name>-->
-            <!--</InterfaceImplementation>-->
-        </Transaction>
+    <Repository project="TobascoTest" folder="GeneratedRepositoy" id="repositorykey" EntityId="dataobject" generate="true">
+        <Transaction useTransaction="false"> </Transaction>
         <InterfaceLocation project="TobascoTest" folder="IGenerateRepository"></InterfaceLocation>
         <Namespaces>
             <Namespace value="TobascoTest.GeneratedEntity"></Namespace>
