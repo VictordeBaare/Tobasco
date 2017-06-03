@@ -2,19 +2,19 @@
 using System.Text;
 using Tobasco.Extensions;
 using Tobasco.FileBuilder;
+using Tobasco.Model.Builders.Base;
 
 namespace Tobasco.Model.Builders
 {
-    public class DependencyInjectionBuilder
+    public class DefaultDependencyInjectionBuilder : DependencyInjectionBuilderBase
     {
-        private readonly IEnumerable<EntityHandler> _entityHandlers;
 
-        public DependencyInjectionBuilder(IEnumerable<EntityHandler> entityHandlers)
+        public DefaultDependencyInjectionBuilder(IEnumerable<EntityHandler> entityHandlers) : base(entityHandlers)
         {
-            _entityHandlers = entityHandlers;
+            
         }
 
-        public FileBuilder.OutputFile Build(Module module)
+        public override FileBuilder.OutputFile Build(Module module)
         {
             var classFile = FileManager.StartNewClassFile(module.Name + "Module", module.FileLocation.Project, module.FileLocation.Folder);
             classFile.BaseClass = ": NinjectModule";
@@ -31,7 +31,7 @@ namespace Tobasco.Model.Builders
 
             builder.AppendLineWithTabs("public override void Load()", 0);
             builder.AppendLineWithTabs("{", 2);
-            foreach (var handler in _entityHandlers)
+            foreach (var handler in EntityHandlers)
             {
                 var repositoryBuilder = handler.GetRepositoryBuilder;
                 builder.AppendLineWithTabs($"Bind<{repositoryBuilder.GetRepositoryInterfaceName}>().To<{repositoryBuilder.GetRepositoryName}>();", 3);

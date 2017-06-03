@@ -13,5 +13,8 @@ namespace Tobasco.Model
         [XmlArray("Modules")]
         [XmlArrayItem("Module", typeof(Module))]
         public List<Module> Modules { get; set; }
+
+        [XmlAttribute("id")]
+        public string Id { get; set; }
     }
 }

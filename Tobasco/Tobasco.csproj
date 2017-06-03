@@ -66,6 +66,7 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Constants\DefaultBuilderConstants.cs" />
     <Compile Include="EntityHandler.cs" />
     <Compile Include="Enums\Datatype.cs" />
     <Compile Include="Enums\DIType.cs" />
@@ -96,13 +97,19 @@
     <Compile Include="Manager\OutputPaneManager.cs" />
     <Compile Include="Manager\ProgressBarManager.cs" />
     <Compile Include="Model\BaseProperty.cs" />
+    <Compile Include="Model\Builders\Base\ClassBuilderBase.cs" />
+    <Compile Include="Model\Builders\Base\ConnectionfactoryBuilderBase.cs" />
+    <Compile Include="Model\Builders\Base\DatabaseBuilderBase.cs" />
+    <Compile Include="Model\Builders\Base\DependencyInjectionBuilderBase.cs" />
+    <Compile Include="Model\Builders\Base\GenericRepositoryBuilderBase.cs" />
+    <Compile Include="Model\Builders\Base\MapperBuilderBase.cs" />
     <Compile Include="Model\Builders\Base\RepositoryBuilderBase.cs" />
-    <Compile Include="Model\Builders\ClassBuilder.cs" />
-    <Compile Include="Model\Builders\ConnectionfactoryBuilder.cs" />
-    <Compile Include="Model\Builders\DatabaseBuilder.cs" />
-    <Compile Include="Model\Builders\DependencyInjectionBuilder.cs" />
-    <Compile Include="Model\Builders\GenericRepositoryBuilder.cs" />
-    <Compile Include="Model\Builders\MapperBuilder.cs" />
+    <Compile Include="Model\Builders\DefaultClassBuilder.cs" />
+    <Compile Include="Model\Builders\DefaultConnectionfactoryBuilder.cs" />
+    <Compile Include="Model\Builders\DefaultDatabaseBuilder.cs" />
+    <Compile Include="Model\Builders\DefaultDependencyInjectionBuilder.cs" />
+    <Compile Include="Model\Builders\DefaultGenericRepositoryBuilder.cs" />
+    <Compile Include="Model\Builders\DefaultMapperBuilder.cs" />
     <Compile Include="Model\Builders\DefaultRepositoryBuilder.cs" />
     <Compile Include="Model\DatabaseProperties\DatabaseProperty.cs" />
     <Compile Include="Model\DatabaseProperties\DecimalProperty.cs" />

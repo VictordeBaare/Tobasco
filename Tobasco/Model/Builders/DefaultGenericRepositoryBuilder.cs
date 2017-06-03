@@ -5,30 +5,13 @@ using System.Text;
 using System.Threading.Tasks;
 using Tobasco.Extensions;
 using Tobasco.FileBuilder;
+using Tobasco.Model.Builders.Base;
 
 namespace Tobasco.Model.Builders
 {
-    public class GenericRepositoryBuilder
+    public class DefaultGenericRepositoryBuilder : GenericRepositoryBuilderBase
     {
-        private EntityInformation _information;
-
-        public GenericRepositoryBuilder(EntityInformation information)
-        {
-            _information = information;
-        }
-
-        public FileLocation classlocation => _information.Repository;
-        public FileLocation interfacelocation => _information.Repository.InterfaceLocation;
-        
-        public string GetGenericRepositoryName
-        {
-            get { return "GenericRepository"; }
-        }
-
-        public string GetInterfaceGenericRepositoryName
-        {
-            get { return "IGenericRepository"; }
-        }
+        public DefaultGenericRepositoryBuilder(EntityInformation information) : base(information) { }
 
         private string SaveMethod()
         {
@@ -148,13 +131,13 @@ namespace Tobasco.Model.Builders
             return builder.ToString();
         }
 
-        public IEnumerable<FileBuilder.OutputFile> Build()
+        public override IEnumerable<FileBuilder.OutputFile> Build()
         {
-            var classFile = FileManager.StartNewClassFile(GetGenericRepositoryName, classlocation.Project, classlocation.Folder);
-            classFile.Namespaces.AddRange(new[] { "System.Configuration", "System.Data.SqlClient", "Dapper", "System.Data", _information.Repository.InterfaceLocation.GetProjectLocation });
-            classFile.Namespaces.AddRange(_information.Repository.Namespaces.Select(x => x.Value));
+            var classFile = FileManager.StartNewClassFile(GetGenericRepositoryName, Classlocation.Project, Classlocation.Folder);
+            classFile.Namespaces.AddRange(new[] { "System.Configuration", "System.Data.SqlClient", "Dapper", "System.Data", Interfacelocation.GetProjectLocation });
+            classFile.Namespaces.AddRange(Information.Repository.Namespaces.Select(x => x.Value));
             classFile.Namespaces.Add("System.Globalization");
-            classFile.OwnNamespace = _information.Repository.GetNamespace;
+            classFile.OwnNamespace = Information.Repository.GetNamespace;
             classFile.NameExtension = "<T>";
             classFile.BaseClass = ": IGenericRepository<T> where T : EntityBase, new()";
             classFile.Constructor.Parameters.Add(new Parameter { Name = "connectionFactory", Type = "IConnectionFactory" });
@@ -166,10 +149,10 @@ namespace Tobasco.Model.Builders
             classFile.Methods.Add(DeleteMethod());
             classFile.Methods.Add(ToAnonymousMethod());
 
-            var interfaceFile = FileManager.StartNewInterfaceFile(GetInterfaceGenericRepositoryName, interfacelocation.Project, interfacelocation.Folder);
-            interfaceFile.Namespaces.AddRange(new [] { "System.Configuration", "System.Data.SqlClient", _information.Repository.InterfaceLocation.GetProjectLocation });
-            interfaceFile.Namespaces.AddRange(_information.Repository.Namespaces.Select(x => x.Value));
-            interfaceFile.OwnNamespace = _information.Repository.InterfaceLocation.GetNamespace;
+            var interfaceFile = FileManager.StartNewInterfaceFile(GetInterfaceGenericRepositoryName, Interfacelocation.Project, Interfacelocation.Folder);
+            interfaceFile.Namespaces.AddRange(new [] { "System.Configuration", "System.Data.SqlClient", Interfacelocation.GetProjectLocation });
+            interfaceFile.Namespaces.AddRange(Information.Repository.Namespaces.Select(x => x.Value));
+            interfaceFile.OwnNamespace = Interfacelocation.GetNamespace;
             interfaceFile.NameExtension = "<T> where T : EntityBase, new()";
             interfaceFile.Properties.Add("IConnectionFactory ConnectionFactory { get; }");
             interfaceFile.Methods.Add("T Save(T entity);");

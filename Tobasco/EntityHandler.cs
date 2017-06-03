@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Tobasco.Constants;
 using Tobasco.Enums;
 using Tobasco.Manager;
 using Tobasco.Model;
@@ -13,15 +14,15 @@ namespace Tobasco
     {
         private readonly Entity _entity;
         private readonly EntityInformation _mainInformation;
-        private DatabaseBuilder _database;
-        private readonly Dictionary<string, ClassBuilder> _classBuilderDictionary;
+        private DefaultDatabaseBuilder _database;
+        private readonly Dictionary<string, ClassBuilderBase> _classBuilderDictionary;
         private readonly Func<string, EntityHandler> _getHandlerOnName;
 
         public EntityHandler(Entity entity, EntityInformation mainInformation, Func<string, EntityHandler> getHandlerOnName)
         {
             _entity = entity;
             _mainInformation = mainInformation;
-            _classBuilderDictionary = new Dictionary<string, ClassBuilder>();
+            _classBuilderDictionary = new Dictionary<string, ClassBuilderBase>();
             _getHandlerOnName = getHandlerOnName;
         }
         
@@ -148,19 +149,21 @@ namespace Tobasco
         public Entity Entity => _entity;
 
 
-        public ClassBuilder GetClassBuilder(EntityLocation entitylocation)
+        public ClassBuilderBase GetClassBuilder(EntityLocation entitylocation)
         {
             if (!string.IsNullOrEmpty(entitylocation.Id) &&_classBuilderDictionary.ContainsKey(entitylocation.Id))
             {
                 return _classBuilderDictionary[entitylocation.Id];
             }
-            var classBuilder = new ClassBuilder(_entity, entitylocation, _mainInformation);
+            var type = BuilderManager.Get(entitylocation.Id, DefaultBuilderConstants.ClassBuilder);
+            var classBuilder = BuilderManager.InitializeBuilder<ClassBuilderBase>(type, new object[] { _entity, entitylocation, _mainInformation });
+
             var id = entitylocation.Id ?? "LocationId" + _classBuilderDictionary.Count + 1;
             _classBuilderDictionary.Add(id, classBuilder);
             return classBuilder;
         }
 
-        public ClassBuilder GetClassBuilder(string id)
+        public ClassBuilderBase GetClassBuilder(string id)
         {
             if (_classBuilderDictionary.ContainsKey(id))
             {
@@ -169,13 +172,29 @@ namespace Tobasco
             throw new ArgumentException();
         }
 
-        public DatabaseBuilder GetDatabaseBuilder => _database ?? (_database = new DatabaseBuilder(this));
-        public MapperBuilder GetMapperBuilder => new MapperBuilder(this);
+        public DatabaseBuilderBase GetDatabaseBuilder
+        {
+            get
+            {
+                var type = BuilderManager.Get(_mainInformation.Database.Id, DefaultBuilderConstants.DatabaseBuilder);
+                return BuilderManager.InitializeBuilder<DatabaseBuilderBase>(type, new object[] { this });
+            }
+        }
+
+        public MapperBuilderBase GetMapperBuilder
+        {
+            get
+            {
+                var type = BuilderManager.Get(_mainInformation.Mappers.Id, DefaultBuilderConstants.MapperBuilder);
+                return BuilderManager.InitializeBuilder<MapperBuilderBase>(type, new object[] { this });
+            }
+        }
+
         public RepositoryBuilderBase GetRepositoryBuilder
         {
             get
             {
-                var type = BuilderManager.Get(_mainInformation.Repository.Id, "Repository");
+                var type = BuilderManager.Get(_mainInformation.Repository.Id, DefaultBuilderConstants.RepositoryBuilder);
                 return BuilderManager.InitializeBuilder<RepositoryBuilderBase>(type, new object[] {this, _mainInformation});
             }
         }

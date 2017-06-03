@@ -15,5 +15,8 @@ namespace Tobasco.Model
         public StoredProcedures StoredProcedures { get; set; }
 
         public Tables Tables { get; set; }
+
+        [XmlAttribute("id")]
+        public string Id { get; set; }
     }
 }

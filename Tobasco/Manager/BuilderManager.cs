@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Tobasco.Constants;
 using Tobasco.Model;
 using Tobasco.Model.Builders;
 
@@ -8,7 +9,15 @@ namespace Tobasco.Manager
 {
     public static class BuilderManager
     {
-        private static readonly Dictionary<string, Type> DefaultBuilders = new Dictionary<string, Type> { {"Repository", typeof(DefaultRepositoryBuilder)} }; 
+        private static readonly Dictionary<string, Type> DefaultBuilders = new Dictionary<string, Type> {
+            { DefaultBuilderConstants.RepositoryBuilder, typeof(DefaultRepositoryBuilder) },
+            { DefaultBuilderConstants.DependencyBuilder, typeof(DefaultDependencyInjectionBuilder) },
+            { DefaultBuilderConstants.ClassBuilder, typeof(DefaultClassBuilder)},
+            { DefaultBuilderConstants.MapperBuilder, typeof(DefaultMapperBuilder)},
+            { DefaultBuilderConstants.DatabaseBuilder, typeof(DefaultDatabaseBuilder)},
+            { DefaultBuilderConstants.ConnectionFactoryBuilder, typeof(DefaultConnectionfactoryBuilder)},
+            { DefaultBuilderConstants.GenericRepositoryBuilder, typeof(DefaultGenericRepositoryBuilder)}
+        };
 
         private static readonly Dictionary<string, Type> Builders = new Dictionary<string, Type>();
 
@@ -22,7 +31,7 @@ namespace Tobasco.Manager
 
         public static Type Get(string key, string defaultKey)
         {
-            if (Builders.ContainsKey(key))
+            if (!string.IsNullOrEmpty(key) && Builders.ContainsKey(key))
             {
                 return Builders[key];
             }
@@ -30,6 +39,7 @@ namespace Tobasco.Manager
             {
                 return DefaultBuilders[defaultKey];
             }
+            OutputPaneManager.WriteToOutputPane("There is no builder present. Error!");
             throw new ArgumentException("There is no builder present.");
         }
 

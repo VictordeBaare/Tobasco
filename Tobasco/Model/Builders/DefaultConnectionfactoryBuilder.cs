@@ -3,42 +3,19 @@ using System.Collections.Generic;
 using System.Text;
 using Tobasco.Extensions;
 using Tobasco.FileBuilder;
+using Tobasco.Model.Builders.Base;
 
 namespace Tobasco.Model.Builders
 {
-    public class ConnectionfactoryBuilder
+    public class DefaultConnectionfactoryBuilder : ConnectionfactoryBuilderBase
     {
-        private EntityInformation _information;
+        public DefaultConnectionfactoryBuilder(EntityInformation information) : base(information) { }
 
-        public ConnectionfactoryBuilder(EntityInformation information)
-        {
-            _information = information;
-        }
-
-        public FileLocation classlocation => _information.Repository;
-        public FileLocation interfacelocation => _information.Repository.InterfaceLocation;
-
-        public string GetConnectionFactoryName
-        {
-            get
-            {
-                return "ConnectionFactory";
-            }
-        }
-
-        public string GetConnectionFactoryInterfaceName
-        {
-            get
-            {
-                return "IConnectionFactory";
-            }
-        }
-
-        public IEnumerable<FileBuilder.OutputFile> Build()
+        public override IEnumerable<FileBuilder.OutputFile> Build()
         {
             var classFile = FileManager.StartNewClassFile(GetConnectionFactoryName, classlocation.Project, classlocation.Folder);
             classFile.Namespaces.AddRange(new[] { "System.Configuration", "System.Data.SqlClient", interfacelocation.GetProjectLocation });
-            classFile.OwnNamespace = _information.Repository.GetNamespace;
+            classFile.OwnNamespace = Information.Repository.GetNamespace;
             classFile.BaseClass = $": {GetConnectionFactoryInterfaceName}";
             classFile.Fields.Add("private readonly string _connectionstring");
             classFile.Constructor.Parameters.Add(new Parameter { Type = "string", Name = "databasenaam" });
@@ -47,7 +24,7 @@ namespace Tobasco.Model.Builders
 
             var interfaceFile = FileManager.StartNewInterfaceFile(GetConnectionFactoryInterfaceName, interfacelocation.Project, interfacelocation.Folder);
             interfaceFile.Namespaces.Add("System.Data.SqlClient");
-            interfaceFile.OwnNamespace = _information.Repository.InterfaceLocation.GetNamespace;
+            interfaceFile.OwnNamespace = Information.Repository.InterfaceLocation.GetNamespace;
             interfaceFile.Methods.Add("SqlConnection GetConnection();");
             return new List<FileBuilder.OutputFile> { classFile, interfaceFile };
         }

@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Tobasco.Constants;
 using Tobasco.Manager;
 using Tobasco.Model;
 using Tobasco.Model.Builders;
+using Tobasco.Model.Builders.Base;
 
 namespace Tobasco
 {
@@ -24,13 +26,34 @@ namespace Tobasco
             }
         }
 
-        private ConnectionfactoryBuilder ConnectionFactoryBuilder => new ConnectionfactoryBuilder(_information);
-
         private Dictionary<string, EntityHandler> EntityHandlers { get; }
 
-        private GenericRepositoryBuilder GenericRepositoryBuilder => new GenericRepositoryBuilder(_information);
+        private ConnectionfactoryBuilderBase ConnectionFactoryBuilder
+        {
+            get
+            {
+                var type = BuilderManager.Get("NotYetOverrideable", DefaultBuilderConstants.ConnectionFactoryBuilder);
+                return BuilderManager.InitializeBuilder<ConnectionfactoryBuilderBase>(type, new object[] { _information });
+            }
+        }
 
-        private DependencyInjectionBuilder DependencyInjectionBuilder => new DependencyInjectionBuilder(EntityHandlers.Values);
+        private GenericRepositoryBuilderBase GenericRepositoryBuilder
+        {
+            get
+            {
+                var type = BuilderManager.Get("NotYetOverrideable", DefaultBuilderConstants.GenericRepositoryBuilder);
+                return BuilderManager.InitializeBuilder<GenericRepositoryBuilderBase>(type, new object[] { _information });
+            }
+        }
+
+        private DependencyInjectionBuilderBase DependencyInjectionBuilder
+        {
+            get
+            {
+                var type = BuilderManager.Get(_information.DependencyInjection.Id, DefaultBuilderConstants.DependencyBuilder);
+                return BuilderManager.InitializeBuilder<DependencyInjectionBuilderBase>(type, new object[] { EntityHandlers.Values });
+            }
+        }
 
         public IEnumerable<FileBuilder.OutputFile> GetOutputFiles(DynamicTextTransformation2 textTransformation)
         {
