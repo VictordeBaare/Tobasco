@@ -61,6 +61,6 @@ namespace Tobasco.Model.Builders.Base
             }
         }
 
-        public abstract IEnumerable<FileBuilder.OutputFile> Build(DynamicTextTransformation2 textTransformation);
+        public abstract IEnumerable<FileBuilder.OutputFile> Build();
     }
 }

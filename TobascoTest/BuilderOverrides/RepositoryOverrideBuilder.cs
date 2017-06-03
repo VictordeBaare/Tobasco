@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Tobasco;
+using Tobasco.Manager;
 using Tobasco.Model;
 using Tobasco.Model.Builders;
 using Tobasco.Model.Builders.Base;
@@ -13,10 +14,10 @@ namespace TobascoTest.BuilderOverrides
         {
         }
 
-        public override IEnumerable<OutputFile> Build(DynamicTextTransformation2 textTransformation)
+        public override IEnumerable<OutputFile> Build()
         {
-            textTransformation.WriteLine("// Hier komt een mooi stukje tekst. Je zou een override gedaan moeten hebben.");
-            return base.Build(textTransformation);
+            OutputPaneManager.WriteToOutputPane("Builder has been overridden");
+            return base.Build();
         }
     }
 }

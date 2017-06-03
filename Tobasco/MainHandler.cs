@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Tobasco.Manager;
 using Tobasco.Model;
 using Tobasco.Model.Builders;
 
@@ -36,34 +37,44 @@ namespace Tobasco
             var outputFiles = new List<FileBuilder.OutputFile>();
             if(_information.Repository != null)
             {
-                textTransformation.WriteLine("// Start generating connectionfactory");
+                OutputPaneManager.WriteToOutputPane("Add Connectionfactory file");
                 outputFiles.AddRange(ConnectionFactoryBuilder.Build());
-                textTransformation.WriteLine("// Start generating  Genericrepository");
+                OutputPaneManager.WriteToOutputPane("Add Genericrepository file");
                 outputFiles.AddRange(GenericRepositoryBuilder.Build());
+            }
+            else
+            {
+                OutputPaneManager.WriteToOutputPane("There is no repository defined");
             }
 
             foreach (var handler in EntityHandlers)
             {
-                textTransformation.WriteLine($"// -------------------- Start generating for {handler.Key} -------------------------");
-                outputFiles.AddRange(handler.Value.GetEntityLocations.Select(x => handler.Value.GetClassBuilder(x).Build(textTransformation)));
+                OutputPaneManager.WriteToOutputPane($"Start adding files for {handler.Key} =");
+                outputFiles.AddRange(handler.Value.GetEntityLocations.Select(x => handler.Value.GetClassBuilder(x).Build()));
                 if (_information.Repository != null && _information.Repository.Generate)
                 {
-                    textTransformation.WriteLine("// --------------------- Start generating repository -----------------------------");
-                    outputFiles.AddRange(handler.Value.GetRepositoryBuilder.Build(textTransformation));
+                    OutputPaneManager.WriteToOutputPane("Add repository file");
+                    outputFiles.AddRange(handler.Value.GetRepositoryBuilder.Build());
                 }
-                textTransformation.WriteLine("// ---------------------- Start generating database ------------------------------");
-                outputFiles.AddRange(handler.Value.GetDatabaseBuilder.Build(textTransformation));
+                OutputPaneManager.WriteToOutputPane("Add database files");
+                outputFiles.AddRange(handler.Value.GetDatabaseBuilder.Build());
                 if (handler.Value.Entity.Mappers != null && handler.Value.Entity.Mappers.Generate)
                 {
+                    OutputPaneManager.WriteToOutputPane("Add Mapper files");
                     outputFiles.AddRange(handler.Value.GetMappers.Mapper.SelectMany(x => handler.Value.GetMapperBuilder.Build(x)));
                 }
+                OutputPaneManager.WriteToOutputPane($"Finished adding files for {handler.Key}");
             }
 
-            if(_information.DependencyInjection?.Modules != null)
+            if (_information.DependencyInjection?.Modules != null)
             {
-                textTransformation.WriteLine("// Start generating dependency injection");
+                OutputPaneManager.WriteToOutputPane("Add file for dependency injection");
                 outputFiles.AddRange(_information.DependencyInjection.Modules.Select(x => DependencyInjectionBuilder.Build(x)));
-            }            
+            }
+            else
+            {
+                OutputPaneManager.WriteToOutputPane("Do not add file for dependency injection");
+            }
 
             return outputFiles;
         }

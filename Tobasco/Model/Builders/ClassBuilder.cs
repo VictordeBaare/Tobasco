@@ -6,6 +6,7 @@ using Tobasco.Enums;
 using Tobasco.Extensions;
 using Tobasco.Factories;
 using Tobasco.FileBuilder;
+using Tobasco.Manager;
 using Tobasco.Model.Properties;
 
 namespace Tobasco.Model.Builders
@@ -125,9 +126,9 @@ namespace Tobasco.Model.Builders
             }
         }
 
-        public FileBuilder.OutputFile Build(DynamicTextTransformation2 textTransformation)
+        public FileBuilder.OutputFile Build()
         {
-            textTransformation.WriteLine($"// Build {_entity.Name} for {_location.GetProjectLocation}");
+            OutputPaneManager.WriteToOutputPane($"Build {_entity.Name} for {_location.GetProjectLocation}");
             var file = FileManager.StartNewClassFile(_entity.Name, _location.Project, _location.Folder);
             file.IsAbstract = _entity.IsAbstract;
             file.BaseClass = _location.GetBaseClass;

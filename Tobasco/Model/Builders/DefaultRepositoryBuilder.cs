@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Tobasco.Extensions;
 using Tobasco.FileBuilder;
+using Tobasco.Manager;
 using Tobasco.Model.Builders.Base;
 
 namespace Tobasco.Model.Builders
@@ -65,12 +66,12 @@ namespace Tobasco.Model.Builders
             return interfaceFile;
         }
 
-        public override IEnumerable<FileBuilder.OutputFile> Build(DynamicTextTransformation2 textTransformation)
+        public override IEnumerable<FileBuilder.OutputFile> Build()
         {
-            textTransformation.WriteLine($"// Build {GetRepositoryName} for {Entity.GetRepository.GetProjectLocation}");
+            OutputPaneManager.WriteToOutputPane($"Build {GetRepositoryName} for {Entity.GetRepository.GetProjectLocation}");
             var classFile = GetClassFile();
 
-            textTransformation.WriteLine($"// Build {GetRepositoryInterfaceName} for {Entity.GetRepository.InterfaceLocation.GetProjectLocation}");
+            OutputPaneManager.WriteToOutputPane($"Build {GetRepositoryInterfaceName} for {Entity.GetRepository.InterfaceLocation.GetProjectLocation}");
             var interfaceFile = GetInterfaceFile();
 
             return new List<FileBuilder.OutputFile> { classFile, interfaceFile };

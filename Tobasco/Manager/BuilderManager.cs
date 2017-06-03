@@ -14,11 +14,10 @@ namespace Tobasco.Manager
 
         public static void Add(string key, Type type)
         {
-            if (Builders.ContainsKey(key))
+            if (!Builders.ContainsKey(key))
             {
-                throw new ArgumentException();
+                Builders.Add(key, type);
             }
-            Builders.Add(key, type);
         }
 
         public static Type Get(string key, string defaultKey)
@@ -31,7 +30,7 @@ namespace Tobasco.Manager
             {
                 return DefaultBuilders[defaultKey];
             }
-            throw new ArgumentException();
+            throw new ArgumentException("There is no builder present.");
         }
 
         public static T InitializeBuilder<T>(Type type, object[] parameters)
@@ -42,7 +41,7 @@ namespace Tobasco.Manager
             {
                 return (T) ctor.Invoke(parameters);
             }
-            throw new ArgumentException();
+            throw new ArgumentException("Something went wrong during the initialization of the builder");
         }
     }
 }

@@ -5,6 +5,7 @@ using System.Text;
 using Tobasco.Enums;
 using Tobasco.Factories;
 using Tobasco.FileBuilder;
+using Tobasco.Manager;
 using Tobasco.Model.DatabaseProperties;
 
 namespace Tobasco.Model.Builders
@@ -344,17 +345,17 @@ namespace Tobasco.Model.Builders
             builder.AppendLine("GO");
         }
 
-        public IEnumerable<FileBuilder.OutputFile> Build(DynamicTextTransformation2 textTransformation)
+        public IEnumerable<FileBuilder.OutputFile> Build()
         {
             var outputFiles = new List<FileBuilder.OutputFile>();
             if (_entity.GetDatabase.Tables.Generate)
             {
-                textTransformation.WriteLine($"// Generate Table for {_entity.Entity.Name}");
+                OutputPaneManager.WriteToOutputPane($"Generate Table for {_entity.Entity.Name}");
                 var tableFile = FileManager.StartNewSqlTableFile(_entity.Entity.Name, _entity.GetDatabase.Project, _entity.GetDatabase.Tables.Folder);
                 tableFile.Content = GetTable();
                 if (_entity.GetDatabase.Tables.Generate && _entity.GetDatabase.Tables.GenerateHistorie.Generate)
                 {
-                    textTransformation.WriteLine($"// Generate HistorieTable for {_entity.Entity.Name}");
+                    OutputPaneManager.WriteToOutputPane($"Generate HistorieTable for {_entity.Entity.Name}");
                     var builder = GetHistorieTable();
                     AddUpdateTrigger(builder);
                     AddDeletedTrigger(builder);
@@ -363,13 +364,13 @@ namespace Tobasco.Model.Builders
                 }
                 else
                 {
-                    textTransformation.WriteLine($"// Do not generate HistorieTable for {_entity.Entity.Name}");
+                    OutputPaneManager.WriteToOutputPane($"== Do not generate HistorieTable for {_entity.Entity.Name} ");
                 }
                 outputFiles.Add(tableFile);
             }
             else
             {
-                textTransformation.WriteLine($"// Do not generate Table for {_entity.Entity.Name}");
+                OutputPaneManager.WriteToOutputPane($"Do not generate Table for {_entity.Entity.Name}");
             }
             
             if (_entity.GetDatabase.StoredProcedures.Generate)
@@ -380,30 +381,30 @@ namespace Tobasco.Model.Builders
 
                 if (_entity.GetDatabase.StoredProcedures.GenerateInsert.Generate)
                 {
-                    textTransformation.WriteLine($"// Generate Insert stp for {_entity.Entity.Name}");
+                    OutputPaneManager.WriteToOutputPane($"Generate Insert stp for {_entity.Entity.Name}");
                     builder.AppendLine(GetInsertStp().ToString());
                 }
                 else
                 {
-                    textTransformation.WriteLine($"// Do not generate Insert stp for {_entity.Entity.Name}");
+                    OutputPaneManager.WriteToOutputPane($"Do not generate Insert stp for {_entity.Entity.Name}");
                 }
                 if (_entity.GetDatabase.StoredProcedures.GenerateUpdate.Generate)
                 {
-                    textTransformation.WriteLine($"// Generate Update stp for {_entity.Entity.Name}");
+                    OutputPaneManager.WriteToOutputPane($"Generate Update stp for {_entity.Entity.Name}");
                     builder.AppendLine(GetUpdateStp().ToString());
                 }
                 else
                 {
-                    textTransformation.WriteLine($"// Do not generate Update stp for {_entity.Entity.Name}");
+                    OutputPaneManager.WriteToOutputPane($"Do not generate Update stp for {_entity.Entity.Name}");
                 }
                 if (_entity.GetDatabase.StoredProcedures.GenerateDelete.Generate)
                 {
-                    textTransformation.WriteLine($"// Generate Delete stp for {_entity.Entity.Name}");
+                    OutputPaneManager.WriteToOutputPane($"Generate Delete stp for {_entity.Entity.Name}");
                     builder.AppendLine(GetDeleteStp().ToString());
                 }
                 else
                 {
-                    textTransformation.WriteLine($"// Do not generate Delete stp for {_entity.Entity.Name}");
+                    OutputPaneManager.WriteToOutputPane($"Do not generate Delete stp for {_entity.Entity.Name}");
                 }
 
                 crudFile.Content = builder;

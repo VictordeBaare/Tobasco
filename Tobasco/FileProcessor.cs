@@ -1,5 +1,7 @@
 ﻿using EnvDTE;
 using EnvDTE80;
+using Microsoft.VisualStudio.Shell;
+using Microsoft.VisualStudio.Shell.Interop;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -7,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Tobasco.Enums;
+using Tobasco.Manager;
 
 namespace Tobasco
 {
@@ -26,13 +29,30 @@ namespace Tobasco
             return new FileProcessor(transformation);
         }
 
-        public Encoding Encoding { get; set; }
-
         public void BeginProcessing(string path)
         {
-            XmlLoader loader = new XmlLoader(_textTransformation);
-            var handler = loader.Load(path);
-            Process(handler.GetOutputFiles(_textTransformation));
+            try
+            {
+                XmlLoader loader = new XmlLoader(_textTransformation);
+                var handler = loader.Load(path);
+                
+                OutputPaneManager.WriteToOutputPane("Start generating.");
+
+                var task = System.Threading.Tasks.Task.Factory.StartNew(() =>
+                {
+                    OutputPaneManager.WriteToOutputPane("Get output files.");
+                    var outputFiles = handler.GetOutputFiles(_textTransformation);
+                    ProgressBarManager.SetTotal((uint)outputFiles.Count(), "");
+                    OutputPaneManager.WriteToOutputPane($"{outputFiles.Count()} files found. ");
+
+                    OutputPaneManager.WriteToOutputPane("Process output files");
+                    Process(outputFiles);
+                }).ContinueWith(x => OutputPaneManager.WriteToOutputPane("Finished generating"));
+            }
+            catch(Exception ex)
+            {
+                OutputPaneManager.WriteToOutputPane($"Something went wrong. {ex.StackTrace}");
+            }
         }
 
         private string GetFileTypeExtension(FileBuilder.OutputFile file)
@@ -64,11 +84,12 @@ namespace Tobasco
 
                 if (isNewOrAdjusted || !file.FileName.EndsWith(".sql"))
                 {
+                    OutputPaneManager.WriteToOutputPane($"File {file.Name} shall be processed");
                     filesToProcess.Add(file);
                 }
                 else
                 {
-                    _textTransformation.WriteLine($"// File {file.FileName} shall not be processed.");
+                    OutputPaneManager.WriteToOutputPane($"File {file.Name} shall not be processed.");
                 }
             }
 
@@ -118,9 +139,10 @@ namespace Tobasco
             {
                 throw new ArgumentNullException("Could not obtain DTE from host");
             }
-
+            var dteServiceProvider = new ServiceProvider((Microsoft.VisualStudio.OLE.Interop.IServiceProvider)dte);
+            OutputPaneManager.Activate(dteServiceProvider);
+            ProgressBarManager.Activate(dteServiceProvider);
             templateProjectItem = dte.Solution.FindProjectItem(_textTransformation.Host.TemplateFile);
-            Encoding = Encoding.UTF8;
             checkOutAction = fileName => dte.SourceControl.CheckOutItem(fileName);
             projectSyncAction = keepFileNames => ProjectSync(templateProjectItem, keepFileNames);
         }
@@ -156,9 +178,9 @@ namespace Tobasco
         {
             if (IsFileContentDifferent(file))
             {
-                _textTransformation.WriteLine($"// FileContent is different for: {file.FileName}");
+                OutputPaneManager.WriteToOutputPane($"FileContent is different for: {file.FileName}");
                 CheckoutFileIfRequired(file.FileName);
-                File.WriteAllText(file.FileName, file.BuildContent(), Encoding);
+                File.WriteAllText(file.FileName, file.BuildContent(), Encoding.UTF8);
                 return true;
             }
             return false;
@@ -225,6 +247,8 @@ namespace Tobasco
                 projectFiles.Add(projectItem.FileNames[0], projectItem);
             }
 
+            ProgressBarManager.Reset();
+            ProgressBarManager.SetTotal((uint)projectFiles.Count, "Removing files");            
             // Remove unused items from the project
             foreach (var pair in projectFiles)
             {
@@ -233,22 +257,27 @@ namespace Tobasco
                     && !(Path.GetFileNameWithoutExtension(pair.Key) + ".").StartsWith(originalOutput + "."))
                 {
                     pair.Value.Delete();
+                    OutputPaneManager.WriteToOutputPane($"Deleting {pair.Key}");
                 }
+                ProgressBarManager.SetProgress();
             }
 
+            ProgressBarManager.Reset();
+            ProgressBarManager.SetTotal((uint)keepFileNameSet.Count, "Adding files");
             // Add missing files to the project
             foreach (var fileName in keepFileNameSet)
             {
-                textTransformation.WriteLine($"// check if file exists: {fileName.FileName}");
+                OutputPaneManager.WriteToOutputPane($"Check if file exists: {fileName.FileName}");
                 if (!projectFiles.ContainsKey(fileName.FileName))
                 {
-                    textTransformation.WriteLine($"// Add {fileName.FileName}");
+                    OutputPaneManager.WriteToOutputPane($"Add {fileName.FileName}");
                     templateProjectItem.ProjectItems.AddFromFile(fileName.FileName);
                 }
                 else
                 {
-                    textTransformation.WriteLine($"// {fileName.FileName} already exists");
+                    OutputPaneManager.WriteToOutputPane($"{fileName.FileName} already exists");
                 }
+                ProgressBarManager.SetProgress();
             }
         }
 
@@ -262,8 +291,7 @@ namespace Tobasco
                 {
                     yield return subItem;
                 }
-
-
+                
                 yield return projectItem;
             }
         }
