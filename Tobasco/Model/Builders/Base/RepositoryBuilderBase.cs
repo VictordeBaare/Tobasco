@@ -47,7 +47,7 @@ namespace Tobasco.Model.Builders.Base
             {
                 var listNamespaces = new List<string>();
                 listNamespaces.AddRange(Information.Repository.Namespaces.Select(valueElement => valueElement.Value));
-                listNamespaces.Add(Entity.GetEntityLocationOnId(Entity.GetRepository.EntityId).GetProjectLocation, s => !listNamespaces.Contains(s));
+                listNamespaces.Add(Entity.GetEntityLocationOnId(Entity.GetRepository.EntityId).FileLocation.GetProjectLocation, s => !listNamespaces.Contains(s));
                 foreach (var childRep in Entity.Entity.Properties.Where(x => x.DataType.Datatype == Enums.Datatype.Child || x.DataType.Datatype == Enums.Datatype.ChildCollection))
                 {
                     var projectLocation = Entity.GetProjectLocation(childRep.DataType.Type, Entity.GetRepository.EntityId);

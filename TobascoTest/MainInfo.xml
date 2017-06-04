@@ -1,13 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <EntityInformation>
   <EntityLocations>
-    <EntityLocation project="TobascoTest" folder="GeneratedEntity" id="dataobject">
+    <EntityLocation id="dataobject">
+      <FileLocation project="TobascoTest" folder="GeneratedEntity"></FileLocation>
       <Namespaces>
         <Namespace value="System.Dynamic"></Namespace>
       </Namespaces>
       <ORMapper type="Dapper"></ORMapper>
     </EntityLocation>
-    <EntityLocation project="TobascoTest" folder="GeneratedEntity2" generaterules="true" id="businessobject">
+    <EntityLocation generaterules="true" id="businessobject">
+      <FileLocation project="TobascoTest" folder="GeneratedEntity2"></FileLocation>
       <Namespaces>
         <Namespace value="System.ComponentModel.DataAnnotations"></Namespace>
       </Namespaces>
@@ -39,7 +41,8 @@
       <Historie generate="true"></Historie>
     </Tables>
   </Database>
-  <Repository project="TobascoTest" folder="GeneratedRepositoy" overridekey="repositorykey" EntityId="dataobject" generate="true">
+  <Repository overridekey="repositorykey" EntityId="dataobject" generate="true">
+    <FileLocation project="TobascoTest" folder="GeneratedRepositoy"></FileLocation>
     <Transaction useTransaction="false"> </Transaction>
     <InterfaceLocation project="TobascoTest" folder="IGenerateRepository"></InterfaceLocation>
     <Namespaces>

@@ -137,7 +137,7 @@ namespace Tobasco.Model.Builders
             classFile.Namespaces.AddRange(new[] { "System.Configuration", "System.Data.SqlClient", "Dapper", "System.Data", Interfacelocation.GetProjectLocation });
             classFile.Namespaces.AddRange(Information.Repository.Namespaces.Select(x => x.Value));
             classFile.Namespaces.Add("System.Globalization");
-            classFile.OwnNamespace = Information.Repository.GetNamespace;
+            classFile.OwnNamespace = Information.Repository.FileLocation.GetNamespace;
             classFile.NameExtension = "<T>";
             classFile.BaseClass = ": IGenericRepository<T> where T : EntityBase, new()";
             classFile.Constructor.Parameters.Add(new Parameter { Name = "connectionFactory", Type = "IConnectionFactory" });

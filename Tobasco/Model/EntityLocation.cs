@@ -3,8 +3,10 @@ using System.Xml.Serialization;
 
 namespace Tobasco.Model
 {
-    public class EntityLocation : FileLocation
+    public class EntityLocation
     {
+        public FileLocation FileLocation { get; set; }
+
         [XmlAttribute("generaterules")]
         public bool GenerateRules { get; set; }
 

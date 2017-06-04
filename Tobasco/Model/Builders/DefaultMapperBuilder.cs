@@ -19,7 +19,7 @@ namespace Tobasco.Model.Builders
         private string MappingMethod(Mapper mapper)
         {
             var builder = new StringBuilder();
-            builder.AppendLineWithTabs($"public {EntityHandler.Entity.Name} MapToObject({EntityHandler.GetEntityLocationOnId(mapper.FromTo.To).GetProjectLocation}.{EntityHandler.Entity.Name} objectToMapFrom)", 0);
+            builder.AppendLineWithTabs($"public {EntityHandler.Entity.Name} MapToObject({EntityHandler.GetEntityLocationOnId(mapper.FromTo.To).FileLocation.GetProjectLocation}.{EntityHandler.Entity.Name} objectToMapFrom)", 0);
             builder.AppendLineWithTabs("{", 1);
             builder.AppendLineWithTabs($"var objectToMapTo = new {EntityHandler.Entity.Name}", 2);
             builder.AppendLineWithTabs("{", 2);
@@ -58,7 +58,7 @@ namespace Tobasco.Model.Builders
         public override IEnumerable<FileBuilder.OutputFile> Build(Mapper mapper)
         {
             var classFile = FileManager.StartNewClassFile(MapperName, mapper.MapperLocation.Project, mapper.MapperLocation.Folder);
-            var fromEntityLocation = EntityHandler.GetEntityLocationOnId(mapper.FromTo.From).GetProjectLocation;
+            var fromEntityLocation = EntityHandler.GetEntityLocationOnId(mapper.FromTo.From).FileLocation.GetProjectLocation;
             classFile.BaseClass = $": {SelectMapperInterface}";
             classFile.OwnNamespace = mapper.MapperLocation.GetNamespace;
             classFile.Namespaces.Add(mapper.InterfaceLocation.GetProjectLocation);
@@ -75,7 +75,7 @@ namespace Tobasco.Model.Builders
             classFile.Methods.Add(MappingMethod(mapper));
 
             var interfacefile = FileManager.StartNewInterfaceFile(SelectMapperInterface, mapper.MapperLocation.Project, mapper.MapperLocation.Folder);
-            var mapToLocation = EntityHandler.GetEntityLocationOnId(mapper.FromTo.To).GetProjectLocation;
+            var mapToLocation = EntityHandler.GetEntityLocationOnId(mapper.FromTo.To).FileLocation.GetProjectLocation;
             interfacefile.Namespaces.Add(fromEntityLocation);
             interfacefile.OwnNamespace = mapper.InterfaceLocation.GetNamespace;
             interfacefile.Methods.Add($"{EntityHandler.Entity.Name} MapToObject({mapToLocation}.{EntityHandler.Entity.Name} objectToMapFrom);");

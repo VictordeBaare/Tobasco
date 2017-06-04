@@ -35,7 +35,7 @@ namespace Tobasco.Model.Builders
             {
                 var repositoryBuilder = handler.GetRepositoryBuilder;
                 builder.AppendLineWithTabs($"Bind<{repositoryBuilder.GetRepositoryInterfaceName}>().To<{repositoryBuilder.GetRepositoryName}>();", 3);
-                classfile.Namespaces.Add(handler.GetRepository.GetProjectLocation, s => !classfile.Namespaces.Contains(s));
+                classfile.Namespaces.Add(handler.GetRepository.FileLocation.GetProjectLocation, s => !classfile.Namespaces.Contains(s));
                 classfile.Namespaces.Add(handler.GetRepository.InterfaceLocation.GetProjectLocation, s => !classfile.Namespaces.Contains(s));
             }
             builder.AppendLineWithTabs("}", 2);

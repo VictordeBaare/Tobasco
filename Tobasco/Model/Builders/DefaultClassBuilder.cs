@@ -65,14 +65,14 @@ namespace Tobasco.Model.Builders
 
         public override FileBuilder.OutputFile Build()
         {
-            OutputPaneManager.WriteToOutputPane($"Build {Entity.Name} for {Location.GetProjectLocation}");
-            var file = FileManager.StartNewClassFile(Entity.Name, Location.Project, Location.Folder);
+            OutputPaneManager.WriteToOutputPane($"Build {Entity.Name} for {Location.FileLocation.GetProjectLocation}");
+            var file = FileManager.StartNewClassFile(Entity.Name, Location.FileLocation.Project, Location.FileLocation.Folder);
             file.IsAbstract = Entity.IsAbstract;
             file.BaseClass = Location.GetBaseClass;
             file.Namespaces.AddRange(Location.Namespaces.Select(x => x.Value).Concat(Information.Namespaces.Select(x => x.Value)));
             file.Properties.AddRange(GetProperties.Select(x => x.GetProperty));
             file.Methods.Add(GenerateMethods());
-            file.OwnNamespace = Location.GetNamespace;
+            file.OwnNamespace = Location.FileLocation.GetNamespace;
             return file;
         }
     }

@@ -7,8 +7,10 @@ using System.Xml.Serialization;
 
 namespace Tobasco.Model
 {
-    public class Repository : FileLocation
+    public class Repository
     {
+        public FileLocation FileLocation { get; set; }
+
         public FileLocation InterfaceLocation { get; set; }
 
         [XmlAttribute("EntityId")]

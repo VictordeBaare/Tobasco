@@ -46,10 +46,10 @@ namespace Tobasco.Model.Builders
 
         protected virtual ClassFile GetClassFile()
         {
-            var classFile = FileManager.StartNewClassFile(GetRepositoryName, Entity.GetRepository.Project, Entity.GetRepository.Folder);
+            var classFile = FileManager.StartNewClassFile(GetRepositoryName, Entity.GetRepository.FileLocation.Project, Entity.GetRepository.FileLocation.Folder);
             classFile.Namespaces.AddRange(GetRepositoryNamespaces);
             classFile.Namespaces.Add(Information.Repository.InterfaceLocation.GetProjectLocation);
-            classFile.OwnNamespace = Information.Repository.GetNamespace;
+            classFile.OwnNamespace = Information.Repository.FileLocation.GetNamespace;
             classFile.Constructor.ParameterWithField.AddRange(GetFieldWithParameters());
             classFile.BaseClass = $": {GetRepositoryInterfaceName}";
             classFile.Methods.Add(GetSaveMethod());
@@ -68,7 +68,7 @@ namespace Tobasco.Model.Builders
 
         public override IEnumerable<FileBuilder.OutputFile> Build()
         {
-            OutputPaneManager.WriteToOutputPane($"Build {GetRepositoryName} for {Entity.GetRepository.GetProjectLocation}");
+            OutputPaneManager.WriteToOutputPane($"Build {GetRepositoryName} for {Entity.GetRepository.FileLocation.GetProjectLocation}");
             var classFile = GetClassFile();
 
             OutputPaneManager.WriteToOutputPane($"Build {GetRepositoryInterfaceName} for {Entity.GetRepository.InterfaceLocation.GetProjectLocation}");

@@ -52,7 +52,7 @@ namespace Tobasco
         public string GetProjectLocation(string naam, string id)
         {
             var handler = _getHandlerOnName(naam);
-            return handler.GetEntityLocationOnId(id).GetProjectLocation;
+            return handler.GetEntityLocationOnId(id).FileLocation.GetProjectLocation;
         }
 
         public string SelectChildMapperInterfaces(string id)
