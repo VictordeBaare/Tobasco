@@ -22,5 +22,9 @@ namespace Tobasco.Model
         public Repository Repository { get; set; }
 
         public DependencyInjection DependencyInjection { get; set; }
+
+        public ConnectionFactory ConnectionFactory { get; set; }
+
+        public GenericRepository GenericRepository { get; set; }
     }
 }

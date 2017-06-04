@@ -11,6 +11,9 @@ namespace Tobasco.Model
         [XmlAttribute("id")]
         public string Id { get; set; }
 
+        [XmlAttribute("overridekey")]
+        public string Overridekey { get; set; }
+
         public ORMapper ORMapper { get; set; }
 
         public ValueElement BaseClass { get; set; }      

@@ -14,7 +14,6 @@ namespace Tobasco
     {
         private readonly Entity _entity;
         private readonly EntityInformation _mainInformation;
-        private DefaultDatabaseBuilder _database;
         private readonly Dictionary<string, ClassBuilderBase> _classBuilderDictionary;
         private readonly Func<string, EntityHandler> _getHandlerOnName;
 
@@ -155,12 +154,39 @@ namespace Tobasco
             {
                 return _classBuilderDictionary[entitylocation.Id];
             }
-            var type = BuilderManager.Get(entitylocation.Id, DefaultBuilderConstants.ClassBuilder);
+            var type = BuilderManager.Get(entitylocation.Overridekey, DefaultBuilderConstants.ClassBuilder);
             var classBuilder = BuilderManager.InitializeBuilder<ClassBuilderBase>(type, new object[] { _entity, entitylocation, _mainInformation });
 
             var id = entitylocation.Id ?? "LocationId" + _classBuilderDictionary.Count + 1;
             _classBuilderDictionary.Add(id, classBuilder);
             return classBuilder;
+        }
+
+        private string GetDatabaseOverrideKey()
+        {
+            if (!string.IsNullOrEmpty(GetDatabase.Overridekey))
+            {
+                return GetDatabase.Overridekey;
+            }
+            return _mainInformation.Database.Overridekey;
+        }
+
+        private string GetMappersOverrideKey()
+        {
+            if (!string.IsNullOrEmpty(GetMappers.Overridekey))
+            {
+                return GetMappers.Overridekey;
+            }
+            return _mainInformation.Mappers.Overridekey;
+        }
+
+        private string GetRepositoryOverrideKey()
+        {
+            if (!string.IsNullOrEmpty(GetRepository.Overridekey))
+            {
+                return GetRepository.Overridekey;
+            }
+            return _mainInformation.Repository.Overridekey;
         }
 
         public ClassBuilderBase GetClassBuilder(string id)
@@ -176,7 +202,7 @@ namespace Tobasco
         {
             get
             {
-                var type = BuilderManager.Get(_mainInformation.Database.Id, DefaultBuilderConstants.DatabaseBuilder);
+                var type = BuilderManager.Get(GetDatabaseOverrideKey(), DefaultBuilderConstants.DatabaseBuilder);
                 return BuilderManager.InitializeBuilder<DatabaseBuilderBase>(type, new object[] { this });
             }
         }
@@ -185,7 +211,7 @@ namespace Tobasco
         {
             get
             {
-                var type = BuilderManager.Get(_mainInformation.Mappers.Id, DefaultBuilderConstants.MapperBuilder);
+                var type = BuilderManager.Get(GetMappersOverrideKey(), DefaultBuilderConstants.MapperBuilder);
                 return BuilderManager.InitializeBuilder<MapperBuilderBase>(type, new object[] { this });
             }
         }
@@ -194,7 +220,7 @@ namespace Tobasco
         {
             get
             {
-                var type = BuilderManager.Get(_mainInformation.Repository.Id, DefaultBuilderConstants.RepositoryBuilder);
+                var type = BuilderManager.Get(GetRepositoryOverrideKey(), DefaultBuilderConstants.RepositoryBuilder);
                 return BuilderManager.InitializeBuilder<RepositoryBuilderBase>(type, new object[] {this, _mainInformation});
             }
         }

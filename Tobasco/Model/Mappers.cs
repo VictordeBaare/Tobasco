@@ -15,7 +15,7 @@ namespace Tobasco.Model
         [XmlElement("Mapper")]
         public List<Mapper> Mapper { get; set; }
 
-        [XmlAttribute("id")]
-        public string Id { get; set; }
+        [XmlAttribute("overridekey")]
+        public string Overridekey { get; set; }
     }
 }

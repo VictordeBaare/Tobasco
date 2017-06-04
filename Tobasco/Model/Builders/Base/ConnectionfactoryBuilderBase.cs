@@ -15,8 +15,8 @@ namespace Tobasco.Model.Builders.Base
             Information = information;
         }
 
-        protected FileLocation classlocation => Information.Repository;
-        protected FileLocation interfacelocation => Information.Repository.InterfaceLocation;
+        protected FileLocation classlocation => Information.ConnectionFactory.FileLocation;
+        protected FileLocation interfacelocation => Information.ConnectionFactory.InterfaceLocation;
 
         public virtual string GetConnectionFactoryName
         {

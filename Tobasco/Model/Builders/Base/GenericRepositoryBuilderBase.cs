@@ -15,8 +15,8 @@ namespace Tobasco.Model.Builders.Base
             Information = information;
         }
 
-        public FileLocation Classlocation => Information.Repository;
-        public FileLocation Interfacelocation => Information.Repository.InterfaceLocation;
+        public FileLocation Classlocation => Information.GenericRepository.FileLocation;
+        public FileLocation Interfacelocation => Information.GenericRepository.InterfaceLocation;
 
         public virtual string GetGenericRepositoryName
         {

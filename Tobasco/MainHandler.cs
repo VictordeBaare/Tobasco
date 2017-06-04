@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Tobasco.Constants;
 using Tobasco.Manager;
 using Tobasco.Model;
-using Tobasco.Model.Builders;
 using Tobasco.Model.Builders.Base;
 
 namespace Tobasco
@@ -32,7 +29,7 @@ namespace Tobasco
         {
             get
             {
-                var type = BuilderManager.Get("NotYetOverrideable", DefaultBuilderConstants.ConnectionFactoryBuilder);
+                var type = BuilderManager.Get(_information.ConnectionFactory.Overridekey, DefaultBuilderConstants.ConnectionFactoryBuilder);
                 return BuilderManager.InitializeBuilder<ConnectionfactoryBuilderBase>(type, new object[] { _information });
             }
         }
@@ -41,7 +38,7 @@ namespace Tobasco
         {
             get
             {
-                var type = BuilderManager.Get("NotYetOverrideable", DefaultBuilderConstants.GenericRepositoryBuilder);
+                var type = BuilderManager.Get(_information.GenericRepository.Overridekey, DefaultBuilderConstants.GenericRepositoryBuilder);
                 return BuilderManager.InitializeBuilder<GenericRepositoryBuilderBase>(type, new object[] { _information });
             }
         }
@@ -58,21 +55,28 @@ namespace Tobasco
         public IEnumerable<FileBuilder.OutputFile> GetOutputFiles(DynamicTextTransformation2 textTransformation)
         {
             var outputFiles = new List<FileBuilder.OutputFile>();
-            if(_information.Repository != null)
+            if(_information.ConnectionFactory != null)
             {
                 OutputPaneManager.WriteToOutputPane("Add Connectionfactory file");
                 outputFiles.AddRange(ConnectionFactoryBuilder.Build());
+            }
+            else
+            {
+                OutputPaneManager.WriteToOutputPane("There is no connectionfactory defined");
+            }
+            if (_information.GenericRepository != null)
+            {
                 OutputPaneManager.WriteToOutputPane("Add Genericrepository file");
                 outputFiles.AddRange(GenericRepositoryBuilder.Build());
             }
             else
             {
-                OutputPaneManager.WriteToOutputPane("There is no repository defined");
+                OutputPaneManager.WriteToOutputPane("There is no genericrepository defined");
             }
 
             foreach (var handler in EntityHandlers)
             {
-                OutputPaneManager.WriteToOutputPane($"Start adding files for {handler.Key} =");
+                OutputPaneManager.WriteToOutputPane($"Start adding files for {handler.Key}");
                 outputFiles.AddRange(handler.Value.GetEntityLocations.Select(x => handler.Value.GetClassBuilder(x).Build()));
                 if (_information.Repository != null && _information.Repository.Generate)
                 {
