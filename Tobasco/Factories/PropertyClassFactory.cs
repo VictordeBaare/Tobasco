@@ -11,11 +11,13 @@ namespace Tobasco.Factories
 {
     public class PropertyClassFactory
     {
-        private EntityLocation _location;
+        private readonly ORMapper _orMapper;
+        private readonly bool _generateRules;
 
-        public PropertyClassFactory(EntityLocation location)
+        public PropertyClassFactory(ORMapper orMapper, bool generateRules)
         {
-            _location = location;
+            _orMapper = orMapper;
+            _generateRules = generateRules;
         }
 
         public ClassProperty GetProperty(Property property)
@@ -23,14 +25,14 @@ namespace Tobasco.Factories
             switch (property.DataType.Datatype)
             {
                 case Datatype.String:
-                    return new StringProperty(property, _location);
+                    return new StringProperty(property, _orMapper, _generateRules);
                 case Datatype.Int:
                 case Datatype.Long:
-                    return new NumericProperty(property, _location);
+                    return new NumericProperty(property, _orMapper, _generateRules);
                 case Datatype.Decimal:
-                    return new ClassProperty(property, _location);
+                    return new ClassProperty(property, _orMapper, _generateRules);
                 default:
-                    return new ClassProperty(property, _location);
+                    return new ClassProperty(property, _orMapper, _generateRules);
             }
         }
     }

@@ -24,7 +24,7 @@ namespace Tobasco.Model.Builders.Base
             Entity = entity;
             Location = location;
             Information = information;
-            _propertyFactory = new PropertyClassFactory(location);
+            _propertyFactory = new PropertyClassFactory(location.ORMapper, location.GenerateRules);
         }
 
         public IEnumerable<ClassProperty> GetProperties
@@ -81,6 +81,6 @@ namespace Tobasco.Model.Builders.Base
             }
         }
 
-        public abstract FileBuilder.OutputFile Build();
+        public abstract IEnumerable<FileBuilder.OutputFile> Build();
     }
 }

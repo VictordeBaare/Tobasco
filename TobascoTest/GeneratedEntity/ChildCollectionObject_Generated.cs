@@ -8,13 +8,13 @@ namespace TobascoTest.GeneratedEntity
     [Serializable]
     public partial class ChildCollectionObject : EntityBase
     {
-
         private string _testchildprop1;
         public string TestChildProp1
         {
             get { return _testchildprop1; }
             set { SetField(ref  _testchildprop1, value, nameof(TestChildProp1)); }
         }
+
         private long _filemetoverervingid;
         public long FileMetOverervingId
         {
@@ -30,5 +30,6 @@ namespace TobascoTest.GeneratedEntity
             anymonous.FileMetOverervingId = FileMetOverervingId;
             return anymonous;
         }
+
     }
 }

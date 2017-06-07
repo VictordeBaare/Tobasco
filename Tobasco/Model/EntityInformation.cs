@@ -26,5 +26,7 @@ namespace Tobasco.Model
         public ConnectionFactory ConnectionFactory { get; set; }
 
         public GenericRepository GenericRepository { get; set; }
+
+        public Security Security { get; set; }
     }
 }

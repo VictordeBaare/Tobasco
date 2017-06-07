@@ -18,7 +18,6 @@ namespace TobascoTest.GeneratedRepositoy
             ConnectionFactory = connectionFactory;;
         }
 
-
         public IConnectionFactory ConnectionFactory { get; }
 
         public T Save(T entity)
@@ -39,6 +38,7 @@ namespace TobascoTest.GeneratedRepositoy
             return entity;
         }
 
+
         public T Insert(T entity)
         {
             using (var connection = ConnectionFactory.GetConnection())
@@ -55,6 +55,7 @@ namespace TobascoTest.GeneratedRepositoy
             entity.MarkOld();
             return entity;
         }
+
 
         public T Update(T entity)
         {
@@ -82,6 +83,7 @@ namespace TobascoTest.GeneratedRepositoy
             return entity;
         }
 
+
         public void Delete(T entity)
         {
             using (var connection = ConnectionFactory.GetConnection())
@@ -91,6 +93,7 @@ namespace TobascoTest.GeneratedRepositoy
                     commandType: CommandType.StoredProcedure);
             }
         }
+
 
         private DynamicParameters ToAnonymous(T entity, bool includeRowVersion)
         {
@@ -103,6 +106,7 @@ namespace TobascoTest.GeneratedRepositoy
             }
             return parameters;
         }
+
 
     }
 }

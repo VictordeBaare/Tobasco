@@ -9,7 +9,7 @@ namespace Tobasco.Model.Properties
 {
     public class NumericProperty : ClassProperty
     {
-        public NumericProperty(Property property, EntityLocation location) : base(property, location)
+        public NumericProperty(Property property, ORMapper ormapper, bool generateRules) : base(property, ormapper, generateRules)
         {
         }
 
@@ -25,34 +25,34 @@ namespace Tobasco.Model.Properties
 
         private string CalcRangeBusinessRule()
         {
-            var min = _property.DataType.Min;
-            var max = _property.DataType.Max;
+            var min = Property.DataType.Min;
+            var max = Property.DataType.Max;
             if (min != null && max != null)
             {
                 return $"[Range({min}, {max})]";
             }
             if (min != null && max == null)
             {
-                switch (_property.DataType.Datatype)
+                switch (Property.DataType.Datatype)
                 {
                     case Enums.Datatype.Int:
                         return $"[Range({min}, int.MaxValue)]";
                     case Enums.Datatype.Long:
                         return $"[Range({min}, long.MaxValue)]";
                     default:
-                        throw new ArgumentException($"Business rule for {_property.DataType.Datatype} could not be calculated");
+                        throw new ArgumentException($"Business rule for {Property.DataType.Datatype} could not be calculated");
                 }
             }
-            if (max == null && max != null)
+            if (min == null && max != null)
             {
-                switch (_property.DataType.Datatype)
+                switch (Property.DataType.Datatype)
                 {
                     case Enums.Datatype.Int:
                         return $"[Range(int.MinValue, {max})]";
                     case Enums.Datatype.Long:
                         return $"[Range(long.MinValue, {max})]";
                     default:
-                        throw new ArgumentException($"Business rule for {_property.DataType.Datatype} could not be calculated");
+                        throw new ArgumentException($"Business rule for {Property.DataType.Datatype} could not be calculated");
                 }
             }
             return string.Empty;

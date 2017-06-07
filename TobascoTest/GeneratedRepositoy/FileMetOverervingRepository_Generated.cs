@@ -8,17 +8,15 @@ namespace TobascoTest.GeneratedRepositoy
     [Serializable]
     public partial class FileMetOverervingRepository : IFileMetOverervingRepository
     {
-        private GenericRepository<FileMetOvererving> _genericRepository;
-        private IChildObjectRepository _iChildObjectRepository;
-        private IChildCollectionObjectRepository _iChildCollectionObjectRepository;
+        private readonly GenericRepository<FileMetOvererving> _genericRepository;
+        private readonly IChildObjectRepository _iChildObjectRepository;
+        private readonly IChildCollectionObjectRepository _iChildCollectionObjectRepository;
         public FileMetOverervingRepository(GenericRepository<FileMetOvererving> genericRepository, IChildObjectRepository iChildObjectRepository, IChildCollectionObjectRepository iChildCollectionObjectRepository)
         {
             _genericRepository = genericRepository;
             _iChildObjectRepository = iChildObjectRepository;
             _iChildCollectionObjectRepository = iChildCollectionObjectRepository;
         }
-
-
 
         public FileMetOvererving Save(FileMetOvererving filemetovererving)
         {
@@ -31,6 +29,9 @@ namespace TobascoTest.GeneratedRepositoy
             }
             return filemetovererving;
         }
+
+
+        partial void OnCreated();
 
     }
 }

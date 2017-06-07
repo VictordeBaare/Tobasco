@@ -8,7 +8,6 @@ namespace TobascoTest.GeneratedEntity
     [Serializable]
     public partial class ChildObject : EntityBase
     {
-
         private string _testchildprop1;
         public string TestChildProp1
         {
@@ -23,5 +22,6 @@ namespace TobascoTest.GeneratedEntity
             anymonous.TestChildProp1 = TestChildProp1;
             return anymonous;
         }
+
     }
 }

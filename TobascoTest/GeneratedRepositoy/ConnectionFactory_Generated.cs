@@ -8,13 +8,11 @@ namespace TobascoTest.GeneratedRepositoy
     [Serializable]
     public partial class ConnectionFactory : IConnectionFactory
     {
-        private readonly string _connectionstring;
+        private string _connectionstring;
         public ConnectionFactory(string databasenaam)
         {
             _connectionstring = ConfigurationManager.ConnectionStrings[databasenaam].ConnectionString;;
         }
-
-
 
         public SqlConnection GetConnection()
         {
@@ -34,6 +32,7 @@ namespace TobascoTest.GeneratedRepositoy
 
             return connection;
         }
+
 
     }
 }

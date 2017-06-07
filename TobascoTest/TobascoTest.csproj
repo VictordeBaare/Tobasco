@@ -78,7 +78,13 @@
     <Compile Include="GeneratedEntity2\FileMetOvererving_Generated.cs">
       <DependentUpon>TestGenerator2.txt4</DependentUpon>
     </Compile>
+    <Compile Include="GeneratedEntity\ChildCollectionObjectDac_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
     <Compile Include="GeneratedEntity\ChildCollectionObject_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedEntity\ChildObjectDac_Generated.cs">
       <DependentUpon>TestGenerator2.txt4</DependentUpon>
     </Compile>
     <Compile Include="GeneratedEntity\ChildObject_Generated.cs">
@@ -88,7 +94,13 @@
     <Compile Include="GeneratedEntity\FileMetOvererving_Generated.cs">
       <DependentUpon>TestGenerator2.txt4</DependentUpon>
     </Compile>
+    <Compile Include="GeneratedRepositoy\ChildCollectionObjectDacRepository_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
     <Compile Include="GeneratedRepositoy\ChildCollectionObjectRepository_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedRepositoy\ChildObjectDacRepository_Generated.cs">
       <DependentUpon>TestGenerator2.txt4</DependentUpon>
     </Compile>
     <Compile Include="GeneratedRepositoy\ChildObjectRepository_Generated.cs">
@@ -103,7 +115,13 @@
     <Compile Include="GeneratedRepositoy\GenericRepository_Generated.cs">
       <DependentUpon>TestGenerator2.txt4</DependentUpon>
     </Compile>
+    <Compile Include="IGenerateRepository\IChildCollectionObjectDacRepository_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
     <Compile Include="IGenerateRepository\IChildCollectionObjectRepository_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="IGenerateRepository\IChildObjectDacRepository_Generated.cs">
       <DependentUpon>TestGenerator2.txt4</DependentUpon>
     </Compile>
     <Compile Include="IGenerateRepository\IChildObjectRepository_Generated.cs">

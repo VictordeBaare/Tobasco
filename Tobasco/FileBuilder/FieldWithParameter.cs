@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 
 namespace Tobasco.FileBuilder
 {
-    public class FieldWithParameter : Parameter
+    public class FieldWithParameter
     {
-        public string Field { get; set; }
+        public TypeWithName Field { get; set; }
+
+        public TypeWithName Parameter { get; set; }
     }
 }

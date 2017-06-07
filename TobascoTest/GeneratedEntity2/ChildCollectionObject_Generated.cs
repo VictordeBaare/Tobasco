@@ -8,10 +8,11 @@ namespace TobascoTest.GeneratedEntity2
     [Serializable]
     public partial class ChildCollectionObject 
     {
-
         public string TestChildProp1 { get; set; }
+
         public long FileMetOverervingId { get; set; }
 
         
+
     }
 }

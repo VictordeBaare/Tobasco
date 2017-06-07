@@ -14,16 +14,17 @@ namespace Tobasco.Model.Builders
     public class DefaultDatabaseBuilder : DatabaseBuilderBase
     {
 
-        public DefaultDatabaseBuilder(EntityHandler entity) : base(entity)
+        public DefaultDatabaseBuilder(Entity entity, Database database) : base(entity, database)
         {
         }
 
+        public override string Name => Entity.Name;
 
         private StringBuilder GetTable()
         {
             var builder = new StringBuilder();
 
-            builder.AppendLine($"CREATE TABLE [dbo].[{Entity.Entity.Name}] (");
+            builder.AppendLine($"CREATE TABLE [dbo].[{Name}] (");
             builder.AppendLine($"    [Id]                          bigint             IDENTITY (1, 1) NOT NULL");
             builder.AppendLine($"   ,[RowVersion]                  rowversion         NOT NULL");
             foreach (var sqlprop in GetNonChildCollectionProperties)
@@ -31,13 +32,13 @@ namespace Tobasco.Model.Builders
                 builder.AppendLine($"   ,{sqlprop.SelectSqlTableProperty}");
             }
             builder.AppendLine($"   ,[ModifiedBy]                  nvarchar (256)     NOT NULL ");
-            builder.AppendLine($"    CONSTRAINT [DF_{Entity.Entity.Name}_ModifiedBy] DEFAULT SUSER_SNAME()");
+            builder.AppendLine($"    CONSTRAINT [DF_{Name}_ModifiedBy] DEFAULT SUSER_SNAME()");
             builder.AppendLine($"   ,[ModifiedOn]                  DATETIME2(7)       NOT NULL");
-            builder.AppendLine($"    CONSTRAINT [DF_{Entity.Entity.Name}_ModifiedOn] DEFAULT SYSDATETIME()");
-            builder.AppendLine($"   ,CONSTRAINT [PK_{Entity.Entity.Name}] PRIMARY KEY CLUSTERED (Id ASC)");
+            builder.AppendLine($"    CONSTRAINT [DF_{Name}_ModifiedOn] DEFAULT SYSDATETIME()");
+            builder.AppendLine($"   ,CONSTRAINT [PK_{Name}] PRIMARY KEY CLUSTERED (Id ASC)");
             foreach (var sqlprop in GetChildProperties)
             {
-                var constraint = sqlprop.SelectChildForeignkeyConstraint(Entity.Entity.Name);
+                var constraint = sqlprop.SelectChildForeignkeyConstraint(Name);
                 if (!string.IsNullOrEmpty(constraint))
                 {
                     builder.AppendLine($"   ,{constraint}");
@@ -45,7 +46,7 @@ namespace Tobasco.Model.Builders
             }
             foreach (var sqlprop in GetSqlProperties.Where(x => x.Property.DataType.Datatype == Datatype.Reference))
             {
-                var constraint = sqlprop.SelectReferenceConstraint(Entity.Entity.Name);
+                var constraint = sqlprop.SelectReferenceConstraint(Name);
                 if (!string.IsNullOrEmpty(constraint))
                 {
                     builder.AppendLine($"   ,{constraint}");
@@ -56,7 +57,7 @@ namespace Tobasco.Model.Builders
             builder.AppendLine("GO");
             foreach (var sqlprop in GetSqlProperties.Where(x => x.Property.DataType.Datatype == Datatype.Reference))
             {
-                var index = sqlprop.SelectNonClusteredIndex(Entity.Entity.Name);
+                var index = sqlprop.SelectNonClusteredIndex(Name);
                 if (!string.IsNullOrEmpty(index))
                 {
                     builder.AppendLine($"{index}");
@@ -73,7 +74,7 @@ namespace Tobasco.Model.Builders
         {
             var builder = new StringBuilder();
 
-            builder.AppendLine($"CREATE TABLE [dbo].[{Entity.Entity.Name}_historie] (");
+            builder.AppendLine($"CREATE TABLE [dbo].[{Name}_historie] (");
             builder.AppendLine($"    [Id]                          bigint             NOT NULL");
             builder.AppendLine($"   ,[RowVersion]                  binary(8)          NOT NULL");
             foreach (var sqlprop in GetNonChildCollectionProperties)
@@ -87,8 +88,8 @@ namespace Tobasco.Model.Builders
             builder.AppendLine($");");
             builder.AppendLine($"GO");
             builder.Append(Environment.NewLine);
-            builder.AppendLine($"CREATE NONCLUSTERED INDEX IX_{Entity.Entity.Name}_historie_Id");
-            builder.AppendLine($"                       ON [dbo].{Entity.Entity.Name}_historie");
+            builder.AppendLine($"CREATE NONCLUSTERED INDEX IX_{Name}_historie_Id");
+            builder.AppendLine($"                       ON [dbo].{Name}_historie");
             builder.AppendLine($"                         (Id ASC)");
             builder.AppendLine($"                  INCLUDE(ModifiedOn);");
             builder.AppendLine($"GO");
@@ -100,7 +101,7 @@ namespace Tobasco.Model.Builders
         {
             StringBuilder builder = new StringBuilder();
 
-            builder.AppendLine($"CREATE PROCEDURE [dbo].[{Entity.Entity.Name}_Insert]");
+            builder.AppendLine($"CREATE PROCEDURE [dbo].[{Name}_Insert]");
             builder.AppendLine($"    @Id bigint output,");
             foreach (var sqlprop in GetNonChildCollectionProperties)
             {
@@ -112,7 +113,7 @@ namespace Tobasco.Model.Builders
             builder.AppendLine($"     SET NOCOUNT ON;");
             builder.Append(Environment.NewLine);
             builder.AppendLine($"     INSERT");
-            builder.AppendLine($"       INTO [dbo].{Entity.Entity.Name}");
+            builder.AppendLine($"       INTO [dbo].{Name}");
             builder.AppendLine($"           (");
             foreach (DatabaseProperty selectSqlProperty in GetNonChildCollectionProperties)
             {
@@ -143,7 +144,7 @@ namespace Tobasco.Model.Builders
         {
             StringBuilder builder = new StringBuilder();
 
-            builder.AppendLine($"CREATE PROCEDURE [dbo].[{Entity.Entity.Name}_Update]");
+            builder.AppendLine($"CREATE PROCEDURE [dbo].[{Name}_Update]");
             builder.AppendLine($"    @Id [bigint],");
             foreach (var sqlprop in GetNonChildCollectionProperties)
             {
@@ -164,23 +165,23 @@ namespace Tobasco.Model.Builders
             builder.AppendLine($"                          ,ModifiedOn       datetime2(7) NOT NULL");
             builder.AppendLine($"                          );");
             builder.Append(Environment.NewLine);
-            builder.AppendLine($"     UPDATE [dbo].{Entity.Entity.Name}");
+            builder.AppendLine($"     UPDATE [dbo].{Name}");
             builder.AppendLine($"        SET");
             foreach (DatabaseProperty selectSqlProperty in GetNonChildCollectionProperties)
             {
                 builder.AppendLine(
-                    $"            {Entity.Entity.Name}.{selectSqlProperty.SelectSqlParameterNaam} = @{selectSqlProperty.SelectSqlParameterNaam},");
+                    $"            {Name}.{selectSqlProperty.SelectSqlParameterNaam} = @{selectSqlProperty.SelectSqlParameterNaam},");
             }
-            builder.AppendLine($"            {Entity.Entity.Name}.ModifiedBy = ISNULL(@ModifiedBy, SUSER_SNAME()),");
-            builder.AppendLine($"            {Entity.Entity.Name}.ModifiedOn = SYSDATETIME()");
+            builder.AppendLine($"            {Name}.ModifiedBy = ISNULL(@ModifiedBy, SUSER_SNAME()),");
+            builder.AppendLine($"            {Name}.ModifiedOn = SYSDATETIME()");
             builder.AppendLine($"     OUTPUT Inserted.[RowVersion]");
             builder.AppendLine($"           ,Inserted.ModifiedOn");
             builder.AppendLine($"       INTO #Output");
             builder.AppendLine($"           ([RowVersion]");
             builder.AppendLine($"           ,ModifiedOn");
             builder.AppendLine($"           )");
-            builder.AppendLine($"      WHERE {Entity.Entity.Name}.Id = @Id");
-            builder.AppendLine($"        AND {Entity.Entity.Name}.[RowVersion] = @RowVersion");
+            builder.AppendLine($"      WHERE {Name}.Id = @Id");
+            builder.AppendLine($"        AND {Name}.[RowVersion] = @RowVersion");
             builder.Append(Environment.NewLine);
             builder.AppendLine($"     DECLARE @RowCountBig AS bigint = ROWCOUNT_BIG();");
             builder.Append(Environment.NewLine);
@@ -190,7 +191,7 @@ namespace Tobasco.Model.Builders
                 $"         DECLARE @message AS nvarchar(2048) = CONCAT(QUOTENAME(OBJECT_SCHEMA_NAME(@@PROCID)), '.', OBJECT_NAME(@@PROCID), N': '");
             builder.AppendLine($"                                                    ,N'Concurrency probleem. '");
             builder.AppendLine(
-                $"                                                    ,N'De {Entity.Entity.Name}-rij met Id=', @Id, N' en RowVersion=', CAST(@RowVersion AS binary(8)), N' kon niet gewijzigd worden door ', @ModifiedBy, N'. '");
+                $"                                                    ,N'De {Name}-rij met Id=', @Id, N' en RowVersion=', CAST(@RowVersion AS binary(8)), N' kon niet gewijzigd worden door ', @ModifiedBy, N'. '");
             builder.AppendLine(
                 $"                                                    ,N'De rij was tussendoor gewijzigd of verwijderd door een andere gebruiker.'");
             builder.AppendLine($"                                                    );");
@@ -210,7 +211,7 @@ namespace Tobasco.Model.Builders
         {
             StringBuilder builder = new StringBuilder();
 
-            builder.AppendLine($"CREATE PROCEDURE [dbo].[{Entity.Entity.Name}_Delete]");
+            builder.AppendLine($"CREATE PROCEDURE [dbo].[{Name}_Delete]");
             builder.AppendLine($"    @Id [bigint],");
             builder.AppendLine($"    @RowVersion rowversion,");
             builder.AppendLine($"    @ModifiedBy nvarchar(256)");
@@ -223,9 +224,9 @@ namespace Tobasco.Model.Builders
             builder.AppendLine($"     SET CONTEXT_INFO @Context;");
             builder.Append(Environment.NewLine);
             builder.AppendLine($"     DELETE");
-            builder.AppendLine($"       FROM [dbo].{Entity.Entity.Name}");
-            builder.AppendLine($"      WHERE {Entity.Entity.Name}.Id = @Id");
-            builder.AppendLine($"        AND {Entity.Entity.Name}.[RowVersion] = @RowVersion;");
+            builder.AppendLine($"       FROM [dbo].{Name}");
+            builder.AppendLine($"      WHERE {Name}.Id = @Id");
+            builder.AppendLine($"        AND {Name}.[RowVersion] = @RowVersion;");
             builder.Append(Environment.NewLine);
             builder.AppendLine($"     DECLARE @RowCountBig AS bigint = ROWCOUNT_BIG();");
             builder.Append(Environment.NewLine);
@@ -237,7 +238,7 @@ namespace Tobasco.Model.Builders
                 $"         DECLARE @message AS nvarchar(2048) = CONCAT(QUOTENAME(OBJECT_SCHEMA_NAME(@@PROCID)), '.', OBJECT_NAME(@@PROCID), N': '");
             builder.AppendLine($"                                                    ,N'Concurrency probleem. '");
             builder.AppendLine(
-                $"                                                    ,N'De {Entity.Entity.Name}-rij met Id=', @Id, N' en RowVersion=', CAST(@RowVersion AS binary(8)), N' kon niet verwijderd worden door ', @ModifiedBy, N'. '");
+                $"                                                    ,N'De {Name}-rij met Id=', @Id, N' en RowVersion=', CAST(@RowVersion AS binary(8)), N' kon niet verwijderd worden door ', @ModifiedBy, N'. '");
             builder.AppendLine(
                 $"                                                    ,N'De rij was tussendoor gewijzigd of verwijderd door een andere gebruiker.'");
             builder.AppendLine($"                                                    );");
@@ -252,13 +253,13 @@ namespace Tobasco.Model.Builders
 
         private void AddDeletedTrigger(StringBuilder builder)
         {
-            builder.AppendLine($"CREATE TRIGGER [dbo].td_{Entity.Entity.Name}");
-            builder.AppendLine($"            ON [dbo].{Entity.Entity.Name}");
+            builder.AppendLine($"CREATE TRIGGER [dbo].td_{Name}");
+            builder.AppendLine($"            ON [dbo].{Name}");
             builder.AppendLine($"           FOR DELETE");
             builder.AppendLine($"AS");
             builder.AppendLine($"BEGIN");
             builder.AppendLine($"     INSERT");
-            builder.AppendLine($"       INTO [dbo].{Entity.Entity.Name}_historie");
+            builder.AppendLine($"       INTO [dbo].{Name}_historie");
             builder.AppendLine($"           (Id");
             builder.AppendLine($"           ,[RowVersion]");
             foreach (DatabaseProperty selectSqlProperty in GetNonChildCollectionProperties)
@@ -287,13 +288,13 @@ namespace Tobasco.Model.Builders
 
         private void AddUpdateTrigger(StringBuilder builder)
         {
-            builder.AppendLine($"CREATE TRIGGER [dbo].tu_{Entity.Entity.Name}");
-            builder.AppendLine($"            ON [dbo].{Entity.Entity.Name}");
+            builder.AppendLine($"CREATE TRIGGER [dbo].tu_{Name}");
+            builder.AppendLine($"            ON [dbo].{Name}");
             builder.AppendLine($"           FOR UPDATE");
             builder.AppendLine($"AS");
             builder.AppendLine($"BEGIN");
             builder.AppendLine($"     INSERT");
-            builder.AppendLine($"       INTO [dbo].{Entity.Entity.Name}_historie");
+            builder.AppendLine($"       INTO [dbo].{Name}_historie");
             builder.AppendLine($"           (Id");
             builder.AppendLine($"           ,[RowVersion]");
             foreach (DatabaseProperty selectSqlProperty in GetNonChildCollectionProperties)
@@ -323,14 +324,14 @@ namespace Tobasco.Model.Builders
         public override IEnumerable<FileBuilder.OutputFile> Build()
         {
             var outputFiles = new List<FileBuilder.OutputFile>();
-            if (Entity.GetDatabase.Tables.Generate)
+            if (Database.Tables.Generate)
             {
-                OutputPaneManager.WriteToOutputPane($"Generate Table for {Entity.Entity.Name}");
-                var tableFile = FileManager.StartNewSqlTableFile(Entity.Entity.Name, Entity.GetDatabase.Project, Entity.GetDatabase.Tables.Folder);
+                OutputPaneManager.WriteToOutputPane($"Generate Table for {Name}");
+                var tableFile = FileManager.StartNewSqlTableFile(Name, Database.Project, Database.Tables.Folder);
                 tableFile.Content = GetTable();
-                if (Entity.GetDatabase.Tables.Generate && Entity.GetDatabase.Tables.GenerateHistorie.Generate)
+                if (Database.Tables.Generate && Database.Tables.GenerateHistorie.Generate)
                 {
-                    OutputPaneManager.WriteToOutputPane($"Generate HistorieTable for {Entity.Entity.Name}");
+                    OutputPaneManager.WriteToOutputPane($"Generate HistorieTable for {Name}");
                     var builder = GetHistorieTable();
                     AddUpdateTrigger(builder);
                     AddDeletedTrigger(builder);
@@ -339,47 +340,47 @@ namespace Tobasco.Model.Builders
                 }
                 else
                 {
-                    OutputPaneManager.WriteToOutputPane($"== Do not generate HistorieTable for {Entity.Entity.Name} ");
+                    OutputPaneManager.WriteToOutputPane($"== Do not generate HistorieTable for {Name} ");
                 }
                 outputFiles.Add(tableFile);
             }
             else
             {
-                OutputPaneManager.WriteToOutputPane($"Do not generate Table for {Entity.Entity.Name}");
+                OutputPaneManager.WriteToOutputPane($"Do not generate Table for {Name}");
             }
             
-            if (Entity.GetDatabase.StoredProcedures.Generate)
+            if (Database.StoredProcedures.Generate)
             {
-                var crudFile = FileManager.StartNewSqlStpFile(Entity.Entity.Name + "_CRUD", Entity.GetDatabase.Project, Entity.GetDatabase.StoredProcedures.Folder);
+                var crudFile = FileManager.StartNewSqlStpFile(Name + "_CRUD", Database.Project, Database.StoredProcedures.Folder);
                 
                 var builder = new StringBuilder();
 
-                if (Entity.GetDatabase.StoredProcedures.GenerateInsert.Generate)
+                if (Database.StoredProcedures.GenerateInsert.Generate)
                 {
-                    OutputPaneManager.WriteToOutputPane($"Generate Insert stp for {Entity.Entity.Name}");
+                    OutputPaneManager.WriteToOutputPane($"Generate Insert stp for {Name}");
                     builder.AppendLine(GetInsertStp().ToString());
                 }
                 else
                 {
-                    OutputPaneManager.WriteToOutputPane($"Do not generate Insert stp for {Entity.Entity.Name}");
+                    OutputPaneManager.WriteToOutputPane($"Do not generate Insert stp for {Name}");
                 }
-                if (Entity.GetDatabase.StoredProcedures.GenerateUpdate.Generate)
+                if (Database.StoredProcedures.GenerateUpdate.Generate)
                 {
-                    OutputPaneManager.WriteToOutputPane($"Generate Update stp for {Entity.Entity.Name}");
+                    OutputPaneManager.WriteToOutputPane($"Generate Update stp for {Name}");
                     builder.AppendLine(GetUpdateStp().ToString());
                 }
                 else
                 {
-                    OutputPaneManager.WriteToOutputPane($"Do not generate Update stp for {Entity.Entity.Name}");
+                    OutputPaneManager.WriteToOutputPane($"Do not generate Update stp for {Name}");
                 }
-                if (Entity.GetDatabase.StoredProcedures.GenerateDelete.Generate)
+                if (Database.StoredProcedures.GenerateDelete.Generate)
                 {
-                    OutputPaneManager.WriteToOutputPane($"Generate Delete stp for {Entity.Entity.Name}");
+                    OutputPaneManager.WriteToOutputPane($"Generate Delete stp for {Name}");
                     builder.AppendLine(GetDeleteStp().ToString());
                 }
                 else
                 {
-                    OutputPaneManager.WriteToOutputPane($"Do not generate Delete stp for {Entity.Entity.Name}");
+                    OutputPaneManager.WriteToOutputPane($"Do not generate Delete stp for {Name}");
                 }
 
                 crudFile.Content = builder;

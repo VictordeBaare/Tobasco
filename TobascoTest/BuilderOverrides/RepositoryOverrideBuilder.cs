@@ -10,7 +10,7 @@ namespace TobascoTest.BuilderOverrides
 {
     public class RepositoryOverrideBuilder : DefaultRepositoryBuilder
     {
-        public RepositoryOverrideBuilder(EntityHandler entity, EntityInformation information) : base(entity, information)
+        public RepositoryOverrideBuilder(EntityHandler entity, Repository repository, Security security) : base(entity, repository, security)
         {
         }
 

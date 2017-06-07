@@ -67,9 +67,8 @@ namespace Tobasco.Model.Builders
             {
                 classFile.Constructor.ParameterWithField.Add(new FieldWithParameter
                 {
-                    Name = EntityHandler.GetMapperInterfaceParameter(property.Property.DataType.Type),
-                    Type = EntityHandler.GetMapperInterface(property.Property.DataType.Type),
-                    Field = $"_{EntityHandler.GetMapperInterfaceParameter(property.Property.DataType.Type)}"
+                    Parameter = new TypeWithName {Name = EntityHandler.GetMapperInterfaceParameter(property.Property.DataType.Type) , Type = EntityHandler.GetMapperInterface(property.Property.DataType.Type) } ,
+                    Field = new TypeWithName { Name = EntityHandler.GetMapperInterfaceParameter(property.Property.DataType.Type), Type = EntityHandler.GetMapperInterface(property.Property.DataType.Type) }
                 });
             }
             classFile.Methods.Add(MappingMethod(mapper));

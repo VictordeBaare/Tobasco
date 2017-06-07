@@ -63,7 +63,7 @@ namespace Tobasco.Model.Builders
             }
         }
 
-        public override FileBuilder.OutputFile Build()
+        public override IEnumerable<FileBuilder.OutputFile> Build()
         {
             OutputPaneManager.WriteToOutputPane($"Build {Entity.Name} for {Location.FileLocation.GetProjectLocation}");
             var file = FileManager.StartNewClassFile(Entity.Name, Location.FileLocation.Project, Location.FileLocation.Folder);
@@ -73,7 +73,7 @@ namespace Tobasco.Model.Builders
             file.Properties.AddRange(GetProperties.Select(x => x.GetProperty));
             file.Methods.Add(GenerateMethods());
             file.OwnNamespace = Location.FileLocation.GetNamespace;
-            return file;
+            return new List<FileBuilder.OutputFile> { file };
         }
     }
 }

@@ -69,7 +69,7 @@ namespace Tobasco
         public IEnumerable<string> SelectChildRepositoryInterfaces()
         {
             List<string> childRepositories = new List<string>();
-            foreach (var childProp in _entity.Properties.Where(x => x.DataType.Datatype == Enums.Datatype.ChildCollection || x.DataType.Datatype == Enums.Datatype.Child))
+            foreach (var childProp in _entity.Properties.Where(x => x.DataType.Datatype == Datatype.ChildCollection || x.DataType.Datatype == Datatype.Child))
             {
                 childRepositories.Add(GetRepositoryInterface(childProp.DataType.Type));
             }
@@ -79,7 +79,7 @@ namespace Tobasco
         public IEnumerable<string> GetChildProjectLocationNames()
         {
             List<string> childRepositories = new List<string>();
-            foreach (var childProp in _entity.Properties.Where(x => x.DataType.Datatype == Enums.Datatype.ChildCollection || x.DataType.Datatype == Enums.Datatype.Child))
+            foreach (var childProp in _entity.Properties.Where(x => x.DataType.Datatype == Datatype.ChildCollection || x.DataType.Datatype == Datatype.Child))
             {
                 childRepositories.Add(GetRepositoryInterface(childProp.DataType.Type));
             }
@@ -120,6 +120,18 @@ namespace Tobasco
                     return _entity.Database;
                 }
                 return _mainInformation.Database;
+            }
+        }
+
+        public Security GetSecurity
+        {
+            get
+            {
+                if (_entity.Security != null)
+                {
+                    return _entity.Security;
+                }
+                return _mainInformation.Security;
             }
         }
 
@@ -164,29 +176,38 @@ namespace Tobasco
 
         private string GetDatabaseOverrideKey()
         {
-            if (!string.IsNullOrEmpty(GetDatabase.Overridekey))
+            if (!string.IsNullOrEmpty(GetDatabase?.Overridekey))
             {
                 return GetDatabase.Overridekey;
             }
-            return _mainInformation.Database.Overridekey;
+            return _mainInformation.Database?.Overridekey;
+        }
+
+        private string GetSecurityOverrideKey()
+        {
+            if (!string.IsNullOrEmpty(GetSecurity?.Overridekey))
+            {
+                return GetSecurity.Overridekey;
+            }
+            return _mainInformation.Security.Overridekey;
         }
 
         private string GetMappersOverrideKey()
         {
-            if (!string.IsNullOrEmpty(GetMappers.Overridekey))
+            if (!string.IsNullOrEmpty(GetMappers?.Overridekey))
             {
                 return GetMappers.Overridekey;
             }
-            return _mainInformation.Mappers.Overridekey;
+            return _mainInformation.Mappers?.Overridekey;
         }
 
         private string GetRepositoryOverrideKey()
         {
-            if (!string.IsNullOrEmpty(GetRepository.Overridekey))
+            if (!string.IsNullOrEmpty(GetRepository?.Overridekey))
             {
                 return GetRepository.Overridekey;
             }
-            return _mainInformation.Repository.Overridekey;
+            return _mainInformation.Repository?.Overridekey;
         }
 
         public ClassBuilderBase GetClassBuilder(string id)
@@ -203,7 +224,16 @@ namespace Tobasco
             get
             {
                 var type = BuilderManager.Get(GetDatabaseOverrideKey(), DefaultBuilderConstants.DatabaseBuilder);
-                return BuilderManager.InitializeBuilder<DatabaseBuilderBase>(type, new object[] { this });
+                return BuilderManager.InitializeBuilder<DatabaseBuilderBase>(type, new object[] { Entity, GetDatabase });
+            }
+        }
+
+        public SecurityBuilder GetSecurityBuilder
+        {
+            get
+            {
+                var type = BuilderManager.Get(GetSecurityOverrideKey(), DefaultBuilderConstants.SecurityBuilder);
+                return BuilderManager.InitializeBuilder<SecurityBuilder>(type, new object[] { this, _mainInformation });
             }
         }
 
@@ -221,7 +251,7 @@ namespace Tobasco
             get
             {
                 var type = BuilderManager.Get(GetRepositoryOverrideKey(), DefaultBuilderConstants.RepositoryBuilder);
-                return BuilderManager.InitializeBuilder<RepositoryBuilderBase>(type, new object[] {this, _mainInformation});
+                return BuilderManager.InitializeBuilder<RepositoryBuilderBase>(type, new object[] {this, GetRepository, GetSecurity});
             }
         }
     }

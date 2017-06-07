@@ -9,14 +9,18 @@ namespace Tobasco.Manager
 {
     public static class BuilderManager
     {
-        private static readonly Dictionary<string, Type> DefaultBuilders = new Dictionary<string, Type> {
-            { DefaultBuilderConstants.RepositoryBuilder, typeof(DefaultRepositoryBuilder) },
-            { DefaultBuilderConstants.DependencyBuilder, typeof(DefaultDependencyInjectionBuilder) },
-            { DefaultBuilderConstants.ClassBuilder, typeof(DefaultClassBuilder)},
-            { DefaultBuilderConstants.MapperBuilder, typeof(DefaultMapperBuilder)},
-            { DefaultBuilderConstants.DatabaseBuilder, typeof(DefaultDatabaseBuilder)},
-            { DefaultBuilderConstants.ConnectionFactoryBuilder, typeof(DefaultConnectionfactoryBuilder)},
-            { DefaultBuilderConstants.GenericRepositoryBuilder, typeof(DefaultGenericRepositoryBuilder)}
+        private static readonly Dictionary<string, Type> DefaultBuilders = new Dictionary<string, Type>
+        {
+            {DefaultBuilderConstants.RepositoryBuilder, typeof (DefaultRepositoryBuilder)},
+            {DefaultBuilderConstants.DependencyBuilder, typeof (DefaultDependencyInjectionBuilder)},
+            {DefaultBuilderConstants.ClassBuilder, typeof (DefaultClassBuilder)},
+            {DefaultBuilderConstants.MapperBuilder, typeof (DefaultMapperBuilder)},
+            {DefaultBuilderConstants.DatabaseBuilder, typeof (DefaultDatabaseBuilder)},
+            {DefaultBuilderConstants.ConnectionFactoryBuilder, typeof (DefaultConnectionfactoryBuilder)},
+            {DefaultBuilderConstants.GenericRepositoryBuilder, typeof (DefaultGenericRepositoryBuilder)},
+            {DefaultBuilderConstants.SecurityDatabaseBuilder, typeof (DefaultSecurityDatabaseBuilder)},
+            {DefaultBuilderConstants.SecurityRepositoryBuilder, typeof (DefaultSecurityRepositoryBuilder)},
+            {DefaultBuilderConstants.SecurityBuilder, typeof(SecurityBuilder) }
         };
 
         private static readonly Dictionary<string, Type> Builders = new Dictionary<string, Type>();
@@ -39,8 +43,7 @@ namespace Tobasco.Manager
             {
                 return DefaultBuilders[defaultKey];
             }
-            OutputPaneManager.WriteToOutputPane("There is no builder present. Error!");
-            throw new ArgumentException("There is no builder present.");
+            throw new ArgumentException($"There is no builder present. With Key {key} or defaultkey {defaultKey}");
         }
 
         public static T InitializeBuilder<T>(Type type, object[] parameters)

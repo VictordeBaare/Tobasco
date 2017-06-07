@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Tobasco.Enums;
 using Tobasco.Factories;
 
@@ -10,21 +7,20 @@ namespace Tobasco.Model.Properties
 {
     public class ClassProperty
     {
-        protected Property _property;
-        private EntityLocation _location;
+        private readonly Property _property;
+        private readonly ORMapper _ormapper;
+        private readonly bool _generateRules;
         private string _getProperty;
         private string _getValueType;
 
-        public ClassProperty(Property property, EntityLocation location)
+        public ClassProperty(Property property, ORMapper ormapper, bool generateRules)
         {
             _property = property;
-            _location = location;
+            _ormapper = ormapper;
+            _generateRules = generateRules;
         }
 
-        public Property Property
-        {
-            get { return _property; }
-        }
+        public Property Property => _property;
 
         public string GetProperty
         {
@@ -32,7 +28,7 @@ namespace Tobasco.Model.Properties
             {
                 if (string.IsNullOrEmpty(_getProperty))
                 {
-                    _getProperty = OrmPropertyFactory.GeefPropertyBuilder(_location.ORMapper != null ? _location.ORMapper.Type : OrmType.Onbekend).GetProperty(this, _location.GenerateRules);
+                    _getProperty = OrmPropertyFactory.GeefPropertyBuilder(_ormapper?.Type ?? OrmType.Onbekend).GetProperty(this, _generateRules);
                 }
                 return _getProperty;
             }            

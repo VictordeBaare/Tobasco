@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using EnvDTE;
 using Tobasco.Constants;
 using Tobasco.Manager;
 using Tobasco.Model;
+using Tobasco.Model.Builders;
 using Tobasco.Model.Builders.Base;
 
 namespace Tobasco
@@ -77,7 +79,7 @@ namespace Tobasco
             foreach (var handler in EntityHandlers)
             {
                 OutputPaneManager.WriteToOutputPane($"Start adding files for {handler.Key}");
-                outputFiles.AddRange(handler.Value.GetEntityLocations.Select(x => handler.Value.GetClassBuilder(x).Build()));
+                outputFiles.AddRange(handler.Value.GetEntityLocations.SelectMany(x => handler.Value.GetClassBuilder(x).Build()));
                 if (_information.Repository != null && _information.Repository.Generate)
                 {
                     OutputPaneManager.WriteToOutputPane("Add repository file");
@@ -90,6 +92,8 @@ namespace Tobasco
                     OutputPaneManager.WriteToOutputPane("Add Mapper files");
                     outputFiles.AddRange(handler.Value.GetMappers.Mapper.SelectMany(x => handler.Value.GetMapperBuilder.Build(x)));
                 }
+                OutputPaneManager.WriteToOutputPane("Generate security");
+                outputFiles.AddRange(handler.Value.GetSecurityBuilder.Build());
                 OutputPaneManager.WriteToOutputPane($"Finished adding files for {handler.Key}");
             }
 

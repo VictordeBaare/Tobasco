@@ -9,7 +9,7 @@ namespace Tobasco.Model.Properties
 {
     public class StringProperty : ClassProperty
     {
-        public StringProperty(Property property, EntityLocation location) : base(property, location)
+        public StringProperty(Property property, ORMapper mapper, bool generateRules) : base(property, mapper, generateRules)
         {
         }
 
@@ -25,9 +25,9 @@ namespace Tobasco.Model.Properties
 
         private string CalcBusinessRule()
         {
-            if (_property.DataType.Size != null && _property.DataType.Size != "max")
+            if (Property.DataType.Size != null && Property.DataType.Size != "max")
             {
-                return $"[StringLength({_property.DataType.Size}, ErrorMessage = \"Maximum length is {_property.DataType.Size} for {_property.Name}\")]";
+                return $"[StringLength({Property.DataType.Size}, ErrorMessage = \"Maximum length is {Property.DataType.Size} for {Property.Name}\")]";
             }
             return string.Empty;
         }

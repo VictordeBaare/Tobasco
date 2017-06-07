@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Tobasco.Enums;
 using Tobasco.Extensions;
 
 namespace Tobasco.Model.Builders.Base
@@ -7,15 +8,19 @@ namespace Tobasco.Model.Builders.Base
     public abstract class RepositoryBuilderBase
     {
         protected readonly EntityHandler Entity;
-        protected readonly EntityInformation Information;
+        protected readonly Repository Repository;
+        protected readonly Model.Security Security;
         private string _getRepositoryName;
         private string _getRepositoryInterfaceName;
 
-        protected RepositoryBuilderBase(EntityHandler entity, EntityInformation information)
+        protected RepositoryBuilderBase(EntityHandler entity, Repository repository, Model.Security security)
         {
             Entity = entity;
-            Information = information;
+            Repository = repository;
+            Security = security;
         }
+
+        public virtual string GetEntityName => Entity.Entity.Name;
 
         public virtual string GetRepositoryName
         {
@@ -23,7 +28,7 @@ namespace Tobasco.Model.Builders.Base
             {
                 if (string.IsNullOrEmpty(_getRepositoryName))
                 {
-                    _getRepositoryName = $"{Entity.Entity.Name}Repository";
+                    _getRepositoryName = $"{GetEntityName}Repository";
                 }
                 return _getRepositoryName;
             }
@@ -35,10 +40,20 @@ namespace Tobasco.Model.Builders.Base
             {
                 if (string.IsNullOrEmpty(_getRepositoryInterfaceName))
                 {
-                    _getRepositoryInterfaceName = $"I{Entity.Entity.Name}Repository";
+                    _getRepositoryInterfaceName = $"I{GetEntityName}Repository";
                 }
                 return _getRepositoryInterfaceName;
             }
+        }
+
+        protected virtual IEnumerable<Property> GetChildProperties
+        {
+            get { return Entity.Entity.Properties.Where(x => x.DataType.Datatype == Datatype.Child); }
+        }
+
+        protected virtual IEnumerable<Property> GetChildCollectionProperties
+        {
+            get { return Entity.Entity.Properties.Where(x => x.DataType.Datatype == Datatype.ChildCollection); }
         }
 
         protected virtual IEnumerable<string> GetRepositoryNamespaces
@@ -46,7 +61,7 @@ namespace Tobasco.Model.Builders.Base
             get
             {
                 var listNamespaces = new List<string>();
-                listNamespaces.AddRange(Information.Repository.Namespaces.Select(valueElement => valueElement.Value));
+                listNamespaces.AddRange(Repository.Namespaces.Select(valueElement => valueElement.Value));
                 listNamespaces.Add(Entity.GetEntityLocationOnId(Entity.GetRepository.EntityId).FileLocation.GetProjectLocation, s => !listNamespaces.Contains(s));
                 foreach (var childRep in Entity.Entity.Properties.Where(x => x.DataType.Datatype == Enums.Datatype.Child || x.DataType.Datatype == Enums.Datatype.ChildCollection))
                 {

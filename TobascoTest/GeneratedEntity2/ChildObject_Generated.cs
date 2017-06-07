@@ -8,9 +8,9 @@ namespace TobascoTest.GeneratedEntity2
     [Serializable]
     public partial class ChildObject 
     {
-
         public string TestChildProp1 { get; set; }
 
         
+
     }
 }

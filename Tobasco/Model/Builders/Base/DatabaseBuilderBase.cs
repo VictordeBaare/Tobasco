@@ -11,25 +11,25 @@ namespace Tobasco.Model.Builders.Base
 {
     public abstract class DatabaseBuilderBase
     {
-        protected readonly EntityHandler Entity;
-        protected IEnumerable<DatabaseProperty> _getSqlProperties;
+        protected readonly Entity Entity;
+        protected readonly Database Database;
         protected readonly DatabasePropertyFactory Factory;
+        private IEnumerable<DatabaseProperty> _getSqlProperties;
 
-        protected DatabaseBuilderBase(EntityHandler entity)
+        protected DatabaseBuilderBase(Entity entity, Database database)
         {
             Entity = entity;
+            Database = database;
             Factory = new DatabasePropertyFactory();
         }
 
-        protected IEnumerable<DatabaseProperty> GetSqlProperties
+        public virtual string Name { get; set; }
+
+        protected virtual IEnumerable<DatabaseProperty> GetSqlProperties
         {
             get
             {
-                if (_getSqlProperties == null)
-                {
-                    _getSqlProperties = Entity.Entity.Properties.Select(x => Factory.GetDatabaseProperty(x));
-                }
-                return _getSqlProperties;
+                return _getSqlProperties ?? (_getSqlProperties = Entity.Properties.Select(x => Factory.GetDatabaseProperty(x)));
             }
         }
 

@@ -13,30 +13,29 @@ namespace Tobasco
 {
     public class FileProcessor
     {
-        private readonly ProjectItem templateProjectItem;
-        private readonly Action<string> checkOutAction;
-        private readonly Action<IEnumerable<FileBuilder.OutputFile>> projectSyncAction;
-        private readonly DTE dte;
-        private readonly List<string> templatePlaceholderList = new List<string>();
+        private readonly ProjectItem _templateProjectItem;
+        private readonly Action<string> _checkOutAction;
+        private readonly Action<IEnumerable<FileBuilder.OutputFile>> _projectSyncAction;
+        private readonly DTE _dte;
+        private readonly List<string> _templatePlaceholderList = new List<string>();
         private readonly DynamicTextTransformation2 _textTransformation;
 
         public static FileProcessor Create(object textTransformation)
         {
             DynamicTextTransformation2 transformation = DynamicTextTransformation2.Create(textTransformation);
-            IDynamicHost2 host = transformation.Host;
             return new FileProcessor(transformation);
         }
 
         public void BeginProcessing(string path)
         {
-            try
-            {
-                XmlLoader loader = new XmlLoader(_textTransformation);
-                var handler = loader.Load(path);
-                
-                OutputPaneManager.WriteToOutputPane("Start generating.");
+            XmlLoader loader = new XmlLoader(_textTransformation);
+            var handler = loader.Load(path);
 
-                var task = System.Threading.Tasks.Task.Factory.StartNew(() =>
+            OutputPaneManager.WriteToOutputPane("Start generating.");
+
+            System.Threading.Tasks.Task.Factory.StartNew(() =>
+            {
+                try
                 {
                     OutputPaneManager.WriteToOutputPane("Get output files.");
                     var outputFiles = handler.GetOutputFiles(_textTransformation);
@@ -45,12 +44,13 @@ namespace Tobasco
 
                     OutputPaneManager.WriteToOutputPane("Process output files");
                     Process(outputFiles);
-                }).ContinueWith(x => OutputPaneManager.WriteToOutputPane("Finished generating"));
-            }
-            catch(Exception ex)
-            {
-                OutputPaneManager.WriteToOutputPane($"Something went wrong. {ex.StackTrace}");
-            }
+                }
+                catch (Exception ex)
+                {
+                    OutputPaneManager.WriteToOutputPane($"Something went wrong. Message: {ex.Message} Stacktrace {ex.StackTrace}");
+                }
+                
+            }).ContinueWith(x => OutputPaneManager.WriteToOutputPane("Finished generating"));
         }
 
         private string GetFileTypeExtension(FileBuilder.OutputFile file)
@@ -75,7 +75,7 @@ namespace Tobasco
 
             foreach (var file in files)
             {
-                var outputPath = VSHelper.GetOutputPath(dte, file, Path.GetDirectoryName(_textTransformation.Host.TemplateFile));
+                var outputPath = VSHelper.GetOutputPath(_dte, file, Path.GetDirectoryName(_textTransformation.Host.TemplateFile));
                 file.FileName = Path.Combine(outputPath, file.Name) + "_Generated" + GetFileTypeExtension(file);
                 
                 var isNewOrAdjusted = IsNewFile(file);
@@ -91,9 +91,9 @@ namespace Tobasco
                 }
             }
 
-            projectSyncAction.EndInvoke(projectSyncAction.BeginInvoke(filesToProcess, null, null));
+            _projectSyncAction.EndInvoke(_projectSyncAction.BeginInvoke(filesToProcess, null, null));
             CleanUpTemplatePlaceholders();
-            var items = VSHelper.GetOutputFilesAsProjectItems(dte, filesToProcess);
+            var items = VSHelper.GetOutputFilesAsProjectItems(_dte, filesToProcess);
             WriteVsProperties(items, filesToProcess);
 
             return filesToProcess;
@@ -103,7 +103,7 @@ namespace Tobasco
         {
             foreach (var file in outputFiles)
             {
-                var item = items.Where(p => p.Name == Path.GetFileName(file.FileName)).FirstOrDefault();
+                var item = items.FirstOrDefault(p => p.Name == Path.GetFileName(file.FileName));
                 if (item == null) continue;
 
                 if (string.IsNullOrEmpty(file.FileProperties.CustomTool) == false)
@@ -132,30 +132,30 @@ namespace Tobasco
                 throw new ArgumentNullException("Could not obtain hostServiceProvider");
             }
 
-            dte = (DTE)hostServiceProvider.GetService(typeof(DTE));
-            if (dte == null)
+            _dte = (DTE)hostServiceProvider.GetService(typeof(DTE));
+            if (_dte == null)
             {
                 throw new ArgumentNullException("Could not obtain DTE from host");
             }
-            var dteServiceProvider = new ServiceProvider((Microsoft.VisualStudio.OLE.Interop.IServiceProvider)dte);
+            var dteServiceProvider = new ServiceProvider((Microsoft.VisualStudio.OLE.Interop.IServiceProvider)_dte);
             OutputPaneManager.Activate(dteServiceProvider);
             ProgressBarManager.Activate(dteServiceProvider);
-            templateProjectItem = dte.Solution.FindProjectItem(_textTransformation.Host.TemplateFile);
-            checkOutAction = fileName => dte.SourceControl.CheckOutItem(fileName);
-            projectSyncAction = keepFileNames => ProjectSync(templateProjectItem, keepFileNames);
+            _templateProjectItem = _dte.Solution.FindProjectItem(_textTransformation.Host.TemplateFile);
+            _checkOutAction = fileName => _dte.SourceControl.CheckOutItem(fileName);
+            _projectSyncAction = keepFileNames => ProjectSync(_templateProjectItem, keepFileNames);
         }
 
         private void CleanUpTemplatePlaceholders()
         {
-            string[] activeTemplateFullNames = templatePlaceholderList.ToArray();
-            string[] allHelperTemplateFullNames = VSHelper.GetAllSolutionItems(dte)
-                .Where(p => p.Name == VSHelper.GetTemplatePlaceholderName(templateProjectItem))
+            string[] activeTemplateFullNames = _templatePlaceholderList.ToArray();
+            string[] allHelperTemplateFullNames = VSHelper.GetAllSolutionItems(_dte)
+                .Where(p => p.Name == VSHelper.GetTemplatePlaceholderName(_templateProjectItem))
                 .Select(VSHelper.GetProjectItemFullPath)
                 .ToArray();
 
             var delta = allHelperTemplateFullNames.Except(activeTemplateFullNames).ToArray();
 
-            var dirtyHelperTemplates = VSHelper.GetAllSolutionItems(dte)
+            var dirtyHelperTemplates = VSHelper.GetAllSolutionItems(_dte)
                 .Where(p => delta.Contains(VSHelper.GetProjectItemFullPath(p)));
 
             foreach (ProjectItem item in dirtyHelperTemplates)
@@ -186,15 +186,15 @@ namespace Tobasco
 
         private void CheckoutFileIfRequired(string fileName)
         {
-            if (dte.SourceControl == null
-                || !dte.SourceControl.IsItemUnderSCC(fileName)
-                    || dte.SourceControl.IsItemCheckedOut(fileName))
+            if (_dte.SourceControl == null
+                || !_dte.SourceControl.IsItemUnderSCC(fileName)
+                    || _dte.SourceControl.IsItemCheckedOut(fileName))
             {
                 return;
             }
 
             // run on worker thread to prevent T4 calling back into VS
-            checkOutAction.EndInvoke(checkOutAction.BeginInvoke(fileName, null, null));
+            _checkOutAction.EndInvoke(_checkOutAction.BeginInvoke(fileName, null, null));
         }
 
         protected bool IsFileContentDifferent(FileBuilder.OutputFile file)
@@ -215,7 +215,7 @@ namespace Tobasco
                                        OutputFiles = l
                                    };
 
-            templatePlaceholderList.Clear();
+            _templatePlaceholderList.Clear();
 
             foreach (var item in groupedFileNames)
             {
@@ -223,11 +223,11 @@ namespace Tobasco
                 ProjectSyncPart(pi, item.OutputFiles, _textTransformation);
 
                 if (pi.Name.EndsWith("txt4"))
-                    templatePlaceholderList.Add(VSHelper.GetProjectItemFullPath(pi));
+                    _templatePlaceholderList.Add(VSHelper.GetProjectItemFullPath(pi));
             }
 
             // clean up
-            bool hasDefaultItems = groupedFileNames.Where(f => string.IsNullOrEmpty(f.ProjectName) && string.IsNullOrEmpty(f.FolderName)).Any();
+            bool hasDefaultItems = groupedFileNames.Any(f => string.IsNullOrEmpty(f.ProjectName) && string.IsNullOrEmpty(f.FolderName));
             if (hasDefaultItems == false)
             {
                 ProjectSyncPart(templateProjectItem, new List<FileBuilder.OutputFile>(), _textTransformation);
@@ -250,7 +250,7 @@ namespace Tobasco
             // Remove unused items from the project
             foreach (var pair in projectFiles)
             {
-                bool isNotFound = keepFileNames.Where(f => f.FileName == pair.Key).Count() == 0;
+                bool isNotFound = !keepFileNames.Any(f => f.FileName == pair.Key);
                 if (isNotFound == true
                     && !(Path.GetFileNameWithoutExtension(pair.Key) + ".").StartsWith(originalOutput + "."))
                 {
