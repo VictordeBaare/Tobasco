@@ -189,7 +189,7 @@ namespace Tobasco
             {
                 return GetSecurity.Overridekey;
             }
-            return _mainInformation.Security.Overridekey;
+            return _mainInformation.Security?.Overridekey;
         }
 
         private string GetMappersOverrideKey()
