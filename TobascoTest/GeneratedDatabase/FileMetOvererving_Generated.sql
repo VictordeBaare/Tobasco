@@ -1,6 +1,7 @@
 ﻿-- ================================================================================
--- T a b e l s
+-- T a b l e s
 -- ================================================================================
+
 CREATE TABLE [dbo].[FileMetOvererving] (
     [Id]                          bigint             IDENTITY (1, 1) NOT NULL
    ,[UId]                         uniqueidentifier   NOT NULL CONSTRAINT [DF_FileMetOvererving_UId DEFAULT NEWID()
@@ -20,8 +21,6 @@ CREATE TABLE [dbo].[FileMetOvererving] (
    ,CONSTRAINT [FK_FileMetOvererving_ChildObject_Id] FOREIGN KEY (TestChildProp7Id) REFERENCES [dbo].[ChildObject] ([Id])
 );
 GO
-GO
-GO
 CREATE TABLE [dbo].[FileMetOvererving_historie] (
     [Id]                          bigint             NOT NULL
    ,[RowVersion]                  binary(8)          NOT NULL
@@ -39,9 +38,11 @@ CREATE TABLE [dbo].[FileMetOvererving_historie] (
 );
 GO
 
+
 -- ================================================================================
 -- I n d e x e s
 -- ================================================================================
+
 CREATE NONCLUSTERED INDEX IX_FileMetOvererving_historie_Id
                        ON [dbo].FileMetOvererving_historie
                          (Id ASC)
@@ -52,9 +53,11 @@ CREATE NONCLUSTERED INDEX IX_UQ_FileMetOvererving_UId
                          ([UId] ASC
                          )
 GO
+
 -- ================================================================================
 -- T r i g g e r s
 -- ================================================================================
+
 CREATE TRIGGER [dbo].tu_FileMetOvererving
             ON [dbo].FileMetOvererving
            FOR UPDATE
@@ -94,6 +97,7 @@ BEGIN
        FROM Deleted;
 END;
 GO
+
 CREATE TRIGGER [dbo].td_FileMetOvererving
             ON [dbo].FileMetOvererving
            FOR DELETE
@@ -133,4 +137,5 @@ BEGIN
        FROM Deleted;
 END;
 GO
+
 

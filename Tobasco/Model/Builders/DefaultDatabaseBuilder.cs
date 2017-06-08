@@ -23,7 +23,7 @@ namespace Tobasco.Model.Builders
         {
             var builder = new StringBuilder();
 
-            builder.AppendLine(GetDefaultHeader("T a b e l s"));
+            builder.AppendLine(GetDefaultHeader("T a b l e s"));
             builder.AppendLine($"CREATE TABLE [dbo].[{Name}] (");
             builder.AppendLine($"    [Id]                          bigint             IDENTITY (1, 1) NOT NULL");
 
@@ -61,7 +61,11 @@ namespace Tobasco.Model.Builders
 
             builder.AppendLine($");");
             builder.AppendLine("GO");
-            foreach (var sqlprop in GetSqlProperties.Where(x => x.Property.DataType.Datatype == Datatype.Reference))
+
+            List<DatabaseProperty> referenceProperties = 
+                GetSqlProperties.Where(x => x.Property.DataType.Datatype == Datatype.Reference).ToList();
+
+            foreach (var sqlprop in referenceProperties)
             {
                 var index = sqlprop.SelectNonClusteredIndex(Name);
                 if (!string.IsNullOrEmpty(index))
@@ -71,12 +75,15 @@ namespace Tobasco.Model.Builders
                 }
             }
 
-            builder.AppendLine("GO");
+            if(referenceProperties.Any())
+            {
+                builder.AppendLine("GO");
+            }
 
             return builder;
         }
 
-        private StringBuilder GetHistorieTable()
+        private string GetHistorieTable()
         {
             var builder = new StringBuilder();
 
@@ -95,7 +102,7 @@ namespace Tobasco.Model.Builders
             builder.AppendLine($"GO");
             builder.Append(Environment.NewLine);
             
-            return builder;
+            return builder.ToString();
         }
 
         private StringBuilder GetInsertStp()
@@ -420,19 +427,20 @@ namespace Tobasco.Model.Builders
                 if (Database.Tables.Generate && Database.Tables.GenerateHistorie.Generate)
                 {
                     OutputPaneManager.WriteToOutputPane($"Generate HistorieTable for {Name}");
-                    var builder = GetHistorieTable();
+                    string historieTable = GetHistorieTable();
 
-                    string indexes = GetIndexes();
-                    string triggers = GetTriggers();
-                    tableFile.Content.AppendLine("GO");
-                    tableFile.Content.AppendLine(indexes);
-                    tableFile.Content.AppendLine(triggers);
-                    tableFile.Content.AppendLine(builder.ToString());
+                    tableFile.Content.AppendLine(historieTable);
                 }
                 else
                 {
                     OutputPaneManager.WriteToOutputPane($"== Do not generate HistorieTable for {Name} ");
                 }
+
+                string indexes = GetIndexes();
+                string triggers = GetTriggers();
+                tableFile.Content.AppendLine(indexes);
+                tableFile.Content.AppendLine(triggers);
+
                 outputFiles.Add(tableFile);
             }
             else

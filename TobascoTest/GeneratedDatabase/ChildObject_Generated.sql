@@ -1,6 +1,7 @@
 ﻿-- ================================================================================
--- T a b e l s
+-- T a b l e s
 -- ================================================================================
+
 CREATE TABLE [dbo].[ChildObject] (
     [Id]                          bigint             IDENTITY (1, 1) NOT NULL
    ,[RowVersion]                  rowversion         NOT NULL
@@ -11,8 +12,6 @@ CREATE TABLE [dbo].[ChildObject] (
     CONSTRAINT [DF_ChildObject_ModifiedOn] DEFAULT SYSDATETIME()
    ,CONSTRAINT [PK_ChildObject] PRIMARY KEY CLUSTERED (Id ASC)
 );
-GO
-GO
 GO
 CREATE TABLE [dbo].[ChildObject_historie] (
     [Id]                          bigint             NOT NULL
@@ -25,17 +24,21 @@ CREATE TABLE [dbo].[ChildObject_historie] (
 );
 GO
 
+
 -- ================================================================================
 -- I n d e x e s
 -- ================================================================================
+
 CREATE NONCLUSTERED INDEX IX_ChildObject_historie_Id
                        ON [dbo].ChildObject_historie
                          (Id ASC)
                   INCLUDE(ModifiedOn);
 GO
+
 -- ================================================================================
 -- T r i g g e r s
 -- ================================================================================
+
 CREATE TRIGGER [dbo].tu_ChildObject
             ON [dbo].ChildObject
            FOR UPDATE
@@ -61,6 +64,7 @@ BEGIN
        FROM Deleted;
 END;
 GO
+
 CREATE TRIGGER [dbo].td_ChildObject
             ON [dbo].ChildObject
            FOR DELETE
@@ -86,4 +90,5 @@ BEGIN
        FROM Deleted;
 END;
 GO
+
 
