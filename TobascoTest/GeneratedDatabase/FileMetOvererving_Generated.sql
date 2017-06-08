@@ -4,7 +4,7 @@
 
 CREATE TABLE [dbo].[FileMetOvererving] (
     [Id]                          bigint             IDENTITY (1, 1) NOT NULL
-   ,[UId]                         uniqueidentifier   NOT NULL CONSTRAINT [DF_FileMetOvererving_UId DEFAULT NEWID()
+   ,[UId]                         uniqueidentifier   NOT NULL CONSTRAINT [DF_FileMetOvererving_UId] DEFAULT NEWID()
    ,[RowVersion]                  rowversion         NOT NULL
    ,TestChildProp1 nvarchar(100) NOT NULL
    ,TestChildProp2 int NULL
@@ -23,6 +23,7 @@ CREATE TABLE [dbo].[FileMetOvererving] (
 GO
 CREATE TABLE [dbo].[FileMetOvererving_historie] (
     [Id]                          bigint             NOT NULL
+   ,[UId]                         uniqueidentifier   NOT NULL
    ,[RowVersion]                  binary(8)          NOT NULL
    ,TestChildProp1 nvarchar(100) NOT NULL
    ,TestChildProp2 int NULL

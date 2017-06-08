@@ -29,7 +29,7 @@ namespace Tobasco.Model.Builders
 
             if (Entity.GenerateReadonlyGuid)
             {
-                builder.AppendLine($"   ,[UId]                         uniqueidentifier   NOT NULL CONSTRAINT [DF_{Name}_UId DEFAULT NEWID()");
+                builder.AppendLine($"   ,[UId]                         uniqueidentifier   NOT NULL CONSTRAINT [DF_{Name}_UId] DEFAULT NEWID()");
             }
             
             builder.AppendLine($"   ,[RowVersion]                  rowversion         NOT NULL");
@@ -89,6 +89,12 @@ namespace Tobasco.Model.Builders
 
             builder.AppendLine($"CREATE TABLE [dbo].[{Name}_historie] (");
             builder.AppendLine($"    [Id]                          bigint             NOT NULL");
+
+            if (Entity.GenerateReadonlyGuid)
+            {
+                builder.AppendLine($"   ,[UId]                         uniqueidentifier   NOT NULL");
+            }
+
             builder.AppendLine($"   ,[RowVersion]                  binary(8)          NOT NULL");
             foreach (var sqlprop in GetNonChildCollectionProperties)
             {
