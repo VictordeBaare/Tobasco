@@ -94,7 +94,8 @@ namespace Tobasco.Model.Properties
                             _getValueType = $"long{isRequired}";
                             break;
                         case Datatype.Guid:
-                            _getValueType = $"Guid";
+                        case Datatype.ReadOnlyGuid:
+                            _getValueType = "Guid";
                             break;
                         case Datatype.Child:
                         case Datatype.CustomType:

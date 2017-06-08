@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using System.Xml.Serialization;
 
 namespace Tobasco.Model
@@ -18,5 +14,8 @@ namespace Tobasco.Model
         [XmlArray("Properties")]
         [XmlArrayItem("Property", typeof(Property))]
         public List<Property> Properties { get; set; }
+
+        [XmlAttribute("generateReadonlyGuid")]
+        public bool GenerateReadonlyGuid { get; set; }
     }
 }

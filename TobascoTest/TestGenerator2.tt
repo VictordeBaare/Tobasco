@@ -11,7 +11,7 @@
 <#@ import namespace="TobascoTest.BuilderOverrides" #>
 <#@ import namespace="Tobasco.Manager" #>
 <#@ import namespace="Tobasco.Enums" #>
-<# //System.Diagnostics.Debugger.Launch(); 
+<# // System.Diagnostics.Debugger.Launch(); 
 #>
 <#
 	var processor = FileProcessor.Create(this);

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Tobasco.Enums;
-using Tobasco.Factories;
 using Tobasco.FileBuilder;
 using Tobasco.Manager;
 using Tobasco.Model.Builders.Base;
@@ -24,8 +23,15 @@ namespace Tobasco.Model.Builders
         {
             var builder = new StringBuilder();
 
+            builder.AppendLine(GetDefaultHeader("T a b e l s"));
             builder.AppendLine($"CREATE TABLE [dbo].[{Name}] (");
             builder.AppendLine($"    [Id]                          bigint             IDENTITY (1, 1) NOT NULL");
+
+            if (Entity.GenerateReadonlyGuid)
+            {
+                builder.AppendLine($"   ,[UId]                         uniqueidentifier   NOT NULL CONSTRAINT [DF_{Name}_UId DEFAULT NEWID()");
+            }
+            
             builder.AppendLine($"   ,[RowVersion]                  rowversion         NOT NULL");
             foreach (var sqlprop in GetNonChildCollectionProperties)
             {
@@ -88,12 +94,7 @@ namespace Tobasco.Model.Builders
             builder.AppendLine($");");
             builder.AppendLine($"GO");
             builder.Append(Environment.NewLine);
-            builder.AppendLine($"CREATE NONCLUSTERED INDEX IX_{Name}_historie_Id");
-            builder.AppendLine($"                       ON [dbo].{Name}_historie");
-            builder.AppendLine($"                         (Id ASC)");
-            builder.AppendLine($"                  INCLUDE(ModifiedOn);");
-            builder.AppendLine($"GO");
-
+            
             return builder;
         }
 
@@ -251,8 +252,64 @@ namespace Tobasco.Model.Builders
             return builder;
         }
 
-        private void AddDeletedTrigger(StringBuilder builder)
+        private string GetIndexes()
         {
+            var builder = new StringBuilder();
+
+            if (Database.Tables.GenerateHistorie.Generate || Entity.GenerateReadonlyGuid)
+            {
+                OutputPaneManager.WriteToOutputPane("Adding indexes");
+                builder.AppendLine(GetDefaultHeader("I n d e x e s"));
+            }
+            else
+            {
+                OutputPaneManager.WriteToOutputPane("No indexes generated");
+            }
+
+            if (Database.Tables.GenerateHistorie.Generate)
+            {
+                builder.AppendLine($"CREATE NONCLUSTERED INDEX IX_{Name}_historie_Id");
+                builder.AppendLine($"                       ON [dbo].{Name}_historie");
+                builder.AppendLine($"                         (Id ASC)");
+                builder.AppendLine($"                  INCLUDE(ModifiedOn);");
+                builder.AppendLine($"GO");
+            }
+
+            if (Entity.GenerateReadonlyGuid)
+            {
+                builder.AppendLine($"CREATE NONCLUSTERED INDEX IX_UQ_{Name}_UId");
+                builder.AppendLine($"                       ON [dbo].{Name}");
+                builder.AppendLine($"                         ([UId] ASC");
+                builder.AppendLine($"                         )");
+                builder.AppendLine($"GO");
+            }
+
+            return builder.ToString();
+        }
+
+        private string GetTriggers()
+        {
+            StringBuilder builder = new StringBuilder();
+
+            if (Database.Tables.GenerateHistorie.Generate)
+            {
+                OutputPaneManager.WriteToOutputPane("Adding triggers");
+                builder.AppendLine(GetDefaultHeader("T r i g g e r s"));
+                builder.AppendLine(GetUpdateTrigger());
+                builder.AppendLine(GetDeletedTrigger());
+            }
+            else
+            {
+                OutputPaneManager.WriteToOutputPane("No triggers generated");
+            }
+
+            return builder.ToString();
+        }
+
+        private string GetDeletedTrigger()
+        {
+            var builder = new StringBuilder();
+
             builder.AppendLine($"CREATE TRIGGER [dbo].td_{Name}");
             builder.AppendLine($"            ON [dbo].{Name}");
             builder.AppendLine($"           FOR DELETE");
@@ -261,6 +318,12 @@ namespace Tobasco.Model.Builders
             builder.AppendLine($"     INSERT");
             builder.AppendLine($"       INTO [dbo].{Name}_historie");
             builder.AppendLine($"           (Id");
+
+            if (Entity.GenerateReadonlyGuid)
+            {
+                builder.AppendLine("           ,[UId]");
+            }
+
             builder.AppendLine($"           ,[RowVersion]");
             foreach (DatabaseProperty selectSqlProperty in GetNonChildCollectionProperties)
             {
@@ -272,6 +335,12 @@ namespace Tobasco.Model.Builders
             builder.AppendLine($"           ,[DeletedAt]");
             builder.AppendLine($"           )");
             builder.AppendLine($"     SELECT Deleted.Id");
+
+            if (Entity.GenerateReadonlyGuid)
+            {
+                builder.AppendLine($"           ,Deleted.[UId]");
+            }
+
             builder.AppendLine($"           ,Deleted.[RowVersion]");
             foreach (DatabaseProperty selectSqlProperty in GetNonChildCollectionProperties)
             {
@@ -284,10 +353,14 @@ namespace Tobasco.Model.Builders
             builder.AppendLine($"       FROM Deleted;");
             builder.AppendLine("END;");
             builder.AppendLine("GO");
+
+            return builder.ToString();
         }
 
-        private void AddUpdateTrigger(StringBuilder builder)
+        private string GetUpdateTrigger()
         {
+            var builder = new StringBuilder();
+
             builder.AppendLine($"CREATE TRIGGER [dbo].tu_{Name}");
             builder.AppendLine($"            ON [dbo].{Name}");
             builder.AppendLine($"           FOR UPDATE");
@@ -296,6 +369,12 @@ namespace Tobasco.Model.Builders
             builder.AppendLine($"     INSERT");
             builder.AppendLine($"       INTO [dbo].{Name}_historie");
             builder.AppendLine($"           (Id");
+
+            if (Entity.GenerateReadonlyGuid)
+            {
+                builder.AppendLine("           ,[UId]");
+            }
+
             builder.AppendLine($"           ,[RowVersion]");
             foreach (DatabaseProperty selectSqlProperty in GetNonChildCollectionProperties)
             {
@@ -307,6 +386,12 @@ namespace Tobasco.Model.Builders
             builder.AppendLine($"           ,DeletedAt");
             builder.AppendLine($"           )");
             builder.AppendLine($"     SELECT DELETED.Id");
+
+            if (Entity.GenerateReadonlyGuid)
+            {
+                builder.AppendLine($"           ,Deleted.[UId]");
+            }
+
             builder.AppendLine($"           ,DELETED.[RowVersion]");
             foreach (DatabaseProperty selectSqlProperty in GetNonChildCollectionProperties)
             {
@@ -319,6 +404,8 @@ namespace Tobasco.Model.Builders
             builder.AppendLine($"       FROM Deleted;");
             builder.AppendLine("END;");
             builder.AppendLine("GO");
+
+            return builder.ToString();
         }
 
         public override IEnumerable<FileBuilder.OutputFile> Build()
@@ -329,13 +416,17 @@ namespace Tobasco.Model.Builders
                 OutputPaneManager.WriteToOutputPane($"Generate Table for {Name}");
                 var tableFile = FileManager.StartNewSqlTableFile(Name, Database.Project, Database.Tables.Folder);
                 tableFile.Content = GetTable();
+
                 if (Database.Tables.Generate && Database.Tables.GenerateHistorie.Generate)
                 {
                     OutputPaneManager.WriteToOutputPane($"Generate HistorieTable for {Name}");
                     var builder = GetHistorieTable();
-                    AddUpdateTrigger(builder);
-                    AddDeletedTrigger(builder);
+
+                    string indexes = GetIndexes();
+                    string triggers = GetTriggers();
                     tableFile.Content.AppendLine("GO");
+                    tableFile.Content.AppendLine(indexes);
+                    tableFile.Content.AppendLine(triggers);
                     tableFile.Content.AppendLine(builder.ToString());
                 }
                 else
@@ -389,6 +480,17 @@ namespace Tobasco.Model.Builders
             }
 
             return outputFiles;
+        }
+
+        private static string GetDefaultHeader(string headerTekst)
+        {
+            var builder = new StringBuilder();
+
+            builder.AppendLine("-- ================================================================================");
+            builder.AppendLine($"-- {headerTekst}");
+            builder.AppendLine("-- ================================================================================");
+
+            return builder.ToString();
         }
     }
 }

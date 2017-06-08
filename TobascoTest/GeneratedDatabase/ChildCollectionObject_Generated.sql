@@ -1,4 +1,7 @@
-﻿CREATE TABLE [dbo].[ChildCollectionObject] (
+﻿-- ================================================================================
+-- T a b e l s
+-- ================================================================================
+CREATE TABLE [dbo].[ChildCollectionObject] (
     [Id]                          bigint             IDENTITY (1, 1) NOT NULL
    ,[RowVersion]                  rowversion         NOT NULL
    ,TestChildProp1 nvarchar(100) NOT NULL
@@ -27,11 +30,17 @@ CREATE TABLE [dbo].[ChildCollectionObject_historie] (
 );
 GO
 
+-- ================================================================================
+-- I n d e x e s
+-- ================================================================================
 CREATE NONCLUSTERED INDEX IX_ChildCollectionObject_historie_Id
                        ON [dbo].ChildCollectionObject_historie
                          (Id ASC)
                   INCLUDE(ModifiedOn);
 GO
+-- ================================================================================
+-- T r i g g e r s
+-- ================================================================================
 CREATE TRIGGER [dbo].tu_ChildCollectionObject
             ON [dbo].ChildCollectionObject
            FOR UPDATE

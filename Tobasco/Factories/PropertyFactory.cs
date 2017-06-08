@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Text;
 using Tobasco.Enums;
-using Tobasco.Model;
 using Tobasco.Model.Properties;
 
 namespace Tobasco.Factories
@@ -19,6 +14,9 @@ namespace Tobasco.Factories
             {
                 case Datatype.ChildCollection:
                     PropertyBuilder.Append("public List<" + prop.GetValueType + "> " + prop.Property.Name + " { get; } = new List<" + prop.GetValueType + ">();");
+                    break;
+                case Datatype.ReadOnlyGuid:
+                    PropertyBuilder.Append("public " + prop.GetValueType + " " + prop.Property.Name + " { get; private set; }");
                     break;
                 default:
                     PropertyBuilder.Append("public " + prop.GetValueType + " " + prop.Property.Name + " { get; set; }");

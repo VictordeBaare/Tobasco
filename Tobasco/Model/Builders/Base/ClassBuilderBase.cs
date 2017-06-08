@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Tobasco.Factories;
 using Tobasco.Model.Properties;
 using Tobasco.Enums;
@@ -33,7 +30,19 @@ namespace Tobasco.Model.Builders.Base
             {
                 if (_getProperties == null)
                 {
-                    _getProperties = Entity.Properties.Select(x => _propertyFactory.GetProperty(x));
+                     List<ClassProperty>  properties = Entity.Properties.Select(x => _propertyFactory.GetProperty(x)).ToList();
+
+                    if (Entity.GenerateReadonlyGuid)
+                    {
+                        properties.Add(_propertyFactory.GetProperty(new Property
+                        {
+                            DataType = new DataType {Datatype = Datatype.ReadOnlyGuid},
+                            Name = "Uid",
+                            Required = true
+                        }));
+                    }
+
+                    _getProperties = properties;
                 }
 
                 return _getProperties;

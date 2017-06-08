@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Tobasco.Enums
+﻿namespace Tobasco.Enums
 {
     public enum Datatype
     {
@@ -24,6 +18,7 @@ namespace Tobasco.Enums
         ByteArray = 13,
         Reference = 14,
         FlagEnum = 15,
-        CustomType = 16
+        CustomType = 16,
+        ReadOnlyGuid = 17
     }
 }
