@@ -57,6 +57,7 @@ namespace Tobasco.Model.Builders
             var classFile = FileManager.StartNewClassFile(GetRepositoryName, Repository.FileLocation.Project, Repository.FileLocation.Folder);
             classFile.Namespaces.AddRange(GetRepositoryNamespaces);
             classFile.Namespaces.Add(Repository.InterfaceLocation.GetProjectLocation);
+            classFile.Namespaces.Add("System.Collections.Generic");
             classFile.OwnNamespace = Repository.FileLocation.GetNamespace;
             classFile.Constructor.ParameterWithField.AddRange(GetFieldWithParameters());
             if (Security != null && Security.Generate)
@@ -65,7 +66,7 @@ namespace Tobasco.Model.Builders
                 classFile.Constructor.Fields.AddRange(new List<TypeWithName>
                 {
                     new TypeWithName {Name = "_xDacFunc", Type = "GetDacFunc"},
-                    new TypeWithName { Name = $"GetDacFunc({GetEntityName} {GetEntityName.ToLower()})", Type = $"delegate {Security.Dac.Name(GetEntityName)}" }
+                    new TypeWithName { Name = $"GetDacFunc({GetEntityName} {GetEntityName.ToLower()})", Type = $"delegate IEnumerable<{Security.Dac.Name(GetEntityName)}>" }
                 });
                 classFile.Constructor.CustomImplementation.Add("OnCreated()");
                 classFile.Methods.Add("partial void OnCreated();");
@@ -142,7 +143,11 @@ namespace Tobasco.Model.Builders
                 builder.AppendLineWithTabs("if (_xDacFunc != null)", tabs);
                 builder.AppendLineWithTabs("{", tabs);
                 var secbuilder = Entity.GetSecurityBuilder.GetSecurityRepositoryBuilder(Security.Dac);
-                builder.AppendLineWithTabs($"_{secbuilder.GetRepositoryInterfaceName.FirstCharToLower()}.Save(_xDacFunc({GetEntityName.ToLower()}));", tabs + 1);
+                builder.AppendLineWithTabs($"foreach(var securityItem in _xDacFunc({GetEntityName.ToLower()}))", tabs + 1);
+                builder.AppendLineWithTabs("{", tabs + 1);
+                builder.AppendLineWithTabs($"_{secbuilder.GetRepositoryInterfaceName.FirstCharToLower()}.Save(securityItem);", tabs + 2);
+                builder.AppendLineWithTabs("}", tabs + 1);
+
                 builder.AppendLineWithTabs("}", tabs);
             }
             foreach (var itemToSave in GetChildProperties)

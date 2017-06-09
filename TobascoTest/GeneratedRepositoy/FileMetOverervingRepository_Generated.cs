@@ -2,10 +2,10 @@
 using TobascoTest.GeneratedEntity;
 using Tobasco;
 using TobascoTest.IGenerateRepository;
+using System.Collections.Generic;
 
 namespace TobascoTest.GeneratedRepositoy
 {
-    [Serializable]
     public partial class FileMetOverervingRepository : IFileMetOverervingRepository
     {
         private readonly IGenericRepository<FileMetOvererving> _genericRepository;
@@ -20,7 +20,10 @@ namespace TobascoTest.GeneratedRepositoy
 
         public FileMetOvererving Save(FileMetOvererving filemetovererving)
         {
-            filemetovererving.TestChildProp7 = _iChildObjectRepository.Save(filemetovererving.TestChildProp7);
+            if (filemetovererving.TestChildProp7 != null)
+            {
+                filemetovererving.TestChildProp7 = _iChildObjectRepository.Save(filemetovererving.TestChildProp7);
+            }
             filemetovererving = _genericRepository.Save(filemetovererving);
             foreach(var toSaveItem in filemetovererving.TestChildProp8)
             {

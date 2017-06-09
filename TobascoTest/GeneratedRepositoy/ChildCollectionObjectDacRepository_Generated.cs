@@ -5,7 +5,6 @@ using TobascoTest.IGenerateRepository;
 
 namespace TobascoTest.GeneratedRepositoy
 {
-    [Serializable]
     public partial class ChildCollectionObjectDacRepository : IChildCollectionObjectDacRepository
     {
         private readonly GenericRepository<ChildCollectionObjectDac> _genericRepository;

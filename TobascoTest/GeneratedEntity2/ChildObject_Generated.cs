@@ -5,7 +5,7 @@ using TobascoTest.TestEnums;
 
 namespace TobascoTest.GeneratedEntity2
 {
-    [Serializable]
+[Serializable]
     public partial class ChildObject 
     {
         public string TestChildProp1 { get; set; }

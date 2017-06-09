@@ -5,7 +5,6 @@ using TobascoTest.IGenerateRepository;
 
 namespace TobascoTest.GeneratedRepositoy
 {
-    [Serializable]
     public partial class ConnectionFactory : IConnectionFactory
     {
         private string _connectionstring;

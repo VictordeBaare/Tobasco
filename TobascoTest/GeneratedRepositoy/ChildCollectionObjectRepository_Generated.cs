@@ -2,14 +2,14 @@
 using TobascoTest.GeneratedEntity;
 using Tobasco;
 using TobascoTest.IGenerateRepository;
+using System.Collections.Generic;
 
 namespace TobascoTest.GeneratedRepositoy
 {
-    [Serializable]
     public partial class ChildCollectionObjectRepository : IChildCollectionObjectRepository
     {
         private GetDacFunc _xDacFunc;
-        private delegate ChildCollectionObjectDac GetDacFunc(ChildCollectionObject childcollectionobject);
+        private delegate IEnumerable<ChildCollectionObjectDac> GetDacFunc(ChildCollectionObject childcollectionobject);
         private readonly IGenericRepository<ChildCollectionObject> _genericRepository;
         private readonly IChildCollectionObjectDacRepository _iChildCollectionObjectDacRepository;
         public ChildCollectionObjectRepository(IGenericRepository<ChildCollectionObject> genericRepository, IChildCollectionObjectDacRepository iChildCollectionObjectDacRepository)
@@ -25,7 +25,10 @@ namespace TobascoTest.GeneratedRepositoy
         {
             if (_xDacFunc != null)
             {
-                _iChildCollectionObjectDacRepository.Save(_xDacFunc(childcollectionobject));
+                foreach(var securityItem in _xDacFunc(childcollectionobject))
+                {
+                    _iChildCollectionObjectDacRepository.Save(securityItem);
+                }
             }
             childcollectionobject = _genericRepository.Save(childcollectionobject);
             return childcollectionobject;
@@ -37,14 +40,6 @@ namespace TobascoTest.GeneratedRepositoy
             return _genericRepository.GetById(id);
         }
 
-        partial void OnCreated()
-        {
-            _xDacFunc = XDacFunc;
-        }
 
-        private ChildCollectionObjectDac XDacFunc(ChildCollectionObject childcollectionobject)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

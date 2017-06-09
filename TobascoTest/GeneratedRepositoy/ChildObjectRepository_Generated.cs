@@ -2,14 +2,14 @@
 using TobascoTest.GeneratedEntity;
 using Tobasco;
 using TobascoTest.IGenerateRepository;
+using System.Collections.Generic;
 
 namespace TobascoTest.GeneratedRepositoy
 {
-    [Serializable]
     public partial class ChildObjectRepository : IChildObjectRepository
     {
         private GetDacFunc _xDacFunc;
-        private delegate ChildObjectDac GetDacFunc(ChildObject childobject);
+        private delegate IEnumerable<ChildObjectDac> GetDacFunc(ChildObject childobject);
         private readonly IGenericRepository<ChildObject> _genericRepository;
         private readonly IChildObjectDacRepository _iChildObjectDacRepository;
         public ChildObjectRepository(IGenericRepository<ChildObject> genericRepository, IChildObjectDacRepository iChildObjectDacRepository)
@@ -25,7 +25,10 @@ namespace TobascoTest.GeneratedRepositoy
         {
             if (_xDacFunc != null)
             {
-                _iChildObjectDacRepository.Save(_xDacFunc(childobject));
+                foreach(var securityItem in _xDacFunc(childobject))
+                {
+                    _iChildObjectDacRepository.Save(securityItem);
+                }
             }
             childobject = _genericRepository.Save(childobject);
             return childobject;

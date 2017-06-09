@@ -5,7 +5,7 @@ using TobascoTest.TestEnums;
 
 namespace TobascoTest.GeneratedEntity
 {
-    [Serializable]
+[Serializable]
     public partial class FileMetOvererving : EntityBase
     {
         private string _testchildprop1;

@@ -6,7 +6,6 @@ using System.Dynamic;
 
 namespace TobascoTest.GeneratedEntity
 {
-    [Serializable]
     public partial class ChildObjectDac : EntityBase
     {
         private long _dataid;

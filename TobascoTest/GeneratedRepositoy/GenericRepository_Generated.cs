@@ -12,7 +12,6 @@ using System.Globalization;
 
 namespace TobascoTest.GeneratedRepositoy
 {
-    [Serializable]
     public partial class GenericRepository<T> : IGenericRepository<T> where T : EntityBase, new()
     {
         public GenericRepository(IConnectionFactory connectionFactory)

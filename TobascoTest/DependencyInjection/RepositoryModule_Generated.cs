@@ -7,9 +7,10 @@ using TobascoTest.IGenerateRepository;
 
 namespace TobascoTest.DependencyInjection
 {
-    [Serializable]
+[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1506: AvoidExcessiveClassCoupling", Justification = "Generated file")]
     public partial class RepositoryModule : NinjectModule
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1506: AvoidExcessiveClassCoupling", Justification = "Generated file")]
         public override void Load()
         {
             Bind<IChildCollectionObjectRepository>().To<ChildCollectionObjectRepository>();
