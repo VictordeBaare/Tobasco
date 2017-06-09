@@ -91,6 +91,9 @@
       <DependentUpon>TestGenerator2.txt4</DependentUpon>
     </Compile>
     <Compile Include="GeneratedEntity\EntityBase.cs" />
+    <Compile Include="GeneratedEntity\FileMetOverervingDac_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
     <Compile Include="GeneratedEntity\FileMetOvererving_Generated.cs">
       <DependentUpon>TestGenerator2.txt4</DependentUpon>
     </Compile>
@@ -107,6 +110,9 @@
       <DependentUpon>TestGenerator2.txt4</DependentUpon>
     </Compile>
     <Compile Include="GeneratedRepositoy\ConnectionFactory_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedRepositoy\FileMetOverervingDacRepository_Generated.cs">
       <DependentUpon>TestGenerator2.txt4</DependentUpon>
     </Compile>
     <Compile Include="GeneratedRepositoy\FileMetOverervingRepository_Generated.cs">
@@ -130,6 +136,9 @@
     <Compile Include="IGenerateRepository\IConnectionFactory_Generated.cs">
       <DependentUpon>TestGenerator2.txt4</DependentUpon>
     </Compile>
+    <Compile Include="IGenerateRepository\IFileMetOverervingDacRepository_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
     <Compile Include="IGenerateRepository\IFileMetOverervingRepository_Generated.cs">
       <DependentUpon>TestGenerator2.txt4</DependentUpon>
     </Compile>
@@ -145,6 +154,21 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="GeneratedDatabase\ChildCollectionObjectDac_Generated.sql">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Content>
+    <Content Include="GeneratedDatabase\ChildCollectionObject_Generated.sql">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Content>
+    <Content Include="GeneratedDatabase\ChildObjectDac_Generated.sql">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Content>
+    <Content Include="GeneratedDatabase\ChildObject_Generated.sql">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Content>
+    <Content Include="GeneratedDatabase\FileMetOvererving_Generated.sql">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Content>
     <Content Include="TestChildCollectionObject.xml" />
     <Content Include="TestChildObject.xml" />
     <Content Include="TestEntity.xml" />
@@ -166,11 +190,11 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="GeneratedDatabase\" />
     <Folder Include="GeneratedMapper\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="DependencyInjection\TestGenerator2.txt4" />
+    <None Include="GeneratedDatabase\TestGenerator2.txt4" />
     <None Include="GeneratedEntity2\TestGenerator2.txt4" />
     <None Include="GeneratedEntity\TestGenerator2.txt4" />
     <None Include="GeneratedRepositoy\TestGenerator2.txt4" />

@@ -35,5 +35,4 @@
             <DataType name="ReadonlyChild" type="ChildObject"></DataType>
         </Property>
     </Properties>
-    <Security generate="false"></Security>
 </Entity>

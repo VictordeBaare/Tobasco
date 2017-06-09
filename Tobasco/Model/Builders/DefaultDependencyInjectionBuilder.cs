@@ -45,6 +45,12 @@ namespace Tobasco.Model.Builders
                     classfile.Namespaces.Add(handler.GetEntityLocationOnId(handler.GetRepository.EntityId).FileLocation.GetProjectLocation, s => !classfile.Namespaces.Contains(s));
                     classfile.Namespaces.Add(handler.GetRepository.InterfaceLocation.GetProjectLocation, s => !classfile.Namespaces.Contains(s));
                 }
+                if (handler.GetSecurity != null && handler.GetSecurity.Generate)
+                {
+                    var repositorySecurityBuilder = handler.GetSecurityBuilder.GetSecurityRepositoryBuilder(handler.GetSecurity.Dac);
+                    builder.AppendLineWithTabs($"Bind<{repositorySecurityBuilder.GetRepositoryInterfaceName}>().To<{repositorySecurityBuilder.GetRepositoryName}>();", 3);
+                    builder.AppendLineWithTabs($"Bind<IGenericRepository<{handler.GetSecurity.Dac.Name(handler.Entity.Name)}>>().To<GenericRepository<{handler.GetSecurity.Dac.Name(handler.Entity.Name)}>> ();", 3);
+                }
             }
             builder.AppendLineWithTabs("}", 2);
             classfile.Methods.Add(builder.ToString());            

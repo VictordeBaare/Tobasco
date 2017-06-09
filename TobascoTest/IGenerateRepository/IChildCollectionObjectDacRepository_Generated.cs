@@ -1,7 +1,7 @@
 ﻿using System;
+using Tobasco;
 using TobascoTest.IGenerateRepository;
 using TobascoTest.GeneratedEntity;
-using Tobasco;
 
 namespace TobascoTest.IGenerateRepository
 {

@@ -95,7 +95,6 @@
                 <Transaction useTransaction="false"> </Transaction>
                 <InterfaceLocation project="TobascoTest" folder="IGenerateRepository"></InterfaceLocation>
                 <Namespaces>
-                    <Namespace value="TobascoTest.GeneratedEntity"></Namespace>
                     <Namespace value="Tobasco"></Namespace>
                 </Namespaces>
             </Repository>

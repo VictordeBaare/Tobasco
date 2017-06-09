@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Tobasco.Enums;
 using Tobasco.Extensions;
 using Tobasco.FileBuilder;
 using Tobasco.Manager;
@@ -128,11 +129,12 @@ namespace Tobasco.Model.Builders
                         }
                 });
             }
-            fields.AddRange(Entity.SelectChildRepositoryInterfaces().Select(childRep => new FieldWithParameter
-                {
-                    Field = new TypeWithName {Name = $"_{childRep.FirstCharToLower()}", Type = childRep},
-                    Parameter = new TypeWithName {Name = childRep.FirstCharToLower(), Type = childRep}
-                }));
+            fields.AddRange(Entity.SelectChildRepositoryInterfaces(Entity.Entity.Properties.Where(x => x.DataType.Datatype == Datatype.ChildCollection || x.DataType.Datatype == Datatype.Child))
+                    .Select(childRep => new FieldWithParameter
+                    {
+                        Field = new TypeWithName {Name = $"_{childRep.FirstCharToLower()}", Type = childRep},
+                        Parameter = new TypeWithName {Name = childRep.FirstCharToLower(), Type = childRep}
+                    }));
             return fields;
         }
 

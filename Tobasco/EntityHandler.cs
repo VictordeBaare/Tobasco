@@ -66,10 +66,10 @@ namespace Tobasco
             return string.Join(", ", namen);
         }
 
-        public IEnumerable<string> SelectChildRepositoryInterfaces()
+        public IEnumerable<string> SelectChildRepositoryInterfaces(IEnumerable<Property> properties)
         {
             List<string> childRepositories = new List<string>();
-            foreach (var childProp in _entity.Properties.Where(x => x.DataType.Datatype == Datatype.ChildCollection || x.DataType.Datatype == Datatype.Child))
+            foreach (var childProp in properties)
             {
                 childRepositories.Add(GetRepositoryInterface(childProp.DataType.Type));
             }

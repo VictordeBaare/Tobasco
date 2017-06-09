@@ -5,8 +5,8 @@ using TobascoTest.GeneratedEntity;
 
 namespace TobascoTest.IGenerateRepository
 {
-    public partial interface IChildObjectDacRepository
+    public partial interface IFileMetOverervingDacRepository
     {
-        ChildObjectDac Save(ChildObjectDac childobjectdac);
+        FileMetOverervingDac Save(FileMetOverervingDac filemetoverervingdac);
     }
 }

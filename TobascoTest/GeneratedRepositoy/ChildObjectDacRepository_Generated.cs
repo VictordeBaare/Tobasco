@@ -1,6 +1,6 @@
 ﻿using System;
-using TobascoTest.GeneratedEntity;
 using Tobasco;
+using TobascoTest.GeneratedEntity;
 using TobascoTest.IGenerateRepository;
 
 namespace TobascoTest.GeneratedRepositoy

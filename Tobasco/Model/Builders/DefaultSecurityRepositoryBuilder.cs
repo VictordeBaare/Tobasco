@@ -77,7 +77,8 @@ namespace Tobasco.Model.Builders
         {
             var classFile = FileManager.StartNewClassFile(GetRepositoryName, Dac.Repository.FileLocation.Project, Dac.Repository.FileLocation.Folder);
             classFile.Namespaces.AddRange(GetRepositoryNamespaces);
-            classFile.Namespaces.Add(Dac.Repository.InterfaceLocation.GetProjectLocation);
+            classFile.Namespaces.Add(Dac.FileLocation.GetProjectLocation, s => !classFile.Namespaces.Contains(s));
+            classFile.Namespaces.Add(Dac.Repository.InterfaceLocation.GetProjectLocation, s => !classFile.Namespaces.Contains(s));
             classFile.OwnNamespace = Dac.Repository.FileLocation.GetNamespace;
             classFile.Constructor.ParameterWithField.AddRange(GetFieldWithParameters());
             classFile.BaseClass = $": {GetRepositoryInterfaceName}";
@@ -88,8 +89,9 @@ namespace Tobasco.Model.Builders
         protected virtual InterfaceFile GetInterfaceFile()
         {
             var interfaceFile = FileManager.StartNewInterfaceFile(GetRepositoryInterfaceName, Dac.Repository.InterfaceLocation.Project, Dac.Repository.InterfaceLocation.Folder);
-            interfaceFile.Namespaces.Add(Dac.Repository.InterfaceLocation.GetProjectLocation);
             interfaceFile.Namespaces.AddRange(GetRepositoryNamespaces);
+            interfaceFile.Namespaces.Add(Dac.Repository.InterfaceLocation.GetProjectLocation, s => !interfaceFile.Namespaces.Contains(s));
+            interfaceFile.Namespaces.Add(Dac.FileLocation.GetProjectLocation, s => !interfaceFile.Namespaces.Contains(s));
             interfaceFile.OwnNamespace = Dac.Repository.InterfaceLocation.GetNamespace;
             interfaceFile.Methods.Add($"{GetEntityName} Save({GetEntityName} {GetEntityName.ToLower()});");
             return interfaceFile;
@@ -116,7 +118,7 @@ namespace Tobasco.Model.Builders
                     Parameter = new TypeWithName { Name = "genericRepository",Type = $"GenericRepository<{GetEntityName}>"}
                 }
             };
-            fields.AddRange(Entity.SelectChildRepositoryInterfaces().Select(childRep => new FieldWithParameter { Field = new TypeWithName {Name = $"_{childRep.FirstCharToLower()}", Type = childRep }, Parameter = new TypeWithName { Name = childRep.FirstCharToLower(), Type = childRep }}));
+            fields.AddRange(Entity.SelectChildRepositoryInterfaces(Dac.Properties.Where(x => x.DataType.Datatype == Datatype.ChildCollection || x.DataType.Datatype == Datatype.Child)).Select(childRep => new FieldWithParameter { Field = new TypeWithName {Name = $"_{childRep.FirstCharToLower()}", Type = childRep }, Parameter = new TypeWithName { Name = childRep.FirstCharToLower(), Type = childRep }}));
             return fields;
         }
 
