@@ -37,7 +37,7 @@ namespace Tobasco.Model.Builders
                     builder.Append(Environment.NewLine);
                     foreach (var property in GetProperties.Where(x => x.Property.DataType.Datatype != Datatype.ChildCollection))
                     {
-                        if (property.Property.DataType.Datatype == Datatype.Child)
+                        if (property.Property.DataType.Datatype == Datatype.Child || property.Property.DataType.Datatype == Datatype.ReadonlyChild)
                         {
                             if (property.Property.Required)
                             {
@@ -67,6 +67,7 @@ namespace Tobasco.Model.Builders
         {
             OutputPaneManager.WriteToOutputPane($"Build {Entity.Name} for {Location.FileLocation.GetProjectLocation}");
             var file = FileManager.StartNewClassFile(Entity.Name, Location.FileLocation.Project, Location.FileLocation.Folder);
+            file.ClassAttributes.Add("[Serializable]");
             file.IsAbstract = Entity.IsAbstract;
             file.BaseClass = Location.GetBaseClass;
             file.Namespaces.AddRange(Location.Namespaces.Select(x => x.Value).Concat(Information.Namespaces.Select(x => x.Value)));

@@ -13,12 +13,14 @@ CREATE TABLE [dbo].[FileMetOvererving] (
    ,TestChildProp5 tinyint NULL
    ,TestChildProp6 decimal(12,2) NULL
    ,TestChildProp7Id bigint NULL
+   ,TestChildProp9Id bigint NULL
    ,[ModifiedBy]                  nvarchar (256)     NOT NULL 
     CONSTRAINT [DF_FileMetOvererving_ModifiedBy] DEFAULT SUSER_SNAME()
    ,[ModifiedOn]                  DATETIME2(7)       NOT NULL
     CONSTRAINT [DF_FileMetOvererving_ModifiedOn] DEFAULT SYSDATETIME()
    ,CONSTRAINT [PK_FileMetOvererving] PRIMARY KEY CLUSTERED (Id ASC)
    ,CONSTRAINT [FK_FileMetOvererving_ChildObject_Id] FOREIGN KEY (TestChildProp7Id) REFERENCES [dbo].[ChildObject] ([Id])
+   ,CONSTRAINT [FK_FileMetOvererving_ChildObject_Id] FOREIGN KEY (TestChildProp9Id) REFERENCES [dbo].[ChildObject] ([Id])
 );
 GO
 CREATE TABLE [dbo].[FileMetOvererving_historie] (
@@ -32,6 +34,7 @@ CREATE TABLE [dbo].[FileMetOvererving_historie] (
    ,TestChildProp5 tinyint NULL
    ,TestChildProp6 decimal(12,2) NULL
    ,TestChildProp7Id bigint NULL
+   ,TestChildProp9Id bigint NULL
    ,[ModifiedBy]                  nvarchar (256)     NOT NULL
    ,[ModifiedOn]                  DATETIME2(7)       NOT NULL
    ,DeletedBy                     nvarchar(256)     NULL
@@ -76,6 +79,7 @@ BEGIN
            ,TestChildProp5
            ,TestChildProp6
            ,TestChildProp7Id
+           ,TestChildProp9Id
            ,[ModifiedBy]
            ,[ModifiedOn]
            ,DeletedBy
@@ -91,6 +95,7 @@ BEGIN
            ,TestChildProp5
            ,TestChildProp6
            ,TestChildProp7Id
+           ,TestChildProp9Id
            ,Deleted.ModifiedBy
            ,Deleted.ModifiedOn
            ,NULL
@@ -116,6 +121,7 @@ BEGIN
            ,TestChildProp5
            ,TestChildProp6
            ,TestChildProp7Id
+           ,TestChildProp9Id
            ,[ModifiedBy]
            ,[ModifiedOn]
            ,[DeletedBy]
@@ -131,6 +137,7 @@ BEGIN
            ,TestChildProp5
            ,TestChildProp6
            ,TestChildProp7Id
+           ,TestChildProp9Id
            ,Deleted.ModifiedBy
            ,Deleted.ModifiedOn
            ,ISNULL(LTRIM(RTRIM(CONVERT(nvarchar(128), CONTEXT_INFO()))), SUSER_SNAME())

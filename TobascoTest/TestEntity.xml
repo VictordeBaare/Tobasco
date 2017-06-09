@@ -31,6 +31,9 @@
         <Property name="TestChildProp8" required="true">
             <DataType name="ChildCollection" type="ChildCollectionObject"></DataType>
         </Property>
+        <Property name="TestChildProp9" required="false">
+            <DataType name="ReadonlyChild" type="ChildObject"></DataType>
+        </Property>
     </Properties>
     <Security generate="false"></Security>
 </Entity>

@@ -98,6 +98,7 @@ namespace Tobasco.Model.Properties
                             _getValueType = "Guid";
                             break;
                         case Datatype.Child:
+                        case Datatype.ReadonlyChild:
                         case Datatype.CustomType:
                         case Datatype.ChildCollection:
                             _getValueType = _property.DataType.Type;

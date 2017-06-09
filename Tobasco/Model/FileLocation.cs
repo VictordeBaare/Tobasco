@@ -20,10 +20,23 @@ namespace Tobasco.Model
 
         public ValueElement AssemblyName { get; set; }
 
-        [XmlIgnore]
-        public string GetNamespace => _getNamespace ?? (_getNamespace = $"namespace {(AssemblyName != null ? AssemblyName.Value + "." : string.Empty)}{GetProjectLocation}");
+        public ValueElement NamespaceOverride { get; set; }
 
         [XmlIgnore]
-        public string GetProjectLocation => _getProjectLocation ?? (_getProjectLocation = $"{Project}.{Folder}");
+        public string GetNamespace => _getNamespace ?? (_getNamespace = $"namespace {GetProjectLocation}");
+
+        [XmlIgnore]
+        public string GetProjectLocation
+        {
+            get
+            {
+                if (!string.IsNullOrEmpty(NamespaceOverride?.Value))
+                {
+                    return NamespaceOverride.Value;
+                }
+                return _getProjectLocation ?? (_getProjectLocation = $"{(AssemblyName != null ? AssemblyName.Value + "." : string.Empty)}{Project}{(!string.IsNullOrEmpty(Folder) ? $".{Folder}" : string.Empty)}");
+            }
+
+        }
     }
 }

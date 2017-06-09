@@ -35,5 +35,8 @@ namespace Tobasco.Model
 
         [XmlAttribute("donotgenerateforeignkey")]
         public bool DoNotGenerateForeignKey { get; set; }
+
+        [XmlAttribute("donotgenerateforeignkeyindex")]
+        public bool DoNotGenerateForeignKeyIndex { get; set; }
     }
 }

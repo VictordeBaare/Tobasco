@@ -36,5 +36,7 @@ namespace Tobasco.FileBuilder
         public abstract string BuildContent();
 
         public FileProperties FileProperties { get; set; }
+
+        public List<string> ClassAttributes { get; set; } = new List<string>();
     }
 }

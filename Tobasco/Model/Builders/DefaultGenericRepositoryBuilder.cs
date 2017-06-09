@@ -13,7 +13,7 @@ namespace Tobasco.Model.Builders
     {
         public DefaultGenericRepositoryBuilder(EntityInformation information) : base(information) { }
 
-        private string SaveMethod()
+        protected virtual string SaveMethod()
         {
             var builder = new StringBuilder();
             
@@ -38,7 +38,24 @@ namespace Tobasco.Model.Builders
             return builder.ToString();
         }
 
-        private string InsertMethod()
+        protected virtual string ListSaveMethod()
+        {
+            var builder = new StringBuilder();
+
+            builder.AppendLineWithTabs("public IEnumerable<T> Save(IEnumerable<T> entities)", 0);
+            builder.AppendLineWithTabs("{", 2);
+            builder.AppendLineWithTabs("var enumerable = entities as IList<T> ?? entities.ToList();", 3);
+            builder.AppendLineWithTabs("foreach (var entity in enumerable)", 3);
+            builder.AppendLineWithTabs("{", 3);
+            builder.AppendLineWithTabs("Save(entity);", 4);
+            builder.AppendLineWithTabs("}", 3);
+            builder.AppendLineWithTabs("return enumerable;", 3);
+            builder.AppendLineWithTabs("}", 2);
+            
+            return builder.ToString();
+        }
+
+        protected virtual string InsertMethod()
         {
             var builder = new StringBuilder();
 
@@ -50,9 +67,7 @@ namespace Tobasco.Model.Builders
             builder.AppendLineWithTabs("{", 4);
             builder.AppendLineWithTabs("entity.Id = id;", 5);
             builder.AppendLineWithTabs("entity.RowVersion = rowversion;", 5);
-            builder.AppendLineWithTabs("if(entity.IsDirty)", 5);
-            builder.AppendLineWithTabs("return entity;", 4);
-            builder.AppendLineWithTabs("return Update(entity);", 4);
+            builder.AppendLineWithTabs("return entity;", 5);
             builder.AppendLineWithTabs("}, ToAnonymous(entity, false), splitOn: \"RowVersion\", commandType: CommandType.StoredProcedure);", 4);
             builder.AppendLineWithTabs("}", 3);
             builder.AppendLineWithTabs("entity.MarkOld();", 3);
@@ -62,7 +77,7 @@ namespace Tobasco.Model.Builders
             return builder.ToString();
         }
 
-        private string DeleteMethod()
+        protected virtual string DeleteMethod()
         {
             var builder = new StringBuilder();
 
@@ -79,7 +94,27 @@ namespace Tobasco.Model.Builders
             return builder.ToString();
         }
 
-        private string UpdateMethod()
+        protected virtual string GetByIdMethod()
+        {
+            var builder = new StringBuilder();
+
+            builder.AppendLineWithTabs("public T GetById(long id)", 0);
+            builder.AppendLineWithTabs("{", 2);
+            builder.AppendLineWithTabs("T entity;", 3);
+            builder.AppendLineWithTabs("using (var connection = ConnectionFactory.GetConnection())", 3);
+            builder.AppendLineWithTabs("{", 3);
+            builder.AppendLineWithTabs("entity = connection.QuerySingle<T>($\"[dbo].[{ typeof(T).Name}_GetById]\",", 4);
+            builder.AppendLineWithTabs("new {Id = id},", 5);
+            builder.AppendLineWithTabs("commandType: CommandType.StoredProcedure);", 5);
+            builder.AppendLineWithTabs("}", 3);
+            builder.AppendLineWithTabs("entity.MarkOld();", 3);
+            builder.AppendLineWithTabs("return entity;", 3);
+            builder.AppendLineWithTabs("}", 2);
+
+            return builder.ToString();
+        }
+
+        protected virtual string UpdateMethod()
         {
             var builder = new StringBuilder();
 
@@ -112,7 +147,7 @@ namespace Tobasco.Model.Builders
             return builder.ToString();
         }
 
-        public string ToAnonymousMethod()
+        protected virtual string ToAnonymousMethod()
         {
             var builder = new StringBuilder();
 
@@ -131,11 +166,11 @@ namespace Tobasco.Model.Builders
             return builder.ToString();
         }
 
-        public override IEnumerable<FileBuilder.OutputFile> Build()
+        protected virtual ClassFile BuildClassFile()
         {
             var classFile = FileManager.StartNewClassFile(GetGenericRepositoryName, Classlocation.Project, Classlocation.Folder);
-            classFile.Namespaces.AddRange(new[] { "System.Configuration", "System.Data.SqlClient", "Dapper", "System.Data", Interfacelocation.GetProjectLocation });
-            classFile.Namespaces.AddRange(Information.Repository.Namespaces.Select(x => x.Value));
+            classFile.Namespaces.AddRange(new[] { "System.Configuration", "System.Data.SqlClient", "Dapper", "System.Data", Interfacelocation.GetProjectLocation, "System.Linq", "System.Collections.Generic" });
+            classFile.Namespaces.AddRange(Information.Repository.Namespaces.Select(x => x.Value).Concat(Information.GenericRepository.Namespaces.Select(x => x.Value)));
             classFile.Namespaces.Add("System.Globalization");
             classFile.OwnNamespace = Information.Repository.FileLocation.GetNamespace;
             classFile.NameExtension = "<T>";
@@ -147,16 +182,29 @@ namespace Tobasco.Model.Builders
             classFile.Methods.Add(InsertMethod());
             classFile.Methods.Add(UpdateMethod());
             classFile.Methods.Add(DeleteMethod());
+            classFile.Methods.Add(ListSaveMethod());
+            classFile.Methods.Add(GetByIdMethod());
             classFile.Methods.Add(ToAnonymousMethod());
+            return classFile;
+        }
 
+        protected virtual InterfaceFile BuildInterfaceFile()
+        {
             var interfaceFile = FileManager.StartNewInterfaceFile(GetInterfaceGenericRepositoryName, Interfacelocation.Project, Interfacelocation.Folder);
-            interfaceFile.Namespaces.AddRange(new [] { "System.Configuration", "System.Data.SqlClient", Interfacelocation.GetProjectLocation });
-            interfaceFile.Namespaces.AddRange(Information.Repository.Namespaces.Select(x => x.Value));
+            interfaceFile.Namespaces.AddRange(new[] { "System.Configuration", "System.Data.SqlClient", Interfacelocation.GetProjectLocation, "System.Collections.Generic" });
+            interfaceFile.Namespaces.AddRange(Information.Repository.Namespaces.Select(x => x.Value).Concat(Information.GenericRepository.Namespaces.Select(x => x.Value)));
             interfaceFile.OwnNamespace = Interfacelocation.GetNamespace;
             interfaceFile.NameExtension = "<T> where T : EntityBase, new()";
             interfaceFile.Properties.Add("IConnectionFactory ConnectionFactory { get; }");
             interfaceFile.Methods.Add("T Save(T entity);");
-            return new List<FileBuilder.OutputFile> { classFile, interfaceFile };
+            interfaceFile.Methods.Add("T GetById(long id); ");
+            interfaceFile.Methods.Add("IEnumerable<T> Save(IEnumerable<T> entities);");
+            return interfaceFile;
+        }
+
+        public override IEnumerable<FileBuilder.OutputFile> Build()
+        {
+            return new List<FileBuilder.OutputFile> { BuildClassFile(), BuildInterfaceFile() };
         }
     }
 }

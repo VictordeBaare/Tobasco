@@ -59,6 +59,13 @@ namespace TobascoTest.GeneratedEntity
 
         public List<ChildCollectionObject> TestChildProp8 { get; } = new List<ChildCollectionObject>();
 
+        private ChildObject _testchildprop9;
+        public ChildObject TestChildProp9
+        {
+            get { return _testchildprop9; }
+            set { SetField(ref  _testchildprop9, value, nameof(TestChildProp9)); }
+        }
+
         public Guid Uid { get; private set; }
 
         public override ExpandoObject ToAnonymous()
@@ -72,6 +79,7 @@ namespace TobascoTest.GeneratedEntity
             anymonous.TestChildProp5 = TestChildProp5;
             anymonous.TestChildProp6 = TestChildProp6;
             anymonous.TestChildProp7Id = TestChildProp7?.Id;
+            anymonous.TestChildProp9Id = TestChildProp9?.Id;
             anymonous.Uid = Uid;
             return anymonous;
         }

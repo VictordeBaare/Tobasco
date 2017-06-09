@@ -80,7 +80,7 @@ namespace Tobasco
             {
                 OutputPaneManager.WriteToOutputPane($"Start adding files for {handler.Key}");
                 outputFiles.AddRange(handler.Value.GetEntityLocations.SelectMany(x => handler.Value.GetClassBuilder(x).Build()));
-                if (_information.Repository != null && _information.Repository.Generate)
+                if (handler.Value.GetRepository != null && handler.Value.GetRepository.Generate)
                 {
                     OutputPaneManager.WriteToOutputPane("Add repository file");
                     outputFiles.AddRange(handler.Value.GetRepositoryBuilder.Build());

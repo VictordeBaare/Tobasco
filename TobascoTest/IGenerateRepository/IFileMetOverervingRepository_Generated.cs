@@ -5,8 +5,9 @@ using Tobasco;
 
 namespace TobascoTest.IGenerateRepository
 {
-    public interface IFileMetOverervingRepository
+    public partial interface IFileMetOverervingRepository
     {
         FileMetOvererving Save(FileMetOvererving filemetovererving);
+        FileMetOvererving GetById(long id);
     }
 }

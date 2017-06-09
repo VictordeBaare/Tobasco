@@ -23,7 +23,10 @@ namespace Tobasco.FileBuilder
             builder.Append(Environment.NewLine);
             builder.AppendLineWithTabs($"{OwnNamespace}", 0);
             builder.AppendLineWithTabs("{", 0);
-            builder.AppendLineWithTabs("[Serializable]", 1);
+            foreach (string classAttribute in ClassAttributes)
+            {
+                builder.AppendLine($"{classAttribute}");
+            }
             builder.AppendLineWithTabs($"public{(IsAbstract ? " abstract" : string.Empty)} partial {Type.GetDescription()} {Name}{NameExtension} {BaseClass}", 1);
             builder.AppendLineWithTabs("{", 1);
             if (Constructor.ShouldBeBuild())

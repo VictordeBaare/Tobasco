@@ -5,8 +5,9 @@ using Tobasco;
 
 namespace TobascoTest.IGenerateRepository
 {
-    public interface IChildObjectRepository
+    public partial interface IChildObjectRepository
     {
         ChildObject Save(ChildObject childobject);
+        ChildObject GetById(long id);
     }
 }

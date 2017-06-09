@@ -31,6 +31,7 @@ namespace Tobasco.Model.DatabaseProperties
                     switch (Property.DataType.Datatype)
                     {
                         case Datatype.Child:
+                        case Datatype.ReadonlyChild:
                             _selectSqlProperty = $"{Property.Name}Id {GetValueType} {(Property.Required ? "NOT NULL" : "NULL")}";
                             break;
                         default:
@@ -51,6 +52,7 @@ namespace Tobasco.Model.DatabaseProperties
                     switch (Property.DataType.Datatype)
                     {
                         case Datatype.Child:
+                        case Datatype.ReadonlyChild:
                             _selectSqlParamater = $"{Property.Name}Id {GetValueType}";
                             break;
                         default:
@@ -71,6 +73,7 @@ namespace Tobasco.Model.DatabaseProperties
                     switch (Property.DataType.Datatype)
                     {
                         case Datatype.Child:
+                        case Datatype.ReadonlyChild:
                             _selectSqlParamaterNaam = $"{Property.Name}Id";
                             break;
                         default:
@@ -112,7 +115,10 @@ namespace Tobasco.Model.DatabaseProperties
         {
             if (string.IsNullOrEmpty(_selectNonClusteredIndex))
             {
-                _selectNonClusteredIndex = $"CREATE NONCLUSTERED INDEX IX_{parentName}_{Property.Name} ON [dbo].[{parentName}] ({Property.Name} ASC)";
+                if (!Property.DataType.DoNotGenerateForeignKeyIndex)
+                {
+                    _selectNonClusteredIndex = $"CREATE NONCLUSTERED INDEX IX_{parentName}_{Property.Name} ON [dbo].[{parentName}] ({Property.Name} ASC)";
+                }
             }
             return _selectNonClusteredIndex;
         }
@@ -128,6 +134,7 @@ namespace Tobasco.Model.DatabaseProperties
                     case Datatype.Int:
                         return "int";
                     case Datatype.Child:
+                    case Datatype.ReadonlyChild:
                     case Datatype.Reference:
                     case Datatype.Long:
                         return "bigint";

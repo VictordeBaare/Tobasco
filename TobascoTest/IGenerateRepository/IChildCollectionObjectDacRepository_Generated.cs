@@ -5,7 +5,7 @@ using Tobasco;
 
 namespace TobascoTest.IGenerateRepository
 {
-    public interface IChildCollectionObjectDacRepository
+    public partial interface IChildCollectionObjectDacRepository
     {
         ChildCollectionObjectDac Save(ChildCollectionObjectDac childcollectionobjectdac);
     }

@@ -19,6 +19,7 @@
         Reference = 14,
         FlagEnum = 15,
         CustomType = 16,
-        ReadOnlyGuid = 17
+        ReadOnlyGuid = 17,
+        ReadonlyChild = 18
     }
 }

@@ -42,6 +42,16 @@ namespace Tobasco.Model.Builders
             return builder.ToString();
         }
 
+        protected virtual string GetByIdMethod()
+        {
+            var builder = new StringBuilder();
+            builder.AppendLineWithTabs($"public {GetEntityName} GetById(long id)", 0);
+            builder.AppendLineWithTabs("{", 2);
+            builder.AppendLineWithTabs("return _genericRepository.GetById(id);", 3);
+            builder.AppendLineWithTabs("}", 2);
+            return builder.ToString();
+        }
+
         protected virtual ClassFile GetClassFile()
         {
             var classFile = FileManager.StartNewClassFile(GetRepositoryName, Repository.FileLocation.Project, Repository.FileLocation.Folder);
@@ -58,10 +68,11 @@ namespace Tobasco.Model.Builders
                     new TypeWithName { Name = $"GetDacFunc({GetEntityName} {GetEntityName.ToLower()})", Type = $"delegate {Security.Dac.Name(GetEntityName)}" }
                 });
                 classFile.Constructor.CustomImplementation.Add("OnCreated()");
+                classFile.Methods.Add("partial void OnCreated();");
             }
             classFile.BaseClass = $": {GetRepositoryInterfaceName}";
             classFile.Methods.Add(GetSaveMethod());
-            classFile.Methods.Add("partial void OnCreated();");
+            classFile.Methods.Add(GetByIdMethod());
             return classFile;
         }
 
@@ -72,6 +83,7 @@ namespace Tobasco.Model.Builders
             interfaceFile.Namespaces.AddRange(GetRepositoryNamespaces);
             interfaceFile.OwnNamespace = Repository.InterfaceLocation.GetNamespace;
             interfaceFile.Methods.Add($"{GetEntityName} Save({GetEntityName} {GetEntityName.ToLower()});");
+            interfaceFile.Methods.Add($"{GetEntityName} GetById(long id);");
             return interfaceFile;
         }
 
@@ -93,8 +105,8 @@ namespace Tobasco.Model.Builders
                 new FieldWithParameter
                 {
                     Parameter =
-                        new TypeWithName {Name = "genericRepository", Type = $"GenericRepository<{GetEntityName}>"},
-                    Field = new TypeWithName {Name = "_genericRepository", Type = $"GenericRepository<{GetEntityName}>"}
+                        new TypeWithName {Name = "genericRepository", Type = $"IGenericRepository<{GetEntityName}>"},
+                    Field = new TypeWithName {Name = "_genericRepository", Type = $"IGenericRepository<{GetEntityName}>"}
                 }
             };
             if (Security != null && Security.Generate)
@@ -135,7 +147,17 @@ namespace Tobasco.Model.Builders
             }
             foreach (var itemToSave in GetChildProperties)
             {
-                builder.AppendLineWithTabs($"{GetEntityName.ToLower()}.{itemToSave.Name} = _{Entity.GetRepositoryInterface(itemToSave.DataType.Type).FirstCharToLower()}.Save({Entity.Entity.Name.ToLower()}.{itemToSave.Name});", tabs);
+                if (itemToSave.Required)
+                {
+                    builder.AppendLineWithTabs($"{GetEntityName.ToLower()}.{itemToSave.Name} = _{Entity.GetRepositoryInterface(itemToSave.DataType.Type).FirstCharToLower()}.Save({GetEntityName.ToLower()}.{itemToSave.Name});", tabs);
+                }
+                else
+                {
+                    builder.AppendLineWithTabs($"if ({GetEntityName.ToLower()}.{itemToSave.Name} != null)", tabs);
+                    builder.AppendLineWithTabs("{", tabs);
+                    builder.AppendLineWithTabs($"{GetEntityName.ToLower()}.{itemToSave.Name} = _{Entity.GetRepositoryInterface(itemToSave.DataType.Type).FirstCharToLower()}.Save({GetEntityName.ToLower()}.{itemToSave.Name});", tabs + 1);
+                    builder.AppendLineWithTabs("}", tabs);
+                }
             }
             builder.AppendLineWithTabs($"{GetEntityName.ToLower()} = _genericRepository.Save({GetEntityName.ToLower()});", tabs);
             foreach (var itemToSave in GetChildCollectionProperties)

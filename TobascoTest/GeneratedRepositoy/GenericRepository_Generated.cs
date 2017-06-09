@@ -4,6 +4,8 @@ using System.Data.SqlClient;
 using Dapper;
 using System.Data;
 using TobascoTest.IGenerateRepository;
+using System.Linq;
+using System.Collections.Generic;
 using TobascoTest.GeneratedEntity;
 using Tobasco;
 using System.Globalization;
@@ -47,9 +49,7 @@ namespace TobascoTest.GeneratedRepositoy
                 {
                     entity.Id = id;
                     entity.RowVersion = rowversion;
-                    if(entity.IsDirty)
-                return entity;
-                return Update(entity);
+                    return entity;
                 }, ToAnonymous(entity, false), splitOn: "RowVersion", commandType: CommandType.StoredProcedure);
             }
             entity.MarkOld();
@@ -92,6 +92,31 @@ namespace TobascoTest.GeneratedRepositoy
                     new {entity.Id, entity.RowVersion, entity.ModifiedBy },
                     commandType: CommandType.StoredProcedure);
             }
+        }
+
+
+        public IEnumerable<T> Save(IEnumerable<T> entities)
+        {
+            var enumerable = entities as IList<T> ?? entities.ToList();
+            foreach (var entity in enumerable)
+            {
+                Save(entity);
+            }
+            return enumerable;
+        }
+
+
+        public T GetById(long id)
+        {
+            T entity;
+            using (var connection = ConnectionFactory.GetConnection())
+            {
+                entity = connection.QuerySingle<T>($"[dbo].[{ typeof(T).Name}_GetById]",
+                    new {Id = id},
+                    commandType: CommandType.StoredProcedure);
+            }
+            entity.MarkOld();
+            return entity;
         }
 
 

@@ -10,14 +10,16 @@ namespace TobascoTest.GeneratedRepositoy
     {
         private GetDacFunc _xDacFunc;
         private delegate ChildObjectDac GetDacFunc(ChildObject childobject);
-        private readonly GenericRepository<ChildObject> _genericRepository;
+        private readonly IGenericRepository<ChildObject> _genericRepository;
         private readonly IChildObjectDacRepository _iChildObjectDacRepository;
-        public ChildObjectRepository(GenericRepository<ChildObject> genericRepository, IChildObjectDacRepository iChildObjectDacRepository)
+        public ChildObjectRepository(IGenericRepository<ChildObject> genericRepository, IChildObjectDacRepository iChildObjectDacRepository)
         {
             _genericRepository = genericRepository;
             _iChildObjectDacRepository = iChildObjectDacRepository;
             OnCreated();
         }
+
+        partial void OnCreated();
 
         public ChildObject Save(ChildObject childobject)
         {
@@ -30,7 +32,11 @@ namespace TobascoTest.GeneratedRepositoy
         }
 
 
-        partial void OnCreated();
+        public ChildObject GetById(long id)
+        {
+            return _genericRepository.GetById(id);
+        }
+
 
     }
 }

@@ -35,7 +35,7 @@ namespace Tobasco.Model.Builders.Base
 
         protected IEnumerable<DatabaseProperty> GetChildProperties
         {
-            get { return GetSqlProperties.Where(x => x.Property.DataType.Datatype == Datatype.Child); }
+            get { return GetSqlProperties.Where(x => x.Property.DataType.Datatype == Datatype.Child || x.Property.DataType.Datatype == Datatype.ReadonlyChild); }
         }
 
         protected IEnumerable<DatabaseProperty> GetNonChildCollectionProperties

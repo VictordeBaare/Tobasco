@@ -22,7 +22,7 @@ namespace Tobasco.FileBuilder
             builder.Append(Environment.NewLine);
             builder.AppendLineWithTabs($"{OwnNamespace}", 0);
             builder.AppendLineWithTabs("{", 0);
-            builder.AppendLineWithTabs($"public {Type.GetDescription()} {Name}{NameExtension}", 1);
+            builder.AppendLineWithTabs($"public partial {Type.GetDescription()} {Name}{NameExtension}", 1);
             builder.AppendLineWithTabs("{", 1);
             foreach (var prop in Properties)
             {

@@ -24,6 +24,8 @@ namespace TobascoTest.GeneratedEntity2
 
         public List<ChildCollectionObject> TestChildProp8 { get; } = new List<ChildCollectionObject>();
 
+        public ChildObject TestChildProp9 { get; set; }
+
         public Guid Uid { get; private set; }
 
         
