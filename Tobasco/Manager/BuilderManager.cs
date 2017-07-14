@@ -17,10 +17,7 @@ namespace Tobasco.Manager
             {DefaultBuilderConstants.MapperBuilder, typeof (DefaultMapperBuilder)},
             {DefaultBuilderConstants.DatabaseBuilder, typeof (DefaultDatabaseBuilder)},
             {DefaultBuilderConstants.ConnectionFactoryBuilder, typeof (DefaultConnectionfactoryBuilder)},
-            {DefaultBuilderConstants.GenericRepositoryBuilder, typeof (DefaultGenericRepositoryBuilder)},
-            {DefaultBuilderConstants.SecurityDatabaseBuilder, typeof (DefaultSecurityDatabaseBuilder)},
-            {DefaultBuilderConstants.SecurityRepositoryBuilder, typeof (DefaultSecurityRepositoryBuilder)},
-            {DefaultBuilderConstants.SecurityBuilder, typeof(SecurityBuilder) }
+            {DefaultBuilderConstants.GenericRepositoryBuilder, typeof (DefaultGenericRepositoryBuilder)}
         };
 
         private static readonly Dictionary<string, Type> Builders = new Dictionary<string, Type>();

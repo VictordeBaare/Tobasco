@@ -65,39 +65,4 @@
         <FileLocation project="TobascoTest" folder="GeneratedRepositoy"></FileLocation>
         <InterfaceLocation project="TobascoTest" folder="IGenerateRepository"></InterfaceLocation>
     </GenericRepository>
-    <Security generate="true">
-        <Dac generate="true">
-            <ORMapper type="Dapper"></ORMapper>
-            <FileLocation project="TobascoTest" folder="GeneratedEntity"></FileLocation>
-            <Properties>
-                <Property name="DataId" required="true">
-                    <DataType name="Long"></DataType>
-                </Property>
-                <Property name="Roltype" required="true">
-                    <DataType name="Enum" type="GeslachtType"></DataType>
-                </Property>
-                <Property name="RelatieId" required="false">
-                    <DataType name="Long"></DataType>
-                </Property>
-            </Properties>
-            <Database project="TobascoTest">
-                <StoredProcedures folder="GeneratedDatabase" generate="true">
-                    <Insert generate="true"></Insert>
-                    <Update generate="true"></Update>
-                    <Delete generate="true"></Delete>
-                </StoredProcedures>
-                <Tables folder="GeneratedDatabase" generate="true">
-                    <Historie generate="true"></Historie>
-                </Tables>
-            </Database>
-            <Repository generate="true">
-                <FileLocation project="TobascoTest" folder="GeneratedRepositoy"></FileLocation>
-                <Transaction useTransaction="false"> </Transaction>
-                <InterfaceLocation project="TobascoTest" folder="IGenerateRepository"></InterfaceLocation>
-                <Namespaces>
-                    <Namespace value="Tobasco"></Namespace>
-                </Namespaces>
-            </Repository>
-        </Dac>
-    </Security>
 </EntityInformation>

@@ -13,8 +13,6 @@ namespace Tobasco.Constants
         public const string DependencyBuilder = "DependencyBuilder";
         public const string MapperBuilder = "MapperBuilder";
         public const string DatabaseBuilder = "DatabaseBuilder";
-        public const string SecurityDatabaseBuilder = "SecurityDatabaseBuilder";
-        public const string SecurityRepositoryBuilder = "SecurityRepositoryBuilder";
         public const string GenericRepositoryBuilder = "GenericRepositoryBuilder";
         public const string ConnectionFactoryBuilder = "ConnectionFactoryBuilder";
         public const string SecurityBuilder = "SecurityBuilder";

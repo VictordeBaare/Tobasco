@@ -13,7 +13,7 @@ namespace Tobasco.Model.Builders
     public class DefaultRepositoryBuilder : RepositoryBuilderBase
     {
 
-        public DefaultRepositoryBuilder(EntityHandler entity, Repository repository, Model.Security security) : base(entity, repository, security)
+        public DefaultRepositoryBuilder(EntityHandler entity, Repository repository) : base(entity, repository)
         {
         }
         
@@ -61,17 +61,6 @@ namespace Tobasco.Model.Builders
             classFile.Namespaces.Add("System.Collections.Generic");
             classFile.OwnNamespace = Repository.FileLocation.GetNamespace;
             classFile.Constructor.ParameterWithField.AddRange(GetFieldWithParameters());
-            if (Security != null && Security.Generate)
-            {
-                classFile.Namespaces.Add(Security.Dac.FileLocation.GetProjectLocation, s => !classFile.Namespaces.Contains(s));
-                classFile.Constructor.Fields.AddRange(new List<TypeWithName>
-                {
-                    new TypeWithName {Name = "_xDacFunc", Type = "GetDacFunc"},
-                    new TypeWithName { Name = $"GetDacFunc({GetEntityName} {GetEntityName.ToLower()})", Type = $"delegate IEnumerable<{Security.Dac.Name(GetEntityName)}>" }
-                });
-                classFile.Constructor.CustomImplementation.Add("OnCreated()");
-                classFile.Methods.Add("partial void OnCreated();");
-            }
             classFile.BaseClass = $": {GetRepositoryInterfaceName}";
             classFile.Methods.Add(GetSaveMethod());
             classFile.Methods.Add(GetByIdMethod());
@@ -100,35 +89,19 @@ namespace Tobasco.Model.Builders
             return new List<FileBuilder.OutputFile> { classFile, interfaceFile };
         }
 
+        protected virtual FieldWithParameter GetGenericRepositoryParameter()
+        {
+            return new FieldWithParameter
+            {
+                Parameter =
+                    new TypeWithName {Name = "genericRepository", Type = $"IGenericRepository<{GetEntityName}>"},
+                Field = new TypeWithName {Name = "_genericRepository", Type = $"IGenericRepository<{GetEntityName}>"}
+            };
+        }
+
         private IEnumerable<FieldWithParameter> GetFieldWithParameters()
         {
-            List<FieldWithParameter> fields = new List<FieldWithParameter>
-            {
-                new FieldWithParameter
-                {
-                    Parameter =
-                        new TypeWithName {Name = "genericRepository", Type = $"IGenericRepository<{GetEntityName}>"},
-                    Field = new TypeWithName {Name = "_genericRepository", Type = $"IGenericRepository<{GetEntityName}>"}
-                }
-            };
-            if (Security != null && Security.Generate)
-            {
-                var builder = Entity.GetSecurityBuilder.GetSecurityRepositoryBuilder(Security.Dac);
-                fields.Add(new FieldWithParameter
-                {
-                    Field = new TypeWithName
-                    {
-                        Name = $"_{builder.GetRepositoryInterfaceName.FirstCharToLower()}",
-                        Type = builder.GetRepositoryInterfaceName
-                    },
-                    Parameter =
-                        new TypeWithName
-                        {
-                            Name = builder.GetRepositoryInterfaceName.FirstCharToLower(),
-                            Type = builder.GetRepositoryInterfaceName
-                        }
-                });
-            }
+            List<FieldWithParameter> fields = new List<FieldWithParameter> {GetGenericRepositoryParameter()};
             fields.AddRange(Entity.SelectChildRepositoryInterfaces(Entity.Entity.Properties.Where(x => x.DataType.Datatype == Datatype.ChildCollection || x.DataType.Datatype == Datatype.Child))
                     .Select(childRep => new FieldWithParameter
                     {
@@ -140,18 +113,6 @@ namespace Tobasco.Model.Builders
 
         protected virtual StringBuilder GetSaveImplementation(StringBuilder builder, int tabs)
         {
-            if (Security != null && Security.Generate)
-            {
-                builder.AppendLineWithTabs("if (_xDacFunc != null)", tabs);
-                builder.AppendLineWithTabs("{", tabs);
-                var secbuilder = Entity.GetSecurityBuilder.GetSecurityRepositoryBuilder(Security.Dac);
-                builder.AppendLineWithTabs($"foreach(var securityItem in _xDacFunc({GetEntityName.ToLower()}))", tabs + 1);
-                builder.AppendLineWithTabs("{", tabs + 1);
-                builder.AppendLineWithTabs($"_{secbuilder.GetRepositoryInterfaceName.FirstCharToLower()}.Save(securityItem);", tabs + 2);
-                builder.AppendLineWithTabs("}", tabs + 1);
-
-                builder.AppendLineWithTabs("}", tabs);
-            }
             foreach (var itemToSave in GetChildProperties)
             {
                 if (itemToSave.Required)

@@ -15,16 +15,10 @@ namespace TobascoTest.DependencyInjection
         {
             Bind<IChildCollectionObjectRepository>().To<ChildCollectionObjectRepository>();
             Bind<IGenericRepository<ChildCollectionObject>>().To<GenericRepository<ChildCollectionObject>>();
-            Bind<IChildCollectionObjectDacRepository>().To<ChildCollectionObjectDacRepository>();
-            Bind<IGenericRepository<ChildCollectionObjectDac>>().To<GenericRepository<ChildCollectionObjectDac>> ();
             Bind<IChildObjectRepository>().To<ChildObjectRepository>();
             Bind<IGenericRepository<ChildObject>>().To<GenericRepository<ChildObject>>();
-            Bind<IChildObjectDacRepository>().To<ChildObjectDacRepository>();
-            Bind<IGenericRepository<ChildObjectDac>>().To<GenericRepository<ChildObjectDac>> ();
             Bind<IFileMetOverervingRepository>().To<FileMetOverervingRepository>();
             Bind<IGenericRepository<FileMetOvererving>>().To<GenericRepository<FileMetOvererving>>();
-            Bind<IFileMetOverervingDacRepository>().To<FileMetOverervingDacRepository>();
-            Bind<IGenericRepository<FileMetOverervingDac>>().To<GenericRepository<FileMetOverervingDac>> ();
         }
 
 

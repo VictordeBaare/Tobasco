@@ -111,7 +111,6 @@
     <Compile Include="Model\Builders\Base\GenericRepositoryBuilderBase.cs" />
     <Compile Include="Model\Builders\Base\MapperBuilderBase.cs" />
     <Compile Include="Model\Builders\Base\RepositoryBuilderBase.cs" />
-    <Compile Include="Model\Builders\Base\SecurityBuilderBase.cs" />
     <Compile Include="Model\Builders\DefaultClassBuilder.cs" />
     <Compile Include="Model\Builders\DefaultConnectionfactoryBuilder.cs" />
     <Compile Include="Model\Builders\DefaultDatabaseBuilder.cs" />
@@ -119,12 +118,7 @@
     <Compile Include="Model\Builders\DefaultGenericRepositoryBuilder.cs" />
     <Compile Include="Model\Builders\DefaultMapperBuilder.cs" />
     <Compile Include="Model\Builders\DefaultRepositoryBuilder.cs" />
-    <Compile Include="Model\Builders\DefaultSecurityDatabaseBuilder.cs" />
-    <Compile Include="Model\Builders\DefaultSecurityRepositoryBuilder.cs" />
-    <Compile Include="Model\Builders\SecurityBuilder.cs" />
-    <Compile Include="Model\Builders\Security\SecurityRepositoryBase.cs" />
     <Compile Include="Model\ConnectionFactory.cs" />
-    <Compile Include="Model\Dac.cs" />
     <Compile Include="Model\DatabaseProperties\DatabaseProperty.cs" />
     <Compile Include="Model\DatabaseProperties\DecimalProperty.cs" />
     <Compile Include="Model\DatabaseProperties\StringProperty.cs" />
@@ -150,7 +144,6 @@
     <Compile Include="Model\ORMapper.cs" />
     <Compile Include="Model\Property.cs" />
     <Compile Include="Model\Repository.cs" />
-    <Compile Include="Model\Security.cs" />
     <Compile Include="Model\StoredProcedures.cs" />
     <Compile Include="Model\Tables.cs" />
     <Compile Include="Model\Transaction.cs" />

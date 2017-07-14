@@ -92,9 +92,6 @@ namespace Tobasco
                     OutputPaneManager.WriteToOutputPane("Add Mapper files");
                     outputFiles.AddRange(handler.Value.GetMappers.Mapper.SelectMany(x => handler.Value.GetMapperBuilder.Build(x)));
                 }
-                OutputPaneManager.WriteToOutputPane("Generate security");
-                outputFiles.AddRange(handler.Value.GetSecurityBuilder.Build());
-                OutputPaneManager.WriteToOutputPane($"Finished adding files for {handler.Key}");
             }
 
             if (_information.DependencyInjection?.Modules != null)

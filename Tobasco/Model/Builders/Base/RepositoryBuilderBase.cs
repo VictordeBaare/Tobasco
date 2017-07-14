@@ -9,15 +9,13 @@ namespace Tobasco.Model.Builders.Base
     {
         protected readonly EntityHandler Entity;
         protected readonly Repository Repository;
-        protected readonly Model.Security Security;
         private string _getRepositoryName;
         private string _getRepositoryInterfaceName;
 
-        protected RepositoryBuilderBase(EntityHandler entity, Repository repository, Model.Security security)
+        protected RepositoryBuilderBase(EntityHandler entity, Repository repository)
         {
             Entity = entity;
             Repository = repository;
-            Security = security;
         }
 
         public virtual string GetEntityName => Entity.Entity.Name;

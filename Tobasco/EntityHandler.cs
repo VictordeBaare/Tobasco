@@ -46,7 +46,16 @@ namespace Tobasco
         public Property GetChildReferenceProperty(string type, string parent)
         {
             var handler = _getHandlerOnName(type);
-            return handler.Entity.Properties.First(x => x.DataType.Type == parent && x.DataType.Datatype == Datatype.Reference);
+            if (handler == null)
+            {
+                throw new ArgumentNullException($"No handler was found with the type: {type}");
+            }
+            var property = handler.Entity.Properties.FirstOrDefault(x => x.DataType.Type == parent && x.DataType.Datatype == Datatype.Reference);
+            if (property == null)
+            {
+                throw new ArgumentNullException(nameof(property), $"No Reference property was found on {handler.Entity.Name} this property is expected.");
+            }
+            return property;
         }
 
         public string GetProjectLocation(string naam, string id)
@@ -123,18 +132,6 @@ namespace Tobasco
             }
         }
 
-        public Security GetSecurity
-        {
-            get
-            {
-                if (_entity.Security != null)
-                {
-                    return _entity.Security;
-                }
-                return _mainInformation.Security;
-            }
-        }
-
         public Mappers GetMappers
         {
             get
@@ -183,15 +180,6 @@ namespace Tobasco
             return _mainInformation.Database?.Overridekey;
         }
 
-        private string GetSecurityOverrideKey()
-        {
-            if (!string.IsNullOrEmpty(GetSecurity?.Overridekey))
-            {
-                return GetSecurity.Overridekey;
-            }
-            return _mainInformation.Security?.Overridekey;
-        }
-
         private string GetMappersOverrideKey()
         {
             if (!string.IsNullOrEmpty(GetMappers?.Overridekey))
@@ -228,15 +216,6 @@ namespace Tobasco
             }
         }
 
-        public SecurityBuilder GetSecurityBuilder
-        {
-            get
-            {
-                var type = BuilderManager.Get(GetSecurityOverrideKey(), DefaultBuilderConstants.SecurityBuilder);
-                return BuilderManager.InitializeBuilder<SecurityBuilder>(type, new object[] { this, _mainInformation });
-            }
-        }
-
         public MapperBuilderBase GetMapperBuilder
         {
             get
@@ -251,7 +230,7 @@ namespace Tobasco
             get
             {
                 var type = BuilderManager.Get(GetRepositoryOverrideKey(), DefaultBuilderConstants.RepositoryBuilder);
-                return BuilderManager.InitializeBuilder<RepositoryBuilderBase>(type, new object[] {this, GetRepository, GetSecurity});
+                return BuilderManager.InitializeBuilder<RepositoryBuilderBase>(type, new object[] {this, GetRepository});
             }
         }
     }
