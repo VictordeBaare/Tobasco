@@ -11,11 +11,25 @@ namespace Tobasco.FileBuilder
     {
         public override FileType Type => FileType.Table;
 
-        public StringBuilder Content { get; set; }
+        public string Table { get; set; }
+
+        public string HistorieTable { get; set; }
+
+        public string Indexes { get; set; }
+
+        public string Triggers { get; set; }
 
         public override string BuildContent()
         {
-            return Content.ToString();
+            var builder = new StringBuilder();
+            builder.AppendLine(Table);
+            builder.AppendLine("GO");
+            builder.AppendLine(HistorieTable);
+            builder.AppendLine("GO");
+            builder.AppendLine(Indexes);
+            builder.AppendLine("GO");
+            builder.AppendLine(Triggers);
+            return builder.ToString();
         }
     }
 }

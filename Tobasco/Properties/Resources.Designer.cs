@@ -8,10 +8,10 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Tobasco.Properties
-{
-
-
+namespace Tobasco.Properties {
+    using System;
+    
+    
     /// <summary>
     ///   A strongly-typed resource class, for looking up localized strings, etc.
     /// </summary>
@@ -22,49 +22,368 @@ namespace Tobasco.Properties
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Resources
-    {
-
+    internal class Resources {
+        
         private static global::System.Resources.ResourceManager resourceMan;
-
+        
         private static global::System.Globalization.CultureInfo resourceCulture;
-
+        
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Resources()
-        {
+        internal Resources() {
         }
-
+        
         /// <summary>
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager
-        {
-            get
-            {
-                if ((resourceMan == null))
-                {
+        internal static global::System.Resources.ResourceManager ResourceManager {
+            get {
+                if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Tobasco.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
             }
         }
-
+        
         /// <summary>
         ///   Overrides the current thread's CurrentUICulture property for all
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture
-        {
-            get
-            {
+        internal static global::System.Globalization.CultureInfo Culture {
+            get {
                 return resourceCulture;
             }
-            set
-            {
+            set {
                 resourceCulture = value;
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to public SqlConnection GetConnection()
+        ///{
+        ///	SqlConnection connection = null;
+        ///	SqlConnection tempConnection = null;
+        ///	try
+        ///	{
+        ///		tempConnection = new SqlConnection(_connectionstring);
+        ///		tempConnection.Open();
+        ///		connection = tempConnection;
+        ///		tempConnection = null;
+        ///	}
+        ///	finally
+        ///	{
+        ///		tempConnection?.Dispose();
+        ///	}
+        ///	return connection;
+        ///}.
+        /// </summary>
+        internal static string ConnectionFactoryGetConnection {
+            get {
+                return ResourceManager.GetString("ConnectionFactoryGetConnection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to public List&lt;%PropertyValueType%&gt; %PropertyName% { get; } = new List&lt;%PropertyValueType%&gt;();.
+        /// </summary>
+        internal static string PropertyChildCollection {
+            get {
+                return ResourceManager.GetString("PropertyChildCollection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to private %PropertyValueType% _%PropertyName%;
+        ///
+        ///public %PropertyValueType% %PropertyName%
+        ///{
+        ///	get { return _%PropertyName%; }
+        ///	set { SetField(ref _%PropertyName%, value, nameof(%PropertyName%)); }
+        ///}.
+        /// </summary>
+        internal static string PropertyDapperDefault {
+            get {
+                return ResourceManager.GetString("PropertyDapperDefault", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to public %PropertyValueType% %PropertyName% { get; set; }.
+        /// </summary>
+        internal static string PropertyDefault {
+            get {
+                return ResourceManager.GetString("PropertyDefault", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to PropertyName.
+        /// </summary>
+        internal static string PropertyName {
+            get {
+                return ResourceManager.GetString("PropertyName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to public %PropertyValueType% %PropertyName% { get; private set; }.
+        /// </summary>
+        internal static string PropertyReadonlyGuid {
+            get {
+                return ResourceManager.GetString("PropertyReadonlyGuid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to PropertyValueType.
+        /// </summary>
+        internal static string PropertyValueType {
+            get {
+                return ResourceManager.GetString("PropertyValueType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CREATE PROCEDURE [dbo].[%TableName%_Delete]
+        ///		@Id [bigint]
+        ///       ,@RowVersion [rowversion]
+        ///       ,@ModifiedBy nvarchar(256)
+        ///AS
+        ///BEGIN
+        ///		SET NOCOUNT ON;
+        ///		
+        ///		DECLARE @Context varbinary(128) = CAST(CAST(ISNULL(@ModifiedBy, SUSER_SNAME()) AS char(256)) AS varbinary(256));
+        ///		
+        ///		DELETE 
+        ///		  FROM [dbo].%TableName%
+        ///		 WHERE %TableName%.Id = @Id
+        ///		   AND %TableName%.[RowVersion] = @RowVersion
+        ///
+        ///		DECLARE @RowCountBig AS bigint = ROWCOUNT_BIG();
+        ///		
+        ///		SET CONTEXT_INFO 0x;
+        ///		
+        ///		IF @RowCountBig = 0
+        /// [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string SqlDeleteStp {
+            get {
+                return ResourceManager.GetString("SqlDeleteStp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CREATE TABLE [dbo].[%TableName%_historie] (
+        ///    [Id]                          bigint             NOT NULL
+        ///   %TableProperties%
+        ///   ,[RowVersion]                  binary(8)          NOT NULL
+        ///   ,[ModifiedBy]                  nvarchar (256)     NOT NULL
+        ///   ,[ModifiedOn]                  DATETIME2(7)       NOT NULL
+        ///   ,DeletedBy                     nvarchar(256)     NULL
+        ///   ,DeletedAt                     datetime2(7)      NULL
+        ///);.
+        /// </summary>
+        internal static string SqlHistorieTable {
+            get {
+                return ResourceManager.GetString("SqlHistorieTable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CREATE PROCEDURE [dbo].[%TableName%_Insert]
+        ///    @Id bigint output,
+        ///	%StpParameter%
+        ///    @ModifiedBy nvarchar(256)
+        ///AS
+        ///BEGIN
+        ///    SET NOCOUNT ON;
+        ///
+        ///    INSERT
+        ///      INTO [dbo].%TableName% 
+        ///	       (
+        ///			%StpPropertyNames%
+        ///			[ModifiedBy],
+        ///		    [ModifiedOn]
+        ///		   )
+        ///	OUTPUT Inserted.Id
+        ///		  ,Inserted.[RowVersion]
+        ///		  ,Inserted.ModifiedOn
+        ///    VALUES
+        ///         (
+        ///		   %StpParameterName%
+        ///           @ModifiedBy,
+        ///           SYSDATETIME()
+        ///          );
+        ///END;.
+        /// </summary>
+        internal static string SqlInsertStp {
+            get {
+                return ResourceManager.GetString("SqlInsertStp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CREATE TABLE [dbo].[%TableName%](
+        ///	 [Id]			bigint	IDENTITY (1,1)  NOT NULL
+        ///	,[RowVersion]   rowversion         		NOT NULL
+        ///	%TableProperties%
+        ///	,[ModifiedBY]	nvarchar(256)			NOT NULL
+        ///	 CONSTRAINT [DF_{%TableName%}_ModifiedBy] DEFAULT SUSER_SNAME()
+        ///	,[ModifiedOn]	datetime2(7)			NOT NULL
+        ///	 CONSTRAINT [DF_{%TableName%}_ModifiedOn] DEFAULT SYSDATETIME()
+        ///	 CONSTRAINT [PK_{%TableName%}] PRIMARY KEY CLUSTERED (Id ASC)
+        ///);.
+        /// </summary>
+        internal static string SqlTable {
+            get {
+                return ResourceManager.GetString("SqlTable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CREATE TRIGGER [dbo].td_%TableName%
+        ///            ON [dbo].%TableName%
+        ///		   FOR DELETE
+        ///AS
+        ///BEGIN
+        ///	INSERT
+        ///	  INTO [dbo].%TableName%_historie(
+        ///			Id,
+        ///		    [RowVersion],
+        ///           %StpPropertyNames%
+        ///		    [ModifiedBy],
+        ///		    [ModifiedOn],
+        ///		    [DeletedBy],
+        ///		    [DeletedAt]
+        ///            )
+        ///	SELECT Deleted.Id,
+        ///	       Deleted.[RowVersion],
+        ///		  %StpPropertyNames%
+        ///		   Deleted.ModifiedBy,
+        ///		   Deleted.ModifiedOn,
+        ///		   ISNULL(LTRIM(RTRIM(CONVERT(nvarchar(128), CONTEXT_INFO()))), SUSER_SNAME()),
+        /// [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string SqlTriggerDelete {
+            get {
+                return ResourceManager.GetString("SqlTriggerDelete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CREATE TRIGGER [dbo].tu_%TableName%
+        ///            ON [dbo].%TableName%
+        ///           FOR UPDATE
+        ///AS
+        ///BEGIN
+        ///    INSERT
+        ///      INTO [dbo].%TableName%_historie(
+        ///			Id,
+        ///		    [RowVersion],
+        ///		   %StpPropertyNames%
+        ///            [ModifiedBy],
+        ///            [ModifiedOn],
+        ///            DeletedBy,
+        ///            DeletedAt
+        ///           )
+        ///    SELECT DELETED.Id,
+        ///           DELETED.[RowVersion],
+        ///		  %StpPropertyNames%
+        ///           Deleted.ModifiedBy,
+        ///           Deleted.ModifiedOn,
+        ///           NULL,
+        ///           NULL
+        ///      [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string SqlTriggerUpdate {
+            get {
+                return ResourceManager.GetString("SqlTriggerUpdate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CREATE PROCEDURE [dbo].[%TableName%_Update]
+        ///		@Id [bigint],
+        ///		%StpParameter%
+        ///        @RowVersion [rowversion],
+        ///        @ModifiedBy nvarchar(256)
+        ///AS
+        ///BEGIN
+        ///		SET NOCOUNT ON;
+        ///		
+        ///		IF OBJECT_ID(&apos;tempdb..#Output&apos;) IS NOT NULL
+        ///		BEGIN
+        ///			DROP TABLE #Output;
+        ///		END;
+        ///
+        ///		CREATE TABLE #Output ([RowVersion]     binary(8)    NOT NULL
+        ///							  ,ModifiedOn      datetime2(7) NOT NULL
+        ///							 );
+        ///
+        ///		UPDATE [dbo].%TableName%
+        ///		   SET 
+        ///				%UpdateSetTableParemeters%            
+        ///			    %TableName%.ModifiedB [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string SqlUpdateStp {
+            get {
+                return ResourceManager.GetString("SqlUpdateStp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to StpParameter.
+        /// </summary>
+        internal static string StpParameter {
+            get {
+                return ResourceManager.GetString("StpParameter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to StpParameterName.
+        /// </summary>
+        internal static string StpParameterName {
+            get {
+                return ResourceManager.GetString("StpParameterName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to StpPropertyNames.
+        /// </summary>
+        internal static string StpPropertyNames {
+            get {
+                return ResourceManager.GetString("StpPropertyNames", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to TableName.
+        /// </summary>
+        internal static string TableName {
+            get {
+                return ResourceManager.GetString("TableName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to TableProperties.
+        /// </summary>
+        internal static string TableProperties {
+            get {
+                return ResourceManager.GetString("TableProperties", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to UpdateSetTableParemeters.
+        /// </summary>
+        internal static string UpdateSetTableParemeters {
+            get {
+                return ResourceManager.GetString("UpdateSetTableParemeters", resourceCulture);
             }
         }
     }

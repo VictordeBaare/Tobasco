@@ -1,30 +1,46 @@
 ﻿using System.Text;
 using Tobasco.Enums;
 using Tobasco.Model.Properties;
+using Tobasco.Templates;
+using System.Collections.Generic;
+using Tobasco.Properties;
 
 namespace Tobasco.Factories
 {
     public class PropertyFactory
     {
-        private StringBuilder _propertyBuilder;
+        private Template _template;
 
         public virtual string GetProperty(ClassProperty prop, bool generateRules)
         {
-            switch (prop.Property.DataType.Datatype)
-            {
-                case Datatype.ChildCollection:
-                    PropertyBuilder.Append("public List<" + prop.GetValueType + "> " + prop.Property.Name + " { get; } = new List<" + prop.GetValueType + ">();");
-                    break;
-                case Datatype.ReadOnlyGuid:
-                    PropertyBuilder.Append("public " + prop.GetValueType + " " + prop.Property.Name + " { get; private set; }");
-                    break;
-                default:
-                    PropertyBuilder.Append("public " + prop.GetValueType + " " + prop.Property.Name + " { get; set; }");
-                    break;
-            }
-            return PropertyBuilder.ToString();
+            Template.SetTemplate(GetPropertyTemplate(prop.Property.DataType.Datatype));
+            Template.Fill(GetParameters(prop));
+            return Template.GetText;
         }
 
-        protected StringBuilder PropertyBuilder => _propertyBuilder ?? (_propertyBuilder = new StringBuilder());
+        protected virtual string GetPropertyTemplate(Datatype datatype)
+        {
+            switch (datatype)
+            {
+                case Datatype.ChildCollection:
+                    return Resources.PropertyChildCollection;
+                case Datatype.ReadOnlyGuid:
+                    return Resources.PropertyReadonlyGuid;
+                default:
+                    return Resources.PropertyDefault;
+            }
+        }
+
+        protected virtual Dictionary<string, string> GetParameters(ClassProperty prop)
+        {
+            var parameters = new Dictionary<string, string>();
+
+            parameters.Add(PropertyTemplateConstants.ValueType, prop.GetValueType);
+            parameters.Add(PropertyTemplateConstants.PropertyName, prop.Property.Name);
+
+            return parameters;
+        }
+
+        protected Template Template =>  _template ?? (_template = new Template());
     }
 }

@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Tobasco.Extensions;
+﻿using System.Collections.Generic;
 using Tobasco.FileBuilder;
 using Tobasco.Model.Builders.Base;
+using Tobasco.Properties;
 
 namespace Tobasco.Model.Builders
 {
@@ -31,26 +29,7 @@ namespace Tobasco.Model.Builders
 
         private string GetConnectionMethod()
         {
-            var builder = new StringBuilder();
-            builder.AppendLineWithTabs("public SqlConnection GetConnection()", 0);
-            builder.AppendLineWithTabs("{", 2);
-            builder.AppendLineWithTabs("SqlConnection connection = null;", 3);
-            builder.AppendLineWithTabs("SqlConnection tempConnection = null;", 3);
-            builder.AppendLineWithTabs("try", 3);
-            builder.AppendLineWithTabs("{", 3);
-            builder.AppendLineWithTabs("tempConnection = new SqlConnection(_connectionstring);", 4);
-            builder.AppendLineWithTabs("tempConnection.Open();", 4);
-            builder.AppendLineWithTabs("connection = tempConnection;", 4);
-            builder.AppendLineWithTabs("tempConnection = null;", 4);
-            builder.AppendLineWithTabs("}", 3);
-            builder.AppendLineWithTabs("finally", 3);
-            builder.AppendLineWithTabs("{", 3);
-            builder.AppendLineWithTabs("tempConnection?.Dispose();", 4);
-            builder.AppendLineWithTabs("}", 3);
-            builder.Append(Environment.NewLine);
-            builder.AppendLineWithTabs("return connection;", 3);
-            builder.AppendLineWithTabs("}", 2);
-            return builder.ToString();
+            return Resources.ConnectionFactoryGetConnection;
         }
     }
 }

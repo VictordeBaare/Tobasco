@@ -7,6 +7,8 @@ using Tobasco.FileBuilder;
 using Tobasco.Manager;
 using Tobasco.Model.Builders.Base;
 using Tobasco.Model.DatabaseProperties;
+using Tobasco.Properties;
+using Tobasco.Templates;
 
 namespace Tobasco.Model.Builders
 {
@@ -19,35 +21,56 @@ namespace Tobasco.Model.Builders
 
         public override string Name => Entity.Name;
 
-        private StringBuilder GetTable()
+        private string GetTable()
+        {
+            var template = new Template();
+            template.SetTemplate(Resources.SqlTable);
+            template.Fill(GetParameters());
+            return template.GetText;
+        }
+
+        private string GetHistorieTable()
+        {
+            var template = new Template();
+            template.SetTemplate(Resources.SqlHistorieTable);
+            template.Fill(GetParameters());
+            return template.GetText;
+        }
+
+        private Dictionary<string, string> GetParameters()
+        {
+            var parameters = new Dictionary<string, string>();
+            parameters.Add(Resources.TableName, Name);
+            parameters.Add(Resources.TableProperties, GetTableProperties());
+
+            return parameters;
+        }
+
+        private string GetTableProperties()
         {
             var builder = new StringBuilder();
-
-            builder.AppendLine(GetDefaultHeader("T a b l e s"));
-            builder.AppendLine($"CREATE TABLE [dbo].[{Name}] (");
-            builder.AppendLine($"    [Id]                          bigint             IDENTITY (1, 1) NOT NULL");
-
+            var sqlProps = GetNonChildCollectionProperties;
             if (Entity.GenerateReadonlyGuid)
             {
                 builder.AppendLine($"   ,[UId]                         uniqueidentifier   NOT NULL CONSTRAINT [DF_{Name}_UId] DEFAULT NEWID()");
             }
-            
-            builder.AppendLine($"   ,[RowVersion]                  rowversion         NOT NULL");
-            foreach (var sqlprop in GetNonChildCollectionProperties)
+            foreach (var prop in sqlProps)
             {
-                builder.AppendLine($"   ,{sqlprop.SelectSqlTableProperty}");
+                builder.AppendLine($",{prop.SelectSqlTableProperty}");
             }
-            builder.AppendLine($"   ,[ModifiedBy]                  nvarchar (256)     NOT NULL ");
-            builder.AppendLine($"    CONSTRAINT [DF_{Name}_ModifiedBy] DEFAULT SUSER_SNAME()");
-            builder.AppendLine($"   ,[ModifiedOn]                  DATETIME2(7)       NOT NULL");
-            builder.AppendLine($"    CONSTRAINT [DF_{Name}_ModifiedOn] DEFAULT SYSDATETIME()");
-            builder.AppendLine($"   ,CONSTRAINT [PK_{Name}] PRIMARY KEY CLUSTERED (Id ASC)");
+
+            return builder.ToString();
+        }
+
+        private string GetContraints()
+        {
+            var builder = new StringBuilder();
             foreach (var sqlprop in GetChildProperties)
             {
                 var constraint = sqlprop.SelectChildForeignkeyConstraint(Name);
                 if (!string.IsNullOrEmpty(constraint))
                 {
-                    builder.AppendLine($"   ,{constraint}");
+                    builder.AppendLine($",{constraint}");
                 }
             }
             foreach (var sqlprop in GetSqlProperties.Where(x => x.Property.DataType.Datatype == Datatype.Reference))
@@ -58,218 +81,96 @@ namespace Tobasco.Model.Builders
                     builder.AppendLine($"   ,{constraint}");
                 }
             }
+            return builder.ToString();
+        }
+        
+        private string GetInsertStp()
+        {
+            var template = new Template();
+            template.SetTemplate(Resources.SqlInsertStp);
+            template.Fill(InsertTemplateParameters());
 
-            builder.AppendLine($");");
-            builder.AppendLine("GO");
-
-            List<DatabaseProperty> referenceProperties = 
-                GetSqlProperties.Where(x => x.Property.DataType.Datatype == Datatype.Reference).ToList();
-
-            foreach (var sqlprop in referenceProperties)
-            {
-                var index = sqlprop.SelectNonClusteredIndex(Name);
-                if (!string.IsNullOrEmpty(index))
-                {
-                    builder.AppendLine($"{index}");
-                    builder.AppendLine("GO");
-                }
-            }
-
-            if(referenceProperties.Any())
-            {
-                builder.AppendLine("GO");
-            }
-
-            return builder;
+            return template.GetText;
         }
 
-        private string GetHistorieTable()
+        private Dictionary<string, string> InsertTemplateParameters()
+        {
+            var parameters = new Dictionary<string, string>();
+            parameters.Add(Resources.TableName, Name);
+            parameters.Add(Resources.StpParameter, GetSqlParameters());
+            parameters.Add(Resources.StpParameterName, GetSqlParameterNames("@"));
+            parameters.Add(Resources.StpPropertyNames, GetSqlParameterNames(""));
+            return parameters;
+        }
+
+        private string GetSqlParameters()
         {
             var builder = new StringBuilder();
 
-            builder.AppendLine($"CREATE TABLE [dbo].[{Name}_historie] (");
-            builder.AppendLine($"    [Id]                          bigint             NOT NULL");
-
-            if (Entity.GenerateReadonlyGuid)
-            {
-                builder.AppendLine($"   ,[UId]                         uniqueidentifier   NOT NULL");
-            }
-
-            builder.AppendLine($"   ,[RowVersion]                  binary(8)          NOT NULL");
             foreach (var sqlprop in GetNonChildCollectionProperties)
             {
-                builder.AppendLine($"   ,{sqlprop.SelectSqlTableProperty}");
+                builder.AppendLine($"@{sqlprop.SelectSqlParameter},");
             }
-            builder.AppendLine($"   ,[ModifiedBy]                  nvarchar (256)     NOT NULL");
-            builder.AppendLine($"   ,[ModifiedOn]                  DATETIME2(7)       NOT NULL");
-            builder.AppendLine($"   ,DeletedBy                     nvarchar(256)     NULL");
-            builder.AppendLine($"   ,DeletedAt                     datetime2(7)      NULL");
-            builder.AppendLine($");");
-            builder.AppendLine($"GO");
-            builder.Append(Environment.NewLine);
-            
+
             return builder.ToString();
         }
 
-        private StringBuilder GetInsertStp()
+        private string GetSqlParameterNames(string leading)
         {
-            StringBuilder builder = new StringBuilder();
+            var builder = new StringBuilder();
 
-            builder.AppendLine($"CREATE PROCEDURE [dbo].[{Name}_Insert]");
-            builder.AppendLine($"    @Id bigint output,");
             foreach (var sqlprop in GetNonChildCollectionProperties)
             {
-                builder.AppendLine($"    @{sqlprop.SelectSqlParameter},");
+                builder.AppendLine($"{leading}{sqlprop.SelectSqlParameterNaam},");
             }
-            builder.AppendLine($"    @ModifiedBy nvarchar(256)");
-            builder.AppendLine($"AS");
-            builder.AppendLine($"BEGIN");
-            builder.AppendLine($"     SET NOCOUNT ON;");
-            builder.Append(Environment.NewLine);
-            builder.AppendLine($"     INSERT");
-            builder.AppendLine($"       INTO [dbo].{Name}");
-            builder.AppendLine($"           (");
-            foreach (DatabaseProperty selectSqlProperty in GetNonChildCollectionProperties)
-            {
-                builder.AppendLine($"            {selectSqlProperty.SelectSqlParameterNaam},");
-            }
-            builder.AppendLine($"            [ModifiedBy],");
-            builder.AppendLine($"            [ModifiedOn]");
-            builder.AppendLine($"           )");
-            builder.AppendLine($"     OUTPUT Inserted.Id");
-            builder.AppendLine($"           ,Inserted.[RowVersion]");
-            builder.AppendLine($"           ,Inserted.ModifiedOn");
-            builder.AppendLine($"     VALUES");
-            builder.AppendLine($"           (");
-            foreach (DatabaseProperty selectSqlProperty in GetNonChildCollectionProperties)
-            {
-                builder.AppendLine($"            @{selectSqlProperty.SelectSqlParameterNaam},");
-            }
-            builder.AppendLine($"            @ModifiedBy,");
-            builder.AppendLine($"            SYSDATETIME()");
-            builder.AppendLine($"           );");
-            builder.AppendLine("END;");
-            builder.AppendLine("GO");
 
-            return builder;
+            return builder.ToString();
         }
 
-        private StringBuilder GetUpdateStp()
+        private string GetSqlUpdateParameters()
         {
-            StringBuilder builder = new StringBuilder();
+            var builder = new StringBuilder();
 
-            builder.AppendLine($"CREATE PROCEDURE [dbo].[{Name}_Update]");
-            builder.AppendLine($"    @Id [bigint],");
-            foreach (var sqlprop in GetNonChildCollectionProperties)
-            {
-                builder.AppendLine($"    @{sqlprop.SelectSqlParameter},");
-            }
-            builder.AppendLine($"    @RowVersion [rowversion],");
-            builder.AppendLine($"    @ModifiedBy nvarchar(256)");
-            builder.AppendLine($"AS");
-            builder.AppendLine($"BEGIN");
-            builder.AppendLine($"     SET NOCOUNT ON;");
-            builder.Append(Environment.NewLine);
-            builder.AppendLine($"     IF OBJECT_ID('tempdb..#Output') IS NOT NULL");
-            builder.AppendLine($"     BEGIN");
-            builder.AppendLine($"         DROP TABLE #Output;");
-            builder.AppendLine($"     END;");
-            builder.Append(Environment.NewLine);
-            builder.AppendLine($"     CREATE TABLE #Output ([RowVersion]     binary(8)    NOT NULL");
-            builder.AppendLine($"                          ,ModifiedOn       datetime2(7) NOT NULL");
-            builder.AppendLine($"                          );");
-            builder.Append(Environment.NewLine);
-            builder.AppendLine($"     UPDATE [dbo].{Name}");
-            builder.AppendLine($"        SET");
             foreach (DatabaseProperty selectSqlProperty in GetNonChildCollectionProperties)
             {
-                builder.AppendLine(
-                    $"            {Name}.{selectSqlProperty.SelectSqlParameterNaam} = @{selectSqlProperty.SelectSqlParameterNaam},");
+                builder.AppendLine($"{Name}.{selectSqlProperty.SelectSqlParameterNaam} = @{selectSqlProperty.SelectSqlParameterNaam},");
             }
-            builder.AppendLine($"            {Name}.ModifiedBy = ISNULL(@ModifiedBy, SUSER_SNAME()),");
-            builder.AppendLine($"            {Name}.ModifiedOn = SYSDATETIME()");
-            builder.AppendLine($"     OUTPUT Inserted.[RowVersion]");
-            builder.AppendLine($"           ,Inserted.ModifiedOn");
-            builder.AppendLine($"       INTO #Output");
-            builder.AppendLine($"           ([RowVersion]");
-            builder.AppendLine($"           ,ModifiedOn");
-            builder.AppendLine($"           )");
-            builder.AppendLine($"      WHERE {Name}.Id = @Id");
-            builder.AppendLine($"        AND {Name}.[RowVersion] = @RowVersion");
-            builder.Append(Environment.NewLine);
-            builder.AppendLine($"     DECLARE @RowCountBig AS bigint = ROWCOUNT_BIG();");
-            builder.Append(Environment.NewLine);
-            builder.AppendLine($"     IF @RowCountBig = 0");
-            builder.AppendLine($"     BEGIN");
-            builder.AppendLine(
-                $"         DECLARE @message AS nvarchar(2048) = CONCAT(QUOTENAME(OBJECT_SCHEMA_NAME(@@PROCID)), '.', OBJECT_NAME(@@PROCID), N': '");
-            builder.AppendLine($"                                                    ,N'Concurrency probleem. '");
-            builder.AppendLine(
-                $"                                                    ,N'De {Name}-rij met Id=', @Id, N' en RowVersion=', CAST(@RowVersion AS binary(8)), N' kon niet gewijzigd worden door ', @ModifiedBy, N'. '");
-            builder.AppendLine(
-                $"                                                    ,N'De rij was tussendoor gewijzigd of verwijderd door een andere gebruiker.'");
-            builder.AppendLine($"                                                    );");
-            builder.AppendLine($"         THROW 55501, @message, 1;");
-            builder.AppendLine($"     END;");
-            builder.Append(Environment.NewLine);
-            builder.AppendLine($"     SELECT #Output.[RowVersion]");
-            builder.AppendLine($"           ,#Output.ModifiedOn");
-            builder.AppendLine($"       FROM #Output;");
-            builder.AppendLine("END;");
-            builder.AppendLine("GO");
 
-            return builder;
+            return builder.ToString();
         }
 
-        private StringBuilder GetDeleteStp()
+        private Dictionary<string,string> UpdateTemplateParameters()
         {
-            StringBuilder builder = new StringBuilder();
+            var parameters = InsertTemplateParameters();
 
-            builder.AppendLine($"CREATE PROCEDURE [dbo].[{Name}_Delete]");
-            builder.AppendLine($"    @Id [bigint],");
-            builder.AppendLine($"    @RowVersion rowversion,");
-            builder.AppendLine($"    @ModifiedBy nvarchar(256)");
-            builder.AppendLine($"AS");
-            builder.AppendLine($"BEGIN");
-            builder.AppendLine($"     SET NOCOUNT ON;");
-            builder.Append(Environment.NewLine);
-            builder.AppendLine(
-                $"     DECLARE @Context varbinary(128) = CAST(CAST(ISNULL(@ModifiedBy, SUSER_SNAME()) AS char(256)) AS varbinary(256));");
-            builder.AppendLine($"     SET CONTEXT_INFO @Context;");
-            builder.Append(Environment.NewLine);
-            builder.AppendLine($"     DELETE");
-            builder.AppendLine($"       FROM [dbo].{Name}");
-            builder.AppendLine($"      WHERE {Name}.Id = @Id");
-            builder.AppendLine($"        AND {Name}.[RowVersion] = @RowVersion;");
-            builder.Append(Environment.NewLine);
-            builder.AppendLine($"     DECLARE @RowCountBig AS bigint = ROWCOUNT_BIG();");
-            builder.Append(Environment.NewLine);
-            builder.AppendLine($"     SET CONTEXT_INFO 0x;");
-            builder.Append(Environment.NewLine);
-            builder.AppendLine($"     IF @RowCountBig = 0");
-            builder.AppendLine($"     BEGIN");
-            builder.AppendLine(
-                $"         DECLARE @message AS nvarchar(2048) = CONCAT(QUOTENAME(OBJECT_SCHEMA_NAME(@@PROCID)), '.', OBJECT_NAME(@@PROCID), N': '");
-            builder.AppendLine($"                                                    ,N'Concurrency probleem. '");
-            builder.AppendLine(
-                $"                                                    ,N'De {Name}-rij met Id=', @Id, N' en RowVersion=', CAST(@RowVersion AS binary(8)), N' kon niet verwijderd worden door ', @ModifiedBy, N'. '");
-            builder.AppendLine(
-                $"                                                    ,N'De rij was tussendoor gewijzigd of verwijderd door een andere gebruiker.'");
-            builder.AppendLine($"                                                    );");
-            builder.AppendLine($"         THROW 55501, @message, 1;");
-            builder.AppendLine($"     END;");
-            builder.Append(Environment.NewLine);
-            builder.AppendLine("END;");
-            builder.AppendLine("GO");
+            parameters.Add(Resources.UpdateSetTableParemeters, GetSqlUpdateParameters());
 
-            return builder;
+            return parameters;
+        }
+
+        private string GetUpdateStp()
+        {
+            var template = new Template();
+            template.SetTemplate(Resources.SqlUpdateStp);
+            template.Fill(UpdateTemplateParameters());
+
+            return template.GetText;
+        }
+
+        private string GetDeleteStp()
+        {
+            var template = new Template();
+            template.SetTemplate(Resources.SqlDeleteStp);
+            template.Fill(InsertTemplateParameters());
+            return template.GetText;
         }
 
         private string GetIndexes()
         {
             var builder = new StringBuilder();
+            List<DatabaseProperty> referenceProperties = GetSqlProperties.Where(x => x.Property.DataType.Datatype == Datatype.Reference).ToList();
 
-            if (Database.Tables.GenerateHistorie.Generate || Entity.GenerateReadonlyGuid)
+            if (Database.Tables.GenerateHistorie.Generate || Entity.GenerateReadonlyGuid || referenceProperties.Any())
             {
                 OutputPaneManager.WriteToOutputPane("Adding indexes");
                 builder.AppendLine(GetDefaultHeader("I n d e x e s"));
@@ -297,6 +198,19 @@ namespace Tobasco.Model.Builders
                 builder.AppendLine($"GO");
             }
 
+            if (referenceProperties.Any())
+            {
+                foreach (var sqlprop in referenceProperties)
+                {
+                    var index = sqlprop.SelectNonClusteredIndex(Name);
+                    if (!string.IsNullOrEmpty(index))
+                    {
+                        builder.AppendLine($"{index}");
+                        builder.AppendLine("GO");
+                    }
+                }
+            }            
+
             return builder.ToString();
         }
 
@@ -309,6 +223,7 @@ namespace Tobasco.Model.Builders
                 OutputPaneManager.WriteToOutputPane("Adding triggers");
                 builder.AppendLine(GetDefaultHeader("T r i g g e r s"));
                 builder.AppendLine(GetUpdateTrigger());
+                builder.AppendLine("GO");
                 builder.AppendLine(GetDeletedTrigger());
             }
             else
@@ -321,104 +236,19 @@ namespace Tobasco.Model.Builders
 
         private string GetDeletedTrigger()
         {
-            var builder = new StringBuilder();
-
-            builder.AppendLine($"CREATE TRIGGER [dbo].td_{Name}");
-            builder.AppendLine($"            ON [dbo].{Name}");
-            builder.AppendLine($"           FOR DELETE");
-            builder.AppendLine($"AS");
-            builder.AppendLine($"BEGIN");
-            builder.AppendLine($"     INSERT");
-            builder.AppendLine($"       INTO [dbo].{Name}_historie");
-            builder.AppendLine($"           (Id");
-
-            if (Entity.GenerateReadonlyGuid)
-            {
-                builder.AppendLine("           ,[UId]");
-            }
-
-            builder.AppendLine($"           ,[RowVersion]");
-            foreach (DatabaseProperty selectSqlProperty in GetNonChildCollectionProperties)
-            {
-                builder.AppendLine($"           ,{selectSqlProperty.SelectSqlParameterNaam}");
-            }
-            builder.AppendLine($"           ,[ModifiedBy]");
-            builder.AppendLine($"           ,[ModifiedOn]");
-            builder.AppendLine($"           ,[DeletedBy]");
-            builder.AppendLine($"           ,[DeletedAt]");
-            builder.AppendLine($"           )");
-            builder.AppendLine($"     SELECT Deleted.Id");
-
-            if (Entity.GenerateReadonlyGuid)
-            {
-                builder.AppendLine($"           ,Deleted.[UId]");
-            }
-
-            builder.AppendLine($"           ,Deleted.[RowVersion]");
-            foreach (DatabaseProperty selectSqlProperty in GetNonChildCollectionProperties)
-            {
-                builder.AppendLine($"           ,{selectSqlProperty.SelectSqlParameterNaam}");
-            }
-            builder.AppendLine($"           ,Deleted.ModifiedBy");
-            builder.AppendLine($"           ,Deleted.ModifiedOn");
-            builder.AppendLine($"           ,ISNULL(LTRIM(RTRIM(CONVERT(nvarchar(128), CONTEXT_INFO()))), SUSER_SNAME())");
-            builder.AppendLine($"           ,SYSDATETIME()");
-            builder.AppendLine($"       FROM Deleted;");
-            builder.AppendLine("END;");
-            builder.AppendLine("GO");
-
-            return builder.ToString();
+            var template = new Template();
+            template.SetTemplate(Resources.SqlTriggerDelete);
+            template.Fill(InsertTemplateParameters());
+            return template.GetText;        
         }
 
         private string GetUpdateTrigger()
         {
-            var builder = new StringBuilder();
+            var template = new Template();
+            template.SetTemplate(Resources.SqlTriggerUpdate);
+            template.Fill(InsertTemplateParameters());
 
-            builder.AppendLine($"CREATE TRIGGER [dbo].tu_{Name}");
-            builder.AppendLine($"            ON [dbo].{Name}");
-            builder.AppendLine($"           FOR UPDATE");
-            builder.AppendLine($"AS");
-            builder.AppendLine($"BEGIN");
-            builder.AppendLine($"     INSERT");
-            builder.AppendLine($"       INTO [dbo].{Name}_historie");
-            builder.AppendLine($"           (Id");
-
-            if (Entity.GenerateReadonlyGuid)
-            {
-                builder.AppendLine("           ,[UId]");
-            }
-
-            builder.AppendLine($"           ,[RowVersion]");
-            foreach (DatabaseProperty selectSqlProperty in GetNonChildCollectionProperties)
-            {
-                builder.AppendLine($"           ,{selectSqlProperty.SelectSqlParameterNaam}");
-            }
-            builder.AppendLine($"           ,[ModifiedBy]");
-            builder.AppendLine($"           ,[ModifiedOn]");
-            builder.AppendLine($"           ,DeletedBy");
-            builder.AppendLine($"           ,DeletedAt");
-            builder.AppendLine($"           )");
-            builder.AppendLine($"     SELECT DELETED.Id");
-
-            if (Entity.GenerateReadonlyGuid)
-            {
-                builder.AppendLine($"           ,Deleted.[UId]");
-            }
-
-            builder.AppendLine($"           ,DELETED.[RowVersion]");
-            foreach (DatabaseProperty selectSqlProperty in GetNonChildCollectionProperties)
-            {
-                builder.AppendLine($"           ,{selectSqlProperty.SelectSqlParameterNaam}");
-            }
-            builder.AppendLine($"           ,Deleted.ModifiedBy");
-            builder.AppendLine($"           ,Deleted.ModifiedOn");
-            builder.AppendLine($"           ,NULL");
-            builder.AppendLine($"           ,NULL");
-            builder.AppendLine($"       FROM Deleted;");
-            builder.AppendLine("END;");
-            builder.AppendLine("GO");
-
-            return builder.ToString();
+            return template.GetText;
         }
 
         public override IEnumerable<FileBuilder.OutputFile> Build()
@@ -428,24 +258,20 @@ namespace Tobasco.Model.Builders
             {
                 OutputPaneManager.WriteToOutputPane($"Generate Table for {Name}");
                 var tableFile = FileManager.StartNewSqlTableFile(Name, Database.Project, Database.Tables.Folder);
-                tableFile.Content = GetTable();
+                tableFile.Table = GetTable();
 
                 if (Database.Tables.Generate && Database.Tables.GenerateHistorie.Generate)
                 {
                     OutputPaneManager.WriteToOutputPane($"Generate HistorieTable for {Name}");
-                    string historieTable = GetHistorieTable();
-
-                    tableFile.Content.AppendLine(historieTable);
+                    tableFile.HistorieTable = GetHistorieTable();
                 }
                 else
                 {
                     OutputPaneManager.WriteToOutputPane($"== Do not generate HistorieTable for {Name} ");
                 }
 
-                string indexes = GetIndexes();
-                string triggers = GetTriggers();
-                tableFile.Content.AppendLine(indexes);
-                tableFile.Content.AppendLine(triggers);
+                tableFile.Indexes = GetIndexes();
+                tableFile.Triggers = GetTriggers();
 
                 outputFiles.Add(tableFile);
             }
@@ -463,7 +289,8 @@ namespace Tobasco.Model.Builders
                 if (Database.StoredProcedures.GenerateInsert.Generate)
                 {
                     OutputPaneManager.WriteToOutputPane($"Generate Insert stp for {Name}");
-                    builder.AppendLine(GetInsertStp().ToString());
+                    builder.AppendLine(GetInsertStp());
+                    builder.AppendLine("GO");
                 }
                 else
                 {
@@ -472,7 +299,8 @@ namespace Tobasco.Model.Builders
                 if (Database.StoredProcedures.GenerateUpdate.Generate)
                 {
                     OutputPaneManager.WriteToOutputPane($"Generate Update stp for {Name}");
-                    builder.AppendLine(GetUpdateStp().ToString());
+                    builder.AppendLine(GetUpdateStp());
+                    builder.AppendLine("GO");
                 }
                 else
                 {
@@ -481,7 +309,8 @@ namespace Tobasco.Model.Builders
                 if (Database.StoredProcedures.GenerateDelete.Generate)
                 {
                     OutputPaneManager.WriteToOutputPane($"Generate Delete stp for {Name}");
-                    builder.AppendLine(GetDeleteStp().ToString());
+                    builder.AppendLine(GetDeleteStp());
+                    builder.AppendLine("GO");
                 }
                 else
                 {

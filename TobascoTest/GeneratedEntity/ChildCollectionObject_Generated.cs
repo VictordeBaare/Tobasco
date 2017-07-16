@@ -8,19 +8,21 @@ namespace TobascoTest.GeneratedEntity
 [Serializable]
     public partial class ChildCollectionObject : EntityBase
     {
-        private string _testchildprop1;
-        public string TestChildProp1
-        {
-            get { return _testchildprop1; }
-            set { SetField(ref  _testchildprop1, value, nameof(TestChildProp1)); }
-        }
+        private string _TestChildProp1;
 
-        private long _filemetoverervingid;
-        public long FileMetOverervingId
-        {
-            get { return _filemetoverervingid; }
-            set { SetField(ref  _filemetoverervingid, value, nameof(FileMetOverervingId)); }
-        }
+public string TestChildProp1
+{
+	get { return _TestChildProp1; }
+	set { SetField(ref _TestChildProp1, value, nameof(TestChildProp1)); }
+}
+
+        private long _FileMetOverervingId;
+
+public long FileMetOverervingId
+{
+	get { return _FileMetOverervingId; }
+	set { SetField(ref _FileMetOverervingId, value, nameof(FileMetOverervingId)); }
+}
 
         public override ExpandoObject ToAnonymous()
         {

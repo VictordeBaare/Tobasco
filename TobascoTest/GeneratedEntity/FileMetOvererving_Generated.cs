@@ -8,63 +8,71 @@ namespace TobascoTest.GeneratedEntity
 [Serializable]
     public partial class FileMetOvererving : EntityBase
     {
-        private string _testchildprop1;
-        public string TestChildProp1
-        {
-            get { return _testchildprop1; }
-            set { SetField(ref  _testchildprop1, value, nameof(TestChildProp1)); }
-        }
+        private string _TestChildProp1;
 
-        private int? _testchildprop2;
-        public int? TestChildProp2
-        {
-            get { return _testchildprop2; }
-            set { SetField(ref  _testchildprop2, value, nameof(TestChildProp2)); }
-        }
+public string TestChildProp1
+{
+	get { return _TestChildProp1; }
+	set { SetField(ref _TestChildProp1, value, nameof(TestChildProp1)); }
+}
 
-        private long? _testchildprop3;
-        public long? TestChildProp3
-        {
-            get { return _testchildprop3; }
-            set { SetField(ref  _testchildprop3, value, nameof(TestChildProp3)); }
-        }
+        private int? _TestChildProp2;
 
-        private DateTime? _testchildprop4;
-        public DateTime? TestChildProp4
-        {
-            get { return _testchildprop4; }
-            set { SetField(ref  _testchildprop4, value, nameof(TestChildProp4)); }
-        }
+public int? TestChildProp2
+{
+	get { return _TestChildProp2; }
+	set { SetField(ref _TestChildProp2, value, nameof(TestChildProp2)); }
+}
 
-        private GeslachtType? _testchildprop5;
-        public GeslachtType? TestChildProp5
-        {
-            get { return _testchildprop5; }
-            set { SetField(ref  _testchildprop5, value, nameof(TestChildProp5)); }
-        }
+        private long? _TestChildProp3;
 
-        private decimal? _testchildprop6;
-        public decimal? TestChildProp6
-        {
-            get { return _testchildprop6; }
-            set { SetField(ref  _testchildprop6, value, nameof(TestChildProp6)); }
-        }
+public long? TestChildProp3
+{
+	get { return _TestChildProp3; }
+	set { SetField(ref _TestChildProp3, value, nameof(TestChildProp3)); }
+}
 
-        private ChildObject _testchildprop7;
-        public ChildObject TestChildProp7
-        {
-            get { return _testchildprop7; }
-            set { SetField(ref  _testchildprop7, value, nameof(TestChildProp7)); }
-        }
+        private DateTime? _TestChildProp4;
+
+public DateTime? TestChildProp4
+{
+	get { return _TestChildProp4; }
+	set { SetField(ref _TestChildProp4, value, nameof(TestChildProp4)); }
+}
+
+        private GeslachtType? _TestChildProp5;
+
+public GeslachtType? TestChildProp5
+{
+	get { return _TestChildProp5; }
+	set { SetField(ref _TestChildProp5, value, nameof(TestChildProp5)); }
+}
+
+        private decimal? _TestChildProp6;
+
+public decimal? TestChildProp6
+{
+	get { return _TestChildProp6; }
+	set { SetField(ref _TestChildProp6, value, nameof(TestChildProp6)); }
+}
+
+        private ChildObject _TestChildProp7;
+
+public ChildObject TestChildProp7
+{
+	get { return _TestChildProp7; }
+	set { SetField(ref _TestChildProp7, value, nameof(TestChildProp7)); }
+}
 
         public List<ChildCollectionObject> TestChildProp8 { get; } = new List<ChildCollectionObject>();
 
-        private ChildObject _testchildprop9;
-        public ChildObject TestChildProp9
-        {
-            get { return _testchildprop9; }
-            set { SetField(ref  _testchildprop9, value, nameof(TestChildProp9)); }
-        }
+        private ChildObject _TestChildProp9;
+
+public ChildObject TestChildProp9
+{
+	get { return _TestChildProp9; }
+	set { SetField(ref _TestChildProp9, value, nameof(TestChildProp9)); }
+}
 
         public Guid Uid { get; private set; }
 

@@ -46,7 +46,7 @@
     
     mimetype: application/x-microsoft.net.object.binary.base64
     value   : The object must be serialized with 
-            : System.Serialization.Formatters.Binary.BinaryFormatter
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
             : and then encoded with base64 encoding.
     
     mimetype: application/x-microsoft.net.object.soap.base64
@@ -60,6 +60,7 @@
             : and then encoded with base64 encoding.
     -->
   <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
@@ -68,9 +69,10 @@
               <xsd:sequence>
                 <xsd:element name="value" type="xsd:string" minOccurs="0" />
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" />
+              <xsd:attribute name="name" use="required" type="xsd:string" />
               <xsd:attribute name="type" type="xsd:string" />
               <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="assembly">
@@ -85,9 +87,10 @@
                 <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
                 <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" msdata:Ordinal="1" />
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
               <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
               <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="resheader">
@@ -109,9 +112,252 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="ConnectionFactoryGetConnection" xml:space="preserve">
+    <value>public SqlConnection GetConnection()
+{
+	SqlConnection connection = null;
+	SqlConnection tempConnection = null;
+	try
+	{
+		tempConnection = new SqlConnection(_connectionstring);
+		tempConnection.Open();
+		connection = tempConnection;
+		tempConnection = null;
+	}
+	finally
+	{
+		tempConnection?.Dispose();
+	}
+	return connection;
+}</value>
+  </data>
+  <data name="PropertyChildCollection" xml:space="preserve">
+    <value>public List&lt;%PropertyValueType%&gt; %PropertyName% { get; } = new List&lt;%PropertyValueType%&gt;();</value>
+  </data>
+  <data name="PropertyDapperDefault" xml:space="preserve">
+    <value>private %PropertyValueType% _%PropertyName%;
+
+public %PropertyValueType% %PropertyName%
+{
+	get { return _%PropertyName%; }
+	set { SetField(ref _%PropertyName%, value, nameof(%PropertyName%)); }
+}</value>
+  </data>
+  <data name="PropertyDefault" xml:space="preserve">
+    <value>public %PropertyValueType% %PropertyName% { get; set; }</value>
+  </data>
+  <data name="PropertyName" xml:space="preserve">
+    <value>PropertyName</value>
+  </data>
+  <data name="PropertyReadonlyGuid" xml:space="preserve">
+    <value>public %PropertyValueType% %PropertyName% { get; private set; }</value>
+  </data>
+  <data name="PropertyValueType" xml:space="preserve">
+    <value>PropertyValueType</value>
+  </data>
+  <data name="SqlDeleteStp" xml:space="preserve">
+    <value>CREATE PROCEDURE [dbo].[%TableName%_Delete]
+		@Id [bigint]
+       ,@RowVersion [rowversion]
+       ,@ModifiedBy nvarchar(256)
+AS
+BEGIN
+		SET NOCOUNT ON;
+		
+		DECLARE @Context varbinary(128) = CAST(CAST(ISNULL(@ModifiedBy, SUSER_SNAME()) AS char(256)) AS varbinary(256));
+		
+		DELETE 
+		  FROM [dbo].%TableName%
+		 WHERE %TableName%.Id = @Id
+		   AND %TableName%.[RowVersion] = @RowVersion
+
+		DECLARE @RowCountBig AS bigint = ROWCOUNT_BIG();
+		
+		SET CONTEXT_INFO 0x;
+		
+		IF @RowCountBig = 0
+		BEGIN
+            DECLARE @message AS nvarchar(2048) = CONCAT(QUOTENAME(OBJECT_SCHEMA_NAME(@@PROCID)), '.', OBJECT_NAME(@@PROCID), N': '
+													   ,N'Concurrency problem. '
+                                                       ,N'The %TableName%-row with Id=', @Id, N' and RowVersion=', CAST(@RowVersion AS binary(8)), N' cannot be altered by ', @ModifiedBy, N'. '
+                                                       ,N'The row was already modified or deleted by a different user.'
+                                                        );
+			THROW 55501, @message, 1;
+		  END;
+END;</value>
+  </data>
+  <data name="SqlHistorieTable" xml:space="preserve">
+    <value>CREATE TABLE [dbo].[%TableName%_historie] (
+    [Id]                          bigint             NOT NULL
+   %TableProperties%
+   ,[RowVersion]                  binary(8)          NOT NULL
+   ,[ModifiedBy]                  nvarchar (256)     NOT NULL
+   ,[ModifiedOn]                  DATETIME2(7)       NOT NULL
+   ,DeletedBy                     nvarchar(256)     NULL
+   ,DeletedAt                     datetime2(7)      NULL
+);</value>
+  </data>
+  <data name="SqlInsertStp" xml:space="preserve">
+    <value>CREATE PROCEDURE [dbo].[%TableName%_Insert]
+    @Id bigint output,
+	%StpParameter%
+    @ModifiedBy nvarchar(256)
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    INSERT
+      INTO [dbo].%TableName% 
+	       (
+			%StpPropertyNames%
+			[ModifiedBy],
+		    [ModifiedOn]
+		   )
+	OUTPUT Inserted.Id
+		  ,Inserted.[RowVersion]
+		  ,Inserted.ModifiedOn
+    VALUES
+         (
+		   %StpParameterName%
+           @ModifiedBy,
+           SYSDATETIME()
+          );
+END;</value>
+  </data>
+  <data name="SqlTable" xml:space="preserve">
+    <value>CREATE TABLE [dbo].[%TableName%](
+	 [Id]			bigint	IDENTITY (1,1)  NOT NULL
+	,[RowVersion]   rowversion         		NOT NULL
+	%TableProperties%
+	,[ModifiedBY]	nvarchar(256)			NOT NULL
+	 CONSTRAINT [DF_{%TableName%}_ModifiedBy] DEFAULT SUSER_SNAME()
+	,[ModifiedOn]	datetime2(7)			NOT NULL
+	 CONSTRAINT [DF_{%TableName%}_ModifiedOn] DEFAULT SYSDATETIME()
+	 CONSTRAINT [PK_{%TableName%}] PRIMARY KEY CLUSTERED (Id ASC)
+);</value>
+  </data>
+  <data name="SqlTriggerDelete" xml:space="preserve">
+    <value>CREATE TRIGGER [dbo].td_%TableName%
+            ON [dbo].%TableName%
+		   FOR DELETE
+AS
+BEGIN
+	INSERT
+	  INTO [dbo].%TableName%_historie(
+			Id,
+		    [RowVersion],
+           %StpPropertyNames%
+		    [ModifiedBy],
+		    [ModifiedOn],
+		    [DeletedBy],
+		    [DeletedAt]
+            )
+	SELECT Deleted.Id,
+	       Deleted.[RowVersion],
+		  %StpPropertyNames%
+		   Deleted.ModifiedBy,
+		   Deleted.ModifiedOn,
+		   ISNULL(LTRIM(RTRIM(CONVERT(nvarchar(128), CONTEXT_INFO()))), SUSER_SNAME()),
+		   SYSDATETIME()
+	  FROM Deleted;
+END;</value>
+  </data>
+  <data name="SqlTriggerUpdate" xml:space="preserve">
+    <value>CREATE TRIGGER [dbo].tu_%TableName%
+            ON [dbo].%TableName%
+           FOR UPDATE
+AS
+BEGIN
+    INSERT
+      INTO [dbo].%TableName%_historie(
+			Id,
+		    [RowVersion],
+		   %StpPropertyNames%
+            [ModifiedBy],
+            [ModifiedOn],
+            DeletedBy,
+            DeletedAt
+           )
+    SELECT DELETED.Id,
+           DELETED.[RowVersion],
+		  %StpPropertyNames%
+           Deleted.ModifiedBy,
+           Deleted.ModifiedOn,
+           NULL,
+           NULL
+      FROM Deleted;
+END;</value>
+  </data>
+  <data name="SqlUpdateStp" xml:space="preserve">
+    <value>CREATE PROCEDURE [dbo].[%TableName%_Update]
+		@Id [bigint],
+		%StpParameter%
+        @RowVersion [rowversion],
+        @ModifiedBy nvarchar(256)
+AS
+BEGIN
+		SET NOCOUNT ON;
+		
+		IF OBJECT_ID('tempdb..#Output') IS NOT NULL
+		BEGIN
+			DROP TABLE #Output;
+		END;
+
+		CREATE TABLE #Output ([RowVersion]     binary(8)    NOT NULL
+							  ,ModifiedOn      datetime2(7) NOT NULL
+							 );
+
+		UPDATE [dbo].%TableName%
+		   SET 
+				%UpdateSetTableParemeters%            
+			    %TableName%.ModifiedBy = ISNULL(@ModifiedBy, SUSER_SNAME()),
+			    %TableName%.ModifiedOn = SYSDATETIME()
+		OUTPUT Inserted.[RowVersion]
+			  ,Inserted.ModifiedOn
+		  INTO #Output ([RowVersion]
+						,ModifiedOn
+					   )
+		 WHERE %TableName%.Id = @Id
+		   AND %TableName%.[RowVersion] = @RowVersion
+
+		DECLARE @RowCountBig AS bigint = ROWCOUNT_BIG();
+
+		IF @RowCountBig = 0
+		BEGIN
+            DECLARE @message AS nvarchar(2048) = CONCAT(QUOTENAME(OBJECT_SCHEMA_NAME(@@PROCID)), '.', OBJECT_NAME(@@PROCID), N': '
+													   ,N'Concurrency problem. '
+                                                       ,N'The %TableName%-row with Id=', @Id, N' and RowVersion=', CAST(@RowVersion AS binary(8)), N' cannot be altered by ', @ModifiedBy, N'. '
+                                                       ,N'The row was already modified by a different user.'
+                                                        );
+			THROW 55501, @message, 1;
+		  END;
+
+		SELECT #Output.[RowVersion]
+			  ,#Output.ModifiedOn
+          FROM #Output;
+END;</value>
+  </data>
+  <data name="StpParameter" xml:space="preserve">
+    <value>StpParameter</value>
+  </data>
+  <data name="StpParameterName" xml:space="preserve">
+    <value>StpParameterName</value>
+  </data>
+  <data name="StpPropertyNames" xml:space="preserve">
+    <value>StpPropertyNames</value>
+  </data>
+  <data name="TableName" xml:space="preserve">
+    <value>TableName</value>
+  </data>
+  <data name="TableProperties" xml:space="preserve">
+    <value>TableProperties</value>
+  </data>
+  <data name="UpdateSetTableParemeters" xml:space="preserve">
+    <value>UpdateSetTableParemeters</value>
+  </data>
 </root>

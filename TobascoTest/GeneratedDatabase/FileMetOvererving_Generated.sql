@@ -1,48 +1,42 @@
-﻿-- ================================================================================
--- T a b l e s
--- ================================================================================
+﻿CREATE TABLE [dbo].[FileMetOvererving](
+	 [Id]			bigint	IDENTITY (1,1)  NOT NULL
+	,[RowVersion]   rowversion         		NOT NULL
+	   ,[UId]                         uniqueidentifier   NOT NULL CONSTRAINT [DF_FileMetOvererving_UId] DEFAULT NEWID()
+,TestChildProp1 nvarchar(100) NOT NULL
+,TestChildProp2 int NULL
+,TestChildProp3 bigint NULL
+,TestChildProp4 datetime2(7) NULL
+,TestChildProp5 tinyint NULL
+,TestChildProp6 decimal(12,2) NULL
+,TestChildProp7Id bigint NULL
+,TestChildProp9Id bigint NULL
 
-CREATE TABLE [dbo].[FileMetOvererving] (
-    [Id]                          bigint             IDENTITY (1, 1) NOT NULL
-   ,[UId]                         uniqueidentifier   NOT NULL CONSTRAINT [DF_FileMetOvererving_UId] DEFAULT NEWID()
-   ,[RowVersion]                  rowversion         NOT NULL
-   ,TestChildProp1 nvarchar(100) NOT NULL
-   ,TestChildProp2 int NULL
-   ,TestChildProp3 bigint NULL
-   ,TestChildProp4 datetime2(7) NULL
-   ,TestChildProp5 tinyint NULL
-   ,TestChildProp6 decimal(12,2) NULL
-   ,TestChildProp7Id bigint NULL
-   ,TestChildProp9Id bigint NULL
-   ,[ModifiedBy]                  nvarchar (256)     NOT NULL 
-    CONSTRAINT [DF_FileMetOvererving_ModifiedBy] DEFAULT SUSER_SNAME()
-   ,[ModifiedOn]                  DATETIME2(7)       NOT NULL
-    CONSTRAINT [DF_FileMetOvererving_ModifiedOn] DEFAULT SYSDATETIME()
-   ,CONSTRAINT [PK_FileMetOvererving] PRIMARY KEY CLUSTERED (Id ASC)
-   ,CONSTRAINT [FK_FileMetOvererving_ChildObject_Id] FOREIGN KEY (TestChildProp7Id) REFERENCES [dbo].[ChildObject] ([Id])
-   ,CONSTRAINT [FK_FileMetOvererving_ChildObject_Id] FOREIGN KEY (TestChildProp9Id) REFERENCES [dbo].[ChildObject] ([Id])
+	,[ModifiedBY]	nvarchar(256)			NOT NULL
+	 CONSTRAINT [DF_{FileMetOvererving}_ModifiedBy] DEFAULT SUSER_SNAME()
+	,[ModifiedOn]	datetime2(7)			NOT NULL
+	 CONSTRAINT [DF_{FileMetOvererving}_ModifiedOn] DEFAULT SYSDATETIME()
+	 CONSTRAINT [PK_{FileMetOvererving}] PRIMARY KEY CLUSTERED (Id ASC)
 );
 GO
 CREATE TABLE [dbo].[FileMetOvererving_historie] (
     [Id]                          bigint             NOT NULL
-   ,[UId]                         uniqueidentifier   NOT NULL
+      ,[UId]                         uniqueidentifier   NOT NULL CONSTRAINT [DF_FileMetOvererving_UId] DEFAULT NEWID()
+,TestChildProp1 nvarchar(100) NOT NULL
+,TestChildProp2 int NULL
+,TestChildProp3 bigint NULL
+,TestChildProp4 datetime2(7) NULL
+,TestChildProp5 tinyint NULL
+,TestChildProp6 decimal(12,2) NULL
+,TestChildProp7Id bigint NULL
+,TestChildProp9Id bigint NULL
+
    ,[RowVersion]                  binary(8)          NOT NULL
-   ,TestChildProp1 nvarchar(100) NOT NULL
-   ,TestChildProp2 int NULL
-   ,TestChildProp3 bigint NULL
-   ,TestChildProp4 datetime2(7) NULL
-   ,TestChildProp5 tinyint NULL
-   ,TestChildProp6 decimal(12,2) NULL
-   ,TestChildProp7Id bigint NULL
-   ,TestChildProp9Id bigint NULL
    ,[ModifiedBy]                  nvarchar (256)     NOT NULL
    ,[ModifiedOn]                  DATETIME2(7)       NOT NULL
    ,DeletedBy                     nvarchar(256)     NULL
    ,DeletedAt                     datetime2(7)      NULL
 );
 GO
-
-
 -- ================================================================================
 -- I n d e x e s
 -- ================================================================================
@@ -58,6 +52,7 @@ CREATE NONCLUSTERED INDEX IX_UQ_FileMetOvererving_UId
                          )
 GO
 
+GO
 -- ================================================================================
 -- T r i g g e r s
 -- ================================================================================
@@ -67,83 +62,80 @@ CREATE TRIGGER [dbo].tu_FileMetOvererving
            FOR UPDATE
 AS
 BEGIN
-     INSERT
-       INTO [dbo].FileMetOvererving_historie
-           (Id
-           ,[UId]
-           ,[RowVersion]
-           ,TestChildProp1
-           ,TestChildProp2
-           ,TestChildProp3
-           ,TestChildProp4
-           ,TestChildProp5
-           ,TestChildProp6
-           ,TestChildProp7Id
-           ,TestChildProp9Id
-           ,[ModifiedBy]
-           ,[ModifiedOn]
-           ,DeletedBy
-           ,DeletedAt
+    INSERT
+      INTO [dbo].FileMetOvererving_historie(
+			Id,
+		    [RowVersion],
+		   TestChildProp1,
+TestChildProp2,
+TestChildProp3,
+TestChildProp4,
+TestChildProp5,
+TestChildProp6,
+TestChildProp7Id,
+TestChildProp9Id,
+
+            [ModifiedBy],
+            [ModifiedOn],
+            DeletedBy,
+            DeletedAt
            )
-     SELECT DELETED.Id
-           ,Deleted.[UId]
-           ,DELETED.[RowVersion]
-           ,TestChildProp1
-           ,TestChildProp2
-           ,TestChildProp3
-           ,TestChildProp4
-           ,TestChildProp5
-           ,TestChildProp6
-           ,TestChildProp7Id
-           ,TestChildProp9Id
-           ,Deleted.ModifiedBy
-           ,Deleted.ModifiedOn
-           ,NULL
-           ,NULL
-       FROM Deleted;
+    SELECT DELETED.Id,
+           DELETED.[RowVersion],
+		  TestChildProp1,
+TestChildProp2,
+TestChildProp3,
+TestChildProp4,
+TestChildProp5,
+TestChildProp6,
+TestChildProp7Id,
+TestChildProp9Id,
+
+           Deleted.ModifiedBy,
+           Deleted.ModifiedOn,
+           NULL,
+           NULL
+      FROM Deleted;
 END;
 GO
-
 CREATE TRIGGER [dbo].td_FileMetOvererving
             ON [dbo].FileMetOvererving
-           FOR DELETE
+		   FOR DELETE
 AS
 BEGIN
-     INSERT
-       INTO [dbo].FileMetOvererving_historie
-           (Id
-           ,[UId]
-           ,[RowVersion]
-           ,TestChildProp1
-           ,TestChildProp2
-           ,TestChildProp3
-           ,TestChildProp4
-           ,TestChildProp5
-           ,TestChildProp6
-           ,TestChildProp7Id
-           ,TestChildProp9Id
-           ,[ModifiedBy]
-           ,[ModifiedOn]
-           ,[DeletedBy]
-           ,[DeletedAt]
-           )
-     SELECT Deleted.Id
-           ,Deleted.[UId]
-           ,Deleted.[RowVersion]
-           ,TestChildProp1
-           ,TestChildProp2
-           ,TestChildProp3
-           ,TestChildProp4
-           ,TestChildProp5
-           ,TestChildProp6
-           ,TestChildProp7Id
-           ,TestChildProp9Id
-           ,Deleted.ModifiedBy
-           ,Deleted.ModifiedOn
-           ,ISNULL(LTRIM(RTRIM(CONVERT(nvarchar(128), CONTEXT_INFO()))), SUSER_SNAME())
-           ,SYSDATETIME()
-       FROM Deleted;
-END;
-GO
+	INSERT
+	  INTO [dbo].FileMetOvererving_historie(
+			Id,
+		    [RowVersion],
+           TestChildProp1,
+TestChildProp2,
+TestChildProp3,
+TestChildProp4,
+TestChildProp5,
+TestChildProp6,
+TestChildProp7Id,
+TestChildProp9Id,
 
+		    [ModifiedBy],
+		    [ModifiedOn],
+		    [DeletedBy],
+		    [DeletedAt]
+            )
+	SELECT Deleted.Id,
+	       Deleted.[RowVersion],
+		  TestChildProp1,
+TestChildProp2,
+TestChildProp3,
+TestChildProp4,
+TestChildProp5,
+TestChildProp6,
+TestChildProp7Id,
+TestChildProp9Id,
+
+		   Deleted.ModifiedBy,
+		   Deleted.ModifiedOn,
+		   ISNULL(LTRIM(RTRIM(CONVERT(nvarchar(128), CONTEXT_INFO()))), SUSER_SNAME()),
+		   SYSDATETIME()
+	  FROM Deleted;
+END;
 

@@ -1,11 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Entity name="FileMetOvererving" generateReadonlyGuid="true">
-  <Database project="TobascoTest">
-    <StoredProcedures folder="Stored Procedures" generate="false"></StoredProcedures>
-    <Tables folder="GeneratedDatabase" generate="true">
-      <Historie generate="true"></Historie>
-    </Tables>
-  </Database>
     <Properties>
         <Property name="TestChildProp1" required="true">
             <DataType name="String" size="100"></DataType>

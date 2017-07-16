@@ -14,24 +14,22 @@ namespace TobascoTest.GeneratedRepositoy
         }
 
         public SqlConnection GetConnection()
-        {
-            SqlConnection connection = null;
-            SqlConnection tempConnection = null;
-            try
-            {
-                tempConnection = new SqlConnection(_connectionstring);
-                tempConnection.Open();
-                connection = tempConnection;
-                tempConnection = null;
-            }
-            finally
-            {
-                tempConnection?.Dispose();
-            }
-
-            return connection;
-        }
-
+{
+	SqlConnection connection = null;
+	SqlConnection tempConnection = null;
+	try
+	{
+		tempConnection = new SqlConnection(_connectionstring);
+		tempConnection.Open();
+		connection = tempConnection;
+		tempConnection = null;
+	}
+	finally
+	{
+		tempConnection?.Dispose();
+	}
+	return connection;
+}
 
     }
 }
