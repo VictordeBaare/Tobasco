@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Tobasco.Extensions;
 using Tobasco.FileBuilder;
 using Tobasco.Model.Builders.Base;
+using Tobasco.Properties;
+using Tobasco.Templates;
 
 namespace Tobasco.Model.Builders
 {
@@ -15,155 +13,51 @@ namespace Tobasco.Model.Builders
 
         protected virtual string SaveMethod()
         {
-            var builder = new StringBuilder();
-            
-            builder.AppendLineWithTabs("public T Save(T entity)", 0);
-            builder.AppendLineWithTabs("{", 2);
-            builder.AppendLineWithTabs("if(entity.IsDeleted)", 3);
-            builder.AppendLineWithTabs("{", 3);
-            builder.AppendLineWithTabs("Delete(entity);", 4);
-            builder.AppendLineWithTabs("return entity;", 4);
-            builder.AppendLineWithTabs("}", 3);
-            builder.AppendLineWithTabs("if(entity.IsNew)", 3);
-            builder.AppendLineWithTabs("{", 3);
-            builder.AppendLineWithTabs("return Insert(entity);", 4);
-            builder.AppendLineWithTabs("}", 3);
-            builder.AppendLineWithTabs("if(entity.IsDirty)", 3);
-            builder.AppendLineWithTabs("{", 3);
-            builder.AppendLineWithTabs("return Update(entity);", 4);
-            builder.AppendLineWithTabs("}", 3);
-            builder.AppendLineWithTabs("return entity;", 3);
-            builder.AppendLineWithTabs("}", 2);
-
-            return builder.ToString();
+            var template = new Template();
+            template.SetTemplate(Resources.GenericRepositorySave);
+            return template.GetText;
         }
 
         protected virtual string ListSaveMethod()
         {
-            var builder = new StringBuilder();
-
-            builder.AppendLineWithTabs("public IEnumerable<T> Save(IEnumerable<T> entities)", 0);
-            builder.AppendLineWithTabs("{", 2);
-            builder.AppendLineWithTabs("var enumerable = entities as IList<T> ?? entities.ToList();", 3);
-            builder.AppendLineWithTabs("foreach (var entity in enumerable)", 3);
-            builder.AppendLineWithTabs("{", 3);
-            builder.AppendLineWithTabs("Save(entity);", 4);
-            builder.AppendLineWithTabs("}", 3);
-            builder.AppendLineWithTabs("return enumerable;", 3);
-            builder.AppendLineWithTabs("}", 2);
-            
-            return builder.ToString();
+            var template = new Template();
+            template.SetTemplate(Resources.GenericRepositoryBulkSave);
+            return template.GetText;
         }
 
         protected virtual string InsertMethod()
         {
-            var builder = new StringBuilder();
-
-            builder.AppendLineWithTabs("public T Insert(T entity)", 0);
-            builder.AppendLineWithTabs("{", 2);
-            builder.AppendLineWithTabs("using (var connection = ConnectionFactory.GetConnection())", 3);
-            builder.AppendLineWithTabs("{", 3);
-            builder.AppendLineWithTabs("connection.Query<long, byte[], T>($\"[dbo].[{typeof(T).Name}_Insert]\", (id, rowversion) =>", 4);
-            builder.AppendLineWithTabs("{", 4);
-            builder.AppendLineWithTabs("entity.Id = id;", 5);
-            builder.AppendLineWithTabs("entity.RowVersion = rowversion;", 5);
-            builder.AppendLineWithTabs("return entity;", 5);
-            builder.AppendLineWithTabs("}, ToAnonymous(entity, false), splitOn: \"RowVersion\", commandType: CommandType.StoredProcedure);", 4);
-            builder.AppendLineWithTabs("}", 3);
-            builder.AppendLineWithTabs("entity.MarkOld();", 3);
-            builder.AppendLineWithTabs("return entity;", 3);
-            builder.AppendLineWithTabs("}", 2);
-
-            return builder.ToString();
+            var template = new Template();
+            template.SetTemplate(Resources.GenericRepositoryInsert);
+            return template.GetText;
         }
 
         protected virtual string DeleteMethod()
         {
-            var builder = new StringBuilder();
-
-            builder.AppendLineWithTabs("public void Delete(T entity)", 0);
-            builder.AppendLineWithTabs("{", 2);
-            builder.AppendLineWithTabs("using (var connection = ConnectionFactory.GetConnection())", 3);
-            builder.AppendLineWithTabs("{", 3);
-            builder.AppendLineWithTabs("connection.Execute($\"[dbo].[{ typeof(T).Name}_Delete]\",", 4);
-            builder.AppendLineWithTabs("new {entity.Id, entity.RowVersion, entity.ModifiedBy },", 5);
-            builder.AppendLineWithTabs("commandType: CommandType.StoredProcedure);", 5);
-            builder.AppendLineWithTabs("}", 3);
-            builder.AppendLineWithTabs("}", 2);
-
-            return builder.ToString();
+            var template = new Template();
+            template.SetTemplate(Resources.GenericRepositoryDelete);
+            return template.GetText;
         }
 
         protected virtual string GetByIdMethod()
         {
-            var builder = new StringBuilder();
-
-            builder.AppendLineWithTabs("public T GetById(long id)", 0);
-            builder.AppendLineWithTabs("{", 2);
-            builder.AppendLineWithTabs("T entity;", 3);
-            builder.AppendLineWithTabs("using (var connection = ConnectionFactory.GetConnection())", 3);
-            builder.AppendLineWithTabs("{", 3);
-            builder.AppendLineWithTabs("entity = connection.QuerySingle<T>($\"[dbo].[{ typeof(T).Name}_GetById]\",", 4);
-            builder.AppendLineWithTabs("new {Id = id},", 5);
-            builder.AppendLineWithTabs("commandType: CommandType.StoredProcedure);", 5);
-            builder.AppendLineWithTabs("}", 3);
-            builder.AppendLineWithTabs("entity.MarkOld();", 3);
-            builder.AppendLineWithTabs("return entity;", 3);
-            builder.AppendLineWithTabs("}", 2);
-
-            return builder.ToString();
+            var template = new Template();
+            template.SetTemplate(Resources.GenericRepositoryGetById);
+            return template.GetText;
         }
 
         protected virtual string UpdateMethod()
         {
-            var builder = new StringBuilder();
-
-            builder.AppendLineWithTabs("public T Update(T entity)", 0);
-            builder.AppendLineWithTabs("{", 2);
-            builder.AppendLineWithTabs("using (var connection = ConnectionFactory.GetConnection())", 3);
-            builder.AppendLineWithTabs("{", 3);
-            builder.AppendLineWithTabs("try", 4);
-            builder.AppendLineWithTabs("{", 4);
-            builder.AppendLineWithTabs("entity.RowVersion = connection.ExecuteScalar<byte[]>($\"[dbo].[{ typeof(T).Name}_Update]\",", 5);
-            builder.AppendLineWithTabs("ToAnonymous(entity, true),", 6);
-            builder.AppendLineWithTabs("commandType: CommandType.StoredProcedure);", 6);
-            builder.AppendLineWithTabs("}", 4);
-            builder.AppendLineWithTabs("catch(SqlException ex)", 4);
-            builder.AppendLineWithTabs("{", 4);
-            builder.AppendLineWithTabs("if (ex.Number == 50000 && ex.Class == 16 && ex.Message.Contains(\" is al gewijzigd door een andere gebruiker.\"))", 5);
-            builder.AppendLineWithTabs("{", 5);
-            builder.AppendLineWithTabs("throw new DBConcurrencyException($\"Dirty write detected while updating { typeof(T).Name} with id { entity.Id} at { DateTime.Now.ToString(CultureInfo.InvariantCulture)}\");", 6);
-            builder.AppendLineWithTabs("}", 5);
-            builder.AppendLineWithTabs("else", 5);
-            builder.AppendLineWithTabs("{", 5);
-            builder.AppendLineWithTabs("throw;", 6);
-            builder.AppendLineWithTabs("}", 5);
-            builder.AppendLineWithTabs("}", 4);
-            builder.AppendLineWithTabs("}", 3);
-            builder.AppendLineWithTabs("entity.MarkOld();", 3);
-            builder.AppendLineWithTabs("return entity;", 3);
-            builder.AppendLineWithTabs("}", 2);
-
-            return builder.ToString();
+            var template = new Template();
+            template.SetTemplate(Resources.GenericRepositoryUpdate);
+            return template.GetText;
         }
 
         protected virtual string ToAnonymousMethod()
         {
-            var builder = new StringBuilder();
-
-            builder.AppendLineWithTabs("private DynamicParameters ToAnonymous(T entity, bool includeRowVersion)", 0);
-            builder.AppendLineWithTabs("{", 2);
-            builder.AppendLineWithTabs("dynamic anonymousEntity = entity.ToAnonymous();", 3);
-            builder.AppendLineWithTabs("anonymousEntity.Id = entity.Id;", 3);
-            builder.AppendLineWithTabs("var parameters = new DynamicParameters(anonymousEntity);", 3);
-            builder.AppendLineWithTabs("if (includeRowVersion)", 3);
-            builder.AppendLineWithTabs("{", 3);
-            builder.AppendLineWithTabs("parameters.Add(\"RowVersion\", entity.RowVersion, DbType.Binary);", 4);
-            builder.AppendLineWithTabs("}", 3);
-            builder.AppendLineWithTabs("return parameters;", 3);
-            builder.AppendLineWithTabs("}", 2);
-
-            return builder.ToString();
+            var template = new Template();
+            template.SetTemplate(Resources.GenericRepositoryToAnonymous);
+            return template.GetText;
         }
 
         protected virtual ClassFile BuildClassFile()

@@ -136,6 +136,117 @@
 	return connection;
 }</value>
   </data>
+  <data name="GenericRepositoryBulkSave" xml:space="preserve">
+    <value>public IEnumerable&lt;T&gt; Save(IEnumerable&lt;T&gt; entities)
+{
+	var enumerable = entities as IList&lt;T&gt; ?? entities.ToList();
+	foreach (var entity in enumerable)
+	{
+		Save(entity);
+	}
+	return enumerable;
+}</value>
+  </data>
+  <data name="GenericRepositoryDelete" xml:space="preserve">
+    <value>public void Delete(T entity)
+{
+	using (var connection = ConnectionFactory.GetConnection())
+	{
+		connection.Execute($"[dbo].[{ typeof(T).Name}_Delete]",
+			new {entity.Id, entity.RowVersion, entity.ModifiedBy },
+			commandType: CommandType.StoredProcedure);
+	}
+}</value>
+  </data>
+  <data name="GenericRepositoryGetById" xml:space="preserve">
+    <value>public T GetById(long id)
+{
+	T entity;
+	using (var connection = ConnectionFactory.GetConnection())
+	{
+		entity = connection.QuerySingle&lt;T&gt;($"[dbo].[{ typeof(T).Name}_GetById]",
+			new {Id = id},
+			commandType: CommandType.StoredProcedure);
+	}
+	entity.MarkOld();
+	return entity;
+}</value>
+  </data>
+  <data name="GenericRepositoryInsert" xml:space="preserve">
+    <value>public T Insert(T entity)
+{
+	using (var connection = ConnectionFactory.GetConnection())
+	{
+		connection.Query&lt;long, byte[], T&gt;($"[dbo].[{typeof(T).Name}_Insert]", (id, rowversion) =&gt;
+		{
+			entity.Id = id;
+			entity.RowVersion = rowversion;
+			return entity;
+		}, ToAnonymous(entity, false), splitOn: "RowVersion", commandType: CommandType.StoredProcedure);
+	}
+	entity.MarkOld();
+	return entity;
+}</value>
+  </data>
+  <data name="GenericRepositorySave" xml:space="preserve">
+    <value>public T Save(T entity)
+{
+	if(entity.IsDeleted)
+	{
+		Delete(entity);
+		return entity;
+	}
+	if(entity.IsNew)
+	{
+		return Insert(entity);
+	}
+	if(entity.IsDirty)
+	{
+		return Update(entity);
+	}
+	return entity;
+}</value>
+  </data>
+  <data name="GenericRepositoryToAnonymous" xml:space="preserve">
+    <value>private DynamicParameters ToAnonymous(T entity, bool includeRowVersion)
+{
+	dynamic anonymousEntity = entity.ToAnonymous();
+	anonymousEntity.Id = entity.Id;
+	var parameters = new DynamicParameters(anonymousEntity);
+	if (includeRowVersion)
+	{
+		parameters.Add("RowVersion", entity.RowVersion, DbType.Binary);
+	}
+	return parameters;
+}</value>
+  </data>
+  <data name="GenericRepositoryUpdate" xml:space="preserve">
+    <value>public T Update(T entity)
+{
+	using (var connection = ConnectionFactory.GetConnection())
+	{
+		try
+		{
+			entity.RowVersion = connection.ExecuteScalar&lt;byte[]&gt;($"[dbo].[{ typeof(T).Name}_Update]",
+				ToAnonymous(entity, true),
+				commandType: CommandType.StoredProcedure);
+		}
+		catch(SqlException ex)
+		{
+			if (ex.Number == 50000 &amp;&amp; ex.Class == 16 &amp;&amp; ex.Message.Contains(" is al gewijzigd door een andere gebruiker."))
+			{
+				throw new DBConcurrencyException($"Dirty write detected while updating { typeof(T).Name} with id { entity.Id} at { DateTime.Now.ToString(CultureInfo.InvariantCulture)}");
+			}
+			else
+			{
+				throw;
+			}
+		}
+	}
+	entity.MarkOld();
+	return entity;
+}</value>
+  </data>
   <data name="PropertyChildCollection" xml:space="preserve">
     <value>public List&lt;%PropertyValueType%&gt; %PropertyName% { get; } = new List&lt;%PropertyValueType%&gt;();</value>
   </data>

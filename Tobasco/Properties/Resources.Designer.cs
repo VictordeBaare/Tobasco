@@ -86,6 +86,149 @@ namespace Tobasco.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to public IEnumerable&lt;T&gt; Save(IEnumerable&lt;T&gt; entities)
+        ///{
+        ///	var enumerable = entities as IList&lt;T&gt; ?? entities.ToList();
+        ///	foreach (var entity in enumerable)
+        ///	{
+        ///		Save(entity);
+        ///	}
+        ///	return enumerable;
+        ///}.
+        /// </summary>
+        internal static string GenericRepositoryBulkSave {
+            get {
+                return ResourceManager.GetString("GenericRepositoryBulkSave", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to public void Delete(T entity)
+        ///{
+        ///	using (var connection = ConnectionFactory.GetConnection())
+        ///	{
+        ///		connection.Execute($&quot;[dbo].[{ typeof(T).Name}_Delete]&quot;,
+        ///			new {entity.Id, entity.RowVersion, entity.ModifiedBy },
+        ///			commandType: CommandType.StoredProcedure);
+        ///	}
+        ///}.
+        /// </summary>
+        internal static string GenericRepositoryDelete {
+            get {
+                return ResourceManager.GetString("GenericRepositoryDelete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to public T GetById(long id)
+        ///{
+        ///	T entity;
+        ///	using (var connection = ConnectionFactory.GetConnection())
+        ///	{
+        ///		entity = connection.QuerySingle&lt;T&gt;($&quot;[dbo].[{ typeof(T).Name}_GetById]&quot;,
+        ///			new {Id = id},
+        ///			commandType: CommandType.StoredProcedure);
+        ///	}
+        ///	entity.MarkOld();
+        ///	return entity;
+        ///}.
+        /// </summary>
+        internal static string GenericRepositoryGetById {
+            get {
+                return ResourceManager.GetString("GenericRepositoryGetById", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to public T Insert(T entity)
+        ///{
+        ///	using (var connection = ConnectionFactory.GetConnection())
+        ///	{
+        ///		connection.Query&lt;long, byte[], T&gt;($&quot;[dbo].[{typeof(T).Name}_Insert]&quot;, (id, rowversion) =&gt;
+        ///		{
+        ///			entity.Id = id;
+        ///			entity.RowVersion = rowversion;
+        ///			return entity;
+        ///		}, ToAnonymous(entity, false), splitOn: &quot;RowVersion&quot;, commandType: CommandType.StoredProcedure);
+        ///	}
+        ///	entity.MarkOld();
+        ///	return entity;
+        ///}.
+        /// </summary>
+        internal static string GenericRepositoryInsert {
+            get {
+                return ResourceManager.GetString("GenericRepositoryInsert", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to public T Save(T entity)
+        ///{
+        ///	if(entity.IsDeleted)
+        ///	{
+        ///		Delete(entity);
+        ///		return entity;
+        ///	}
+        ///	if(entity.IsNew)
+        ///	{
+        ///		return Insert(entity);
+        ///	}
+        ///	if(entity.IsDirty)
+        ///	{
+        ///		return Update(entity);
+        ///	}
+        ///	return entity;
+        ///}.
+        /// </summary>
+        internal static string GenericRepositorySave {
+            get {
+                return ResourceManager.GetString("GenericRepositorySave", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to private DynamicParameters ToAnonymous(T entity, bool includeRowVersion)
+        ///{
+        ///	dynamic anonymousEntity = entity.ToAnonymous();
+        ///	anonymousEntity.Id = entity.Id;
+        ///	var parameters = new DynamicParameters(anonymousEntity);
+        ///	if (includeRowVersion)
+        ///	{
+        ///		parameters.Add(&quot;RowVersion&quot;, entity.RowVersion, DbType.Binary);
+        ///	}
+        ///	return parameters;
+        ///}.
+        /// </summary>
+        internal static string GenericRepositoryToAnonymous {
+            get {
+                return ResourceManager.GetString("GenericRepositoryToAnonymous", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to public T Update(T entity)
+        ///{
+        ///	using (var connection = ConnectionFactory.GetConnection())
+        ///	{
+        ///		try
+        ///		{
+        ///			entity.RowVersion = connection.ExecuteScalar&lt;byte[]&gt;($&quot;[dbo].[{ typeof(T).Name}_Update]&quot;,
+        ///				ToAnonymous(entity, true),
+        ///				commandType: CommandType.StoredProcedure);
+        ///		}
+        ///		catch(SqlException ex)
+        ///		{
+        ///			if (ex.Number == 50000 &amp;&amp; ex.Class == 16 &amp;&amp; ex.Message.Contains(&quot; is al gewijzigd door een andere gebruiker.&quot;))
+        ///			{
+        ///				throw new DBConcurrencyException($&quot;Dirty write detected while updatin [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string GenericRepositoryUpdate {
+            get {
+                return ResourceManager.GetString("GenericRepositoryUpdate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to public List&lt;%PropertyValueType%&gt; %PropertyName% { get; } = new List&lt;%PropertyValueType%&gt;();.
         /// </summary>
         internal static string PropertyChildCollection {
