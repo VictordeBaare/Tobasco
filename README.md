@@ -60,25 +60,22 @@ In the EntityLocations element you can add n locations in which you want to gene
 For example:
 </p>
 
-<pre>
-'''xml
+<code>
+
+```xml
   <EntityLocations>
-        <EntityLocation id="dataobject">
+        <EntityLocation>
             <FileLocation project="TobascoTest" folder="GeneratedEntity"></FileLocation>
-            <Namespaces>
-                <Namespace value="System.Dynamic"></Namespace>
-            </Namespaces>
-            <ORMapper type="Dapper"></ORMapper>
         </EntityLocation>
-        <EntityLocation generaterules="true" id="businessobject">
+        <EntityLocation generaterules="true">
             <FileLocation project="TobascoTest" folder="GeneratedEntity2"></FileLocation>
-            <Namespaces>
-                <Namespace value="System.ComponentModel.DataAnnotations"></Namespace>
-            </Namespaces>
         </EntityLocation>
     </EntityLocations>
-'''
-</pre>
+```
+
+</code>
+
+
 
 <p>
 If you prefer to use your own builders for your classes then you can overwrite the builders with your own implementation.
