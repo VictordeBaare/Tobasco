@@ -63,6 +63,8 @@ For example:
 <code>
 
 ```xml
+<?xml version="1.0" encoding="utf-8" ?>
+<EntityInformation>
   <EntityLocations>
         <EntityLocation>
             <FileLocation project="TobascoTest" folder="GeneratedEntity"></FileLocation>
@@ -71,13 +73,14 @@ For example:
             <FileLocation project="TobascoTest" folder="GeneratedEntity2"></FileLocation>
         </EntityLocation>
     </EntityLocations>
+</EntityInformation>
 ```
 
 </code>
 
-
-
 <p>
-If you prefer to use your own builders for your classes then you can overwrite the builders with your own implementation.
+Using the example above entities will be generated in the project: 'TobascoTest' in the folders: 'GeneratedEntity' and 'GeneratedEntity2'.
+The second entry of 'EntityLocation' has also the following attribute 'generaterules="true"' this attribute will tell Tobasco to generate businessrules for this entity.
 </p>
+
 
