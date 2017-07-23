@@ -9,6 +9,8 @@ using Tobasco.FileBuilder;
 using Tobasco.Manager;
 using Tobasco.Model.Builders.Base;
 using Tobasco.Model.Properties;
+using Tobasco.Properties;
+using Tobasco.Templates;
 
 namespace Tobasco.Model.Builders
 {
@@ -22,45 +24,46 @@ namespace Tobasco.Model.Builders
 
         private string GenerateMethods()
         {
-            var builder = new StringBuilder();
+            var template = new Template();
             var orm = Location.ORMapper?.Type ?? OrmType.Onbekend;
 
             switch (orm)
             {
                 case OrmType.Dapper:
-                    builder.Append("public override ExpandoObject ToAnonymous()");
-                    builder.Append(Environment.NewLine);
-                    builder.AppendWithTabs("{", 2);
-                    builder.Append(Environment.NewLine);
-                    builder.AppendWithTabs("dynamic anymonous = base.ToAnonymous();", 3);
-                    builder.Append(Environment.NewLine);
-                    builder.Append(Environment.NewLine);
-                    foreach (var property in GetProperties.Where(x => x.Property.DataType.Datatype != Datatype.ChildCollection))
-                    {
-                        if (property.Property.DataType.Datatype == Datatype.Child || property.Property.DataType.Datatype == Datatype.ReadonlyChild)
-                        {
-                            if (property.Property.Required)
-                            {
-                                builder.AppendWithTabs($"anymonous.{property.Property.Name}Id = {property.Property.Name}.Id;", 3);
-                            }
-                            else
-                            {
-                                builder.AppendWithTabs($"anymonous.{property.Property.Name}Id = {property.Property.Name}?.Id;", 3);
-                            }
-                        }
-                        else
-                        {
-                            builder.AppendWithTabs($"anymonous.{property.Property.Name} = {property.Property.Name};", 3);
-                        }
-                        builder.Append(Environment.NewLine);
-                    }
-                    builder.AppendWithTabs("return anymonous;", 3);
-                    builder.Append(Environment.NewLine);
-                    builder.AppendWithTabs("}", 2);
-                    return builder.ToString();
+                    template.SetTemplate(Resources.ClassDapperMethod);
+                    template.Fill(GetParameters());
+                    return template.GetText;
                 default:
-                    return builder.ToString();
+                    return string.Empty;
             }
+        }
+
+        private Dictionary<string, string> GetParameters()
+        {
+            var builder = new StringBuilder();
+            foreach (var property in GetProperties.Where(x => x.Property.DataType.Datatype != Datatype.ChildCollection))
+            {
+                if (property.Property.DataType.Datatype == Datatype.Child || property.Property.DataType.Datatype == Datatype.ReadonlyChild)
+                {
+                    if (property.Property.Required)
+                    {
+                        builder.AppendWithTabs($"anymonous.{property.Property.Name}Id = {property.Property.Name}.Id;", 3);
+                    }
+                    else
+                    {
+                        builder.AppendWithTabs($"anymonous.{property.Property.Name}Id = {property.Property.Name}?.Id;", 3);
+                    }
+                }
+                else
+                {
+                    builder.AppendWithTabs($"anymonous.{property.Property.Name} = {property.Property.Name};", 3);
+                }
+                builder.Append(Environment.NewLine);
+            }
+            return new Dictionary<string, string>
+            {
+                {Resources.AnymonousPropertySet, builder.ToString() }
+            };
         }
 
         public override IEnumerable<FileBuilder.OutputFile> Build()

@@ -10,6 +10,7 @@ namespace Tobasco.Templates
     {
         public const string ValueType = "PropertyValueType";
         public const string PropertyName = "PropertyName";
+        public const string BusinessRules = "BusinessRules";
 
 
         public const string ChildCollectionTemplate = "PropertyChildCollection";

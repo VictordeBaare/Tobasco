@@ -8,9 +8,14 @@ namespace TobascoTest.GeneratedEntity2
 [Serializable]
     public partial class ChildCollectionObject 
     {
-        public string TestChildProp1 { get; set; }
+        [Required(ErrorMessage="TestChildProp1 is required")]
+[StringLength(100, ErrorMessage = "Maximum length is 100 for TestChildProp1")]
 
-        public long FileMetOverervingId { get; set; }
+public string TestChildProp1 { get; set; }
+
+        [Required(ErrorMessage="FileMetOverervingId is required")]
+
+public long FileMetOverervingId { get; set; }
 
         
 

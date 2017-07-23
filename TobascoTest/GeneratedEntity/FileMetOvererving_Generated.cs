@@ -10,6 +10,7 @@ namespace TobascoTest.GeneratedEntity
     {
         private string _TestChildProp1;
 
+
 public string TestChildProp1
 {
 	get { return _TestChildProp1; }
@@ -17,6 +18,7 @@ public string TestChildProp1
 }
 
         private int? _TestChildProp2;
+
 
 public int? TestChildProp2
 {
@@ -26,6 +28,7 @@ public int? TestChildProp2
 
         private long? _TestChildProp3;
 
+
 public long? TestChildProp3
 {
 	get { return _TestChildProp3; }
@@ -33,6 +36,7 @@ public long? TestChildProp3
 }
 
         private DateTime? _TestChildProp4;
+
 
 public DateTime? TestChildProp4
 {
@@ -42,6 +46,7 @@ public DateTime? TestChildProp4
 
         private GeslachtType? _TestChildProp5;
 
+
 public GeslachtType? TestChildProp5
 {
 	get { return _TestChildProp5; }
@@ -50,6 +55,7 @@ public GeslachtType? TestChildProp5
 
         private decimal? _TestChildProp6;
 
+
 public decimal? TestChildProp6
 {
 	get { return _TestChildProp6; }
@@ -57,6 +63,7 @@ public decimal? TestChildProp6
 }
 
         private ChildObject _TestChildProp7;
+
 
 public ChildObject TestChildProp7
 {
@@ -68,6 +75,7 @@ public ChildObject TestChildProp7
 
         private ChildObject _TestChildProp9;
 
+
 public ChildObject TestChildProp9
 {
 	get { return _TestChildProp9; }
@@ -77,10 +85,9 @@ public ChildObject TestChildProp9
         public Guid Uid { get; private set; }
 
         public override ExpandoObject ToAnonymous()
-        {
-            dynamic anymonous = base.ToAnonymous();
-
-            anymonous.TestChildProp1 = TestChildProp1;
+{
+	dynamic anymonous = base.ToAnonymous();
+	            anymonous.TestChildProp1 = TestChildProp1;
             anymonous.TestChildProp2 = TestChildProp2;
             anymonous.TestChildProp3 = TestChildProp3;
             anymonous.TestChildProp4 = TestChildProp4;
@@ -89,8 +96,9 @@ public ChildObject TestChildProp9
             anymonous.TestChildProp7Id = TestChildProp7?.Id;
             anymonous.TestChildProp9Id = TestChildProp9?.Id;
             anymonous.Uid = Uid;
-            return anymonous;
-        }
+
+	return anymonous;
+}
 
     }
 }

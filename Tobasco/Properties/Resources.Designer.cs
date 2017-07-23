@@ -61,6 +61,29 @@ namespace Tobasco.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to AnymonousPropertySet.
+        /// </summary>
+        internal static string AnymonousPropertySet {
+            get {
+                return ResourceManager.GetString("AnymonousPropertySet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to public override ExpandoObject ToAnonymous()
+        ///{
+        ///	dynamic anymonous = base.ToAnonymous();
+        ///	%AnymonousPropertySet%
+        ///	return anymonous;
+        ///}.
+        /// </summary>
+        internal static string ClassDapperMethod {
+            get {
+                return ResourceManager.GetString("ClassDapperMethod", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to public SqlConnection GetConnection()
         ///{
         ///	SqlConnection connection = null;
@@ -240,6 +263,7 @@ namespace Tobasco.Properties {
         /// <summary>
         ///   Looks up a localized string similar to private %PropertyValueType% _%PropertyName%;
         ///
+        ///%BusinessRules%
         ///public %PropertyValueType% %PropertyName%
         ///{
         ///	get { return _%PropertyName%; }
@@ -253,7 +277,8 @@ namespace Tobasco.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to public %PropertyValueType% %PropertyName% { get; set; }.
+        ///   Looks up a localized string similar to %BusinessRules%
+        ///public %PropertyValueType% %PropertyName% { get; set; }.
         /// </summary>
         internal static string PropertyDefault {
             get {

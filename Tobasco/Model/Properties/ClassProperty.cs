@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 using Tobasco.Enums;
 using Tobasco.Factories;
 
@@ -9,7 +10,7 @@ namespace Tobasco.Model.Properties
     {
         private readonly Property _property;
         private readonly ORMapper _ormapper;
-        private readonly bool _generateRules;
+        protected readonly bool _generateRules;
         private string _getProperty;
         private string _getValueType;
 
@@ -34,17 +35,20 @@ namespace Tobasco.Model.Properties
             }            
         }
 
-        public virtual List<string> CalcRules
+        public virtual StringBuilder CalcRules
         {
             get
             {
-                var rules = new List<string>();
-                var required = GetRequiredRule();
-                if (!string.IsNullOrEmpty(required))
+                var builder = new StringBuilder();
+                if (_generateRules)
                 {
-                    rules.Add(required);
+                    var required = GetRequiredRule();
+                    if (!string.IsNullOrEmpty(required))
+                    {
+                        builder.AppendLine(required);
+                    }
                 }
-                return rules;
+                return builder;
             }
         }
 
