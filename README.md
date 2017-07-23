@@ -75,12 +75,76 @@ For example:
     </EntityLocations>
 </EntityInformation>
 ```
-
 </code>
 
 <p>
 Using the example above entities will be generated in the project: 'TobascoTest' in the folders: 'GeneratedEntity' and 'GeneratedEntity2'.
 The second entry of 'EntityLocation' has also the following attribute 'generaterules="true"' this attribute will tell Tobasco to generate businessrules for this entity.
+
+Additional elements which can be added to the 'EntityLocation' element are:
+<ul>
+  <li>Namespaces</li>
+  <li>ORMapper</li>
+</ul>
+
+<h5>Example</h5>
+<code>
+
+```xml
+<EntityLocation>
+    <FileLocation project="TobascoTest" folder="GeneratedEntity"></FileLocation>
+    <Namespaces>
+        <Namespace value="System.Dynamic"></Namespace>
+    </Namespaces>
+    <ORMapper type="Dapper"></ORMapper>
+</EntityLocation>
+```
+</code>
+</p> 
+
+<h4>BaseNamespaces</h4>
+<p>
+The namespaces which should be added to every generated file.
+<h5>Example</h5>
+<code>
+
+```xml
+<EntityInformation>
+    <BaseNamespaces>
+        <Namespace value="System.Collections.Generic"></Namespace>
+    </BaseNamespaces>
+</EntityInformation>
+```
+</code>
 </p>
 
 
+<h4>Mappers</h4>
+<p>
+More information to follow.
+</p>
+
+<h4>Database</h4>
+<p>
+More information to follow.
+</p>
+
+<h4>Repository</h4>
+<p>
+More information to follow.
+</p>
+
+<h4>DependencyInjection</h4>
+<p>
+More information to follow.
+</p>
+
+<h4>ConnectionFactory</h4>
+<p>
+More information to follow.
+</p>
+
+<h4>GenericRepository</h4>
+<p>
+More information to follow.
+</p>
