@@ -147,6 +147,14 @@
 	return connection;
 }</value>
   </data>
+  <data name="Constructor" xml:space="preserve">
+    <value>%ConstructorFields%
+public %Name%(%ConstructorParameters%)
+{
+	%FieldWithParameter%
+	%CustomImplementation%
+}</value>
+  </data>
   <data name="GenericRepositoryBulkSave" xml:space="preserve">
     <value>public IEnumerable&lt;T&gt; Save(IEnumerable&lt;T&gt; entities)
 {

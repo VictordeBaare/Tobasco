@@ -63,14 +63,7 @@ namespace Tobasco.Model.Builders
             classFile.OwnNamespace = mapper.MapperLocation.GetNamespace;
             classFile.Namespaces.Add(mapper.InterfaceLocation.GetProjectLocation);
             classFile.Namespaces.Add(fromEntityLocation);
-            foreach (var property in EntityHandler.GetClassBuilder(mapper.FromTo.From).GetChildChildCollectionProperties)
-            {
-                classFile.Constructor.ParameterWithField.Add(new FieldWithParameter
-                {
-                    Parameter = new TypeWithName {Name = EntityHandler.GetMapperInterfaceParameter(property.Property.DataType.Type) , Type = EntityHandler.GetMapperInterface(property.Property.DataType.Type) } ,
-                    Field = new TypeWithName { Name = EntityHandler.GetMapperInterfaceParameter(property.Property.DataType.Type), Type = EntityHandler.GetMapperInterface(property.Property.DataType.Type) }
-                });
-            }
+            AddFieldsWithParameterToConstructor(classFile, mapper);
             classFile.Methods.Add(MappingMethod(mapper));
 
             var interfacefile = FileManager.StartNewInterfaceFile(SelectMapperInterface, mapper.MapperLocation.Project, mapper.MapperLocation.Folder);
@@ -80,6 +73,33 @@ namespace Tobasco.Model.Builders
             interfacefile.Methods.Add($"{EntityHandler.Entity.Name} MapToObject({mapToLocation}.{EntityHandler.Entity.Name} objectToMapFrom);");
 
             return new List<FileBuilder.OutputFile> { classFile, interfacefile };
+        }
+
+        private void AddFieldsWithParameterToConstructor(ClassFile classFile, Mapper mapper)
+        {
+            foreach (var property in EntityHandler.GetClassBuilder(mapper.FromTo.From).GetChildChildCollectionProperties){
+                classFile.Constructor.AddFieldWithParameter(GetField("private", EntityHandler.GetMapperInterface(property.Property.DataType.Type), EntityHandler.GetMapperInterfaceParameter(property.Property.DataType.Type)), 
+                    GetParameter(EntityHandler.GetMapperInterface(property.Property.DataType.Type), EntityHandler.GetMapperInterfaceParameter(property.Property.DataType.Type)));
+            }
+        }
+
+        private Field GetField(string modifier, string type, string name)
+        {
+            return new Field
+            {
+                Modifier = modifier,
+                Type = type,
+                Name = name
+            };
+        }
+
+        private TypeWithName GetParameter(string type, string name)
+        {
+            return new TypeWithName
+            {
+                Type = type,
+                Name = name
+            };
         }
     }
 }

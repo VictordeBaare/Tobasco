@@ -109,6 +109,20 @@ namespace Tobasco.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to %ConstructorFields%
+        ///public %Name%(%ConstructorParameters%)
+        ///{
+        ///	%FieldWithParameter%
+        ///	%CustomImplementation%
+        ///}.
+        /// </summary>
+        internal static string Constructor {
+            get {
+                return ResourceManager.GetString("Constructor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to public IEnumerable&lt;T&gt; Save(IEnumerable&lt;T&gt; entities)
         ///{
         ///	var enumerable = entities as IList&lt;T&gt; ?? entities.ToList();

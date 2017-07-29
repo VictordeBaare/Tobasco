@@ -16,7 +16,7 @@ namespace Tobasco.Model.Builders
         public DefaultRepositoryBuilder(EntityHandler entity, Repository repository) : base(entity, repository)
         {
         }
-        
+
         protected virtual StringBuilder GetTransaction(StringBuilder builder, Func<StringBuilder, int, StringBuilder> implementation)
         {
             var tabs = 3;
@@ -31,7 +31,7 @@ namespace Tobasco.Model.Builders
             }
             return implementation(builder, tabs);
         }
-        
+
         protected virtual string GetSaveMethod()
         {
             var builder = new StringBuilder();
@@ -60,7 +60,7 @@ namespace Tobasco.Model.Builders
             classFile.Namespaces.Add(Repository.InterfaceLocation.GetProjectLocation);
             classFile.Namespaces.Add("System.Collections.Generic");
             classFile.OwnNamespace = Repository.FileLocation.GetNamespace;
-            classFile.Constructor.ParameterWithField.AddRange(GetFieldWithParameters());
+            AddFieldsWithParameterToConstructor(classFile);
             classFile.BaseClass = $": {GetRepositoryInterfaceName}";
             classFile.Methods.Add(GetSaveMethod());
             classFile.Methods.Add(GetByIdMethod());
@@ -89,26 +89,31 @@ namespace Tobasco.Model.Builders
             return new List<FileBuilder.OutputFile> { classFile, interfaceFile };
         }
 
-        protected virtual FieldWithParameter GetGenericRepositoryParameter()
+        private void AddFieldsWithParameterToConstructor(ClassFile classFile)
         {
-            return new FieldWithParameter
+            foreach (var item in Entity.SelectChildRepositoryInterfaces(Entity.Entity.Properties.Where(x => x.DataType.Datatype == Datatype.ChildCollection || x.DataType.Datatype == Datatype.Child))){
+                classFile.Constructor.AddFieldWithParameter(GetField("private", item, $"_{item.FirstCharToLower()}"), GetParameter(item, item.FirstCharToLower()));
+            }
+            classFile.Constructor.AddFieldWithParameter(GetField("private", $"IGenericRepository<{GetEntityName}>", "_genericRepository"), GetParameter($"IGenericRepository<{GetEntityName}>", "genericRepository"));
+        }
+
+        private Field GetField(string modifier, string type, string name)
+        {
+            return new Field
             {
-                Parameter =
-                    new TypeWithName {Name = "genericRepository", Type = $"IGenericRepository<{GetEntityName}>"},
-                Field = new TypeWithName {Name = "_genericRepository", Type = $"IGenericRepository<{GetEntityName}>"}
+                Modifier = modifier,
+                Type = type,
+                Name = name
             };
         }
 
-        private IEnumerable<FieldWithParameter> GetFieldWithParameters()
+        private TypeWithName GetParameter(string type, string name)
         {
-            List<FieldWithParameter> fields = new List<FieldWithParameter> {GetGenericRepositoryParameter()};
-            fields.AddRange(Entity.SelectChildRepositoryInterfaces(Entity.Entity.Properties.Where(x => x.DataType.Datatype == Datatype.ChildCollection || x.DataType.Datatype == Datatype.Child))
-                    .Select(childRep => new FieldWithParameter
-                    {
-                        Field = new TypeWithName {Name = $"_{childRep.FirstCharToLower()}", Type = childRep},
-                        Parameter = new TypeWithName {Name = childRep.FirstCharToLower(), Type = childRep}
-                    }));
-            return fields;
+            return new TypeWithName
+            {
+                Type = type,
+                Name = name
+            };
         }
 
         protected virtual StringBuilder GetSaveImplementation(StringBuilder builder, int tabs)

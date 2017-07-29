@@ -73,6 +73,7 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Constants\ConstructorConstants.cs" />
     <Compile Include="Constants\DefaultBuilderConstants.cs" />
     <Compile Include="EntityHandler.cs" />
     <Compile Include="Enums\Datatype.cs" />
@@ -92,6 +93,7 @@
     <Compile Include="FileBuilder\ClassFile.cs" />
     <Compile Include="FileBuilder\Constructor.cs" />
     <Compile Include="FileBuilder\Field.cs" />
+    <Compile Include="FileBuilder\TypeWithName.cs" />
     <Compile Include="FileBuilder\FieldWithParameter.cs" />
     <Compile Include="FileBuilder\OutputFile.cs" />
     <Compile Include="FileBuilder\FileManager.cs" />

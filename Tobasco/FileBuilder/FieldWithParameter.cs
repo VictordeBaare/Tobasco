@@ -8,8 +8,13 @@ namespace Tobasco.FileBuilder
 {
     public class FieldWithParameter
     {
-        public TypeWithName Field { get; set; }
+        public Field Field { get; set; }
 
         public TypeWithName Parameter { get; set; }
+
+        public string Build()
+        {
+            return $"{Field.Name} = {Parameter.Name};";
+        }
     }
 }
