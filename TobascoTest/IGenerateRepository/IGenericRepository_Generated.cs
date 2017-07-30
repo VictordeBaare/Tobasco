@@ -12,7 +12,7 @@ namespace TobascoTest.IGenerateRepository
     {
         IConnectionFactory ConnectionFactory { get; }
         T Save(T entity);
-        T GetById(long id); 
+        T GetById(long id);
         IEnumerable<T> Save(IEnumerable<T> entities);
     }
 }

@@ -3,6 +3,7 @@ using EnvDTE80;
 using Microsoft.VisualStudio.Shell;
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -20,9 +21,12 @@ namespace Tobasco
         private readonly List<string> _templatePlaceholderList = new List<string>();
         private readonly DynamicTextTransformation2 _textTransformation;
 
+
+        public bool UseAutoFormatting { get; set; } = false;
+
         public static FileProcessor Create(object textTransformation)
         {
-            DynamicTextTransformation2 transformation = DynamicTextTransformation2.Create(textTransformation);
+            DynamicTextTransformation2 transformation = DynamicTextTransformation2.Create(textTransformation);            
             return new FileProcessor(transformation);
         }
 
@@ -97,6 +101,20 @@ namespace Tobasco
             WriteVsProperties(items, filesToProcess);
 
             return filesToProcess;
+        }
+
+
+        private void FormatDocument(ProjectItems items)
+        {
+            OutputPaneManager.WriteToOutputPane("Start formatting");
+
+            foreach (ProjectItem item in items)
+            {
+                var b = item.Open(EnvDTE.Constants.vsViewKindDebugging);
+                b.Activate();
+                item.Document.DTE.ExecuteCommand("Edit.FormatDocument");
+                b.Close(vsSaveChanges.vsSaveChangesYes);
+            }
         }
 
         private void WriteVsProperties(IEnumerable<ProjectItem> items, IEnumerable<FileBuilder.OutputFile> outputFiles)
@@ -221,7 +239,10 @@ namespace Tobasco
             {
                 ProjectItem pi = VSHelper.GetTemplateProjectItem(templateProjectItem.DTE, item.FirstItem, templateProjectItem);
                 ProjectSyncPart(pi, item.OutputFiles, _textTransformation);
-
+                if (UseAutoFormatting)
+                {
+                    FormatDocument(pi.ProjectItems);
+                }
                 if (pi.Name.EndsWith("txt4"))
                     _templatePlaceholderList.Add(VSHelper.GetProjectItemFullPath(pi));
             }

@@ -15,7 +15,7 @@
 #>
 <#
 	var processor = FileProcessor.Create(this);
-
+	processor.UseAutoFormatting = true;
     BuilderManager.Add("repositorykey", typeof(RepositoryOverrideBuilder));
 
 	processor.BeginProcessing(Host.ResolvePath(string.Empty));
