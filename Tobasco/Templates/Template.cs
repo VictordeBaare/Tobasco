@@ -12,14 +12,14 @@ namespace Tobasco.Templates
             TemplateText = template;
         }
 
-        public void Fill(Dictionary<string, string> tags)
+        public void Fill(TemplateParameter tags)
         {
             if (string.IsNullOrEmpty(TemplateText))
             {
                 throw new ArgumentNullException("TemplateText is null. First set the desired template with TemplateText.");
             }
 
-            foreach (var t in tags)
+            foreach (var t in tags.GetParameters)
             {
                 TemplateText = TemplateText.Replace(string.Format("%{0}%", t.Key), t.Value);
             }

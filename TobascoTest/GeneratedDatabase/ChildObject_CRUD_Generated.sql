@@ -1,7 +1,6 @@
 ﻿CREATE PROCEDURE [dbo].[ChildObject_Insert]
     @Id bigint output,
 	@TestChildProp1 nvarchar(100),
-
     @ModifiedBy nvarchar(256)
 AS
 BEGIN
@@ -11,7 +10,6 @@ BEGIN
       INTO [dbo].ChildObject 
 	       (
 			TestChildProp1,
-
 			[ModifiedBy],
 		    [ModifiedOn]
 		   )
@@ -21,7 +19,6 @@ BEGIN
     VALUES
          (
 		   @TestChildProp1,
-
            @ModifiedBy,
            SYSDATETIME()
           );
@@ -30,7 +27,6 @@ GO
 CREATE PROCEDURE [dbo].[ChildObject_Update]
 		@Id [bigint],
 		@TestChildProp1 nvarchar(100),
-
         @RowVersion [rowversion],
         @ModifiedBy nvarchar(256)
 AS
@@ -48,8 +44,7 @@ BEGIN
 
 		UPDATE [dbo].ChildObject
 		   SET 
-				ChildObject.TestChildProp1 = @TestChildProp1,
-            
+				ChildObject.TestChildProp1 = @TestChildProp1,            
 			    ChildObject.ModifiedBy = ISNULL(@ModifiedBy, SUSER_SNAME()),
 			    ChildObject.ModifiedOn = SYSDATETIME()
 		OUTPUT Inserted.[RowVersion]

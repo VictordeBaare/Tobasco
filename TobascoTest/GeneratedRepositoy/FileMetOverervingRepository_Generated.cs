@@ -8,31 +8,35 @@ namespace TobascoTest.GeneratedRepositoy
 {
     public partial class FileMetOverervingRepository : IFileMetOverervingRepository
     {
-        private readonly IGenericRepository<FileMetOvererving> _genericRepository;
-        private readonly IChildObjectRepository _iChildObjectRepository;
-        private readonly IChildCollectionObjectRepository _iChildCollectionObjectRepository;
-        public FileMetOverervingRepository(IGenericRepository<FileMetOvererving> genericRepository, IChildObjectRepository iChildObjectRepository, IChildCollectionObjectRepository iChildCollectionObjectRepository)
-        {
-            _genericRepository = genericRepository;
-            _iChildObjectRepository = iChildObjectRepository;
-            _iChildCollectionObjectRepository = iChildCollectionObjectRepository;
-        }
+private IChildObjectRepository _iChildObjectRepository;
+private IChildCollectionObjectRepository _iChildCollectionObjectRepository;
+private IGenericRepository<FileMetOvererving> _genericRepository;
+public FileMetOverervingRepository(IChildObjectRepository iChildObjectRepository, IChildCollectionObjectRepository iChildCollectionObjectRepository, IGenericRepository<FileMetOvererving> genericRepository)
+{
+	_iChildObjectRepository = iChildObjectRepository;
+_iChildCollectionObjectRepository = iChildCollectionObjectRepository;
+_genericRepository = genericRepository;
+	
+}
+        public FileMetOvererving Save(FileMetOvererving  filemetovererving)
+{
+	if (filemetovererving.TestChildProp7 != null)
+{
+filemetovererving.TestChildProp7 = _iChildObjectRepository.Save(filemetovererving.TestChildProp7);
+}
 
-        public FileMetOvererving Save(FileMetOvererving filemetovererving)
-        {
-            if (filemetovererving.TestChildProp7 != null)
-            {
-                filemetovererving.TestChildProp7 = _iChildObjectRepository.Save(filemetovererving.TestChildProp7);
-            }
-            filemetovererving = _genericRepository.Save(filemetovererving);
-            foreach(var toSaveItem in filemetovererving.TestChildProp8)
-            {
-                toSaveItem.FileMetOverervingId = filemetovererving.Id;
-                _iChildCollectionObjectRepository.Save(toSaveItem);
-            }
-            return filemetovererving;
-        }
+	
+	filemetovererving = _genericRepository.Save(filemetovererving);
+	
+	foreach(var toSaveItem in filemetovererving.TestChildProp8)
+{
+    toSaveItem.FileMetOverervingId = filemetovererving.Id;
+    _iChildCollectionObjectRepository.Save(toSaveItem);
+}
 
+	
+	return filemetovererving;
+}
 
         public FileMetOvererving GetById(long id)
         {

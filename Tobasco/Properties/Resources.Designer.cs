@@ -328,6 +328,55 @@ namespace Tobasco.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string RepositoryGetById {
+            get {
+                return ResourceManager.GetString("RepositoryGetById", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to public %EntityName% Save(%EntityName%  %EntityNameLowerCase%)
+        ///{
+        ///	%SaveChild%
+        ///	
+        ///	%EntityNameLowerCase% = _genericRepository.Save(%EntityNameLowerCase%);
+        ///	
+        ///	%SaveChildCollections%
+        ///	
+        ///	return %EntityNameLowerCase%;
+        ///}.
+        /// </summary>
+        internal static string RepositorySave {
+            get {
+                return ResourceManager.GetString("RepositorySave", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to public %EntityName% Save(%EntityName%  %EntityNameLowerCase%)
+        ///{
+        ///	using (var trans = new TransactionScope())
+        ///	{
+        ///		%SaveChild%
+        ///		
+        ///		%EntityNameLowerCase% = _genericRepository.Save(%EntityNameLowerCase%);
+        ///		
+        ///		%SaveChildCollections%
+        ///		
+        ///		return %EntityNameLowerCase%;
+        ///		trans.Complete();
+        ///	}
+        ///}.
+        /// </summary>
+        internal static string RepositorySaveWithTransaction {
+            get {
+                return ResourceManager.GetString("RepositorySaveWithTransaction", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to CREATE PROCEDURE [dbo].[%TableName%_Delete]
         ///		@Id [bigint]
         ///       ,@RowVersion [rowversion]

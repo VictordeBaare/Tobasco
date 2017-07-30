@@ -8,7 +8,6 @@
 @TestChildProp6 decimal(12,2),
 @TestChildProp7Id bigint,
 @TestChildProp9Id bigint,
-
     @ModifiedBy nvarchar(256)
 AS
 BEGIN
@@ -25,7 +24,6 @@ TestChildProp5,
 TestChildProp6,
 TestChildProp7Id,
 TestChildProp9Id,
-
 			[ModifiedBy],
 		    [ModifiedOn]
 		   )
@@ -42,7 +40,6 @@ TestChildProp9Id,
 @TestChildProp6,
 @TestChildProp7Id,
 @TestChildProp9Id,
-
            @ModifiedBy,
            SYSDATETIME()
           );
@@ -58,7 +55,6 @@ CREATE PROCEDURE [dbo].[FileMetOvererving_Update]
 @TestChildProp6 decimal(12,2),
 @TestChildProp7Id bigint,
 @TestChildProp9Id bigint,
-
         @RowVersion [rowversion],
         @ModifiedBy nvarchar(256)
 AS
@@ -83,8 +79,7 @@ FileMetOvererving.TestChildProp4 = @TestChildProp4,
 FileMetOvererving.TestChildProp5 = @TestChildProp5,
 FileMetOvererving.TestChildProp6 = @TestChildProp6,
 FileMetOvererving.TestChildProp7Id = @TestChildProp7Id,
-FileMetOvererving.TestChildProp9Id = @TestChildProp9Id,
-            
+FileMetOvererving.TestChildProp9Id = @TestChildProp9Id,            
 			    FileMetOvererving.ModifiedBy = ISNULL(@ModifiedBy, SUSER_SNAME()),
 			    FileMetOvererving.ModifiedOn = SYSDATETIME()
 		OUTPUT Inserted.[RowVersion]

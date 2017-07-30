@@ -8,18 +8,22 @@ namespace TobascoTest.GeneratedRepositoy
 {
     public partial class ChildObjectRepository : IChildObjectRepository
     {
-        private readonly IGenericRepository<ChildObject> _genericRepository;
-        public ChildObjectRepository(IGenericRepository<ChildObject> genericRepository)
-        {
-            _genericRepository = genericRepository;
-        }
-
-        public ChildObject Save(ChildObject childobject)
-        {
-            childobject = _genericRepository.Save(childobject);
-            return childobject;
-        }
-
+private IGenericRepository<ChildObject> _genericRepository;
+public ChildObjectRepository(IGenericRepository<ChildObject> genericRepository)
+{
+	_genericRepository = genericRepository;
+	
+}
+        public ChildObject Save(ChildObject  childobject)
+{
+	
+	
+	childobject = _genericRepository.Save(childobject);
+	
+	
+	
+	return childobject;
+}
 
         public ChildObject GetById(long id)
         {

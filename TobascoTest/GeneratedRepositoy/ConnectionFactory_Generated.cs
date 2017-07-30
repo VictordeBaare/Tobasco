@@ -7,12 +7,12 @@ namespace TobascoTest.GeneratedRepositoy
 {
     public partial class ConnectionFactory : IConnectionFactory
     {
-        private string _connectionstring;
-        public ConnectionFactory(string databasenaam)
-        {
-            _connectionstring = ConfigurationManager.ConnectionStrings[databasenaam].ConnectionString;;
-        }
-
+private readonly string _connectionstring;
+public ConnectionFactory(string databasenaam)
+{
+	
+	_connectionstring = ConfigurationManager.ConnectionStrings[databasenaam].ConnectionString;
+}
         public SqlConnection GetConnection()
 {
 	SqlConnection connection = null;

@@ -14,11 +14,12 @@ namespace TobascoTest.GeneratedRepositoy
 {
     public partial class GenericRepository<T> : IGenericRepository<T> where T : EntityBase, new()
     {
-        public GenericRepository(IConnectionFactory connectionFactory)
-        {
-            ConnectionFactory = connectionFactory;;
-        }
 
+public GenericRepository(IConnectionFactory connectionFactory)
+{
+	
+	ConnectionFactory = connectionFactory;
+}
         public IConnectionFactory ConnectionFactory { get; }
 
         public T Save(T entity)

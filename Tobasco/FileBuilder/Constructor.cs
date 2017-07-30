@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Tobasco.Constants;
 using Tobasco.Extensions;
 using Tobasco.Properties;
@@ -27,14 +24,14 @@ namespace Tobasco.FileBuilder
 
         public List<string> CustomImplementation { get; } = new List<string>();
 
-        private Dictionary<string, string> GetParameters(string name)
+        private TemplateParameter GetParameters(string name)
         {
-            var parameters = new Dictionary<string, string>();
+            var parameters = new TemplateParameter();
 
-            parameters.Add(ConstructorConstants.ConstructorFields, string.Join(Environment.NewLine, Fields.Select(x => x.Build())));
+            parameters.Add(ConstructorConstants.ConstructorFields, Fields.Select(x => x.Build()));
             parameters.Add(ConstructorConstants.ConstructorParameters, ConstructorParameters(Parameters));
-            parameters.Add(ConstructorConstants.FieldWithParameter, string.Join(Environment.NewLine, ParameterWithField.Select(x => x.Build())));
-            parameters.Add(ConstructorConstants.CustomImplementation, string.Join(Environment.NewLine, CustomImplementation));
+            parameters.Add(ConstructorConstants.FieldWithParameter, ParameterWithField.Select(x => x.Build()));
+            parameters.Add(ConstructorConstants.CustomImplementation, CustomImplementation);
             parameters.Add(ConstructorConstants.Name, name);
             
             return parameters;

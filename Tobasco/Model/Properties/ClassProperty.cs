@@ -35,20 +35,20 @@ namespace Tobasco.Model.Properties
             }            
         }
 
-        public virtual StringBuilder CalcRules
+        public virtual List<string> CalcRules
         {
             get
             {
-                var builder = new StringBuilder();
+                var list = new List<string>();
                 if (_generateRules)
                 {
                     var required = GetRequiredRule();
                     if (!string.IsNullOrEmpty(required))
                     {
-                        builder.AppendLine(required);
+                        list.Add(required);
                     }
                 }
-                return builder;
+                return list;
             }
         }
 

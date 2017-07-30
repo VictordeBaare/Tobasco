@@ -2,7 +2,6 @@
 	 [Id]			bigint	IDENTITY (1,1)  NOT NULL
 	,[RowVersion]   rowversion         		NOT NULL
 	,TestChildProp1 nvarchar(100) NOT NULL
-
 	,[ModifiedBY]	nvarchar(256)			NOT NULL
 	 CONSTRAINT [DF_{ChildObject}_ModifiedBy] DEFAULT SUSER_SNAME()
 	,[ModifiedOn]	datetime2(7)			NOT NULL
@@ -13,7 +12,6 @@ GO
 CREATE TABLE [dbo].[ChildObject_historie] (
     [Id]                          bigint             NOT NULL
    ,TestChildProp1 nvarchar(100) NOT NULL
-
    ,[RowVersion]                  binary(8)          NOT NULL
    ,[ModifiedBy]                  nvarchar (256)     NOT NULL
    ,[ModifiedOn]                  DATETIME2(7)       NOT NULL
@@ -46,7 +44,6 @@ BEGIN
 			Id,
 		    [RowVersion],
 		   TestChildProp1,
-
             [ModifiedBy],
             [ModifiedOn],
             DeletedBy,
@@ -55,7 +52,6 @@ BEGIN
     SELECT DELETED.Id,
            DELETED.[RowVersion],
 		  TestChildProp1,
-
            Deleted.ModifiedBy,
            Deleted.ModifiedOn,
            NULL,
@@ -73,7 +69,6 @@ BEGIN
 			Id,
 		    [RowVersion],
            TestChildProp1,
-
 		    [ModifiedBy],
 		    [ModifiedOn],
 		    [DeletedBy],
@@ -82,7 +77,6 @@ BEGIN
 	SELECT Deleted.Id,
 	       Deleted.[RowVersion],
 		  TestChildProp1,
-
 		   Deleted.ModifiedBy,
 		   Deleted.ModifiedOn,
 		   ISNULL(LTRIM(RTRIM(CONVERT(nvarchar(128), CONTEXT_INFO()))), SUSER_SNAME()),

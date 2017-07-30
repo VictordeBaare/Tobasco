@@ -10,7 +10,6 @@
 ,TestChildProp6 decimal(12,2) NULL
 ,TestChildProp7Id bigint NULL
 ,TestChildProp9Id bigint NULL
-
 	,[ModifiedBY]	nvarchar(256)			NOT NULL
 	 CONSTRAINT [DF_{FileMetOvererving}_ModifiedBy] DEFAULT SUSER_SNAME()
 	,[ModifiedOn]	datetime2(7)			NOT NULL
@@ -29,7 +28,6 @@ CREATE TABLE [dbo].[FileMetOvererving_historie] (
 ,TestChildProp6 decimal(12,2) NULL
 ,TestChildProp7Id bigint NULL
 ,TestChildProp9Id bigint NULL
-
    ,[RowVersion]                  binary(8)          NOT NULL
    ,[ModifiedBy]                  nvarchar (256)     NOT NULL
    ,[ModifiedOn]                  DATETIME2(7)       NOT NULL
@@ -74,7 +72,6 @@ TestChildProp5,
 TestChildProp6,
 TestChildProp7Id,
 TestChildProp9Id,
-
             [ModifiedBy],
             [ModifiedOn],
             DeletedBy,
@@ -90,7 +87,6 @@ TestChildProp5,
 TestChildProp6,
 TestChildProp7Id,
 TestChildProp9Id,
-
            Deleted.ModifiedBy,
            Deleted.ModifiedOn,
            NULL,
@@ -115,7 +111,6 @@ TestChildProp5,
 TestChildProp6,
 TestChildProp7Id,
 TestChildProp9Id,
-
 		    [ModifiedBy],
 		    [ModifiedOn],
 		    [DeletedBy],
@@ -131,7 +126,6 @@ TestChildProp5,
 TestChildProp6,
 TestChildProp7Id,
 TestChildProp9Id,
-
 		   Deleted.ModifiedBy,
 		   Deleted.ModifiedOn,
 		   ISNULL(LTRIM(RTRIM(CONVERT(nvarchar(128), CONTEXT_INFO()))), SUSER_SNAME()),

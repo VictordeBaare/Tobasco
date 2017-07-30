@@ -13,20 +13,20 @@ namespace Tobasco.Model.Properties
         {
         }
 
-        public override StringBuilder CalcRules
+        public override List<string> CalcRules
         {
             get
             {
-                var builder = base.CalcRules;
+                var list = base.CalcRules;
                 if (_generateRules)
                 {
                     var rule = CalcRangeBusinessRule();
                     if (!string.IsNullOrEmpty(rule))
                     {
-                        builder.AppendLine(rule);
+                        list.Add(rule);
                     }
                 }
-                return builder;
+                return list;
             }
         }
 

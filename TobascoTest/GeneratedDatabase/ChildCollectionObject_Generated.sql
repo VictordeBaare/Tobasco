@@ -3,7 +3,6 @@
 	,[RowVersion]   rowversion         		NOT NULL
 	,TestChildProp1 nvarchar(100) NOT NULL
 ,FileMetOverervingId bigint NOT NULL
-
 	,[ModifiedBY]	nvarchar(256)			NOT NULL
 	 CONSTRAINT [DF_{ChildCollectionObject}_ModifiedBy] DEFAULT SUSER_SNAME()
 	,[ModifiedOn]	datetime2(7)			NOT NULL
@@ -15,7 +14,6 @@ CREATE TABLE [dbo].[ChildCollectionObject_historie] (
     [Id]                          bigint             NOT NULL
    ,TestChildProp1 nvarchar(100) NOT NULL
 ,FileMetOverervingId bigint NOT NULL
-
    ,[RowVersion]                  binary(8)          NOT NULL
    ,[ModifiedBy]                  nvarchar (256)     NOT NULL
    ,[ModifiedOn]                  DATETIME2(7)       NOT NULL
@@ -51,7 +49,6 @@ BEGIN
 		    [RowVersion],
 		   TestChildProp1,
 FileMetOverervingId,
-
             [ModifiedBy],
             [ModifiedOn],
             DeletedBy,
@@ -61,7 +58,6 @@ FileMetOverervingId,
            DELETED.[RowVersion],
 		  TestChildProp1,
 FileMetOverervingId,
-
            Deleted.ModifiedBy,
            Deleted.ModifiedOn,
            NULL,
@@ -80,7 +76,6 @@ BEGIN
 		    [RowVersion],
            TestChildProp1,
 FileMetOverervingId,
-
 		    [ModifiedBy],
 		    [ModifiedOn],
 		    [DeletedBy],
@@ -90,7 +85,6 @@ FileMetOverervingId,
 	       Deleted.[RowVersion],
 		  TestChildProp1,
 FileMetOverervingId,
-
 		   Deleted.ModifiedBy,
 		   Deleted.ModifiedOn,
 		   ISNULL(LTRIM(RTRIM(CONVERT(nvarchar(128), CONTEXT_INFO()))), SUSER_SNAME()),

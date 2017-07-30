@@ -20,8 +20,7 @@ public string TestChildProp1
         public override ExpandoObject ToAnonymous()
 {
 	dynamic anymonous = base.ToAnonymous();
-	            anymonous.TestChildProp1 = TestChildProp1;
-
+	anymonous.TestChildProp1 = TestChildProp1;
 	return anymonous;
 }
 

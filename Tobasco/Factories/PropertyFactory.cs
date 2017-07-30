@@ -31,13 +31,13 @@ namespace Tobasco.Factories
             }
         }
 
-        protected virtual Dictionary<string, string> GetParameters(ClassProperty prop)
+        protected virtual TemplateParameter GetParameters(ClassProperty prop)
         {
-            var parameters = new Dictionary<string, string>();
+            var parameters = new TemplateParameter();
 
             parameters.Add(PropertyTemplateConstants.ValueType, prop.GetValueType);
             parameters.Add(PropertyTemplateConstants.PropertyName, prop.Property.Name);
-            parameters.Add(PropertyTemplateConstants.BusinessRules, prop.CalcRules.ToString());
+            parameters.Add(PropertyTemplateConstants.BusinessRules, prop.CalcRules);
 
             return parameters;
         }

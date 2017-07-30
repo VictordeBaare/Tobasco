@@ -87,16 +87,15 @@ public ChildObject TestChildProp9
         public override ExpandoObject ToAnonymous()
 {
 	dynamic anymonous = base.ToAnonymous();
-	            anymonous.TestChildProp1 = TestChildProp1;
-            anymonous.TestChildProp2 = TestChildProp2;
-            anymonous.TestChildProp3 = TestChildProp3;
-            anymonous.TestChildProp4 = TestChildProp4;
-            anymonous.TestChildProp5 = TestChildProp5;
-            anymonous.TestChildProp6 = TestChildProp6;
-            anymonous.TestChildProp7Id = TestChildProp7?.Id;
-            anymonous.TestChildProp9Id = TestChildProp9?.Id;
-            anymonous.Uid = Uid;
-
+	anymonous.TestChildProp1 = TestChildProp1;
+anymonous.TestChildProp2 = TestChildProp2;
+anymonous.TestChildProp3 = TestChildProp3;
+anymonous.TestChildProp4 = TestChildProp4;
+anymonous.TestChildProp5 = TestChildProp5;
+anymonous.TestChildProp6 = TestChildProp6;
+anymonous.TestChildProp7Id = TestChildProp7?.Id;
+anymonous.TestChildProp9Id = TestChildProp9?.Id;
+anymonous.Uid = Uid;
 	return anymonous;
 }
 

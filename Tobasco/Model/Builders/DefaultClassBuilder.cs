@@ -38,32 +38,31 @@ namespace Tobasco.Model.Builders
             }
         }
 
-        private Dictionary<string, string> GetParameters()
+        private TemplateParameter GetParameters()
         {
-            var builder = new StringBuilder();
+            var list = new List<string>();
             foreach (var property in GetProperties.Where(x => x.Property.DataType.Datatype != Datatype.ChildCollection))
             {
                 if (property.Property.DataType.Datatype == Datatype.Child || property.Property.DataType.Datatype == Datatype.ReadonlyChild)
                 {
                     if (property.Property.Required)
                     {
-                        builder.AppendWithTabs($"anymonous.{property.Property.Name}Id = {property.Property.Name}.Id;", 3);
+                        list.Add($"anymonous.{property.Property.Name}Id = {property.Property.Name}.Id;");
                     }
                     else
                     {
-                        builder.AppendWithTabs($"anymonous.{property.Property.Name}Id = {property.Property.Name}?.Id;", 3);
+                        list.Add($"anymonous.{property.Property.Name}Id = {property.Property.Name}?.Id;");
                     }
                 }
                 else
                 {
-                    builder.AppendWithTabs($"anymonous.{property.Property.Name} = {property.Property.Name};", 3);
+                    list.Add($"anymonous.{property.Property.Name} = {property.Property.Name};");
                 }
-                builder.Append(Environment.NewLine);
             }
-            return new Dictionary<string, string>
-            {
-                {Resources.AnymonousPropertySet, builder.ToString() }
-            };
+
+            var parameters = new TemplateParameter();
+            parameters.Add(Resources.AnymonousPropertySet, list);
+            return parameters;            
         }
 
         public override IEnumerable<FileBuilder.OutputFile> Build()

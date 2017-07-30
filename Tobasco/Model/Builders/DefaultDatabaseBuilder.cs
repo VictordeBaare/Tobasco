@@ -37,29 +37,29 @@ namespace Tobasco.Model.Builders
             return template.GetText;
         }
 
-        private Dictionary<string, string> GetParameters()
+        private TemplateParameter GetParameters()
         {
-            var parameters = new Dictionary<string, string>();
+            var parameters = new TemplateParameter();
             parameters.Add(Resources.TableName, Name);
             parameters.Add(Resources.TableProperties, GetTableProperties());
 
             return parameters;
         }
 
-        private string GetTableProperties()
+        private List<string> GetTableProperties()
         {
-            var builder = new StringBuilder();
+            var list = new List<string>();
             var sqlProps = GetNonChildCollectionProperties;
             if (Entity.GenerateReadonlyGuid)
             {
-                builder.AppendLine($"   ,[UId]                         uniqueidentifier   NOT NULL CONSTRAINT [DF_{Name}_UId] DEFAULT NEWID()");
+                list.Add($"   ,[UId]                         uniqueidentifier   NOT NULL CONSTRAINT [DF_{Name}_UId] DEFAULT NEWID()");
             }
             foreach (var prop in sqlProps)
             {
-                builder.AppendLine($",{prop.SelectSqlTableProperty}");
+                list.Add($",{prop.SelectSqlTableProperty}");
             }
 
-            return builder.ToString();
+            return list;
         }
 
         private string GetContraints()
@@ -93,9 +93,9 @@ namespace Tobasco.Model.Builders
             return template.GetText;
         }
 
-        private Dictionary<string, string> InsertTemplateParameters()
+        private TemplateParameter InsertTemplateParameters()
         {
-            var parameters = new Dictionary<string, string>();
+            var parameters = new TemplateParameter();
             parameters.Add(Resources.TableName, Name);
             parameters.Add(Resources.StpParameter, GetSqlParameters());
             parameters.Add(Resources.StpParameterName, GetSqlParameterNames("@"));
@@ -103,43 +103,43 @@ namespace Tobasco.Model.Builders
             return parameters;
         }
 
-        private string GetSqlParameters()
+        private List<string> GetSqlParameters()
         {
-            var builder = new StringBuilder();
+            var list = new List<string>();
 
             foreach (var sqlprop in GetNonChildCollectionProperties)
             {
-                builder.AppendLine($"@{sqlprop.SelectSqlParameter},");
+                list.Add($"@{sqlprop.SelectSqlParameter},");
             }
 
-            return builder.ToString();
+            return list;
         }
 
-        private string GetSqlParameterNames(string leading)
+        private List<string> GetSqlParameterNames(string leading)
         {
-            var builder = new StringBuilder();
+            var list = new List<string>();
 
             foreach (var sqlprop in GetNonChildCollectionProperties)
             {
-                builder.AppendLine($"{leading}{sqlprop.SelectSqlParameterNaam},");
+                list.Add($"{leading}{sqlprop.SelectSqlParameterNaam},");
             }
 
-            return builder.ToString();
+            return list;
         }
 
-        private string GetSqlUpdateParameters()
+        private List<string> GetSqlUpdateParameters()
         {
-            var builder = new StringBuilder();
+            var list = new List<string>();
 
             foreach (DatabaseProperty selectSqlProperty in GetNonChildCollectionProperties)
             {
-                builder.AppendLine($"{Name}.{selectSqlProperty.SelectSqlParameterNaam} = @{selectSqlProperty.SelectSqlParameterNaam},");
+                list.Add($"{Name}.{selectSqlProperty.SelectSqlParameterNaam} = @{selectSqlProperty.SelectSqlParameterNaam},");
             }
 
-            return builder.ToString();
+            return list;
         }
 
-        private Dictionary<string,string> UpdateTemplateParameters()
+        private TemplateParameter UpdateTemplateParameters()
         {
             var parameters = InsertTemplateParameters();
 

@@ -292,6 +292,37 @@ public %PropertyValueType% %PropertyName% { get; set; }</value>
   <data name="PropertyValueType" xml:space="preserve">
     <value>PropertyValueType</value>
   </data>
+  <data name="RepositoryGetById" xml:space="preserve">
+    <value />
+  </data>
+  <data name="RepositorySave" xml:space="preserve">
+    <value>public %EntityName% Save(%EntityName%  %EntityNameLowerCase%)
+{
+	%SaveChild%
+	
+	%EntityNameLowerCase% = _genericRepository.Save(%EntityNameLowerCase%);
+	
+	%SaveChildCollections%
+	
+	return %EntityNameLowerCase%;
+}</value>
+  </data>
+  <data name="RepositorySaveWithTransaction" xml:space="preserve">
+    <value>public %EntityName% Save(%EntityName%  %EntityNameLowerCase%)
+{
+	using (var trans = new TransactionScope())
+	{
+		%SaveChild%
+		
+		%EntityNameLowerCase% = _genericRepository.Save(%EntityNameLowerCase%);
+		
+		%SaveChildCollections%
+		
+		return %EntityNameLowerCase%;
+		trans.Complete();
+	}
+}</value>
+  </data>
   <data name="SqlDeleteStp" xml:space="preserve">
     <value>CREATE PROCEDURE [dbo].[%TableName%_Delete]
 		@Id [bigint]
