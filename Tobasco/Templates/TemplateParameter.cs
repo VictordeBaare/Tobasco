@@ -13,12 +13,26 @@ namespace Tobasco.Templates
 
         public void Add(string key, string value)
         {
-            _parameters.Add(key, value);
+            if (_parameters.ContainsKey(key))
+            {
+                _parameters[key] = value;
+            }
+            else
+            {
+                _parameters.Add(key, value);
+            }
         }
 
         public void Add(string key, IEnumerable<string> values)
         {
-            _parameters.Add(key, string.Join(Environment.NewLine, values));
+            if (_parameters.ContainsKey(key))
+            {
+                _parameters[key] = string.Join(Environment.NewLine, values);
+            }
+            else
+            {
+                _parameters.Add(key, string.Join(Environment.NewLine, values));
+            }            
         }
 
         public Dictionary<string, string> GetParameters => _parameters;

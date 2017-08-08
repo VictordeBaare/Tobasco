@@ -6,6 +6,7 @@ using System.Collections.Generic;
 
 namespace TobascoTest.GeneratedRepositoy
 {
+
     public partial class ChildObjectRepository : IChildObjectRepository
     {
         private IGenericRepository<ChildObject> _genericRepository;
@@ -14,6 +15,9 @@ namespace TobascoTest.GeneratedRepositoy
             _genericRepository = genericRepository;
 
         }
+
+
+
         public ChildObject Save(ChildObject childobject)
         {
 
@@ -24,12 +28,10 @@ namespace TobascoTest.GeneratedRepositoy
 
             return childobject;
         }
-
         public ChildObject GetById(long id)
         {
             return _genericRepository.GetById(id);
         }
-
 
     }
 }

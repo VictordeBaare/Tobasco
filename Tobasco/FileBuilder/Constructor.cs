@@ -39,11 +39,15 @@ namespace Tobasco.FileBuilder
 
         public string Build(string name)
         {
-            var template = new Template();
-            template.SetTemplate(Resources.Constructor);
-            template.Fill(GetParameters(name));
+            if (ShouldBeBuild())
+            {
+                var template = new Template();
+                template.SetTemplate(Resources.Constructor);
+                template.Fill(GetParameters(name));
 
-            return template.GetText;
+                return template.GetText;
+            }
+            return string.Empty;
         }
 
         public bool ShouldBeBuild()

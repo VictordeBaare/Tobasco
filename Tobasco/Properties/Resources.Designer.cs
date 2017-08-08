@@ -84,6 +84,28 @@ namespace Tobasco.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to %Namespaces%
+        ///
+        ///namespace %OwnNamespace%
+        ///{
+        ///	%Attributes%
+        ///	public %Abstract% partial %Type% %ClassName%%Extension% %BaseClass%
+        ///	{
+        ///		%Constructor%
+        ///		
+        ///		%Properties%
+        ///		
+        ///		%Methods%	
+        ///	}
+        ///}.
+        /// </summary>
+        internal static string ClassFile {
+            get {
+                return ResourceManager.GetString("ClassFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to public SqlConnection GetConnection()
         ///{
         ///	SqlConnection connection = null;
@@ -262,6 +284,25 @@ namespace Tobasco.Properties {
         internal static string GenericRepositoryUpdate {
             get {
                 return ResourceManager.GetString("GenericRepositoryUpdate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to %Namespaces%
+        ///
+        ///namespace %OwnNamespace%
+        ///{
+        ///	public partial %Type% %InterfaceName%%Extension%
+        ///	{
+        ///		%Properties%
+        ///			
+        ///		%Methods%	
+        ///	}
+        ///}.
+        /// </summary>
+        internal static string InterfaceFile {
+            get {
+                return ResourceManager.GetString("InterfaceFile", resourceCulture);
             }
         }
         

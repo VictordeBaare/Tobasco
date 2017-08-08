@@ -7,6 +7,8 @@ namespace TobascoTest.IGenerateRepository
 {
     public partial interface IFileMetOverervingRepository
     {
+
+
         FileMetOvererving Save(FileMetOvererving filemetovererving);
         FileMetOvererving GetById(long id);
     }

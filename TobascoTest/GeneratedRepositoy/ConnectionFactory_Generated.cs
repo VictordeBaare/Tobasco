@@ -5,6 +5,7 @@ using TobascoTest.IGenerateRepository;
 
 namespace TobascoTest.GeneratedRepositoy
 {
+
     public partial class ConnectionFactory : IConnectionFactory
     {
         private readonly string _connectionstring;
@@ -13,6 +14,9 @@ namespace TobascoTest.GeneratedRepositoy
 
             _connectionstring = ConfigurationManager.ConnectionStrings[databasenaam].ConnectionString;
         }
+
+
+
         public SqlConnection GetConnection()
         {
             SqlConnection connection = null;
@@ -30,6 +34,5 @@ namespace TobascoTest.GeneratedRepositoy
             }
             return connection;
         }
-
     }
 }

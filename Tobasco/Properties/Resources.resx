@@ -128,6 +128,22 @@
 	return anymonous;
 }</value>
   </data>
+  <data name="ClassFile" xml:space="preserve">
+    <value>%Namespaces%
+
+namespace %OwnNamespace%
+{
+	%Attributes%
+	public %Abstract% partial %Type% %ClassName%%Extension% %BaseClass%
+	{
+		%Constructor%
+		
+		%Properties%
+		
+		%Methods%	
+	}
+}</value>
+  </data>
   <data name="ConnectionFactoryGetConnection" xml:space="preserve">
     <value>public SqlConnection GetConnection()
 {
@@ -264,6 +280,19 @@ public %Name%(%ConstructorParameters%)
 	}
 	entity.MarkOld();
 	return entity;
+}</value>
+  </data>
+  <data name="InterfaceFile" xml:space="preserve">
+    <value>%Namespaces%
+
+namespace %OwnNamespace%
+{
+	public partial %Type% %InterfaceName%%Extension%
+	{
+		%Properties%
+			
+		%Methods%	
+	}
 }</value>
   </data>
   <data name="PropertyChildCollection" xml:space="preserve">

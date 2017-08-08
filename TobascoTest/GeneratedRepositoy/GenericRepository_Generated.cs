@@ -12,6 +12,7 @@ using System.Globalization;
 
 namespace TobascoTest.GeneratedRepositoy
 {
+
     public partial class GenericRepository<T> : IGenericRepository<T> where T : EntityBase, new()
     {
 
@@ -20,6 +21,7 @@ namespace TobascoTest.GeneratedRepositoy
 
             ConnectionFactory = connectionFactory;
         }
+
         public IConnectionFactory ConnectionFactory { get; }
 
         public T Save(T entity)
@@ -39,7 +41,6 @@ namespace TobascoTest.GeneratedRepositoy
             }
             return entity;
         }
-
         public T Insert(T entity)
         {
             using (var connection = ConnectionFactory.GetConnection())
@@ -54,7 +55,6 @@ namespace TobascoTest.GeneratedRepositoy
             entity.MarkOld();
             return entity;
         }
-
         public T Update(T entity)
         {
             using (var connection = ConnectionFactory.GetConnection())
@@ -80,7 +80,6 @@ namespace TobascoTest.GeneratedRepositoy
             entity.MarkOld();
             return entity;
         }
-
         public void Delete(T entity)
         {
             using (var connection = ConnectionFactory.GetConnection())
@@ -90,7 +89,6 @@ namespace TobascoTest.GeneratedRepositoy
                     commandType: CommandType.StoredProcedure);
             }
         }
-
         public IEnumerable<T> Save(IEnumerable<T> entities)
         {
             var enumerable = entities as IList<T> ?? entities.ToList();
@@ -100,7 +98,6 @@ namespace TobascoTest.GeneratedRepositoy
             }
             return enumerable;
         }
-
         public T GetById(long id)
         {
             T entity;
@@ -113,7 +110,6 @@ namespace TobascoTest.GeneratedRepositoy
             entity.MarkOld();
             return entity;
         }
-
         private DynamicParameters ToAnonymous(T entity, bool includeRowVersion)
         {
             dynamic anonymousEntity = entity.ToAnonymous();
@@ -125,6 +121,5 @@ namespace TobascoTest.GeneratedRepositoy
             }
             return parameters;
         }
-
     }
 }

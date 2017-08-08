@@ -7,6 +7,8 @@ namespace TobascoTest.IGenerateRepository
 {
     public partial interface IChildCollectionObjectRepository
     {
+
+
         ChildCollectionObject Save(ChildCollectionObject childcollectionobject);
         ChildCollectionObject GetById(long id);
     }

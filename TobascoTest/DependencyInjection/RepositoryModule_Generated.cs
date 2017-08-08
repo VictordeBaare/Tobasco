@@ -10,6 +10,10 @@ namespace TobascoTest.DependencyInjection
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1506: AvoidExcessiveClassCoupling", Justification = "Generated file")]
     public partial class RepositoryModule : NinjectModule
     {
+
+
+
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1506: AvoidExcessiveClassCoupling", Justification = "Generated file")]
         public override void Load()
         {
@@ -20,7 +24,6 @@ namespace TobascoTest.DependencyInjection
             Bind<IFileMetOverervingRepository>().To<FileMetOverervingRepository>();
             Bind<IGenericRepository<FileMetOvererving>>().To<GenericRepository<FileMetOvererving>>();
         }
-
 
     }
 }

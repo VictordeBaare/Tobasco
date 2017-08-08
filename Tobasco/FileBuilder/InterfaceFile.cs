@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Tobasco.Constants;
 using Tobasco.Enums;
 using Tobasco.Extensions;
+using Tobasco.Properties;
 
 namespace Tobasco.FileBuilder
 {
@@ -14,28 +16,17 @@ namespace Tobasco.FileBuilder
 
         public override string BuildContent()
         {
-            StringBuilder builder = new StringBuilder();
-            foreach (var nspace in Namespaces)
-            {
-                builder.AppendLineWithTabs($"using {nspace};", 0);
-            }
-            builder.Append(Environment.NewLine);
-            builder.AppendLineWithTabs($"{OwnNamespace}", 0);
-            builder.AppendLineWithTabs("{", 0);
-            builder.AppendLineWithTabs($"public partial {Type.GetDescription()} {Name}{NameExtension}", 1);
-            builder.AppendLineWithTabs("{", 1);
-            foreach (var prop in Properties)
-            {
-                builder.AppendLineWithTabs(prop, 2);
-            }
-            foreach (var method in Methods)
-            {
-                builder.AppendLineWithTabs(method, 2);
-            }
-            builder.AppendLineWithTabs("}", 1);
-            builder.AppendLineWithTabs("}", 0);
+            Template.SetTemplate(Resources.InterfaceFile);
+            TemplateParameters.Add(FileConstants.Namespaces, Namespaces.Select(x => $"using {x};"));
+            TemplateParameters.Add(FileConstants.OwnNamespace, OwnNamespace);
+            TemplateParameters.Add(FileConstants.Type, Type.GetDescription());
+            TemplateParameters.Add(FileConstants.InterfaceName, Name);
+            TemplateParameters.Add(FileConstants.Extension, NameExtension);
+            TemplateParameters.Add(FileConstants.Properties, Properties);
+            TemplateParameters.Add(FileConstants.Methods, Methods);
+            Template.Fill(TemplateParameters);
 
-            return builder.ToString();
+            return Template.GetText;
         }
     }
 }

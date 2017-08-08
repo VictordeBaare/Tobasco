@@ -5,6 +5,8 @@ namespace TobascoTest.IGenerateRepository
 {
     public partial interface IConnectionFactory
     {
+
+
         SqlConnection GetConnection();
     }
 }

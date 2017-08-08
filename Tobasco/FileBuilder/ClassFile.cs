@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Linq;
 using System.Text;
+using Tobasco.Constants;
 using Tobasco.Enums;
 using Tobasco.Extensions;
+using Tobasco.Properties;
 
 namespace Tobasco.FileBuilder
 {
@@ -15,38 +18,21 @@ namespace Tobasco.FileBuilder
 
         public override string BuildContent()
         {
-            StringBuilder builder = new StringBuilder();
-            foreach (var nspace in Namespaces)
-            {
-                builder.AppendLineWithTabs($"using {nspace};", 0);
-            }
-            builder.Append(Environment.NewLine);
-            builder.AppendLineWithTabs($"{OwnNamespace}", 0);
-            builder.AppendLineWithTabs("{", 0);
-            foreach (string classAttribute in ClassAttributes)
-            {
-                builder.AppendLine($"{classAttribute}");
-            }
-            builder.AppendLineWithTabs($"public{(IsAbstract ? " abstract" : string.Empty)} partial {Type.GetDescription()} {Name}{NameExtension} {BaseClass}", 1);
-            builder.AppendLineWithTabs("{", 1);
-            if (Constructor.ShouldBeBuild())
-            {
-                builder.AppendLine(Constructor.Build(Name));
-            }
-            foreach(var prop in Properties)
-            {
-                builder.AppendLineWithTabs(prop, 2);
-                builder.Append(Environment.NewLine);
-            }
-            foreach (var method in Methods)
-            {
-                builder.AppendLineWithTabs(method, 2);
-                builder.Append(Environment.NewLine);
-            }
-            builder.AppendLineWithTabs("}", 1);
-            builder.AppendLineWithTabs("}", 0);
+            Template.SetTemplate(Resources.ClassFile);
+            TemplateParameters.Add(FileConstants.Namespaces, Namespaces.Select(x => $"using {x};"));
+            TemplateParameters.Add(FileConstants.OwnNamespace, OwnNamespace);
+            TemplateParameters.Add(FileConstants.Type, Type.GetDescription());
+            TemplateParameters.Add(FileConstants.Abstract, IsAbstract ? "Abstract" : "");
+            TemplateParameters.Add(FileConstants.ClassName, Name);
+            TemplateParameters.Add(FileConstants.Extension, NameExtension);
+            TemplateParameters.Add(FileConstants.BaseClass, BaseClass);
+            TemplateParameters.Add(FileConstants.Constructor, Constructor.Build(Name));
+            TemplateParameters.Add(FileConstants.Attributes, ClassAttributes);
+            TemplateParameters.Add(FileConstants.Properties, Properties);
+            TemplateParameters.Add(FileConstants.Methods, Methods);
+            Template.Fill(TemplateParameters);
 
-            return builder.ToString();
+            return Template.GetText;
         }
     }
 }

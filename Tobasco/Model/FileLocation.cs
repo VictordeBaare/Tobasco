@@ -23,7 +23,7 @@ namespace Tobasco.Model
         public ValueElement NamespaceOverride { get; set; }
 
         [XmlIgnore]
-        public string GetNamespace => _getNamespace ?? (_getNamespace = $"namespace {GetProjectLocation}");
+        public string GetNamespace => _getNamespace ?? (_getNamespace = $"{GetProjectLocation}");
 
         [XmlIgnore]
         public string GetProjectLocation

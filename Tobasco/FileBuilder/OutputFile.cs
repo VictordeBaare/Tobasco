@@ -5,11 +5,16 @@ using System.Text;
 using System.Threading.Tasks;
 using Tobasco.Enums;
 using Tobasco.Extensions;
+using Tobasco.Templates;
 
 namespace Tobasco.FileBuilder
 {
     public abstract class OutputFile
     {
+        public Template Template { get; } = new Template();
+
+        public TemplateParameter TemplateParameters { get; } = new TemplateParameter();
+
         public abstract FileType Type { get; }
 
         public string NameExtension { get; set; }
