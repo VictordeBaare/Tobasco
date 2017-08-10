@@ -69,7 +69,7 @@ namespace Tobasco.Model.Builders
             classFile.OwnNamespace = Information.Repository.FileLocation.GetNamespace;
             classFile.NameExtension = "<T>";
             classFile.BaseClass = ": IGenericRepository<T> where T : EntityBase, new()";
-            classFile.Constructor.Parameters.Add(new TypeWithName { Name = "connectionFactory", Type = "IConnectionFactory" });
+            classFile.Constructor.Parameters.Add(new TypeWithName("connectionFactory", "IConnectionFactory"));
             classFile.Constructor.CustomImplementation.Add("ConnectionFactory = connectionFactory;");
             classFile.Properties.Add("public IConnectionFactory ConnectionFactory { get; }");
             classFile.Methods.Add(SaveMethod());

@@ -22,7 +22,7 @@ namespace Tobasco.FileBuilder
             TemplateParameters.Add(FileConstants.Namespaces, Namespaces.Select(x => $"using {x};"));
             TemplateParameters.Add(FileConstants.OwnNamespace, OwnNamespace);
             TemplateParameters.Add(FileConstants.Type, Type.GetDescription());
-            TemplateParameters.Add(FileConstants.Abstract, IsAbstract ? "Abstract" : "");
+            TemplateParameters.Add(FileConstants.Abstract, IsAbstract ? "abstract" : "");
             TemplateParameters.Add(FileConstants.ClassName, Name);
             TemplateParameters.Add(FileConstants.Extension, NameExtension);
             TemplateParameters.Add(FileConstants.BaseClass, BaseClass);

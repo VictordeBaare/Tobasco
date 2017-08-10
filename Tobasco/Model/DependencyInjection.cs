@@ -16,5 +16,7 @@ namespace Tobasco.Model
         [XmlArray("Modules")]
         [XmlArrayItem("Module", typeof(Module))]
         public List<Module> Modules { get; set; }
+
+
     }
 }

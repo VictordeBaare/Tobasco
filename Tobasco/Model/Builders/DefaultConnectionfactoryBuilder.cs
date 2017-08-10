@@ -15,8 +15,8 @@ namespace Tobasco.Model.Builders
             classFile.Namespaces.AddRange(new[] { "System.Configuration", "System.Data.SqlClient", interfacelocation.GetProjectLocation });
             classFile.OwnNamespace = classlocation.GetNamespace;
             classFile.BaseClass = $": {GetConnectionFactoryInterfaceName}";
-            classFile.Constructor.Fields.Add(new Field {Type = "string", Name = "_connectionstring", Modifier = "private readonly" });
-            classFile.Constructor.Parameters.Add(new TypeWithName { Type = "string", Name = "databasenaam" });
+            classFile.Constructor.Fields.Add(new Field("private readonly", "_connectionstring", "string"));
+            classFile.Constructor.Parameters.Add(new TypeWithName("databasenaam", "string"));
             classFile.Constructor.CustomImplementation.Add("_connectionstring = ConfigurationManager.ConnectionStrings[databasenaam].ConnectionString;");
             classFile.Methods.Add(GetConnectionMethod());
 

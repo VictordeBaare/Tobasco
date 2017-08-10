@@ -305,6 +305,7 @@ namespace Tobasco.Properties {
         ///
         ///namespace %OwnNamespace%
         ///{
+        ///	%Attributes%
         ///	public partial %Type% %InterfaceName%%Extension%
         ///	{
         ///		%Properties%
@@ -316,6 +317,18 @@ namespace Tobasco.Properties {
         internal static string InterfaceFile {
             get {
                 return ResourceManager.GetString("InterfaceFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to protected void NinjectBinder&lt;T, TY&gt;() where TY : T
+        ///{
+        ///    Bind&lt;T&gt;().To&lt;TY&gt;()%BindingScope%;
+        ///}.
+        /// </summary>
+        internal static string NinjectBinder {
+            get {
+                return ResourceManager.GetString("NinjectBinder", resourceCulture);
             }
         }
         
@@ -462,8 +475,8 @@ namespace Tobasco.Properties {
         /// <summary>
         ///   Looks up a localized string similar to CREATE TABLE [dbo].[%TableName%_historie] (
         ///    [Id]                          bigint             NOT NULL
-        ///   %TableProperties%
         ///   ,[RowVersion]                  binary(8)          NOT NULL
+        ///   %TableProperties%   
         ///   ,[ModifiedBy]                  nvarchar (256)     NOT NULL
         ///   ,[ModifiedOn]                  DATETIME2(7)       NOT NULL
         ///   ,DeletedBy                     nvarchar(256)     NULL
@@ -473,6 +486,24 @@ namespace Tobasco.Properties {
         internal static string SqlHistorieTable {
             get {
                 return ResourceManager.GetString("SqlHistorieTable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CREATE TABLE [dbo].[%TableName%_historie] (
+        ///    [Id]                          bigint             NOT NULL
+        ///   ,[RowVersion]                  binary(8)          NOT NULL
+        ///   ,[UId]                         uniqueidentifier   NOT NULL
+        ///   %TableProperties%   
+        ///   ,[ModifiedBy]                  nvarchar (256)     NOT NULL
+        ///   ,[ModifiedOn]                  DATETIME2(7)       NOT NULL
+        ///   ,DeletedBy                     nvarchar(256)      NULL
+        ///   ,DeletedAt                     datetime2(7)       NULL
+        ///);.
+        /// </summary>
+        internal static string SqlHistorieTableWithUid {
+            get {
+                return ResourceManager.GetString("SqlHistorieTableWithUid", resourceCulture);
             }
         }
         
@@ -524,6 +555,24 @@ namespace Tobasco.Properties {
         internal static string SqlTable {
             get {
                 return ResourceManager.GetString("SqlTable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CREATE TABLE [dbo].[%TableName%](
+        ///	 [Id]			bigint	IDENTITY (1,1)  NOT NULL
+        ///	,[RowVersion]   rowversion         		NOT NULL
+        ///	,[UId]          uniqueidentifier        NOT NULL CONSTRAINT [DF_{%TableName%}_UId] DEFAULT NEWID()
+        ///	%TableProperties%
+        ///	,[ModifiedBY]	nvarchar(256)			NOT NULL
+        ///	 CONSTRAINT [DF_{%TableName%}_ModifiedBy] DEFAULT SUSER_SNAME()
+        ///	,[ModifiedOn]	datetime2(7)			NOT NULL
+        ///	 CONSTRAINT [DF_{%TableName%}_ModifiedOn] DEFAULT SYSDATETIME()
+        ///	 CONSTRAINT [PK_{%TableName%}] PRIMARY KEY CLUSTERED [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string SqlTableWithUid {
+            get {
+                return ResourceManager.GetString("SqlTableWithUid", resourceCulture);
             }
         }
         

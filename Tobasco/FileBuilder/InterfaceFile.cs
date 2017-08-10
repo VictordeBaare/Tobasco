@@ -24,6 +24,7 @@ namespace Tobasco.FileBuilder
             TemplateParameters.Add(FileConstants.Extension, NameExtension);
             TemplateParameters.Add(FileConstants.Properties, Properties);
             TemplateParameters.Add(FileConstants.Methods, Methods);
+            TemplateParameters.Add(FileConstants.Attributes, ClassAttributes);
             Template.Fill(TemplateParameters);
 
             return Template.GetText;

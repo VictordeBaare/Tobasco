@@ -8,7 +8,12 @@ namespace Tobasco.FileBuilder
 {
     public class Field : TypeWithName
     {
-        public string Modifier { get; set; }
+        public Field(string modifier, string name, string type) : base(name, type)
+        {
+            Modifier = modifier;
+        }
+
+        public string Modifier { get; }
 
         public override string Build()
         {

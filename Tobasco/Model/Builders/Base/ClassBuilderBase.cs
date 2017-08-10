@@ -26,26 +26,8 @@ namespace Tobasco.Model.Builders.Base
 
         public IEnumerable<ClassProperty> GetProperties
         {
-            get
-            {
-                if (_getProperties == null)
-                {
-                     List<ClassProperty>  properties = Entity.Properties.Select(x => _propertyFactory.GetProperty(x)).ToList();
-
-                    if (Entity.GenerateReadonlyGuid)
-                    {
-                        properties.Add(_propertyFactory.GetProperty(new Property
-                        {
-                            DataType = new DataType {Datatype = Datatype.ReadOnlyGuid},
-                            Name = "Uid",
-                            Required = true
-                        }));
-                    }
-
-                    _getProperties = properties;
-                }
-
-                return _getProperties;
+            get {
+                return _getProperties ?? (_getProperties = Entity.Properties.Select(x => _propertyFactory.GetProperty(x)));
             }
         }
 

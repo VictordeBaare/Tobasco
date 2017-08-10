@@ -45,13 +45,20 @@ namespace Tobasco.Manager
 
         public static T InitializeBuilder<T>(Type type, object[] parameters)
         {
+            OutputPaneManager.WriteToOutputPane($"{type}");
             var ctor = type.GetConstructor(parameters.Select(x => x.GetType()).ToArray());
-
-            if (ctor != null)
+            try
             {
-                return (T) ctor.Invoke(parameters);
+                if (ctor != null)
+                {
+                    return (T)ctor.Invoke(parameters);
+                }
+                throw new ArgumentNullException(nameof(ctor));
             }
-            throw new ArgumentException("Something went wrong during the initialization of the builder");
+            catch (Exception ex)
+            {
+                throw new ArgumentException($"Something went wrong during the initialization of the builder with the parameters: {string.Join(",", parameters)}", ex);
+            }
         }
     }
 }

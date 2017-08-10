@@ -15,6 +15,8 @@ namespace Tobasco.Model.Builders.Base
             EntityHandlers = entityHandlers;
         }
 
+        protected string BindingExtension { get; set; }
+
         public abstract FileBuilder.OutputFile Build(Module module);
     }
 }

@@ -294,12 +294,19 @@ public override void Load()
 
 namespace %OwnNamespace%
 {
+	%Attributes%
 	public partial %Type% %InterfaceName%%Extension%
 	{
 		%Properties%
 			
 		%Methods%	
 	}
+}</value>
+  </data>
+  <data name="NinjectBinder" xml:space="preserve">
+    <value>protected void NinjectBinder&lt;T, TY&gt;() where TY : T
+{
+    Bind&lt;T&gt;().To&lt;TY&gt;()%BindingScope%;
 }</value>
   </data>
   <data name="PropertyChildCollection" xml:space="preserve">
@@ -393,12 +400,24 @@ END;</value>
   <data name="SqlHistorieTable" xml:space="preserve">
     <value>CREATE TABLE [dbo].[%TableName%_historie] (
     [Id]                          bigint             NOT NULL
-   %TableProperties%
    ,[RowVersion]                  binary(8)          NOT NULL
+   %TableProperties%   
    ,[ModifiedBy]                  nvarchar (256)     NOT NULL
    ,[ModifiedOn]                  DATETIME2(7)       NOT NULL
    ,DeletedBy                     nvarchar(256)     NULL
    ,DeletedAt                     datetime2(7)      NULL
+);</value>
+  </data>
+  <data name="SqlHistorieTableWithUid" xml:space="preserve">
+    <value>CREATE TABLE [dbo].[%TableName%_historie] (
+    [Id]                          bigint             NOT NULL
+   ,[RowVersion]                  binary(8)          NOT NULL
+   ,[UId]                         uniqueidentifier   NOT NULL
+   %TableProperties%   
+   ,[ModifiedBy]                  nvarchar (256)     NOT NULL
+   ,[ModifiedOn]                  DATETIME2(7)       NOT NULL
+   ,DeletedBy                     nvarchar(256)      NULL
+   ,DeletedAt                     datetime2(7)       NULL
 );</value>
   </data>
   <data name="SqlInsertStp" xml:space="preserve">
@@ -432,6 +451,19 @@ END;</value>
     <value>CREATE TABLE [dbo].[%TableName%](
 	 [Id]			bigint	IDENTITY (1,1)  NOT NULL
 	,[RowVersion]   rowversion         		NOT NULL
+	%TableProperties%
+	,[ModifiedBY]	nvarchar(256)			NOT NULL
+	 CONSTRAINT [DF_{%TableName%}_ModifiedBy] DEFAULT SUSER_SNAME()
+	,[ModifiedOn]	datetime2(7)			NOT NULL
+	 CONSTRAINT [DF_{%TableName%}_ModifiedOn] DEFAULT SYSDATETIME()
+	 CONSTRAINT [PK_{%TableName%}] PRIMARY KEY CLUSTERED (Id ASC)
+);</value>
+  </data>
+  <data name="SqlTableWithUid" xml:space="preserve">
+    <value>CREATE TABLE [dbo].[%TableName%](
+	 [Id]			bigint	IDENTITY (1,1)  NOT NULL
+	,[RowVersion]   rowversion         		NOT NULL
+	,[UId]          uniqueidentifier        NOT NULL CONSTRAINT [DF_{%TableName%}_UId] DEFAULT NEWID()
 	%TableProperties%
 	,[ModifiedBY]	nvarchar(256)			NOT NULL
 	 CONSTRAINT [DF_{%TableName%}_ModifiedBy] DEFAULT SUSER_SNAME()

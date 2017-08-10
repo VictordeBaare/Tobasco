@@ -127,6 +127,18 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="GeneratedDatabase\ChildObject_CRUD_Generated.sql">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Content>
+    <Content Include="GeneratedDatabase\ChildObject_Generated.sql">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Content>
+    <Content Include="GeneratedDatabase\FileMetOvererving_CRUD_Generated.sql">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Content>
+    <Content Include="GeneratedDatabase\FileMetOvererving_Generated.sql">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Content>
     <Content Include="TestChildCollectionObject.xml" />
     <Content Include="TestChildObject.xml" />
     <Content Include="TestEntity.xml" />
@@ -148,11 +160,11 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="GeneratedDatabase\" />
     <Folder Include="GeneratedMapper\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="DependencyInjection\TestGenerator2.txt4" />
+    <None Include="GeneratedDatabase\TestGenerator2.txt4" />
     <None Include="GeneratedEntity2\TestGenerator2.txt4" />
     <None Include="GeneratedEntity\TestGenerator2.txt4" />
     <None Include="GeneratedRepositoy\TestGenerator2.txt4" />

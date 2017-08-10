@@ -78,28 +78,9 @@ namespace Tobasco.Model.Builders
         private void AddFieldsWithParameterToConstructor(ClassFile classFile, Mapper mapper)
         {
             foreach (var property in EntityHandler.GetClassBuilder(mapper.FromTo.From).GetChildChildCollectionProperties){
-                classFile.Constructor.AddFieldWithParameter(GetField("private", EntityHandler.GetMapperInterface(property.Property.DataType.Type), EntityHandler.GetMapperInterfaceParameter(property.Property.DataType.Type)), 
-                    GetParameter(EntityHandler.GetMapperInterface(property.Property.DataType.Type), EntityHandler.GetMapperInterfaceParameter(property.Property.DataType.Type)));
+                classFile.Constructor.AddFieldWithParameter(new Field("private", EntityHandler.GetMapperInterface(property.Property.DataType.Type), EntityHandler.GetMapperInterfaceParameter(property.Property.DataType.Type)), 
+                    new TypeWithName(EntityHandler.GetMapperInterface(property.Property.DataType.Type), EntityHandler.GetMapperInterfaceParameter(property.Property.DataType.Type)));
             }
-        }
-
-        private Field GetField(string modifier, string type, string name)
-        {
-            return new Field
-            {
-                Modifier = modifier,
-                Type = type,
-                Name = name
-            };
-        }
-
-        private TypeWithName GetParameter(string type, string name)
-        {
-            return new TypeWithName
-            {
-                Type = type,
-                Name = name
-            };
         }
     }
 }

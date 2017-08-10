@@ -1,4 +1,5 @@
-﻿using System.Xml.Serialization;
+﻿using System.Collections.Generic;
+using System.Xml.Serialization;
 using Tobasco.Enums;
 
 namespace Tobasco.Model
@@ -13,5 +14,9 @@ namespace Tobasco.Model
 
         [XmlElement("Filelocation")]
         public FileLocation FileLocation { get; set; }
+
+        [XmlArray("Namespaces")]
+        [XmlArrayItem("Namespace", typeof(ValueElement))]
+        public List<ValueElement> Namespaces { get; set; }
     }
 }

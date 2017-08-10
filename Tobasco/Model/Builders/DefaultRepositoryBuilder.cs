@@ -27,7 +27,7 @@ namespace Tobasco.Model.Builders
             return template.GetText;
         }
 
-        private TemplateParameter GetSaveParameters()
+        protected TemplateParameter GetSaveParameters()
         {
             var parameters = new TemplateParameter();
 
@@ -125,31 +125,17 @@ namespace Tobasco.Model.Builders
             return new List<FileBuilder.OutputFile> { classFile, interfaceFile };
         }
 
-        private void AddFieldsWithParameterToConstructor(ClassFile classFile)
+        protected virtual void AddFieldsWithParameterToConstructor(ClassFile classFile)
         {
             foreach (var item in Entity.SelectChildRepositoryInterfaces(Entity.Entity.Properties.Where(x => x.DataType.Datatype == Datatype.ChildCollection || x.DataType.Datatype == Datatype.Child))){
-                classFile.Constructor.AddFieldWithParameter(GetField("private", item, $"_{item.FirstCharToLower()}"), GetParameter(item, item.FirstCharToLower()));
+                classFile.Constructor.AddFieldWithParameter(new Field("private", $"_{item.FirstCharToLower()}", item), new TypeWithName(item.FirstCharToLower(), item));
             }
-            classFile.Constructor.AddFieldWithParameter(GetField("private", $"IGenericRepository<{GetEntityName}>", "_genericRepository"), GetParameter($"IGenericRepository<{GetEntityName}>", "genericRepository"));
+            AddGenericRepositoryParameter(classFile);
         }
 
-        private Field GetField(string modifier, string type, string name)
+        protected virtual void AddGenericRepositoryParameter(ClassFile classFile)
         {
-            return new Field
-            {
-                Modifier = modifier,
-                Type = type,
-                Name = name
-            };
-        }
-
-        private TypeWithName GetParameter(string type, string name)
-        {
-            return new TypeWithName
-            {
-                Type = type,
-                Name = name
-            };
+            classFile.Constructor.AddFieldWithParameter(new Field("private", "_genericRepository", $"IGenericRepository<{GetEntityName}>"), new TypeWithName("genericRepository", $"IGenericRepository<{GetEntityName}>"));
         }
     }
 }

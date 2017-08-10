@@ -11,8 +11,8 @@
 GO
 CREATE TABLE [dbo].[ChildObject_historie] (
     [Id]                          bigint             NOT NULL
-   ,TestChildProp1 nvarchar(100) NOT NULL
    ,[RowVersion]                  binary(8)          NOT NULL
+   ,TestChildProp1 nvarchar(100) NOT NULL   
    ,[ModifiedBy]                  nvarchar (256)     NOT NULL
    ,[ModifiedOn]                  DATETIME2(7)       NOT NULL
    ,DeletedBy                     nvarchar(256)     NULL

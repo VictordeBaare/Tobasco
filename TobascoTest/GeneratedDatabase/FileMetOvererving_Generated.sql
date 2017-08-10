@@ -1,8 +1,8 @@
 ﻿CREATE TABLE [dbo].[FileMetOvererving](
 	 [Id]			bigint	IDENTITY (1,1)  NOT NULL
 	,[RowVersion]   rowversion         		NOT NULL
-	   ,[UId]                         uniqueidentifier   NOT NULL CONSTRAINT [DF_FileMetOvererving_UId] DEFAULT NEWID()
-,TestChildProp1 nvarchar(100) NOT NULL
+	,[UId]          uniqueidentifier        NOT NULL CONSTRAINT [DF_{FileMetOvererving}_UId] DEFAULT NEWID()
+	,TestChildProp1 nvarchar(100) NOT NULL
 ,TestChildProp2 int NULL
 ,TestChildProp3 bigint NULL
 ,TestChildProp4 datetime2(7) NULL
@@ -19,20 +19,20 @@
 GO
 CREATE TABLE [dbo].[FileMetOvererving_historie] (
     [Id]                          bigint             NOT NULL
-      ,[UId]                         uniqueidentifier   NOT NULL CONSTRAINT [DF_FileMetOvererving_UId] DEFAULT NEWID()
-,TestChildProp1 nvarchar(100) NOT NULL
+   ,[RowVersion]                  binary(8)          NOT NULL
+   ,[UId]                         uniqueidentifier   NOT NULL
+   ,TestChildProp1 nvarchar(100) NOT NULL
 ,TestChildProp2 int NULL
 ,TestChildProp3 bigint NULL
 ,TestChildProp4 datetime2(7) NULL
 ,TestChildProp5 tinyint NULL
 ,TestChildProp6 decimal(12,2) NULL
 ,TestChildProp7Id bigint NULL
-,TestChildProp9Id bigint NULL
-   ,[RowVersion]                  binary(8)          NOT NULL
+,TestChildProp9Id bigint NULL   
    ,[ModifiedBy]                  nvarchar (256)     NOT NULL
    ,[ModifiedOn]                  DATETIME2(7)       NOT NULL
-   ,DeletedBy                     nvarchar(256)     NULL
-   ,DeletedAt                     datetime2(7)      NULL
+   ,DeletedBy                     nvarchar(256)      NULL
+   ,DeletedAt                     datetime2(7)       NULL
 );
 GO
 -- ================================================================================

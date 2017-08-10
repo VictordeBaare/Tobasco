@@ -24,7 +24,7 @@ namespace Tobasco.Model.Builders
         private string GetTable()
         {
             var template = new Template();
-            template.SetTemplate(Resources.SqlTable);
+            template.SetTemplate(Entity.GenerateReadonlyGuid ? Resources.SqlTableWithUid : Resources.SqlTable);
             template.Fill(GetParameters());
             return template.GetText;
         }
@@ -32,7 +32,7 @@ namespace Tobasco.Model.Builders
         private string GetHistorieTable()
         {
             var template = new Template();
-            template.SetTemplate(Resources.SqlHistorieTable);
+            template.SetTemplate(Entity.GenerateReadonlyGuid ? Resources.SqlHistorieTableWithUid : Resources.SqlHistorieTable);
             template.Fill(GetParameters());
             return template.GetText;
         }
@@ -48,18 +48,7 @@ namespace Tobasco.Model.Builders
 
         private List<string> GetTableProperties()
         {
-            var list = new List<string>();
-            var sqlProps = GetNonChildCollectionProperties;
-            if (Entity.GenerateReadonlyGuid)
-            {
-                list.Add($"   ,[UId]                         uniqueidentifier   NOT NULL CONSTRAINT [DF_{Name}_UId] DEFAULT NEWID()");
-            }
-            foreach (var prop in sqlProps)
-            {
-                list.Add($",{prop.SelectSqlTableProperty}");
-            }
-
-            return list;
+            return GetNonChildCollectionProperties.Select(prop => $",{prop.SelectSqlTableProperty}").ToList();
         }
 
         private string GetContraints()

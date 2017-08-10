@@ -2,6 +2,7 @@
 using System.Linq;
 using Tobasco.Enums;
 using Tobasco.Extensions;
+using Tobasco.Manager;
 
 namespace Tobasco.Model.Builders.Base
 {
