@@ -1,10 +1,12 @@
 ﻿using System;
+using System.CodeDom.Compiler;
 using System.ComponentModel.DataAnnotations;
 using System.Collections.Generic;
 using TobascoTest.TestEnums;
 
 namespace TobascoTest.GeneratedEntity2
 {
+    [GeneratedCode("Tobasco", "1.0.0.0")]
     [Serializable]
     public partial class ChildObject
     {

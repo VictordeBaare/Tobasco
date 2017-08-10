@@ -171,6 +171,13 @@ public %Name%(%ConstructorParameters%)
 	%CustomImplementation%
 }</value>
   </data>
+  <data name="DependencyInjection" xml:space="preserve">
+    <value>[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1506: AvoidExcessiveClassCoupling", Justification = "Generated file")]
+public override void Load()
+{
+    %DIParams%
+}</value>
+  </data>
   <data name="GenericRepositoryBulkSave" xml:space="preserve">
     <value>public IEnumerable&lt;T&gt; Save(IEnumerable&lt;T&gt; entities)
 {

@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using EnvDTE;
 using Tobasco.Constants;
 using Tobasco.Manager;
 using Tobasco.Model;
-using Tobasco.Model.Builders;
 using Tobasco.Model.Builders.Base;
 
 namespace Tobasco
@@ -49,7 +47,7 @@ namespace Tobasco
         {
             get
             {
-                var type = BuilderManager.Get(_information.DependencyInjection.Id, DefaultBuilderConstants.DependencyBuilder);
+                var type = BuilderManager.Get(_information.DependencyInjection.Overridekey, DefaultBuilderConstants.DependencyBuilder);
                 return BuilderManager.InitializeBuilder<DependencyInjectionBuilderBase>(type, new object[] { EntityHandlers.Values });
             }
         }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.CodeDom.Compiler;
 using System.Configuration;
 using System.Data.SqlClient;
 using Dapper;
@@ -12,7 +13,7 @@ using System.Globalization;
 
 namespace TobascoTest.GeneratedRepositoy
 {
-
+    [GeneratedCode("Tobasco", "1.0.0.0")]
     public partial class GenericRepository<T> : IGenericRepository<T> where T : EntityBase, new()
     {
 

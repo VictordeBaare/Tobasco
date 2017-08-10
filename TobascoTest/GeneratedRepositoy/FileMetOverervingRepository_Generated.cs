@@ -1,4 +1,5 @@
 ﻿using System;
+using System.CodeDom.Compiler;
 using TobascoTest.GeneratedEntity;
 using Tobasco;
 using TobascoTest.IGenerateRepository;
@@ -6,7 +7,7 @@ using System.Collections.Generic;
 
 namespace TobascoTest.GeneratedRepositoy
 {
-
+    [GeneratedCode("Tobasco", "1.0.0.0")]
     public partial class FileMetOverervingRepository : IFileMetOverervingRepository
     {
         private IChildObjectRepository _iChildObjectRepository;

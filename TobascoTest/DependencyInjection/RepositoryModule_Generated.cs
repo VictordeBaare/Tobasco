@@ -1,4 +1,5 @@
 ﻿using System;
+using System.CodeDom.Compiler;
 using Ninject;
 using Ninject.Modules;
 using TobascoTest.GeneratedRepositoy;
@@ -7,6 +8,7 @@ using TobascoTest.IGenerateRepository;
 
 namespace TobascoTest.DependencyInjection
 {
+    [GeneratedCode("Tobasco", "1.0.0.0")]
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1506: AvoidExcessiveClassCoupling", Justification = "Generated file")]
     public partial class RepositoryModule : NinjectModule
     {
@@ -24,6 +26,5 @@ namespace TobascoTest.DependencyInjection
             Bind<IFileMetOverervingRepository>().To<FileMetOverervingRepository>();
             Bind<IGenericRepository<FileMetOvererving>>().To<GenericRepository<FileMetOvererving>>();
         }
-
     }
 }

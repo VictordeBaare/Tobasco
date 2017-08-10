@@ -75,6 +75,7 @@
   <ItemGroup>
     <Compile Include="Constants\ConstructorConstants.cs" />
     <Compile Include="Constants\DefaultBuilderConstants.cs" />
+    <Compile Include="Constants\DependencyInjectionConstants.cs" />
     <Compile Include="Constants\FileConstants.cs" />
     <Compile Include="Constants\RepositoryBuilderConstants.cs" />
     <Compile Include="EntityHandler.cs" />

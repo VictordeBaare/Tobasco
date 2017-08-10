@@ -10,11 +10,11 @@ namespace Tobasco.Model
         [XmlAttribute("type")]
         public DIType Type { get; set; }
 
+        [XmlAttribute("overridekey")]
+        public string Overridekey { get; set; }
+
         [XmlArray("Modules")]
         [XmlArrayItem("Module", typeof(Module))]
         public List<Module> Modules { get; set; }
-
-        [XmlAttribute("id")]
-        public string Id { get; set; }
     }
 }

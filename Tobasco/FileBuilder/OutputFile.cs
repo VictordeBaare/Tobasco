@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Tobasco.Enums;
@@ -11,6 +12,14 @@ namespace Tobasco.FileBuilder
 {
     public abstract class OutputFile
     {
+        protected OutputFile()
+        {
+            var executingAssembly = Assembly.GetExecutingAssembly().GetName();
+            Namespaces.Add("System");
+            Namespaces.Add("System.CodeDom.Compiler");
+            ClassAttributes.Add($"[GeneratedCode(\"{executingAssembly.Name}\", \"{executingAssembly.Version}\")]");
+        }
+
         public Template Template { get; } = new Template();
 
         public TemplateParameter TemplateParameters { get; } = new TemplateParameter();
@@ -19,7 +28,7 @@ namespace Tobasco.FileBuilder
 
         public string NameExtension { get; set; }
 
-        public List<string> Namespaces { get; set; } = new List<string> { "System"};
+        public List<string> Namespaces { get; set; } = new List<string>();
 
         public string OwnNamespace { get; set; }
 

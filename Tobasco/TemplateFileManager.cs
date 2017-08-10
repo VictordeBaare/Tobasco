@@ -835,11 +835,11 @@ namespace Tobasco
             }
             else if (prj != null && String.IsNullOrEmpty(block.FolderName) == false)
             {
-                item = GetAllProjectItemsRecursive(prj.ProjectItems).First(i => i.Name == block.FolderName);
+                item = GetAllProjectItemsRecursive(prj.ProjectItems).FirstOrDefault(i => i.Name == block.FolderName);
             }
             else if (String.IsNullOrEmpty(block.FolderName) == false)
             {
-                item = GetAllProjectItemsRecursive(dte.ActiveDocument.ProjectItem.ContainingProject.ProjectItems).First(i => i.Name == block.FolderName);
+                item = GetAllProjectItemsRecursive(dte.ActiveDocument.ProjectItem.ContainingProject.ProjectItems).FirstOrDefault(i => i.Name == block.FolderName);
             }
 
             if (item != null)
@@ -871,11 +871,15 @@ namespace Tobasco
             }
             else if (prj != null && String.IsNullOrEmpty(block.FolderName) == false)
             {
-                item = GetAllProjectItemsRecursive(prj.ProjectItems).First(i => i.Name == block.FolderName);
+                item = GetAllProjectItemsRecursive(prj.ProjectItems).FirstOrDefault(i => i.Name == block.FolderName);
+                if(item == null)
+                {
+                    throw new ArgumentNullException($"No folder was found with the name {block.FolderName} within the project {block.ProjectName}");
+                }
             }
             else if (String.IsNullOrEmpty(block.FolderName) == false)
             {
-                item = GetAllProjectItemsRecursive(dte.ActiveDocument.ProjectItem.ContainingProject.ProjectItems).First(i => i.Name == block.FolderName);
+                item = GetAllProjectItemsRecursive(dte.ActiveDocument.ProjectItem.ContainingProject.ProjectItems).FirstOrDefault(i => i.Name == block.FolderName);
             }
 
             if (item != null)
@@ -915,7 +919,8 @@ namespace Tobasco
             }
             else if (prj != null && String.IsNullOrEmpty(file.FolderName) == false)
             {
-                item = GetAllProjectItemsRecursive(prj.ProjectItems).First(i => i.Name == file.FolderName);
+                item = GetAllProjectItemsRecursive(prj.ProjectItems).FirstOrDefault(i => i.Name == file.FolderName);
+
             }
             else if (String.IsNullOrEmpty(file.FolderName) == false)
             {

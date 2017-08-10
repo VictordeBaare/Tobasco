@@ -50,7 +50,7 @@
             <Namespace value="Tobasco"></Namespace>
         </Namespaces>
     </Repository>
-    <DependencyInjection type="Ninject">
+    <DependencyInjection type="Ninject" overridekey="">
         <Modules>
             <Module name="Repository" type="Repository">
                 <Filelocation project="TobascoTest" folder="DependencyInjection"></Filelocation>

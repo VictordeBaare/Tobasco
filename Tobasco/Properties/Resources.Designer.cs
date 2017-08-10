@@ -145,6 +145,19 @@ namespace Tobasco.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to [System.Diagnostics.CodeAnalysis.SuppressMessage(&quot;Microsoft.Maintainability&quot;, &quot;CA1506: AvoidExcessiveClassCoupling&quot;, Justification = &quot;Generated file&quot;)]
+        ///public override void Load()
+        ///{
+        ///    %DIParams%
+        ///}.
+        /// </summary>
+        internal static string DependencyInjection {
+            get {
+                return ResourceManager.GetString("DependencyInjection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to public IEnumerable&lt;T&gt; Save(IEnumerable&lt;T&gt; entities)
         ///{
         ///	var enumerable = entities as IList&lt;T&gt; ?? entities.ToList();

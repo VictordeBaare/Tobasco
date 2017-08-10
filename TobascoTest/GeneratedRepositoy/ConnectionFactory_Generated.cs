@@ -1,11 +1,12 @@
 ﻿using System;
+using System.CodeDom.Compiler;
 using System.Configuration;
 using System.Data.SqlClient;
 using TobascoTest.IGenerateRepository;
 
 namespace TobascoTest.GeneratedRepositoy
 {
-
+    [GeneratedCode("Tobasco", "1.0.0.0")]
     public partial class ConnectionFactory : IConnectionFactory
     {
         private readonly string _connectionstring;
