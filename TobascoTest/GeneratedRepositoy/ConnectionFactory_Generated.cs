@@ -16,8 +16,6 @@ namespace TobascoTest.GeneratedRepositoy
             _connectionstring = ConfigurationManager.ConnectionStrings[databasenaam].ConnectionString;
         }
 
-
-
         public SqlConnection GetConnection()
         {
             SqlConnection connection = null;

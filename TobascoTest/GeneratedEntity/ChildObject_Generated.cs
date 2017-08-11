@@ -11,16 +11,13 @@ namespace TobascoTest.GeneratedEntity
     public partial class ChildObject : EntityBase
     {
 
-
-        private string _TestChildProp1;
-
+        private string _testchildprop1;
 
         public string TestChildProp1
         {
-            get { return _TestChildProp1; }
-            set { SetField(ref _TestChildProp1, value, nameof(TestChildProp1)); }
+            get { return _testchildprop1; }
+            set { SetField(ref _testchildprop1, value, nameof(TestChildProp1)); }
         }
-
         public override ExpandoObject ToAnonymous()
         {
             dynamic anymonous = base.ToAnonymous();

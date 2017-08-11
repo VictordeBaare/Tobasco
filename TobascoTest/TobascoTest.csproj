@@ -133,12 +133,6 @@
     <Content Include="GeneratedDatabase\ChildObject_Generated.sql">
       <DependentUpon>TestGenerator2.txt4</DependentUpon>
     </Content>
-    <Content Include="GeneratedDatabase\FileMetOvererving_CRUD_Generated.sql">
-      <DependentUpon>TestGenerator2.txt4</DependentUpon>
-    </Content>
-    <Content Include="GeneratedDatabase\FileMetOvererving_Generated.sql">
-      <DependentUpon>TestGenerator2.txt4</DependentUpon>
-    </Content>
     <Content Include="TestChildCollectionObject.xml" />
     <Content Include="TestChildObject.xml" />
     <Content Include="TestEntity.xml" />

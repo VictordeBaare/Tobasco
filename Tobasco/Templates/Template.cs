@@ -1,30 +1,45 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Linq;
 
 namespace Tobasco.Templates
 {
     public class Template
     {
-        private string TemplateText;
+        private string _templateText;
 
         public void SetTemplate(string template)
         {
-            TemplateText = template;
+            _templateText = template;
         }
 
         public void Fill(TemplateParameter tags)
         {
-            if (string.IsNullOrEmpty(TemplateText))
+            if (string.IsNullOrEmpty(_templateText))
             {
-                throw new ArgumentNullException("TemplateText is null. First set the desired template with TemplateText.");
+                throw new ArgumentNullException(nameof(_templateText), @"TemplateText is null. First set the desired template with TemplateText.");
             }
 
             foreach (var t in tags.GetParameters)
             {
-                TemplateText = TemplateText.Replace(string.Format("%{0}%", t.Key), t.Value);
+                _templateText = string.IsNullOrEmpty(t.Key) ? RemoveLineWithEmptyAttribute(_templateText, $"%{t.Key}%") : _templateText.Replace($"%{t.Key}%", t.Value);
             }
         }
 
-        public string GetText => TemplateText;
+        public string GetText => _templateText;
+
+        private string RemoveLineWithEmptyAttribute(string text, string attributeName)
+        {
+            var lines = text.Split(new []{ Environment.NewLine }, StringSplitOptions.None).ToList();
+
+            for (int i = lines.Count - 1; i >= 0 ; i--)
+            {
+                if (lines[i].Contains(attributeName))
+                {
+                    lines.RemoveAt(i);
+                }
+            }
+
+            return string.Join(Environment.NewLine, lines);
+        }
     }
 }

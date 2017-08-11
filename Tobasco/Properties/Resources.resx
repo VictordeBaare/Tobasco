@@ -136,10 +136,8 @@ namespace %OwnNamespace%
 	%Attributes%
 	public %Abstract% partial %Type% %ClassName%%Extension% %BaseClass%
 	{
-		%Constructor%
-		
-		%Properties%
-		
+		%Constructor%		
+		%Properties%		
 		%Methods%	
 	}
 }</value>
@@ -313,27 +311,20 @@ namespace %OwnNamespace%
     <value>public List&lt;%PropertyValueType%&gt; %PropertyName% { get; } = new List&lt;%PropertyValueType%&gt;();</value>
   </data>
   <data name="PropertyDapperDefault" xml:space="preserve">
-    <value>private %PropertyValueType% _%PropertyName%;
-
+    <value>private %PropertyValueType% _%PropertyParameterName%;
 %BusinessRules%
 public %PropertyValueType% %PropertyName%
 {
-	get { return _%PropertyName%; }
-	set { SetField(ref _%PropertyName%, value, nameof(%PropertyName%)); }
+	get { return _%PropertyParameterName%; }
+	set { SetField(ref _%PropertyParameterName%, value, nameof(%PropertyName%)); }
 }</value>
   </data>
   <data name="PropertyDefault" xml:space="preserve">
     <value>%BusinessRules%
 public %PropertyValueType% %PropertyName% { get; set; }</value>
   </data>
-  <data name="PropertyName" xml:space="preserve">
-    <value>PropertyName</value>
-  </data>
   <data name="PropertyReadonlyGuid" xml:space="preserve">
     <value>public %PropertyValueType% %PropertyName% { get; private set; }</value>
-  </data>
-  <data name="PropertyValueType" xml:space="preserve">
-    <value>PropertyValueType</value>
   </data>
   <data name="RepositoryGetById" xml:space="preserve">
     <value />
@@ -341,12 +332,9 @@ public %PropertyValueType% %PropertyName% { get; set; }</value>
   <data name="RepositorySave" xml:space="preserve">
     <value>public %EntityName% Save(%EntityName%  %EntityNameLowerCase%)
 {
-	%SaveChild%
-	
-	%EntityNameLowerCase% = _genericRepository.Save(%EntityNameLowerCase%);
-	
-	%SaveChildCollections%
-	
+	%SaveChild%	
+	%EntityNameLowerCase% = _genericRepository.Save(%EntityNameLowerCase%);	
+	%SaveChildCollections%	
 	return %EntityNameLowerCase%;
 }</value>
   </data>
@@ -355,12 +343,9 @@ public %PropertyValueType% %PropertyName% { get; set; }</value>
 {
 	using (var trans = new TransactionScope())
 	{
-		%SaveChild%
-		
-		%EntityNameLowerCase% = _genericRepository.Save(%EntityNameLowerCase%);
-		
-		%SaveChildCollections%
-		
+		%SaveChild%		
+		%EntityNameLowerCase% = _genericRepository.Save(%EntityNameLowerCase%);		
+		%SaveChildCollections%		
 		return %EntityNameLowerCase%;
 		trans.Complete();
 	}

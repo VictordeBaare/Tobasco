@@ -91,10 +91,8 @@ namespace Tobasco.Properties {
         ///	%Attributes%
         ///	public %Abstract% partial %Type% %ClassName%%Extension% %BaseClass%
         ///	{
-        ///		%Constructor%
-        ///		
-        ///		%Properties%
-        ///		
+        ///		%Constructor%		
+        ///		%Properties%		
         ///		%Methods%	
         ///	}
         ///}.
@@ -342,13 +340,12 @@ namespace Tobasco.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to private %PropertyValueType% _%PropertyName%;
-        ///
+        ///   Looks up a localized string similar to private %PropertyValueType% _%PropertyParameterName%;
         ///%BusinessRules%
         ///public %PropertyValueType% %PropertyName%
         ///{
-        ///	get { return _%PropertyName%; }
-        ///	set { SetField(ref _%PropertyName%, value, nameof(%PropertyName%)); }
+        ///	get { return _%PropertyParameterName%; }
+        ///	set { SetField(ref _%PropertyParameterName%, value, nameof(%PropertyName%)); }
         ///}.
         /// </summary>
         internal static string PropertyDapperDefault {
@@ -368,29 +365,11 @@ namespace Tobasco.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to PropertyName.
-        /// </summary>
-        internal static string PropertyName {
-            get {
-                return ResourceManager.GetString("PropertyName", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to public %PropertyValueType% %PropertyName% { get; private set; }.
         /// </summary>
         internal static string PropertyReadonlyGuid {
             get {
                 return ResourceManager.GetString("PropertyReadonlyGuid", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to PropertyValueType.
-        /// </summary>
-        internal static string PropertyValueType {
-            get {
-                return ResourceManager.GetString("PropertyValueType", resourceCulture);
             }
         }
         
@@ -406,12 +385,9 @@ namespace Tobasco.Properties {
         /// <summary>
         ///   Looks up a localized string similar to public %EntityName% Save(%EntityName%  %EntityNameLowerCase%)
         ///{
-        ///	%SaveChild%
-        ///	
-        ///	%EntityNameLowerCase% = _genericRepository.Save(%EntityNameLowerCase%);
-        ///	
-        ///	%SaveChildCollections%
-        ///	
+        ///	%SaveChild%	
+        ///	%EntityNameLowerCase% = _genericRepository.Save(%EntityNameLowerCase%);	
+        ///	%SaveChildCollections%	
         ///	return %EntityNameLowerCase%;
         ///}.
         /// </summary>
@@ -426,12 +402,9 @@ namespace Tobasco.Properties {
         ///{
         ///	using (var trans = new TransactionScope())
         ///	{
-        ///		%SaveChild%
-        ///		
-        ///		%EntityNameLowerCase% = _genericRepository.Save(%EntityNameLowerCase%);
-        ///		
-        ///		%SaveChildCollections%
-        ///		
+        ///		%SaveChild%		
+        ///		%EntityNameLowerCase% = _genericRepository.Save(%EntityNameLowerCase%);		
+        ///		%SaveChildCollections%		
         ///		return %EntityNameLowerCase%;
         ///		trans.Complete();
         ///	}

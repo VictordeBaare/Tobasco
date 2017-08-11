@@ -22,9 +22,7 @@ namespace TobascoTest.GeneratedRepositoy
 
             ConnectionFactory = connectionFactory;
         }
-
         public IConnectionFactory ConnectionFactory { get; }
-
         public T Save(T entity)
         {
             if (entity.IsDeleted)

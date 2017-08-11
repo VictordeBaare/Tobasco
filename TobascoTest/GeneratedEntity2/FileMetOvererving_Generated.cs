@@ -11,9 +11,8 @@ namespace TobascoTest.GeneratedEntity2
     public partial class FileMetOvererving
     {
 
-
-        [Required(ErrorMessage = "TestChildProp1 is required")]
-        [StringLength(100, ErrorMessage = "Maximum length is 100 for TestChildProp1")]
+        [Required(ErrorMessage = @"TestChildProp1 is required")]
+        [StringLength(100, ErrorMessage = @"Maximum length is 100 for TestChildProp1")]
         public string TestChildProp1 { get; set; }
         [Range(10, 20)]
         public int? TestChildProp2 { get; set; }
@@ -30,7 +29,6 @@ namespace TobascoTest.GeneratedEntity2
         public List<ChildCollectionObject> TestChildProp8 { get; } = new List<ChildCollectionObject>();
 
         public ChildObject TestChildProp9 { get; set; }
-
 
     }
 }

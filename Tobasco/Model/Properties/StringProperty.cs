@@ -34,7 +34,7 @@ namespace Tobasco.Model.Properties
         {
             if (Property.DataType.Size != null && Property.DataType.Size != "max")
             {
-                return $"[StringLength({Property.DataType.Size}, ErrorMessage = \"Maximum length is {Property.DataType.Size} for {Property.Name}\")]";
+                return $"[StringLength({Property.DataType.Size}, ErrorMessage = @\"Maximum length is {Property.DataType.Size} for {Property.Name}\")]";
             }
             return string.Empty;
         }

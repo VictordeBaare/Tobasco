@@ -56,7 +56,7 @@ namespace Tobasco.Model.Properties
         {
             if (Property.Required)
             {
-                return $"[Required(ErrorMessage=\"{Property.Name} is required\")]";
+                return $"[Required(ErrorMessage = @\"{Property.Name} is required\")]";
             }
             return string.Empty;
         }

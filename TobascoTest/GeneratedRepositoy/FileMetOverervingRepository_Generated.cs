@@ -21,8 +21,6 @@ namespace TobascoTest.GeneratedRepositoy
 
         }
 
-
-
         public FileMetOvererving Save(FileMetOvererving filemetovererving)
         {
             if (filemetovererving.TestChildProp7 != null)
@@ -30,15 +28,12 @@ namespace TobascoTest.GeneratedRepositoy
                 filemetovererving.TestChildProp7 = _iChildObjectRepository.Save(filemetovererving.TestChildProp7);
             }
 
-
             filemetovererving = _genericRepository.Save(filemetovererving);
-
             foreach (var toSaveItem in filemetovererving.TestChildProp8)
             {
                 toSaveItem.FileMetOverervingId = filemetovererving.Id;
                 _iChildCollectionObjectRepository.Save(toSaveItem);
             }
-
 
             return filemetovererving;
         }

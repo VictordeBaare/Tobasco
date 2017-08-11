@@ -17,15 +17,10 @@ namespace TobascoTest.GeneratedRepositoy
 
         }
 
-
-
         public ChildCollectionObject Save(ChildCollectionObject childcollectionobject)
         {
 
-
             childcollectionobject = _genericRepository.Save(childcollectionobject);
-
-
 
             return childcollectionobject;
         }

@@ -110,10 +110,13 @@ namespace Tobasco
 
             foreach (ProjectItem item in items)
             {
-                var b = item.Open(EnvDTE.Constants.vsViewKindDebugging);
-                b.Activate();
-                item.Document.DTE.ExecuteCommand("Edit.FormatDocument");
-                b.Close(vsSaveChanges.vsSaveChangesYes);
+                if (item.Name.EndsWith(".cs") && !item.IsOpen)
+                {
+                    var b = item.Open(EnvDTE.Constants.vsViewKindDebugging);
+                    b.Activate();
+                    item.Document.DTE.ExecuteCommand("Edit.FormatDocument");
+                    b.Close(vsSaveChanges.vsSaveChangesYes);
+                }
             }
         }
 
