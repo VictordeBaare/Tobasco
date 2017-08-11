@@ -555,7 +555,7 @@ namespace Tobasco.Properties {
         ///	 CONSTRAINT [DF_%TableName%_ModifiedBy] DEFAULT SUSER_SNAME()
         ///	,[ModifiedOn]	datetime2(7)			NOT NULL
         ///	 CONSTRAINT [DF_%TableName%_ModifiedOn] DEFAULT SYSDATETIME()
-        ///	 CONSTRAINT [PK_%TableName%] PRIMARY KEY CLUSTERED (Id ASC)
+        ///	,CONSTRAINT [PK_%TableName%] PRIMARY KEY CLUSTERED (Id ASC)
         ///	 %Constraints%
         ///);.
         /// </summary>
