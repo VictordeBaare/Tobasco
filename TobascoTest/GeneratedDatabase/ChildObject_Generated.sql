@@ -1,22 +1,19 @@
-﻿CREATE TABLE [dbo].[ChildCollectionObject](
+﻿CREATE TABLE [dbo].[ChildObject](
 	 [Id]			bigint	IDENTITY (1,1)  NOT NULL
 	,[RowVersion]   rowversion         		NOT NULL
 	,TestChildProp1 nvarchar(100) NOT NULL
-,FileMetOverervingId bigint NOT NULL
 	,[ModifiedBY]	nvarchar(256)			NOT NULL
-	 CONSTRAINT [DF_ChildCollectionObject_ModifiedBy] DEFAULT SUSER_SNAME()
+	 CONSTRAINT [DF_ChildObject_ModifiedBy] DEFAULT SUSER_SNAME()
 	,[ModifiedOn]	datetime2(7)			NOT NULL
-	 CONSTRAINT [DF_ChildCollectionObject_ModifiedOn] DEFAULT SYSDATETIME()
-	 CONSTRAINT [PK_ChildCollectionObject] PRIMARY KEY CLUSTERED (Id ASC)
-	 ,CONSTRAINT [FK_ChildCollectionObject_FileMetOverervingId] FOREIGN KEY (FileMetOverervingId) REFERENCES [dbo].[FileMetOvererving] ([Id])
-
+	 CONSTRAINT [DF_ChildObject_ModifiedOn] DEFAULT SYSDATETIME()
+	 CONSTRAINT [PK_ChildObject] PRIMARY KEY CLUSTERED (Id ASC)
+	 
 );
 GO
-CREATE TABLE [dbo].[ChildCollectionObject_historie] (
+CREATE TABLE [dbo].[ChildObject_historie] (
     [Id]                          bigint             NOT NULL
    ,[RowVersion]                  binary(8)          NOT NULL
-   ,TestChildProp1 nvarchar(100) NOT NULL
-,FileMetOverervingId bigint NOT NULL   
+   ,TestChildProp1 nvarchar(100) NOT NULL   
    ,[ModifiedBy]                  nvarchar (256)     NOT NULL
    ,[ModifiedOn]                  DATETIME2(7)       NOT NULL
    ,DeletedBy                     nvarchar(256)     NULL
@@ -27,12 +24,10 @@ GO
 -- I n d e x e s
 -- ================================================================================
 
-CREATE NONCLUSTERED INDEX IX_ChildCollectionObject_historie_Id
-                       ON [dbo].ChildCollectionObject_historie
+CREATE NONCLUSTERED INDEX IX_ChildObject_historie_Id
+                       ON [dbo].ChildObject_historie
                          (Id ASC)
                   INCLUDE(ModifiedOn);
-GO
-CREATE NONCLUSTERED INDEX IX_ChildCollectionObject_FileMetOverervingId ON [dbo].[ChildCollectionObject] (FileMetOverervingId ASC)
 GO
 
 GO
@@ -40,17 +35,16 @@ GO
 -- T r i g g e r s
 -- ================================================================================
 
-CREATE TRIGGER [dbo].tu_ChildCollectionObject
-            ON [dbo].ChildCollectionObject
+CREATE TRIGGER [dbo].tu_ChildObject
+            ON [dbo].ChildObject
            FOR UPDATE
 AS
 BEGIN
     INSERT
-      INTO [dbo].ChildCollectionObject_historie(
+      INTO [dbo].ChildObject_historie(
 			Id,
 		    [RowVersion],
 		   TestChildProp1,
-FileMetOverervingId,
             [ModifiedBy],
             [ModifiedOn],
             DeletedBy,
@@ -59,7 +53,6 @@ FileMetOverervingId,
     SELECT DELETED.Id,
            DELETED.[RowVersion],
 		  TestChildProp1,
-FileMetOverervingId,
            Deleted.ModifiedBy,
            Deleted.ModifiedOn,
            NULL,
@@ -67,17 +60,16 @@ FileMetOverervingId,
       FROM Deleted;
 END;
 GO
-CREATE TRIGGER [dbo].td_ChildCollectionObject
-            ON [dbo].ChildCollectionObject
+CREATE TRIGGER [dbo].td_ChildObject
+            ON [dbo].ChildObject
 		   FOR DELETE
 AS
 BEGIN
 	INSERT
-	  INTO [dbo].ChildCollectionObject_historie(
+	  INTO [dbo].ChildObject_historie(
 			Id,
 		    [RowVersion],
            TestChildProp1,
-FileMetOverervingId,
 		    [ModifiedBy],
 		    [ModifiedOn],
 		    [DeletedBy],
@@ -86,7 +78,6 @@ FileMetOverervingId,
 	SELECT Deleted.Id,
 	       Deleted.[RowVersion],
 		  TestChildProp1,
-FileMetOverervingId,
 		   Deleted.ModifiedBy,
 		   Deleted.ModifiedOn,
 		   ISNULL(LTRIM(RTRIM(CONVERT(nvarchar(128), CONTEXT_INFO()))), SUSER_SNAME()),

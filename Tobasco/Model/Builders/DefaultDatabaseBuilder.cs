@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Tobasco.Constants;
 using Tobasco.Enums;
 using Tobasco.FileBuilder;
 using Tobasco.Manager;
@@ -40,9 +41,9 @@ namespace Tobasco.Model.Builders
         private TemplateParameter GetParameters()
         {
             var parameters = new TemplateParameter();
-            parameters.Add(Resources.TableName, Name);
-            parameters.Add(Resources.TableProperties, GetTableProperties());
-
+            parameters.Add(SqlConstants.TableName, Name);
+            parameters.Add(SqlConstants.TableProperties, GetTableProperties());
+            parameters.Add(SqlConstants.Constraints, GetContraints());
             return parameters;
         }
 
@@ -67,7 +68,7 @@ namespace Tobasco.Model.Builders
                 var constraint = sqlprop.SelectReferenceConstraint(Name);
                 if (!string.IsNullOrEmpty(constraint))
                 {
-                    builder.AppendLine($"   ,{constraint}");
+                    builder.AppendLine($",{constraint}");
                 }
             }
             return builder.ToString();
