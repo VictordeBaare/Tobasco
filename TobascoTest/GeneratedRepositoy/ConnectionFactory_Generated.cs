@@ -2,6 +2,7 @@
 using System.CodeDom.Compiler;
 using System.Configuration;
 using System.Data.SqlClient;
+using System.Data;
 using TobascoTest.IGenerateRepository;
 
 namespace TobascoTest.GeneratedRepositoy
@@ -9,29 +10,48 @@ namespace TobascoTest.GeneratedRepositoy
     [GeneratedCode("Tobasco", "1.0.0.0")]
     public partial class ConnectionFactory : IConnectionFactory
     {
-        private readonly string _connectionstring;
+        private readonly SqlConnection _connection;
+        private readonly object _lock = new object();
+        private bool _disposed;
         public ConnectionFactory(string databasenaam)
         {
 
-            _connectionstring = ConfigurationManager.ConnectionStrings[databasenaam].ConnectionString;
+            _connection = new SqlConnection(ConfigurationManager.ConnectionStrings[databasenaam].ConnectionString);
         }
 
         public SqlConnection GetConnection()
         {
-            SqlConnection connection = null;
-            SqlConnection tempConnection = null;
-            try
+            lock (_lock)
             {
-                tempConnection = new SqlConnection(_connectionstring);
-                tempConnection.Open();
-                connection = tempConnection;
-                tempConnection = null;
+                if (_connection.State == ConnectionState.Closed || _connection.State == ConnectionState.Broken)
+                {
+                    _connection.Open();
+                }
             }
-            finally
+
+            return _connection;
+        }
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+        private void Dispose(bool disposing)
+        {
+            if (!_disposed)
             {
-                tempConnection?.Dispose();
+                if (disposing)
+                {
+                    // ReSharper disable once UseNullPropagation
+                    if (_connection != null)
+                    {
+                        // ReSharper disable once InconsistentlySynchronizedField
+                        _connection.Dispose();
+                    }
+                }
+
+                _disposed = true;
             }
-            return connection;
         }
     }
 }

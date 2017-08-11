@@ -1,15 +1,17 @@
-﻿CREATE PROCEDURE [dbo].[ChildObject_Insert]
+﻿CREATE PROCEDURE [dbo].[ChildCollectionObject_Insert]
     @Id bigint output,
 	@TestChildProp1 nvarchar(100),
+@FileMetOverervingId bigint,
     @ModifiedBy nvarchar(256)
 AS
 BEGIN
     SET NOCOUNT ON;
 
     INSERT
-      INTO [dbo].ChildObject 
+      INTO [dbo].ChildCollectionObject 
 	       (
 			TestChildProp1,
+FileMetOverervingId,
 			[ModifiedBy],
 		    [ModifiedOn]
 		   )
@@ -19,14 +21,16 @@ BEGIN
     VALUES
          (
 		   @TestChildProp1,
+@FileMetOverervingId,
            @ModifiedBy,
            SYSDATETIME()
           );
 END;
 GO
-CREATE PROCEDURE [dbo].[ChildObject_Update]
+CREATE PROCEDURE [dbo].[ChildCollectionObject_Update]
 		@Id [bigint],
 		@TestChildProp1 nvarchar(100),
+@FileMetOverervingId bigint,
         @RowVersion [rowversion],
         @ModifiedBy nvarchar(256)
 AS
@@ -42,18 +46,19 @@ BEGIN
 							  ,ModifiedOn      datetime2(7) NOT NULL
 							 );
 
-		UPDATE [dbo].ChildObject
+		UPDATE [dbo].ChildCollectionObject
 		   SET 
-				ChildObject.TestChildProp1 = @TestChildProp1,            
-			    ChildObject.ModifiedBy = ISNULL(@ModifiedBy, SUSER_SNAME()),
-			    ChildObject.ModifiedOn = SYSDATETIME()
+				ChildCollectionObject.TestChildProp1 = @TestChildProp1,
+ChildCollectionObject.FileMetOverervingId = @FileMetOverervingId,            
+			    ChildCollectionObject.ModifiedBy = ISNULL(@ModifiedBy, SUSER_SNAME()),
+			    ChildCollectionObject.ModifiedOn = SYSDATETIME()
 		OUTPUT Inserted.[RowVersion]
 			  ,Inserted.ModifiedOn
 		  INTO #Output ([RowVersion]
 						,ModifiedOn
 					   )
-		 WHERE ChildObject.Id = @Id
-		   AND ChildObject.[RowVersion] = @RowVersion
+		 WHERE ChildCollectionObject.Id = @Id
+		   AND ChildCollectionObject.[RowVersion] = @RowVersion
 
 		DECLARE @RowCountBig AS bigint = ROWCOUNT_BIG();
 
@@ -61,7 +66,7 @@ BEGIN
 		BEGIN
             DECLARE @message AS nvarchar(2048) = CONCAT(QUOTENAME(OBJECT_SCHEMA_NAME(@@PROCID)), '.', OBJECT_NAME(@@PROCID), N': '
 													   ,N'Concurrency problem. '
-                                                       ,N'The ChildObject-row with Id=', @Id, N' and RowVersion=', CAST(@RowVersion AS binary(8)), N' cannot be altered by ', @ModifiedBy, N'. '
+                                                       ,N'The ChildCollectionObject-row with Id=', @Id, N' and RowVersion=', CAST(@RowVersion AS binary(8)), N' cannot be altered by ', @ModifiedBy, N'. '
                                                        ,N'The row was already modified by a different user.'
                                                         );
 			THROW 55501, @message, 1;
@@ -72,7 +77,7 @@ BEGIN
           FROM #Output;
 END;
 GO
-CREATE PROCEDURE [dbo].[ChildObject_Delete]
+CREATE PROCEDURE [dbo].[ChildCollectionObject_Delete]
 		@Id [bigint]
        ,@RowVersion [rowversion]
        ,@ModifiedBy nvarchar(256)
@@ -83,9 +88,9 @@ BEGIN
 		DECLARE @Context varbinary(128) = CAST(CAST(ISNULL(@ModifiedBy, SUSER_SNAME()) AS char(256)) AS varbinary(256));
 		
 		DELETE 
-		  FROM [dbo].ChildObject
-		 WHERE ChildObject.Id = @Id
-		   AND ChildObject.[RowVersion] = @RowVersion
+		  FROM [dbo].ChildCollectionObject
+		 WHERE ChildCollectionObject.Id = @Id
+		   AND ChildCollectionObject.[RowVersion] = @RowVersion
 
 		DECLARE @RowCountBig AS bigint = ROWCOUNT_BIG();
 		
@@ -95,7 +100,7 @@ BEGIN
 		BEGIN
             DECLARE @message AS nvarchar(2048) = CONCAT(QUOTENAME(OBJECT_SCHEMA_NAME(@@PROCID)), '.', OBJECT_NAME(@@PROCID), N': '
 													   ,N'Concurrency problem. '
-                                                       ,N'The ChildObject-row with Id=', @Id, N' and RowVersion=', CAST(@RowVersion AS binary(8)), N' cannot be altered by ', @ModifiedBy, N'. '
+                                                       ,N'The ChildCollectionObject-row with Id=', @Id, N' and RowVersion=', CAST(@RowVersion AS binary(8)), N' cannot be altered by ', @ModifiedBy, N'. '
                                                        ,N'The row was already modified or deleted by a different user.'
                                                         );
 			THROW 55501, @message, 1;

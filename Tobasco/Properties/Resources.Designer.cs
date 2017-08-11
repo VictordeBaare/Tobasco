@@ -105,22 +105,17 @@ namespace Tobasco.Properties {
         
         /// <summary>
         ///   Looks up a localized string similar to public SqlConnection GetConnection()
-        ///{
-        ///	SqlConnection connection = null;
-        ///	SqlConnection tempConnection = null;
-        ///	try
-        ///	{
-        ///		tempConnection = new SqlConnection(_connectionstring);
-        ///		tempConnection.Open();
-        ///		connection = tempConnection;
-        ///		tempConnection = null;
-        ///	}
-        ///	finally
-        ///	{
-        ///		tempConnection?.Dispose();
-        ///	}
-        ///	return connection;
-        ///}.
+        ///        {
+        ///            lock (_lock)
+        ///            {
+        ///                if (_connection.State == ConnectionState.Closed || _connection.State == ConnectionState.Broken)
+        ///                {
+        ///                    _connection.Open();
+        ///                }
+        ///            }
+        ///
+        ///            return _connection;
+        ///        }.
         /// </summary>
         internal static string ConnectionFactoryGetConnection {
             get {
@@ -331,6 +326,31 @@ namespace Tobasco.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to private void Dispose(bool disposing)
+        ///        {
+        ///            if (!_disposed)
+        ///            {
+        ///                if (disposing)
+        ///                {
+        ///                    // ReSharper disable once UseNullPropagation
+        ///                    if (_connection != null)
+        ///                    {
+        ///                        // ReSharper disable once InconsistentlySynchronizedField
+        ///                        _connection.Dispose();
+        ///                    }
+        ///                }
+        ///
+        ///                _disposed = true;
+        ///            }
+        ///         [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string PrivateDispose {
+            get {
+                return ResourceManager.GetString("PrivateDispose", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to public List&lt;%PropertyValueType%&gt; %PropertyName% { get; } = new List&lt;%PropertyValueType%&gt;();.
         /// </summary>
         internal static string PropertyChildCollection {
@@ -370,6 +390,19 @@ namespace Tobasco.Properties {
         internal static string PropertyReadonlyGuid {
             get {
                 return ResourceManager.GetString("PropertyReadonlyGuid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to public void Dispose()
+        ///        {
+        ///            Dispose(true);
+        ///            GC.SuppressFinalize(this);
+        ///        }.
+        /// </summary>
+        internal static string PublicDispose {
+            get {
+                return ResourceManager.GetString("PublicDispose", resourceCulture);
             }
         }
         

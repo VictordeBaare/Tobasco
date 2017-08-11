@@ -144,22 +144,17 @@ namespace %OwnNamespace%
   </data>
   <data name="ConnectionFactoryGetConnection" xml:space="preserve">
     <value>public SqlConnection GetConnection()
-{
-	SqlConnection connection = null;
-	SqlConnection tempConnection = null;
-	try
-	{
-		tempConnection = new SqlConnection(_connectionstring);
-		tempConnection.Open();
-		connection = tempConnection;
-		tempConnection = null;
-	}
-	finally
-	{
-		tempConnection?.Dispose();
-	}
-	return connection;
-}</value>
+        {
+            lock (_lock)
+            {
+                if (_connection.State == ConnectionState.Closed || _connection.State == ConnectionState.Broken)
+                {
+                    _connection.Open();
+                }
+            }
+
+            return _connection;
+        }</value>
   </data>
   <data name="Constructor" xml:space="preserve">
     <value>%ConstructorFields%
@@ -307,6 +302,25 @@ namespace %OwnNamespace%
     Bind&lt;T&gt;().To&lt;TY&gt;()%BindingScope%;
 }</value>
   </data>
+  <data name="PrivateDispose" xml:space="preserve">
+    <value>private void Dispose(bool disposing)
+        {
+            if (!_disposed)
+            {
+                if (disposing)
+                {
+                    // ReSharper disable once UseNullPropagation
+                    if (_connection != null)
+                    {
+                        // ReSharper disable once InconsistentlySynchronizedField
+                        _connection.Dispose();
+                    }
+                }
+
+                _disposed = true;
+            }
+        }</value>
+  </data>
   <data name="PropertyChildCollection" xml:space="preserve">
     <value>public List&lt;%PropertyValueType%&gt; %PropertyName% { get; } = new List&lt;%PropertyValueType%&gt;();</value>
   </data>
@@ -325,6 +339,13 @@ public %PropertyValueType% %PropertyName% { get; set; }</value>
   </data>
   <data name="PropertyReadonlyGuid" xml:space="preserve">
     <value>public %PropertyValueType% %PropertyName% { get; private set; }</value>
+  </data>
+  <data name="PublicDispose" xml:space="preserve">
+    <value>public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }</value>
   </data>
   <data name="RepositoryGetById" xml:space="preserve">
     <value />
