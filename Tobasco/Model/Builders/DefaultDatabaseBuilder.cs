@@ -7,6 +7,7 @@ using Tobasco.Enums;
 using Tobasco.FileBuilder;
 using Tobasco.Manager;
 using Tobasco.Model.Builders.Base;
+using Tobasco.Model.Builders.DatabaseBuilders;
 using Tobasco.Model.DatabaseProperties;
 using Tobasco.Properties;
 using Tobasco.Templates;
@@ -15,74 +16,27 @@ namespace Tobasco.Model.Builders
 {
     public class DefaultDatabaseBuilder : DatabaseBuilderBase
     {
+        private GetByIdBuilder _getByIdBuilder;
+        private InsertBuilder _insertBuilder;
+        private UpdateBuilder _updateBuilder;
+        private DeleteBuilder _deleteBuilder;
+        private TableBuilder _tableBuilder;
+        private HistorieTableBuilder _historieTableBuilder;
+        private GetByReferenceIdBuilder _referenceGetByIdBuilder;
 
         public DefaultDatabaseBuilder(Entity entity, Database database) : base(entity, database)
         {
+            _getByIdBuilder = new GetByIdBuilder(entity, database);
+            _insertBuilder = new InsertBuilder(entity, database);
+            _updateBuilder = new UpdateBuilder(entity, database);
+            _deleteBuilder = new DeleteBuilder(entity, database);
+            _tableBuilder = new TableBuilder(entity, database);
+            _historieTableBuilder = new HistorieTableBuilder(entity, database);
+            _referenceGetByIdBuilder = new GetByReferenceIdBuilder(entity, database);
         }
 
         public override string Name => Entity.Name;
-
-        private string GetTable()
-        {
-            var template = new Template();
-            template.SetTemplate(Entity.GenerateReadonlyGuid ? Resources.SqlTableWithUid : Resources.SqlTable);
-            template.Fill(GetParameters());
-            return template.GetText;
-        }
-
-        private string GetHistorieTable()
-        {
-            var template = new Template();
-            template.SetTemplate(Entity.GenerateReadonlyGuid ? Resources.SqlHistorieTableWithUid : Resources.SqlHistorieTable);
-            template.Fill(GetParameters());
-            return template.GetText;
-        }
-
-        private TemplateParameter GetParameters()
-        {
-            var parameters = new TemplateParameter();
-            parameters.Add(SqlConstants.TableName, Name);
-            parameters.Add(SqlConstants.TableProperties, GetTableProperties());
-            parameters.Add(SqlConstants.Constraints, GetContraints());
-            return parameters;
-        }
-
-        private List<string> GetTableProperties()
-        {
-            return GetNonChildCollectionProperties.Select(prop => $",{prop.SelectSqlTableProperty}").ToList();
-        }
-
-        private string GetContraints()
-        {
-            var builder = new StringBuilder();
-            foreach (var sqlprop in GetChildProperties)
-            {
-                var constraint = sqlprop.SelectChildForeignkeyConstraint(Name);
-                if (!string.IsNullOrEmpty(constraint))
-                {
-                    builder.AppendLine($",{constraint}");
-                }
-            }
-            foreach (var sqlprop in GetSqlProperties.Where(x => x.Property.DataType.Datatype == Datatype.Reference))
-            {
-                var constraint = sqlprop.SelectReferenceConstraint(Name);
-                if (!string.IsNullOrEmpty(constraint))
-                {
-                    builder.AppendLine($",{constraint}");
-                }
-            }
-            return builder.ToString();
-        }
-        
-        private string GetInsertStp()
-        {
-            var template = new Template();
-            template.SetTemplate(Entity.GenerateReadonlyGuid ? Resources.SqlInsertStpWithUid : Resources.SqlInsertStp);
-            template.Fill(InsertTemplateParameters());
-
-            return template.GetText;
-        }
-
+                  
         private TemplateParameter TriggerTempalteParameters()
         {
             var parameters = new TemplateParameter();
@@ -93,107 +47,7 @@ namespace Tobasco.Model.Builders
             parameters.Add(SqlConstants.StpDeletetedPropertyNames, GetSqlParameterNames("Deleted."));
             return parameters;
         }
-
-        private TemplateParameter InsertTemplateParameters()
-        {
-            var parameters = new TemplateParameter();
-            parameters.Add(Resources.TableName, Name);
-            parameters.Add(Resources.StpParameter, GetSqlParameters());
-            parameters.Add(Resources.StpParameterName, GetSqlParameterNames("@"));
-            parameters.Add(Resources.StpPropertyNames, GetSqlParameterNames(""));
-            return parameters;
-        }
-
-        private TemplateParameter GetByReferenceIdTemplateParameters()
-        {
-            var parameters = new TemplateParameter();
-            parameters.Add(Resources.TableName, Name);
-            parameters.Add(Resources.StpParameter, GetSqlParameters());
-            parameters.Add(Resources.StpParameterName, GetSqlParameterNames("@"));
-            parameters.Add(Resources.StpPropertyNames, GetSqlParameterNames(""));
-            return parameters;
-        }
-
-        private List<string> GetSqlParameters()
-        {
-            var list = new List<string>();
-
-            foreach (var sqlprop in GetNonChildCollectionProperties)
-            {
-                list.Add($"@{sqlprop.SelectSqlParameter},");
-            }
-
-            return list;
-        }
-
-        private List<string> GetSqlParameterNames(string leading)
-        {
-            var list = new List<string>();
-
-            foreach (var sqlprop in GetNonChildCollectionProperties)
-            {
-                list.Add($"{leading}{sqlprop.SelectSqlParameterNaam},");
-            }
-
-            return list;
-        }
-
-        private List<string> GetSqlUpdateParameters()
-        {
-            var list = new List<string>();
-
-            foreach (DatabaseProperty selectSqlProperty in GetNonChildCollectionProperties)
-            {
-                list.Add($"{Name}.{selectSqlProperty.SelectSqlParameterNaam} = @{selectSqlProperty.SelectSqlParameterNaam},");
-            }
-
-            return list;
-        }
-
-        private TemplateParameter UpdateTemplateParameters()
-        {
-            var parameters = InsertTemplateParameters();
-
-            parameters.Add(Resources.UpdateSetTableParemeters, GetSqlUpdateParameters());
-
-            return parameters;
-        }
-
-        private string GetUpdateStp()
-        {
-            var template = new Template();
-            template.SetTemplate(Resources.SqlUpdateStp);
-            template.Fill(UpdateTemplateParameters());
-
-            return template.GetText;
-        }
-
-        private string GetGetByIdStp()
-        {
-            var template = new Template();
-            template.SetTemplate(Resources.SqlGetByIdStp);
-            template.Fill(InsertTemplateParameters());
-
-            return template.GetText;
-        }
-
-        private string GetGetByReferenceIdStp(Property prop)
-        {
-            var template = new Template();
-            template.SetTemplate(Resources.SqlGetByIdStp);
-            template.Fill(InsertTemplateParameters());
-
-            return template.GetText;
-        }
-
-        private string GetDeleteStp()
-        {
-            var template = new Template();
-            template.SetTemplate(Resources.SqlDeleteStp);
-            template.Fill(InsertTemplateParameters());
-            return template.GetText;
-        }
-
+                             
         private string GetIndexes()
         {
             var builder = new StringBuilder();
@@ -220,9 +74,9 @@ namespace Tobasco.Model.Builders
 
             if (Entity.GenerateReadonlyGuid)
             {
-                builder.AppendLine($"CREATE NONCLUSTERED INDEX IX_UQ_{Name}_UId");
+                builder.AppendLine($"CREATE NONCLUSTERED INDEX IX_UQ_{Name}_Uid");
                 builder.AppendLine($"                       ON [dbo].{Name}");
-                builder.AppendLine($"                         ([UId] ASC");
+                builder.AppendLine($"                         ([Uid] ASC");
                 builder.AppendLine($"                         )");
                 builder.AppendLine($"GO");
             }
@@ -278,7 +132,7 @@ namespace Tobasco.Model.Builders
             template.Fill(TriggerTempalteParameters());
 
             return template.GetText;
-        }
+        }        
 
         public override IEnumerable<FileBuilder.OutputFile> Build()
         {
@@ -287,12 +141,12 @@ namespace Tobasco.Model.Builders
             {
                 OutputPaneManager.WriteToOutputPane($"Generate Table for {Name}");
                 var tableFile = FileManager.StartNewSqlTableFile(Name, Database.Project, Database.Tables.Folder);
-                tableFile.Table = GetTable();
+                tableFile.Table = _tableBuilder.Build();
 
                 if (Database.Tables.Generate && Database.Tables.GenerateHistorie.Generate)
                 {
                     OutputPaneManager.WriteToOutputPane($"Generate HistorieTable for {Name}");
-                    tableFile.HistorieTable = GetHistorieTable();
+                    tableFile.HistorieTable = _historieTableBuilder.Build();
                 }
                 else
                 {
@@ -318,7 +172,7 @@ namespace Tobasco.Model.Builders
                 if (Database.StoredProcedures.GenerateInsert.Generate)
                 {
                     OutputPaneManager.WriteToOutputPane($"Generate Insert stp for {Name}");
-                    builder.AppendLine(GetInsertStp());
+                    builder.AppendLine(_insertBuilder.Build());
                     builder.AppendLine("GO");
                 }
                 else
@@ -328,7 +182,7 @@ namespace Tobasco.Model.Builders
                 if (Database.StoredProcedures.GenerateUpdate.Generate)
                 {
                     OutputPaneManager.WriteToOutputPane($"Generate Update stp for {Name}");
-                    builder.AppendLine(GetUpdateStp());
+                    builder.AppendLine(_updateBuilder.Build());
                     builder.AppendLine("GO");
                 }
                 else
@@ -338,7 +192,7 @@ namespace Tobasco.Model.Builders
                 if (Database.StoredProcedures.GenerateDelete.Generate)
                 {
                     OutputPaneManager.WriteToOutputPane($"Generate Delete stp for {Name}");
-                    builder.AppendLine(GetDeleteStp());
+                    builder.AppendLine(_deleteBuilder.Build());
                     builder.AppendLine("GO");
                 }
 
@@ -349,12 +203,17 @@ namespace Tobasco.Model.Builders
                 if (Database.StoredProcedures.Generate)
                 {
                     OutputPaneManager.WriteToOutputPane($"Generate GetById stp for {Name}");
-                    builder.AppendLine(GetGetByIdStp());
+                    builder.AppendLine(_getByIdBuilder.Build());
                     builder.AppendLine("GO");
                 }
                 if(Entity.Properties.Any(x => x.DataType.Datatype == Datatype.Reference))
                 {
-
+                    foreach (var reference in Entity.Properties.Where(x => x.DataType.Datatype == Datatype.Reference))
+                    {
+                        OutputPaneManager.WriteToOutputPane($"Generate GetByReference stp for {Name}");
+                        builder.AppendLine(_referenceGetByIdBuilder.Build(reference));
+                        builder.AppendLine("GO");
+                    }
                 }
 
                 crudFile.Content = builder;

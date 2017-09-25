@@ -294,6 +294,33 @@ namespace Tobasco.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to CREATE PROCEDURE [dbo].%TableName%_GetFullById
+        ///	@id bigint
+        ///AS
+        ///BEGIN
+        ///
+        ///	%DeclareChilds%
+        ///
+        ///	%Childs_GetById%
+        ///
+        ///	%ChildCollection_GetByParentIdStp%
+        ///
+        ///	SELECT Id,
+        ///		   [RowVersion],
+        ///           %StpPropertyNames%
+        ///		   [ModifiedBy],
+        ///		   [ModifiedOn]
+        ///	  FROM %TableName%
+        ///	 WHERE %TableName%.Id = @id;
+        ///END;.
+        /// </summary>
+        internal static string GetFullObjectByEntity {
+            get {
+                return ResourceManager.GetString("GetFullObjectByEntity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to %Namespaces%
         ///
         ///namespace %OwnNamespace%
@@ -501,6 +528,33 @@ namespace Tobasco.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to CREATE PROCEDURE [dbo].%TableName%_GetFullBy%ReferenceType%
+        ///	@ReferenceName bigint
+        ///AS
+        ///BEGIN
+        ///
+        ///	%DeclareChilds%
+        ///
+        ///	%Childs_GetById%
+        ///
+        ///	%ChildCollection_GetByParentIdStp%
+        ///
+        ///	SELECT Id,
+        ///		   [RowVersion],
+        ///           %StpPropertyNames%
+        ///		   [ModifiedBy],
+        ///		   [ModifiedOn]
+        ///	  FROM %TableName%
+        ///	 WHERE %TableName%.%ReferenceName% = @ReferenceName;
+        ///END;.
+        /// </summary>
+        internal static string SqlGetByReferenceId {
+            get {
+                return ResourceManager.GetString("SqlGetByReferenceId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to CREATE TABLE [dbo].[%TableName%_historie] (
         ///    [Id]                          bigint             NOT NULL
         ///   ,[RowVersion]                  binary(8)          NOT NULL
@@ -521,7 +575,7 @@ namespace Tobasco.Properties {
         ///   Looks up a localized string similar to CREATE TABLE [dbo].[%TableName%_historie] (
         ///    [Id]                          bigint             NOT NULL
         ///   ,[RowVersion]                  binary(8)          NOT NULL
-        ///   ,[UId]                         uniqueidentifier   NOT NULL
+        ///   ,[Uid]                         uniqueidentifier   NOT NULL
         ///   %TableProperties%   
         ///   ,[ModifiedBy]                  nvarchar (256)     NOT NULL
         ///   ,[ModifiedOn]                  DATETIME2(7)       NOT NULL
@@ -625,9 +679,9 @@ namespace Tobasco.Properties {
         ///   Looks up a localized string similar to CREATE TABLE [dbo].[%TableName%](
         ///	 [Id]			bigint	IDENTITY (1,1)  NOT NULL
         ///	,[RowVersion]   rowversion         		NOT NULL
-        ///	,[UId]          uniqueidentifier        NOT NULL CONSTRAINT [DF_{%TableName%}_UId] DEFAULT NEWID()
+        ///	,[Uid]          uniqueidentifier        NOT NULL CONSTRAINT [DF_{%TableName%}_UId] DEFAULT NEWID()
         ///	%TableProperties%
-        ///	,[ModifiedBY]	nvarchar(256)			NOT NULL
+        ///	,[ModifiedBy]	nvarchar(256)			NOT NULL
         ///	 CONSTRAINT [DF_{%TableName%}_ModifiedBy] DEFAULT SUSER_SNAME()
         ///	,[ModifiedOn]	datetime2(7)			NOT NULL
         ///	 CONSTRAINT [DF_{%TableName%}_ModifiedOn] DEFAULT SYSDATETIME()

@@ -11,6 +11,5 @@ namespace Tobasco.Model
 {
     public class Property : BaseProperty
     {
-        
     }
 }

@@ -118,6 +118,16 @@
     <Compile Include="Model\Builders\Base\GenericRepositoryBuilderBase.cs" />
     <Compile Include="Model\Builders\Base\MapperBuilderBase.cs" />
     <Compile Include="Model\Builders\Base\RepositoryBuilderBase.cs" />
+    <Compile Include="Model\Builders\DatabaseBuilders\DatabaseHelper.cs" />
+    <Compile Include="Model\Builders\DatabaseBuilders\DeleteBuilder.cs" />
+    <Compile Include="Model\Builders\DatabaseBuilders\GetByIdBuilder.cs" />
+    <Compile Include="Model\Builders\DatabaseBuilders\GetByIdHelper.cs" />
+    <Compile Include="Model\Builders\DatabaseBuilders\GetByReferenceIdBuilder.cs" />
+    <Compile Include="Model\Builders\DatabaseBuilders\HistorieTableBuilder.cs" />
+    <Compile Include="Model\Builders\DatabaseBuilders\InsertBuilder.cs" />
+    <Compile Include="Model\Builders\DatabaseBuilders\TableBuilder.cs" />
+    <Compile Include="Model\Builders\DatabaseBuilders\TableHelper.cs" />
+    <Compile Include="Model\Builders\DatabaseBuilders\UpdateBuilder.cs" />
     <Compile Include="Model\Builders\DefaultClassBuilder.cs" />
     <Compile Include="Model\Builders\DefaultConnectionfactoryBuilder.cs" />
     <Compile Include="Model\Builders\DefaultDatabaseBuilder.cs" />
@@ -176,6 +186,7 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

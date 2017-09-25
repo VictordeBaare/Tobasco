@@ -282,6 +282,27 @@ public override void Load()
 	return entity;
 }</value>
   </data>
+  <data name="GetFullObjectByEntity" xml:space="preserve">
+    <value>CREATE PROCEDURE [dbo].%TableName%_GetFullById
+	@id bigint
+AS
+BEGIN
+
+	%DeclareChilds%
+
+	%Childs_GetById%
+
+	%ChildCollection_GetByParentIdStp%
+
+	SELECT Id,
+		   [RowVersion],
+           %StpPropertyNames%
+		   [ModifiedBy],
+		   [ModifiedOn]
+	  FROM %TableName%
+	 WHERE %TableName%.Id = @id;
+END;</value>
+  </data>
   <data name="InterfaceFile" xml:space="preserve">
     <value>%Namespaces%
 
@@ -419,6 +440,27 @@ BEGIN
 	 WHERE Id = @Id;
 END;</value>
   </data>
+  <data name="SqlGetByReferenceId" xml:space="preserve">
+    <value>CREATE PROCEDURE [dbo].%TableName%_GetFullBy%ReferenceType%
+	@ReferenceName bigint
+AS
+BEGIN
+
+	%DeclareChilds%
+
+	%Childs_GetById%
+
+	%ChildCollection_GetByParentIdStp%
+
+	SELECT Id,
+		   [RowVersion],
+           %StpPropertyNames%
+		   [ModifiedBy],
+		   [ModifiedOn]
+	  FROM %TableName%
+	 WHERE %TableName%.%ReferenceName% = @ReferenceName;
+END;</value>
+  </data>
   <data name="SqlHistorieTable" xml:space="preserve">
     <value>CREATE TABLE [dbo].[%TableName%_historie] (
     [Id]                          bigint             NOT NULL
@@ -434,7 +476,7 @@ END;</value>
     <value>CREATE TABLE [dbo].[%TableName%_historie] (
     [Id]                          bigint             NOT NULL
    ,[RowVersion]                  binary(8)          NOT NULL
-   ,[UId]                         uniqueidentifier   NOT NULL
+   ,[Uid]                         uniqueidentifier   NOT NULL
    %TableProperties%   
    ,[ModifiedBy]                  nvarchar (256)     NOT NULL
    ,[ModifiedOn]                  DATETIME2(7)       NOT NULL
@@ -514,9 +556,9 @@ END;</value>
     <value>CREATE TABLE [dbo].[%TableName%](
 	 [Id]			bigint	IDENTITY (1,1)  NOT NULL
 	,[RowVersion]   rowversion         		NOT NULL
-	,[UId]          uniqueidentifier        NOT NULL CONSTRAINT [DF_{%TableName%}_UId] DEFAULT NEWID()
+	,[Uid]          uniqueidentifier        NOT NULL CONSTRAINT [DF_{%TableName%}_UId] DEFAULT NEWID()
 	%TableProperties%
-	,[ModifiedBY]	nvarchar(256)			NOT NULL
+	,[ModifiedBy]	nvarchar(256)			NOT NULL
 	 CONSTRAINT [DF_{%TableName%}_ModifiedBy] DEFAULT SUSER_SNAME()
 	,[ModifiedOn]	datetime2(7)			NOT NULL
 	 CONSTRAINT [DF_{%TableName%}_ModifiedOn] DEFAULT SYSDATETIME()
