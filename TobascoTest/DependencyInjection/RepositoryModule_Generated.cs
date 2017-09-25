@@ -17,6 +17,8 @@ namespace TobascoTest.DependencyInjection
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1506: AvoidExcessiveClassCoupling", Justification = "Generated file")]
         public override void Load()
         {
+            NinjectBinder<ICPKRepository, CPKRepository>();
+            NinjectBinder<IGenericRepository<CPK>, GenericRepository<CPK>>();
             NinjectBinder<IChildCollectionObjectRepository, ChildCollectionObjectRepository>();
             NinjectBinder<IGenericRepository<ChildCollectionObject>, GenericRepository<ChildCollectionObject>>();
             NinjectBinder<IChildObjectRepository, ChildObjectRepository>();

@@ -16,6 +16,7 @@ FileMetOverervingId,
 		    [ModifiedOn]
 		   )
 	OUTPUT Inserted.Id
+              ,Inserted.[Uid]
 		  ,Inserted.[RowVersion]
 		  ,Inserted.ModifiedOn
     VALUES
@@ -105,5 +106,21 @@ BEGIN
                                                         );
 			THROW 55501, @message, 1;
 		  END;
+END;
+GO
+CREATE PROCEDURE [dbo].[ChildCollectionObject_GetById]
+    @Id bigint
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+	SELECT Id,
+		   [RowVersion],
+		   TestChildProp1,
+FileMetOverervingId,
+		   ModifiedBy,
+		   ModifiedOn
+	  FROM [dbo].ChildCollectionObject
+	 WHERE Id = @Id;
 END;
 GO

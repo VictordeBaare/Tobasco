@@ -366,10 +366,10 @@ public %PropertyValueType% %PropertyName% { get; set; }</value>
 	{
 		%SaveChild%		
 		%EntityNameLowerCase% = _genericRepository.Save(%EntityNameLowerCase%);		
-		%SaveChildCollections%		
-		return %EntityNameLowerCase%;
+		%SaveChildCollections%				
 		trans.Complete();
 	}
+	return %EntityNameLowerCase%;
 }</value>
   </data>
   <data name="SqlDeleteStp" xml:space="preserve">
@@ -401,6 +401,22 @@ BEGIN
                                                         );
 			THROW 55501, @message, 1;
 		  END;
+END;</value>
+  </data>
+  <data name="SqlGetByIdStp" xml:space="preserve">
+    <value>CREATE PROCEDURE [dbo].[%TableName%_GetById]
+    @Id bigint
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+	SELECT Id,
+		   [RowVersion],
+		   %StpPropertyNames%
+		   ModifiedBy,
+		   ModifiedOn
+	  FROM [dbo].%TableName%
+	 WHERE Id = @Id;
 END;</value>
   </data>
   <data name="SqlHistorieTable" xml:space="preserve">
@@ -453,12 +469,40 @@ BEGIN
           );
 END;</value>
   </data>
+  <data name="SqlInsertStpWithUid" xml:space="preserve">
+    <value>CREATE PROCEDURE [dbo].[%TableName%_Insert]
+    @Id bigint output,
+	%StpParameter%
+    @ModifiedBy nvarchar(256)
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    INSERT
+      INTO [dbo].%TableName% 
+	       (
+			%StpPropertyNames%
+			[ModifiedBy],
+		    [ModifiedOn]
+		   )
+	OUTPUT Inserted.Id
+              ,Inserted.[Uid]
+		  ,Inserted.[RowVersion]
+		  ,Inserted.ModifiedOn
+    VALUES
+         (
+		   %StpParameterName%
+           @ModifiedBy,
+           SYSDATETIME()
+          );
+END;</value>
+  </data>
   <data name="SqlTable" xml:space="preserve">
     <value>CREATE TABLE [dbo].[%TableName%](
 	 [Id]			bigint	IDENTITY (1,1)  NOT NULL
 	,[RowVersion]   rowversion         		NOT NULL
 	%TableProperties%
-	,[ModifiedBY]	nvarchar(256)			NOT NULL
+	,[ModifiedBy]	nvarchar(256)			NOT NULL
 	 CONSTRAINT [DF_%TableName%_ModifiedBy] DEFAULT SUSER_SNAME()
 	,[ModifiedOn]	datetime2(7)			NOT NULL
 	 CONSTRAINT [DF_%TableName%_ModifiedOn] DEFAULT SYSDATETIME()
@@ -497,7 +541,7 @@ BEGIN
             )
 	SELECT Deleted.Id,
 	       Deleted.[RowVersion],
-		  %StpPropertyNames%
+		  %StpDeletetedPropertyNames%
 		   Deleted.ModifiedBy,
 		   Deleted.ModifiedOn,
 		   ISNULL(LTRIM(RTRIM(CONVERT(nvarchar(128), CONTEXT_INFO()))), SUSER_SNAME()),
@@ -523,7 +567,7 @@ BEGIN
            )
     SELECT DELETED.Id,
            DELETED.[RowVersion],
-		  %StpPropertyNames%
+		  %StpDeletetedPropertyNames%
            Deleted.ModifiedBy,
            Deleted.ModifiedOn,
            NULL,

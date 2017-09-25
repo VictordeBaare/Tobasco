@@ -75,6 +75,9 @@
     <Compile Include="GeneratedEntity2\ChildObject_Generated.cs">
       <DependentUpon>TestGenerator2.txt4</DependentUpon>
     </Compile>
+    <Compile Include="GeneratedEntity2\CPK_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
     <Compile Include="GeneratedEntity2\FileMetOvererving_Generated.cs">
       <DependentUpon>TestGenerator2.txt4</DependentUpon>
     </Compile>
@@ -82,6 +85,9 @@
       <DependentUpon>TestGenerator2.txt4</DependentUpon>
     </Compile>
     <Compile Include="GeneratedEntity\ChildObject_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedEntity\CPK_Generated.cs">
       <DependentUpon>TestGenerator2.txt4</DependentUpon>
     </Compile>
     <Compile Include="GeneratedEntity\EntityBase.cs" />
@@ -95,6 +101,9 @@
       <DependentUpon>TestGenerator2.txt4</DependentUpon>
     </Compile>
     <Compile Include="GeneratedRepositoy\ConnectionFactory_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedRepositoy\CPKRepository_Generated.cs">
       <DependentUpon>TestGenerator2.txt4</DependentUpon>
     </Compile>
     <Compile Include="GeneratedRepositoy\FileMetOverervingRepository_Generated.cs">
@@ -112,6 +121,9 @@
     <Compile Include="IGenerateRepository\IConnectionFactory_Generated.cs">
       <DependentUpon>TestGenerator2.txt4</DependentUpon>
     </Compile>
+    <Compile Include="IGenerateRepository\ICPKRepository_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
     <Compile Include="IGenerateRepository\IFileMetOverervingRepository_Generated.cs">
       <DependentUpon>TestGenerator2.txt4</DependentUpon>
     </Compile>
@@ -127,6 +139,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="CPK.xml" />
     <Content Include="GeneratedDatabase\ChildCollectionObject_CRUD_Generated.sql">
       <DependentUpon>TestGenerator2.txt4</DependentUpon>
     </Content>
@@ -137,6 +150,12 @@
       <DependentUpon>TestGenerator2.txt4</DependentUpon>
     </Content>
     <Content Include="GeneratedDatabase\ChildObject_Generated.sql">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Content>
+    <Content Include="GeneratedDatabase\CPK_CRUD_Generated.sql">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Content>
+    <Content Include="GeneratedDatabase\CPK_Generated.sql">
       <DependentUpon>TestGenerator2.txt4</DependentUpon>
     </Content>
     <Content Include="GeneratedDatabase\FileMetOvererving_CRUD_Generated.sql">

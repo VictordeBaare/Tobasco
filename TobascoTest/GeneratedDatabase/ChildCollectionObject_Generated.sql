@@ -1,26 +1,26 @@
 ﻿CREATE TABLE [dbo].[ChildCollectionObject](
 	 [Id]			bigint	IDENTITY (1,1)  NOT NULL
 	,[RowVersion]   rowversion         		NOT NULL
+	,[UId]          uniqueidentifier        NOT NULL CONSTRAINT [DF_{ChildCollectionObject}_UId] DEFAULT NEWID()
 	,TestChildProp1 nvarchar(100) NOT NULL
 ,FileMetOverervingId bigint NOT NULL
 	,[ModifiedBY]	nvarchar(256)			NOT NULL
-	 CONSTRAINT [DF_ChildCollectionObject_ModifiedBy] DEFAULT SUSER_SNAME()
+	 CONSTRAINT [DF_{ChildCollectionObject}_ModifiedBy] DEFAULT SUSER_SNAME()
 	,[ModifiedOn]	datetime2(7)			NOT NULL
-	 CONSTRAINT [DF_ChildCollectionObject_ModifiedOn] DEFAULT SYSDATETIME()
-	 CONSTRAINT [PK_ChildCollectionObject] PRIMARY KEY CLUSTERED (Id ASC)
-	 ,CONSTRAINT [FK_ChildCollectionObject_FileMetOverervingId] FOREIGN KEY (FileMetOverervingId) REFERENCES [dbo].[FileMetOvererving] ([Id])
-
+	 CONSTRAINT [DF_{ChildCollectionObject}_ModifiedOn] DEFAULT SYSDATETIME()
+	 CONSTRAINT [PK_{ChildCollectionObject}] PRIMARY KEY CLUSTERED (Id ASC)
 );
 GO
 CREATE TABLE [dbo].[ChildCollectionObject_historie] (
     [Id]                          bigint             NOT NULL
    ,[RowVersion]                  binary(8)          NOT NULL
+   ,[UId]                         uniqueidentifier   NOT NULL
    ,TestChildProp1 nvarchar(100) NOT NULL
 ,FileMetOverervingId bigint NOT NULL   
    ,[ModifiedBy]                  nvarchar (256)     NOT NULL
    ,[ModifiedOn]                  DATETIME2(7)       NOT NULL
-   ,DeletedBy                     nvarchar(256)     NULL
-   ,DeletedAt                     datetime2(7)      NULL
+   ,DeletedBy                     nvarchar(256)      NULL
+   ,DeletedAt                     datetime2(7)       NULL
 );
 GO
 -- ================================================================================
@@ -31,6 +31,11 @@ CREATE NONCLUSTERED INDEX IX_ChildCollectionObject_historie_Id
                        ON [dbo].ChildCollectionObject_historie
                          (Id ASC)
                   INCLUDE(ModifiedOn);
+GO
+CREATE NONCLUSTERED INDEX IX_UQ_ChildCollectionObject_UId
+                       ON [dbo].ChildCollectionObject
+                         ([UId] ASC
+                         )
 GO
 CREATE NONCLUSTERED INDEX IX_ChildCollectionObject_FileMetOverervingId ON [dbo].[ChildCollectionObject] (FileMetOverervingId ASC)
 GO
@@ -58,8 +63,8 @@ FileMetOverervingId,
            )
     SELECT DELETED.Id,
            DELETED.[RowVersion],
-		  TestChildProp1,
-FileMetOverervingId,
+		  Deleted.TestChildProp1,
+Deleted.FileMetOverervingId,
            Deleted.ModifiedBy,
            Deleted.ModifiedOn,
            NULL,
@@ -85,8 +90,8 @@ FileMetOverervingId,
             )
 	SELECT Deleted.Id,
 	       Deleted.[RowVersion],
-		  TestChildProp1,
-FileMetOverervingId,
+		  Deleted.TestChildProp1,
+Deleted.FileMetOverervingId,
 		   Deleted.ModifiedBy,
 		   Deleted.ModifiedOn,
 		   ISNULL(LTRIM(RTRIM(CONVERT(nvarchar(128), CONTEXT_INFO()))), SUSER_SNAME()),

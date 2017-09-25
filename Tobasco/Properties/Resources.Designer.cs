@@ -437,10 +437,10 @@ namespace Tobasco.Properties {
         ///	{
         ///		%SaveChild%		
         ///		%EntityNameLowerCase% = _genericRepository.Save(%EntityNameLowerCase%);		
-        ///		%SaveChildCollections%		
-        ///		return %EntityNameLowerCase%;
+        ///		%SaveChildCollections%				
         ///		trans.Complete();
         ///	}
+        ///	return %EntityNameLowerCase%;
         ///}.
         /// </summary>
         internal static string RepositorySaveWithTransaction {
@@ -475,6 +475,28 @@ namespace Tobasco.Properties {
         internal static string SqlDeleteStp {
             get {
                 return ResourceManager.GetString("SqlDeleteStp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CREATE PROCEDURE [dbo].[%TableName%_GetById]
+        ///    @Id bigint
+        ///AS
+        ///BEGIN
+        ///    SET NOCOUNT ON;
+        ///
+        ///	SELECT Id,
+        ///		   [RowVersion],
+        ///		   %StpPropertyNames%
+        ///		   ModifiedBy,
+        ///		   ModifiedOn
+        ///	  FROM [dbo].%TableName%
+        ///	 WHERE Id = @Id;
+        ///END;.
+        /// </summary>
+        internal static string SqlGetByIdStp {
+            get {
+                return ResourceManager.GetString("SqlGetByIdStp", resourceCulture);
             }
         }
         
@@ -547,11 +569,45 @@ namespace Tobasco.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to CREATE PROCEDURE [dbo].[%TableName%_Insert]
+        ///    @Id bigint output,
+        ///	%StpParameter%
+        ///    @ModifiedBy nvarchar(256)
+        ///AS
+        ///BEGIN
+        ///    SET NOCOUNT ON;
+        ///
+        ///    INSERT
+        ///      INTO [dbo].%TableName% 
+        ///	       (
+        ///			%StpPropertyNames%
+        ///			[ModifiedBy],
+        ///		    [ModifiedOn]
+        ///		   )
+        ///	OUTPUT Inserted.Id
+        ///              ,Inserted.[Uid]
+        ///		  ,Inserted.[RowVersion]
+        ///		  ,Inserted.ModifiedOn
+        ///    VALUES
+        ///         (
+        ///		   %StpParameterName%
+        ///           @ModifiedBy,
+        ///           SYSDATETIME()
+        ///          );
+        ///END;.
+        /// </summary>
+        internal static string SqlInsertStpWithUid {
+            get {
+                return ResourceManager.GetString("SqlInsertStpWithUid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to CREATE TABLE [dbo].[%TableName%](
         ///	 [Id]			bigint	IDENTITY (1,1)  NOT NULL
         ///	,[RowVersion]   rowversion         		NOT NULL
         ///	%TableProperties%
-        ///	,[ModifiedBY]	nvarchar(256)			NOT NULL
+        ///	,[ModifiedBy]	nvarchar(256)			NOT NULL
         ///	 CONSTRAINT [DF_%TableName%_ModifiedBy] DEFAULT SUSER_SNAME()
         ///	,[ModifiedOn]	datetime2(7)			NOT NULL
         ///	 CONSTRAINT [DF_%TableName%_ModifiedOn] DEFAULT SYSDATETIME()
@@ -601,11 +657,10 @@ namespace Tobasco.Properties {
         ///            )
         ///	SELECT Deleted.Id,
         ///	       Deleted.[RowVersion],
-        ///		  %StpPropertyNames%
+        ///		  %StpDeletetedPropertyNames%
         ///		   Deleted.ModifiedBy,
         ///		   Deleted.ModifiedOn,
-        ///		   ISNULL(LTRIM(RTRIM(CONVERT(nvarchar(128), CONTEXT_INFO()))), SUSER_SNAME()),
-        /// [rest of string was truncated]&quot;;.
+        ///		   ISNULL(LTRIM(RTRIM(CONVERT(nvarchar(128), CONTEXT_INFO()))), SUSER_SN [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string SqlTriggerDelete {
             get {
@@ -631,12 +686,11 @@ namespace Tobasco.Properties {
         ///           )
         ///    SELECT DELETED.Id,
         ///           DELETED.[RowVersion],
-        ///		  %StpPropertyNames%
+        ///		  %StpDeletetedPropertyNames%
         ///           Deleted.ModifiedBy,
         ///           Deleted.ModifiedOn,
         ///           NULL,
-        ///           NULL
-        ///      [rest of string was truncated]&quot;;.
+        ///           NU [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string SqlTriggerUpdate {
             get {

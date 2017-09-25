@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Entity name="CPK">
+  <Properties>
+    <Property name="Training" required="true">
+      <DataType name="String" size="100"></DataType>
+    </Property>
+
+    <Property name="Duur" required="true">
+      <DataType name="String" size="100"></DataType>
+    </Property>
+    <Property name="Kosten" required="true">
+      <DataType name="String" size="100"></DataType>
+    </Property>
+  </Properties>
+</Entity>

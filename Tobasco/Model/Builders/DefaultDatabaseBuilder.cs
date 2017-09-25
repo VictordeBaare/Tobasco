@@ -77,13 +77,34 @@ namespace Tobasco.Model.Builders
         private string GetInsertStp()
         {
             var template = new Template();
-            template.SetTemplate(Resources.SqlInsertStp);
+            template.SetTemplate(Entity.GenerateReadonlyGuid ? Resources.SqlInsertStpWithUid : Resources.SqlInsertStp);
             template.Fill(InsertTemplateParameters());
 
             return template.GetText;
         }
 
+        private TemplateParameter TriggerTempalteParameters()
+        {
+            var parameters = new TemplateParameter();
+            parameters.Add(SqlConstants.TableName, Name);
+            parameters.Add(SqlConstants.StpParameter, GetSqlParameters());
+            parameters.Add(SqlConstants.StpParameterName, GetSqlParameterNames("@"));
+            parameters.Add(SqlConstants.StpPropertyNames, GetSqlParameterNames(""));
+            parameters.Add(SqlConstants.StpDeletetedPropertyNames, GetSqlParameterNames("Deleted."));
+            return parameters;
+        }
+
         private TemplateParameter InsertTemplateParameters()
+        {
+            var parameters = new TemplateParameter();
+            parameters.Add(Resources.TableName, Name);
+            parameters.Add(Resources.StpParameter, GetSqlParameters());
+            parameters.Add(Resources.StpParameterName, GetSqlParameterNames("@"));
+            parameters.Add(Resources.StpPropertyNames, GetSqlParameterNames(""));
+            return parameters;
+        }
+
+        private TemplateParameter GetByReferenceIdTemplateParameters()
         {
             var parameters = new TemplateParameter();
             parameters.Add(Resources.TableName, Name);
@@ -143,6 +164,24 @@ namespace Tobasco.Model.Builders
             var template = new Template();
             template.SetTemplate(Resources.SqlUpdateStp);
             template.Fill(UpdateTemplateParameters());
+
+            return template.GetText;
+        }
+
+        private string GetGetByIdStp()
+        {
+            var template = new Template();
+            template.SetTemplate(Resources.SqlGetByIdStp);
+            template.Fill(InsertTemplateParameters());
+
+            return template.GetText;
+        }
+
+        private string GetGetByReferenceIdStp(Property prop)
+        {
+            var template = new Template();
+            template.SetTemplate(Resources.SqlGetByIdStp);
+            template.Fill(InsertTemplateParameters());
 
             return template.GetText;
         }
@@ -228,7 +267,7 @@ namespace Tobasco.Model.Builders
         {
             var template = new Template();
             template.SetTemplate(Resources.SqlTriggerDelete);
-            template.Fill(InsertTemplateParameters());
+            template.Fill(TriggerTempalteParameters());
             return template.GetText;        
         }
 
@@ -236,7 +275,7 @@ namespace Tobasco.Model.Builders
         {
             var template = new Template();
             template.SetTemplate(Resources.SqlTriggerUpdate);
-            template.Fill(InsertTemplateParameters());
+            template.Fill(TriggerTempalteParameters());
 
             return template.GetText;
         }
@@ -302,9 +341,20 @@ namespace Tobasco.Model.Builders
                     builder.AppendLine(GetDeleteStp());
                     builder.AppendLine("GO");
                 }
+
                 else
                 {
                     OutputPaneManager.WriteToOutputPane($"Do not generate Delete stp for {Name}");
+                }
+                if (Database.StoredProcedures.Generate)
+                {
+                    OutputPaneManager.WriteToOutputPane($"Generate GetById stp for {Name}");
+                    builder.AppendLine(GetGetByIdStp());
+                    builder.AppendLine("GO");
+                }
+                if(Entity.Properties.Any(x => x.DataType.Datatype == Datatype.Reference))
+                {
+
                 }
 
                 crudFile.Content = builder;

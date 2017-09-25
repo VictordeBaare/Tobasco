@@ -1,15 +1,19 @@
-﻿CREATE PROCEDURE [dbo].[ChildObject_Insert]
+﻿CREATE PROCEDURE [dbo].[CPK_Insert]
     @Id bigint output,
-	@TestChildProp1 nvarchar(100),
+	@Training nvarchar(100),
+@Duur nvarchar(100),
+@Kosten nvarchar(100),
     @ModifiedBy nvarchar(256)
 AS
 BEGIN
     SET NOCOUNT ON;
 
     INSERT
-      INTO [dbo].ChildObject 
+      INTO [dbo].CPK 
 	       (
-			TestChildProp1,
+			Training,
+Duur,
+Kosten,
 			[ModifiedBy],
 		    [ModifiedOn]
 		   )
@@ -18,15 +22,19 @@ BEGIN
 		  ,Inserted.ModifiedOn
     VALUES
          (
-		   @TestChildProp1,
+		   @Training,
+@Duur,
+@Kosten,
            @ModifiedBy,
            SYSDATETIME()
           );
 END;
 GO
-CREATE PROCEDURE [dbo].[ChildObject_Update]
+CREATE PROCEDURE [dbo].[CPK_Update]
 		@Id [bigint],
-		@TestChildProp1 nvarchar(100),
+		@Training nvarchar(100),
+@Duur nvarchar(100),
+@Kosten nvarchar(100),
         @RowVersion [rowversion],
         @ModifiedBy nvarchar(256)
 AS
@@ -42,18 +50,20 @@ BEGIN
 							  ,ModifiedOn      datetime2(7) NOT NULL
 							 );
 
-		UPDATE [dbo].ChildObject
+		UPDATE [dbo].CPK
 		   SET 
-				ChildObject.TestChildProp1 = @TestChildProp1,            
-			    ChildObject.ModifiedBy = ISNULL(@ModifiedBy, SUSER_SNAME()),
-			    ChildObject.ModifiedOn = SYSDATETIME()
+				CPK.Training = @Training,
+CPK.Duur = @Duur,
+CPK.Kosten = @Kosten,            
+			    CPK.ModifiedBy = ISNULL(@ModifiedBy, SUSER_SNAME()),
+			    CPK.ModifiedOn = SYSDATETIME()
 		OUTPUT Inserted.[RowVersion]
 			  ,Inserted.ModifiedOn
 		  INTO #Output ([RowVersion]
 						,ModifiedOn
 					   )
-		 WHERE ChildObject.Id = @Id
-		   AND ChildObject.[RowVersion] = @RowVersion
+		 WHERE CPK.Id = @Id
+		   AND CPK.[RowVersion] = @RowVersion
 
 		DECLARE @RowCountBig AS bigint = ROWCOUNT_BIG();
 
@@ -61,7 +71,7 @@ BEGIN
 		BEGIN
             DECLARE @message AS nvarchar(2048) = CONCAT(QUOTENAME(OBJECT_SCHEMA_NAME(@@PROCID)), '.', OBJECT_NAME(@@PROCID), N': '
 													   ,N'Concurrency problem. '
-                                                       ,N'The ChildObject-row with Id=', @Id, N' and RowVersion=', CAST(@RowVersion AS binary(8)), N' cannot be altered by ', @ModifiedBy, N'. '
+                                                       ,N'The CPK-row with Id=', @Id, N' and RowVersion=', CAST(@RowVersion AS binary(8)), N' cannot be altered by ', @ModifiedBy, N'. '
                                                        ,N'The row was already modified by a different user.'
                                                         );
 			THROW 55501, @message, 1;
@@ -72,7 +82,7 @@ BEGIN
           FROM #Output;
 END;
 GO
-CREATE PROCEDURE [dbo].[ChildObject_Delete]
+CREATE PROCEDURE [dbo].[CPK_Delete]
 		@Id [bigint]
        ,@RowVersion [rowversion]
        ,@ModifiedBy nvarchar(256)
@@ -83,9 +93,9 @@ BEGIN
 		DECLARE @Context varbinary(128) = CAST(CAST(ISNULL(@ModifiedBy, SUSER_SNAME()) AS char(256)) AS varbinary(256));
 		
 		DELETE 
-		  FROM [dbo].ChildObject
-		 WHERE ChildObject.Id = @Id
-		   AND ChildObject.[RowVersion] = @RowVersion
+		  FROM [dbo].CPK
+		 WHERE CPK.Id = @Id
+		   AND CPK.[RowVersion] = @RowVersion
 
 		DECLARE @RowCountBig AS bigint = ROWCOUNT_BIG();
 		
@@ -95,14 +105,14 @@ BEGIN
 		BEGIN
             DECLARE @message AS nvarchar(2048) = CONCAT(QUOTENAME(OBJECT_SCHEMA_NAME(@@PROCID)), '.', OBJECT_NAME(@@PROCID), N': '
 													   ,N'Concurrency problem. '
-                                                       ,N'The ChildObject-row with Id=', @Id, N' and RowVersion=', CAST(@RowVersion AS binary(8)), N' cannot be altered by ', @ModifiedBy, N'. '
+                                                       ,N'The CPK-row with Id=', @Id, N' and RowVersion=', CAST(@RowVersion AS binary(8)), N' cannot be altered by ', @ModifiedBy, N'. '
                                                        ,N'The row was already modified or deleted by a different user.'
                                                         );
 			THROW 55501, @message, 1;
 		  END;
 END;
 GO
-CREATE PROCEDURE [dbo].[ChildObject_GetById]
+CREATE PROCEDURE [dbo].[CPK_GetById]
     @Id bigint
 AS
 BEGIN
@@ -110,10 +120,12 @@ BEGIN
 
 	SELECT Id,
 		   [RowVersion],
-		   TestChildProp1,
+		   Training,
+Duur,
+Kosten,
 		   ModifiedBy,
 		   ModifiedOn
-	  FROM [dbo].ChildObject
+	  FROM [dbo].CPK
 	 WHERE Id = @Id;
 END;
 GO
