@@ -43,6 +43,12 @@ namespace Tobasco
             return handler.GetRepositoryBuilder.GetRepositoryInterfaceName;
         }
 
+        public string GetRepositoryOnName(string naam)
+        {
+            var handler = _getHandlerOnName(naam);
+            return handler.GetRepositoryBuilder.GetRepositoryName;
+        }
+
         public Property GetChildReferenceProperty(string type, string parent)
         {
             var handler = _getHandlerOnName(type);

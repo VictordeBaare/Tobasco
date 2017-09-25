@@ -227,6 +227,21 @@ namespace Tobasco.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to public IEnumerable&lt;T&gt; QueryMultiple(string StoredProcedure, DynamicParameters parameters, Func&lt;GridReader, IEnumerable&lt;T&gt;&gt; readerFunc)
+        ///        {
+        ///            using (var connection = ConnectionFactory.GetConnection())
+        ///            {
+        ///                return readerFunc(connection.QueryMultiple(StoredProcedure, parameters, commandType: CommandType.StoredProcedure));
+        ///            }
+        ///        }.
+        /// </summary>
+        internal static string GenericRepositoryQueryMultipleT {
+            get {
+                return ResourceManager.GetString("GenericRepositoryQueryMultipleT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to public T Save(T entity)
         ///{
         ///	if(entity.IsDeleted)
@@ -439,6 +454,57 @@ namespace Tobasco.Properties {
         internal static string RepositoryGetById {
             get {
                 return ResourceManager.GetString("RepositoryGetById", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to internal static Dictionary&lt;long, %EntityName%&gt; Read(GridReader reader)
+        ///{
+        ///	%ChildReader%
+        ///	
+        ///	%ChildCollectionReader%
+        ///
+        ///    var items = reader.Read((%ReaderParameters%) =&gt;
+        ///    {
+        ///        %ChildReadDictionary%
+        ///
+        ///        %ChildCollectionReadDictionary%
+        ///
+        ///        return item;
+        ///    }, splitOn: &quot;%SplitOn%&quot;);
+        ///
+        ///    return items.ToDictionary(x =&gt; x.Id);        
+        ///}.
+        /// </summary>
+        internal static string RepositoryGetFullByIdReader {
+            get {
+                return ResourceManager.GetString("RepositoryGetFullByIdReader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to internal static Dictionary&lt;long, %EntityName%&gt; Read(GridReader reader)
+        ///{
+        ///    return reader.Read&lt;%EntityName%&gt;().ToDictionary(x =&gt; x.Id);      
+        ///}.
+        /// </summary>
+        internal static string RepositoryGetFullByIdReaderWithoutProp {
+            get {
+                return ResourceManager.GetString("RepositoryGetFullByIdReaderWithoutProp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to public %EntityName% GetFullObjectById(long id)
+        ///{
+        ///    var parameters = new DynamicParameters();
+        ///    parameters.Add(&quot;id&quot;, id);
+        ///    return _genericRepository.QueryMultiple(&quot;%GetByIdStp%&quot;, parameters, x =&gt; Read(x).Values).SingleOrDefault();
+        ///}.
+        /// </summary>
+        internal static string RepositoryGetFullObjectById {
+            get {
+                return ResourceManager.GetString("RepositoryGetFullObjectById", resourceCulture);
             }
         }
         

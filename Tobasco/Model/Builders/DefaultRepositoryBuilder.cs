@@ -7,6 +7,7 @@ using Tobasco.Extensions;
 using Tobasco.FileBuilder;
 using Tobasco.Manager;
 using Tobasco.Model.Builders.Base;
+using Tobasco.Model.Builders.RepositoryBuilders;
 using Tobasco.Properties;
 using Tobasco.Templates;
 
@@ -14,8 +15,13 @@ namespace Tobasco.Model.Builders
 {
     public class DefaultRepositoryBuilder : RepositoryBuilderBase
     {
+        private GetFullEntityByIdBuilder _getFullEntityByIdBuilder;
+        private GetFullEntityByIdReader _getFullEntityByIdReaderBuilder;
+
         public DefaultRepositoryBuilder(EntityHandler entity, Repository repository) : base(entity, repository)
         {
+            _getFullEntityByIdBuilder = new GetFullEntityByIdBuilder(entity, repository);
+            _getFullEntityByIdReaderBuilder = new GetFullEntityByIdReader(entity, repository);
         }        
 
         protected virtual string GetSaveMethod()
@@ -89,17 +95,23 @@ namespace Tobasco.Model.Builders
             return builder.ToString();
         }
 
+     
         protected virtual ClassFile GetClassFile()
         {
             var classFile = FileManager.StartNewClassFile(GetRepositoryName, Repository.FileLocation.Project, Repository.FileLocation.Folder);
             classFile.Namespaces.AddRange(GetRepositoryNamespaces);
             classFile.Namespaces.Add(Repository.InterfaceLocation.GetProjectLocation);
             classFile.Namespaces.Add("System.Collections.Generic");
+            classFile.Namespaces.Add("Dapper");
+            classFile.Namespaces.Add("System.Linq");
+            classFile.Namespaces.Add("static Dapper.SqlMapper");
             classFile.OwnNamespace = Repository.FileLocation.GetNamespace;
             AddFieldsWithParameterToConstructor(classFile);
             classFile.BaseClass = $": {GetRepositoryInterfaceName}";
             classFile.Methods.Add(GetSaveMethod());
             classFile.Methods.Add(GetByIdMethod());
+            classFile.Methods.Add(_getFullEntityByIdBuilder.Build());
+            classFile.Methods.Add(_getFullEntityByIdReaderBuilder.Build());
             return classFile;
         }
 
@@ -107,10 +119,14 @@ namespace Tobasco.Model.Builders
         {
             var interfaceFile = FileManager.StartNewInterfaceFile(GetRepositoryInterfaceName, Repository.InterfaceLocation.Project, Repository.InterfaceLocation.Folder);
             interfaceFile.Namespaces.Add(Repository.InterfaceLocation.GetProjectLocation);
+            interfaceFile.Namespaces.Add("static Dapper.SqlMapper");
+            interfaceFile.Namespaces.Add("Dapper");
+            interfaceFile.Namespaces.Add("System.Linq");
             interfaceFile.Namespaces.AddRange(GetRepositoryNamespaces);
             interfaceFile.OwnNamespace = Repository.InterfaceLocation.GetNamespace;
             interfaceFile.Methods.Add($"{GetEntityName} Save({GetEntityName} {GetEntityName.ToLower()});");
             interfaceFile.Methods.Add($"{GetEntityName} GetById(long id);");
+            interfaceFile.Methods.Add($"{GetEntityName} GetFullObjectById(long id);");
             return interfaceFile;
         }
 

@@ -223,6 +223,15 @@ public override void Load()
 	return entity;
 }</value>
   </data>
+  <data name="GenericRepositoryQueryMultipleT" xml:space="preserve">
+    <value>public IEnumerable&lt;T&gt; QueryMultiple(string StoredProcedure, DynamicParameters parameters, Func&lt;GridReader, IEnumerable&lt;T&gt;&gt; readerFunc)
+        {
+            using (var connection = ConnectionFactory.GetConnection())
+            {
+                return readerFunc(connection.QueryMultiple(StoredProcedure, parameters, commandType: CommandType.StoredProcedure));
+            }
+        }</value>
+  </data>
   <data name="GenericRepositorySave" xml:space="preserve">
     <value>public T Save(T entity)
 {
@@ -370,6 +379,39 @@ public %PropertyValueType% %PropertyName% { get; set; }</value>
   </data>
   <data name="RepositoryGetById" xml:space="preserve">
     <value />
+  </data>
+  <data name="RepositoryGetFullByIdReader" xml:space="preserve">
+    <value>internal static Dictionary&lt;long, %EntityName%&gt; Read(GridReader reader)
+{
+	%ChildReader%
+	
+	%ChildCollectionReader%
+
+    var items = reader.Read((%ReaderParameters%) =&gt;
+    {
+        %ChildReadDictionary%
+
+        %ChildCollectionReadDictionary%
+
+        return item;
+    }, splitOn: "%SplitOn%");
+
+    return items.ToDictionary(x =&gt; x.Id);        
+}</value>
+  </data>
+  <data name="RepositoryGetFullByIdReaderWithoutProp" xml:space="preserve">
+    <value>internal static Dictionary&lt;long, %EntityName%&gt; Read(GridReader reader)
+{
+    return reader.Read&lt;%EntityName%&gt;().ToDictionary(x =&gt; x.Id);      
+}</value>
+  </data>
+  <data name="RepositoryGetFullObjectById" xml:space="preserve">
+    <value>public %EntityName% GetFullObjectById(long id)
+{
+    var parameters = new DynamicParameters();
+    parameters.Add("id", id);
+    return _genericRepository.QueryMultiple("%GetByIdStp%", parameters, x =&gt; Read(x).Values).SingleOrDefault();
+}</value>
   </data>
   <data name="RepositorySave" xml:space="preserve">
     <value>public %EntityName% Save(%EntityName%  %EntityNameLowerCase%)

@@ -36,5 +36,10 @@ namespace Tobasco.Templates
         }
 
         public Dictionary<string, string> GetParameters => _parameters;
+
+        internal void Add(string splitOn, object getSplitOn)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

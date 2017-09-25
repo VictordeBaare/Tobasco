@@ -135,6 +135,10 @@
     <Compile Include="Model\Builders\DefaultGenericRepositoryBuilder.cs" />
     <Compile Include="Model\Builders\DefaultMapperBuilder.cs" />
     <Compile Include="Model\Builders\DefaultRepositoryBuilder.cs" />
+    <Compile Include="Model\Builders\RepositoryBuilders\GetFullEntityByIdBuilder.cs" />
+    <Compile Include="Model\Builders\RepositoryBuilders\GetFullEntityByIdHelper.cs" />
+    <Compile Include="Model\Builders\RepositoryBuilders\GetFullEntityByIdReader.cs" />
+    <Compile Include="Model\Builders\RepositoryBuilders\RepositoryHelper.cs" />
     <Compile Include="Model\ConnectionFactory.cs" />
     <Compile Include="Model\DatabaseProperties\DatabaseProperty.cs" />
     <Compile Include="Model\DatabaseProperties\DecimalProperty.cs" />
