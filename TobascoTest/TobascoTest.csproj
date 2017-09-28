@@ -94,6 +94,30 @@
     <Compile Include="GeneratedEntity\FileMetOvererving_Generated.cs">
       <DependentUpon>TestGenerator2.txt4</DependentUpon>
     </Compile>
+    <Compile Include="GeneratedMapper\ChildCollectionObjectMapper_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedMapper\ChildObjectMapper_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedMapper\CPKMapper_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedMapper\FileMetOverervingMapper_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedMapper\IChildCollectionObjectMapper_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedMapper\IChildObjectMapper_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedMapper\ICPKMapper_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedMapper\IFileMetOverervingMapper_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
     <Compile Include="GeneratedRepositoy\ChildCollectionObjectRepository_Generated.cs">
       <DependentUpon>TestGenerator2.txt4</DependentUpon>
     </Compile>
@@ -140,30 +164,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="CPK.xml" />
-    <Content Include="GeneratedDatabase\ChildCollectionObject_CRUD_Generated.sql">
-      <DependentUpon>TestGenerator2.txt4</DependentUpon>
-    </Content>
-    <Content Include="GeneratedDatabase\ChildCollectionObject_Generated.sql">
-      <DependentUpon>TestGenerator2.txt4</DependentUpon>
-    </Content>
-    <Content Include="GeneratedDatabase\ChildObject_CRUD_Generated.sql">
-      <DependentUpon>TestGenerator2.txt4</DependentUpon>
-    </Content>
-    <Content Include="GeneratedDatabase\ChildObject_Generated.sql">
-      <DependentUpon>TestGenerator2.txt4</DependentUpon>
-    </Content>
-    <Content Include="GeneratedDatabase\CPK_CRUD_Generated.sql">
-      <DependentUpon>TestGenerator2.txt4</DependentUpon>
-    </Content>
-    <Content Include="GeneratedDatabase\CPK_Generated.sql">
-      <DependentUpon>TestGenerator2.txt4</DependentUpon>
-    </Content>
-    <Content Include="GeneratedDatabase\FileMetOvererving_CRUD_Generated.sql">
-      <DependentUpon>TestGenerator2.txt4</DependentUpon>
-    </Content>
-    <Content Include="GeneratedDatabase\FileMetOvererving_Generated.sql">
-      <DependentUpon>TestGenerator2.txt4</DependentUpon>
-    </Content>
     <Content Include="TestChildCollectionObject.xml" />
     <Content Include="TestChildObject.xml" />
     <Content Include="TestEntity.xml" />
@@ -185,13 +185,13 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="GeneratedMapper\" />
+    <Folder Include="GeneratedDatabase\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="DependencyInjection\TestGenerator2.txt4" />
-    <None Include="GeneratedDatabase\TestGenerator2.txt4" />
     <None Include="GeneratedEntity2\TestGenerator2.txt4" />
     <None Include="GeneratedEntity\TestGenerator2.txt4" />
+    <None Include="GeneratedMapper\TestGenerator2.txt4" />
     <None Include="GeneratedRepositoy\TestGenerator2.txt4" />
     <None Include="IGenerateRepository\TestGenerator2.txt4" />
     <None Include="packages.config" />

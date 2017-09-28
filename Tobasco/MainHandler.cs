@@ -85,7 +85,7 @@ namespace Tobasco
                 }
                 OutputPaneManager.WriteToOutputPane("Add database files");
                 outputFiles.AddRange(handler.Value.GetDatabaseBuilder.Build());
-                if (handler.Value.Entity.Mappers != null && handler.Value.Entity.Mappers.Generate)
+                if (handler.Value.GetMappers != null && handler.Value.GetMappers.Generate)
                 {
                     OutputPaneManager.WriteToOutputPane("Add Mapper files");
                     outputFiles.AddRange(handler.Value.GetMappers.Mapper.SelectMany(x => handler.Value.GetMapperBuilder.Build(x)));

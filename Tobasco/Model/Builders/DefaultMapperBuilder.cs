@@ -47,6 +47,7 @@ namespace Tobasco.Model.Builders
             switch (prop.Property.DataType.Datatype)
             {
                 case Datatype.Child:
+                case Datatype.ReadonlyChild:
                     return prop.Property.Name + " = _" + EntityHandler.GetMapperInterfaceParameter(prop.Property.DataType.Type) + ".MapToObject(objectToMapFrom." + prop.Property.Name + ")";
                 case Datatype.ChildCollection:
                     return prop.Property.Name + ".Add(_" + EntityHandler.GetMapperInterfaceParameter(prop.Property.DataType.Type) + ".MapToObject(property));";
@@ -66,7 +67,7 @@ namespace Tobasco.Model.Builders
             AddFieldsWithParameterToConstructor(classFile, mapper);
             classFile.Methods.Add(MappingMethod(mapper));
 
-            var interfacefile = FileManager.StartNewInterfaceFile(SelectMapperInterface, mapper.MapperLocation.Project, mapper.MapperLocation.Folder);
+            var interfacefile = FileManager.StartNewInterfaceFile(SelectMapperInterface, mapper.InterfaceLocation.Project, mapper.InterfaceLocation.Folder);
             var mapToLocation = EntityHandler.GetEntityLocationOnId(mapper.FromTo.To).FileLocation.GetProjectLocation;
             interfacefile.Namespaces.Add(fromEntityLocation);
             interfacefile.OwnNamespace = mapper.InterfaceLocation.GetNamespace;
@@ -78,8 +79,8 @@ namespace Tobasco.Model.Builders
         private void AddFieldsWithParameterToConstructor(ClassFile classFile, Mapper mapper)
         {
             foreach (var property in EntityHandler.GetClassBuilder(mapper.FromTo.From).GetChildChildCollectionProperties){
-                classFile.Constructor.AddFieldWithParameter(new Field("private", EntityHandler.GetMapperInterface(property.Property.DataType.Type), EntityHandler.GetMapperInterfaceParameter(property.Property.DataType.Type)), 
-                    new TypeWithName(EntityHandler.GetMapperInterface(property.Property.DataType.Type), EntityHandler.GetMapperInterfaceParameter(property.Property.DataType.Type)));
+                classFile.Constructor.AddFieldWithParameter(new Field("private", $"_{EntityHandler.GetMapperInterfaceParameter(property.Property.DataType.Type)}", EntityHandler.GetMapperInterface(property.Property.DataType.Type)), 
+                    new TypeWithName($"{EntityHandler.GetMapperInterfaceParameter(property.Property.DataType.Type)}", EntityHandler.GetMapperInterface(property.Property.DataType.Type)));
             }
         }
     }
