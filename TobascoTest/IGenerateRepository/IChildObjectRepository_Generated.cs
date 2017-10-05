@@ -1,6 +1,9 @@
 ﻿using System;
 using System.CodeDom.Compiler;
 using TobascoTest.IGenerateRepository;
+using static Dapper.SqlMapper;
+using Dapper;
+using System.Linq;
 using TobascoTest.GeneratedEntity;
 using Tobasco;
 
@@ -13,5 +16,6 @@ namespace TobascoTest.IGenerateRepository
 
         ChildObject Save(ChildObject childobject);
         ChildObject GetById(long id);
+        ChildObject GetFullObjectById(long id);
     }
 }

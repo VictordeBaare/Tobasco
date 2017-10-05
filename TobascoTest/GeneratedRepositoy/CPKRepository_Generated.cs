@@ -4,6 +4,9 @@ using TobascoTest.GeneratedEntity;
 using Tobasco;
 using TobascoTest.IGenerateRepository;
 using System.Collections.Generic;
+using Dapper;
+using System.Linq;
+using static Dapper.SqlMapper;
 
 namespace TobascoTest.GeneratedRepositoy
 {
@@ -29,5 +32,15 @@ namespace TobascoTest.GeneratedRepositoy
             return _genericRepository.GetById(id);
         }
 
+        public CPK GetFullObjectById(long id)
+        {
+            var parameters = new DynamicParameters();
+            parameters.Add("id", id);
+            return _genericRepository.QueryMultiple("[dbo].[CPK_GetFullById]", parameters, x => Read(x).Values).SingleOrDefault();
+        }
+        internal static Dictionary<long, CPK> Read(GridReader reader)
+        {
+            return reader.Read<CPK>().ToDictionary(x => x.Id);
+        }
     }
 }

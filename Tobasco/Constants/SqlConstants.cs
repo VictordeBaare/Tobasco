@@ -9,5 +9,11 @@
         public const string StpDeletetedPropertyNames = "StpDeletetedPropertyNames";
         public const string StpParameter = "StpParameter";
         public const string StpParameterName = "StpParameterName";
+        public const string GetFullObjectByEntity = "GetFullObjectByEntity";
+        public const string ChildCollection_GetByParentIdStp = "ChildCollection_GetByParentIdStp";
+        public const string Childs_GetById = "Childs_GetById";
+        public const string DeclareChilds = "DeclareChilds";
+        public const string ReferenceName = "ReferenceName";
+        public const string ReferenceType = "ReferenceType";
     }
 }

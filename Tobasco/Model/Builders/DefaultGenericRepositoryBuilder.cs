@@ -60,10 +60,17 @@ namespace Tobasco.Model.Builders
             return template.GetText;
         }
 
+        protected virtual string QueryMutlipleT()
+        {
+            var template = new Template();
+            template.SetTemplate(Resources.GenericRepositoryQueryMultipleT);
+            return template.GetText;
+        }
+
         protected virtual ClassFile BuildClassFile()
         {
             var classFile = FileManager.StartNewClassFile(GetGenericRepositoryName, Classlocation.Project, Classlocation.Folder);
-            classFile.Namespaces.AddRange(new[] { "System.Configuration", "System.Data.SqlClient", "Dapper", "System.Data", Interfacelocation.GetProjectLocation, "System.Linq", "System.Collections.Generic" });
+            classFile.Namespaces.AddRange(new[] { "System.Configuration", "System.Data.SqlClient", "Dapper", "System.Data", Interfacelocation.GetProjectLocation, "System.Linq", "System.Collections.Generic", "static Dapper.SqlMapper" });
             classFile.Namespaces.AddRange(Information.Repository.Namespaces.Select(x => x.Value).Concat(Information.GenericRepository.Namespaces.Select(x => x.Value)));
             classFile.Namespaces.Add("System.Globalization");
             classFile.OwnNamespace = Information.Repository.FileLocation.GetNamespace;
@@ -79,13 +86,14 @@ namespace Tobasco.Model.Builders
             classFile.Methods.Add(ListSaveMethod());
             classFile.Methods.Add(GetByIdMethod());
             classFile.Methods.Add(ToAnonymousMethod());
+            classFile.Methods.Add(QueryMutlipleT());
             return classFile;
         }
 
         protected virtual InterfaceFile BuildInterfaceFile()
         {
             var interfaceFile = FileManager.StartNewInterfaceFile(GetInterfaceGenericRepositoryName, Interfacelocation.Project, Interfacelocation.Folder);
-            interfaceFile.Namespaces.AddRange(new[] { "System.Configuration", "System.Data.SqlClient", Interfacelocation.GetProjectLocation, "System.Collections.Generic" });
+            interfaceFile.Namespaces.AddRange(new[] { "System.Configuration", "System.Data.SqlClient", Interfacelocation.GetProjectLocation, "System.Collections.Generic", "Dapper", "static Dapper.SqlMapper" });
             interfaceFile.Namespaces.AddRange(Information.Repository.Namespaces.Select(x => x.Value).Concat(Information.GenericRepository.Namespaces.Select(x => x.Value)));
             interfaceFile.OwnNamespace = Interfacelocation.GetNamespace;
             interfaceFile.NameExtension = "<T> where T : EntityBase, new()";
@@ -93,6 +101,8 @@ namespace Tobasco.Model.Builders
             interfaceFile.Methods.Add("T Save(T entity);");
             interfaceFile.Methods.Add("T GetById(long id); ");
             interfaceFile.Methods.Add("IEnumerable<T> Save(IEnumerable<T> entities);");
+            interfaceFile.Methods.Add("IEnumerable<T> QueryMultiple(string StoredProcedure, DynamicParameters parameters, Func<GridReader, IEnumerable<T>> readerFunc);");
+
             return interfaceFile;
         }
 

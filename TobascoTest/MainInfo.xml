@@ -31,13 +31,13 @@
             <FromTo from="dataobject" to="businessobject"></FromTo>
         </Mapper>
     </Mappers>
-    <Database project="TobascoTest">
-        <StoredProcedures folder="GeneratedDatabase" generate="true">
+    <Database project="Database">
+        <StoredProcedures folder="Stp" generate="true">
             <Insert generate="true"></Insert>
             <Update generate="true"></Update>
             <Delete generate="true"></Delete>
         </StoredProcedures>
-        <Tables folder="GeneratedDatabase" generate="true">
+        <Tables folder="Table" generate="true">
             <Historie generate="true"></Historie>
         </Tables>
     </Database>

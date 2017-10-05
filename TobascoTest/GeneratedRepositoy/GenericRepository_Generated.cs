@@ -7,6 +7,7 @@ using System.Data;
 using TobascoTest.IGenerateRepository;
 using System.Linq;
 using System.Collections.Generic;
+using static Dapper.SqlMapper;
 using TobascoTest.GeneratedEntity;
 using Tobasco;
 using System.Globalization;
@@ -119,6 +120,13 @@ namespace TobascoTest.GeneratedRepositoy
                 parameters.Add("RowVersion", entity.RowVersion, DbType.Binary);
             }
             return parameters;
+        }
+        public IEnumerable<T> QueryMultiple(string StoredProcedure, DynamicParameters parameters, Func<GridReader, IEnumerable<T>> readerFunc)
+        {
+            using (var connection = ConnectionFactory.GetConnection())
+            {
+                return readerFunc(connection.QueryMultiple(StoredProcedure, parameters, commandType: CommandType.StoredProcedure));
+            }
         }
     }
 }
