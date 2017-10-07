@@ -21,7 +21,7 @@ namespace Tobasco.Model.Builders.DatabaseBuilders
         protected virtual TemplateParameter GetParameters()
         {
             var parameters = new TemplateParameter();
-            parameters.Add(SqlConstants.StpPropertyNames, GetSqlParameterNames());
+            parameters.Add(SqlConstants.StpPropertyNames, GetNonChildCollectionProperties.OrderBy(x => x.Property.Name).ThenByDescending(x => x.Property.DataType.Datatype != Datatype.Child).ThenByDescending(x => x.Property.DataType.Datatype != Datatype.Child).Select(x =>$"{x.SelectSqlParameterNaam},"));
             parameters.Add(SqlConstants.DeclareChilds, DeclareChilds);
             parameters.Add(SqlConstants.TableName, Name);
             parameters.Add(SqlConstants.Childs_GetById, GetChild_ByIdStp);

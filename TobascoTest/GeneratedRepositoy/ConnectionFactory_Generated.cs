@@ -7,19 +7,19 @@ using TobascoTest.IGenerateRepository;
 
 namespace TobascoTest.GeneratedRepositoy
 {
-    [GeneratedCode("Tobasco", "1.0.0.0")]
-    public partial class ConnectionFactory : IConnectionFactory
-    {
-        private readonly SqlConnection _connection;
-        private readonly object _lock = new object();
-        private bool _disposed;
-        public ConnectionFactory(string databasenaam)
-        {
-
-            _connection = new SqlConnection(ConfigurationManager.ConnectionStrings[databasenaam].ConnectionString);
-        }
-
-        public SqlConnection GetConnection()
+	[GeneratedCode("Tobasco", "1.0.0.0")]
+	public  partial class ConnectionFactory : IConnectionFactory
+	{
+		private readonly SqlConnection _connection;
+private readonly object _lock = new object();
+private bool _disposed;
+public ConnectionFactory(string databasenaam)
+{
+	
+	_connection = new SqlConnection(ConfigurationManager.ConnectionStrings[databasenaam].ConnectionString);
+}		
+				
+		public SqlConnection GetConnection()
         {
             lock (_lock)
             {
@@ -31,12 +31,12 @@ namespace TobascoTest.GeneratedRepositoy
 
             return _connection;
         }
-        public void Dispose()
+public void Dispose()
         {
             Dispose(true);
             GC.SuppressFinalize(this);
         }
-        private void Dispose(bool disposing)
+private void Dispose(bool disposing)
         {
             if (!_disposed)
             {
@@ -52,6 +52,6 @@ namespace TobascoTest.GeneratedRepositoy
 
                 _disposed = true;
             }
-        }
-    }
+        }	
+	}
 }

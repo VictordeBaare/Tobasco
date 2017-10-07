@@ -45,7 +45,6 @@ namespace Tobasco.Manager
 
         public static T InitializeBuilder<T>(Type type, object[] parameters)
         {
-            OutputPaneManager.WriteToOutputPane($"{type}");
             var ctor = type.GetConstructor(parameters.Select(x => x.GetType()).ToArray());
             try
             {

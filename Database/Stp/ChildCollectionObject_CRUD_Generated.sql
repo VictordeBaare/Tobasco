@@ -121,8 +121,8 @@ BEGIN
 
 	SELECT Id,
 		   [RowVersion],
-           TestChildProp1,
-FileMetOverervingId,
+           FileMetOverervingId,
+TestChildProp1,
 		   [ModifiedBy],
 		   [ModifiedOn]
 	  FROM ChildCollectionObject
@@ -142,8 +142,8 @@ BEGIN
 
 	SELECT Id,
 		   [RowVersion],
-           TestChildProp1,
-FileMetOverervingId,
+           FileMetOverervingId,
+TestChildProp1,
 		   [ModifiedBy],
 		   [ModifiedOn]
 	  FROM ChildCollectionObject

@@ -125,9 +125,9 @@ BEGIN
 
 	SELECT Id,
 		   [RowVersion],
-           Training,
-Duur,
+           Duur,
 Kosten,
+Training,
 		   [ModifiedBy],
 		   [ModifiedOn]
 	  FROM CPK

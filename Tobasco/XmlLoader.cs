@@ -11,17 +11,7 @@ using Tobasco.Model;
 namespace Tobasco
 {
     public class XmlLoader
-    {
-        private readonly DynamicTextTransformation2 _textTransformation;
-        
-        public XmlLoader(DynamicTextTransformation2 textTransformation)
-        {
-            if (textTransformation != null)
-            {
-                _textTransformation = textTransformation;
-            }
-        }
-
+    {      
         public MainHandler Load(string path)
         {
             XmlSerializer entityserializer = new XmlSerializer(typeof(Entity));
@@ -44,16 +34,7 @@ namespace Tobasco
                 }
             }
 
-
             return new MainHandler(mainInformation, entities);
-        }
-
-        public void WriteComment(string comment)
-        {
-            if (_textTransformation != null)
-            {
-                _textTransformation.WriteLine(comment.StartsWith("//") ? comment : "//" + comment);
-            }
         }
     }
 }
