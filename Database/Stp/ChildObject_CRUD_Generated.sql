@@ -1,6 +1,6 @@
 ﻿CREATE PROCEDURE [dbo].[ChildObject_Insert]
     @Id bigint output,
-	@TestChildProp1 nvarchar(100),
+	@TestChildProp1 varchar(100),
     @ModifiedBy nvarchar(256)
 AS
 BEGIN
@@ -26,7 +26,7 @@ END;
 GO
 CREATE PROCEDURE [dbo].[ChildObject_Update]
 		@Id [bigint],
-		@TestChildProp1 nvarchar(100),
+		@TestChildProp1 varchar(100),
         @RowVersion [rowversion],
         @ModifiedBy nvarchar(256)
 AS

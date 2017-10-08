@@ -2,9 +2,11 @@
 <Entity name="ChildCollectionObject" generateReadonlyGuid="true">
   <Properties>
     <Property name="TestChildProp1" required="true">
-      <DataType name="String" size="100"></DataType>
+      <DataType name="Decimal" dbtype="Money"></DataType>
     </Property>
-
+    <Property name="TestChildProp2" required="true">
+      <DataType name="Decimal" dbtype="Smallmoney"></DataType>
+    </Property>
       <Property name="FileMetOverervingId" required="true">
           <DataType name="Reference" type="FileMetOvererving"></DataType>
       </Property>

@@ -12,8 +12,9 @@ namespace TobascoTest.GeneratedEntity2
 	{
 				
 		[Required(ErrorMessage = @"TestChildProp1 is required")]
-[StringLength(100, ErrorMessage = @"Maximum length is 100 for TestChildProp1")]
-public string TestChildProp1 { get; set; }
+public decimal TestChildProp1 { get; set; }
+[Required(ErrorMessage = @"TestChildProp2 is required")]
+public decimal TestChildProp2 { get; set; }
 [Required(ErrorMessage = @"FileMetOverervingId is required")]
 public long FileMetOverervingId { get; set; }		
 			

@@ -2,7 +2,8 @@
 	 [Id]			bigint	IDENTITY (1,1)  NOT NULL
 	,[RowVersion]   rowversion         		NOT NULL
 	,[Uid]          uniqueidentifier        NOT NULL CONSTRAINT [DF_{ChildCollectionObject}_UId] DEFAULT NEWID()
-	,TestChildProp1 nvarchar(100) NOT NULL
+	,TestChildProp1 money NOT NULL
+,TestChildProp2 smallmoney NOT NULL
 ,FileMetOverervingId bigint NOT NULL
 	,[ModifiedBy]	nvarchar(256)			NOT NULL
 	 CONSTRAINT [DF_{ChildCollectionObject}_ModifiedBy] DEFAULT SUSER_SNAME()
@@ -15,7 +16,8 @@ CREATE TABLE [dbo].[ChildCollectionObject_historie] (
     [Id]                          bigint             NOT NULL
    ,[RowVersion]                  binary(8)          NOT NULL
    ,[Uid]                         uniqueidentifier   NOT NULL
-   ,TestChildProp1 nvarchar(100) NOT NULL
+   ,TestChildProp1 money NOT NULL
+,TestChildProp2 smallmoney NOT NULL
 ,FileMetOverervingId bigint NOT NULL   
    ,[ModifiedBy]                  nvarchar (256)     NOT NULL
    ,[ModifiedOn]                  DATETIME2(7)       NOT NULL
@@ -55,6 +57,7 @@ BEGIN
 			Id,
 		    [RowVersion],
 		   TestChildProp1,
+TestChildProp2,
 FileMetOverervingId,
             [ModifiedBy],
             [ModifiedOn],
@@ -64,6 +67,7 @@ FileMetOverervingId,
     SELECT DELETED.Id,
            DELETED.[RowVersion],
 		  Deleted.TestChildProp1,
+Deleted.TestChildProp2,
 Deleted.FileMetOverervingId,
            Deleted.ModifiedBy,
            Deleted.ModifiedOn,
@@ -82,6 +86,7 @@ BEGIN
 			Id,
 		    [RowVersion],
            TestChildProp1,
+TestChildProp2,
 FileMetOverervingId,
 		    [ModifiedBy],
 		    [ModifiedOn],
@@ -91,6 +96,7 @@ FileMetOverervingId,
 	SELECT Deleted.Id,
 	       Deleted.[RowVersion],
 		  Deleted.TestChildProp1,
+Deleted.TestChildProp2,
 Deleted.FileMetOverervingId,
 		   Deleted.ModifiedBy,
 		   Deleted.ModifiedOn,

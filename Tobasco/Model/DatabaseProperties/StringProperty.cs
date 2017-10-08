@@ -16,6 +16,10 @@ namespace Tobasco.Model.DatabaseProperties
         {
             get
             {
+                if (Property.DataType.DbType == Enums.DataDbType.Varchar || Property.DataType.DbType == Enums.DataDbType.Nvarchar)
+                {
+                    return $"{GetDbValueType}({Property.DataType.Size})";
+                }
                 return $"nvarchar({Property.DataType.Size})";
             }
         }

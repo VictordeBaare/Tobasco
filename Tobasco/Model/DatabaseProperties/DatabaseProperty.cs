@@ -153,9 +153,31 @@ namespace Tobasco.Model.DatabaseProperties
                     case Datatype.ByteArray:
                         return "varbinary(max)";
                     default:
-                        throw new Exception("Value type kon niet bepaald worden.");
+                        throw new Exception("Value type could not be determined.");
                 }
             }            
         }
+
+        protected virtual string GetDbValueType
+        {
+            get
+            {
+                switch (Property.DataType.DbType)
+                {
+                    case DataDbType.Nvarchar:
+                        return "nvarchar";
+                    case DataDbType.Varchar:
+                        return "varchar";
+                    case DataDbType.Money:
+                        return "money";
+                    case DataDbType.Smallmoney:
+                        return "smallmoney";
+                    default:
+                        throw new Exception("Db Value type could not be determined.");
+                }
+            }
+        }
+
+
     }
 }

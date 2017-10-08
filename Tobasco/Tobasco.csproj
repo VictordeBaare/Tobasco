@@ -81,6 +81,7 @@
     <Compile Include="Constants\RepositoryBuilderConstants.cs" />
     <Compile Include="Constants\SqlConstants.cs" />
     <Compile Include="EntityHandler.cs" />
+    <Compile Include="Enums\DataDbType.cs" />
     <Compile Include="Enums\Datatype.cs" />
     <Compile Include="Enums\DIType.cs" />
     <Compile Include="Enums\FileType.cs" />

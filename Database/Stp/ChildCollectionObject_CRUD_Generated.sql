@@ -1,6 +1,7 @@
 ﻿CREATE PROCEDURE [dbo].[ChildCollectionObject_Insert]
     @Id bigint output,
-	@TestChildProp1 nvarchar(100),
+	@TestChildProp1 money,
+@TestChildProp2 smallmoney,
 @FileMetOverervingId bigint,
     @ModifiedBy nvarchar(256)
 AS
@@ -11,6 +12,7 @@ BEGIN
       INTO [dbo].ChildCollectionObject 
 	       (
 			TestChildProp1,
+TestChildProp2,
 FileMetOverervingId,
 			[ModifiedBy],
 		    [ModifiedOn]
@@ -22,6 +24,7 @@ FileMetOverervingId,
     VALUES
          (
 		   @TestChildProp1,
+@TestChildProp2,
 @FileMetOverervingId,
            @ModifiedBy,
            SYSDATETIME()
@@ -30,7 +33,8 @@ END;
 GO
 CREATE PROCEDURE [dbo].[ChildCollectionObject_Update]
 		@Id [bigint],
-		@TestChildProp1 nvarchar(100),
+		@TestChildProp1 money,
+@TestChildProp2 smallmoney,
 @FileMetOverervingId bigint,
         @RowVersion [rowversion],
         @ModifiedBy nvarchar(256)
@@ -50,6 +54,7 @@ BEGIN
 		UPDATE [dbo].ChildCollectionObject
 		   SET 
 				ChildCollectionObject.TestChildProp1 = @TestChildProp1,
+ChildCollectionObject.TestChildProp2 = @TestChildProp2,
 ChildCollectionObject.FileMetOverervingId = @FileMetOverervingId,            
 			    ChildCollectionObject.ModifiedBy = ISNULL(@ModifiedBy, SUSER_SNAME()),
 			    ChildCollectionObject.ModifiedOn = SYSDATETIME()
@@ -123,6 +128,7 @@ BEGIN
 		   [RowVersion],
            FileMetOverervingId,
 TestChildProp1,
+TestChildProp2,
 		   [ModifiedBy],
 		   [ModifiedOn]
 	  FROM ChildCollectionObject
@@ -144,6 +150,7 @@ BEGIN
 		   [RowVersion],
            FileMetOverervingId,
 TestChildProp1,
+TestChildProp2,
 		   [ModifiedBy],
 		   [ModifiedOn]
 	  FROM ChildCollectionObject

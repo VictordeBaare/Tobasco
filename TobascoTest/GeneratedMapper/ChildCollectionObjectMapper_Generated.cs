@@ -15,6 +15,7 @@ namespace TobascoTest.GeneratedMapper
         var objectToMapTo = new ChildCollectionObject
         {
             TestChildProp1 = objectToMapFrom.TestChildProp1,
+            TestChildProp2 = objectToMapFrom.TestChildProp2,
             FileMetOverervingId = objectToMapFrom.FileMetOverervingId,
         };
 

@@ -288,8 +288,16 @@ namespace Tobasco
             }
 
             ProgressBarManager.Reset();
-            ProgressBarManager.SetTotal((uint)projectFiles.Count, "Removing files");            
-            // Remove unused items from the project
+            ProgressBarManager.SetTotal((uint)projectFiles.Count, "Removing files");
+            RemoveUnusedItems(projectFiles, originalOutput, keepFileNames);
+
+            ProgressBarManager.Reset();
+            ProgressBarManager.SetTotal((uint)keepFileNameSet.Count, "Adding files");
+            AddMissingItems(keepFileNameSet, projectFiles, templateProjectItem);
+        }
+
+        private static void RemoveUnusedItems(Dictionary<string, ProjectItem> projectFiles, string originalOutput, IEnumerable<OutputFile> keepFileNames)
+        {
             foreach (var pair in projectFiles)
             {
                 bool isNotFound = !keepFileNames.Any(f => f.FileName == pair.Key);
@@ -301,10 +309,10 @@ namespace Tobasco
                 }
                 ProgressBarManager.SetProgress();
             }
+        }
 
-            ProgressBarManager.Reset();
-            ProgressBarManager.SetTotal((uint)keepFileNameSet.Count, "Adding files");
-            // Add missing files to the project
+        private static void AddMissingItems(HashSet<OutputFile> keepFileNameSet, Dictionary<string, ProjectItem> projectFiles, ProjectItem templateProjectItem)
+        {
             foreach (var fileName in keepFileNameSet)
             {
                 if (!projectFiles.ContainsKey(fileName.FileName))
