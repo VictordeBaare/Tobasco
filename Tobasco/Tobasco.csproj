@@ -73,6 +73,7 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Constants\BuildAction.cs" />
     <Compile Include="Constants\ConstructorConstants.cs" />
     <Compile Include="Constants\DefaultBuilderConstants.cs" />
     <Compile Include="Constants\DependencyInjectionConstants.cs" />
@@ -80,6 +81,7 @@
     <Compile Include="Constants\RepositoryBuilderConstants.cs" />
     <Compile Include="Constants\SqlConstants.cs" />
     <Compile Include="EntityHandler.cs" />
+    <Compile Include="Enums\DataDbType.cs" />
     <Compile Include="Enums\Datatype.cs" />
     <Compile Include="Enums\DIType.cs" />
     <Compile Include="Enums\FileType.cs" />
@@ -94,9 +96,14 @@
     <Compile Include="Factories\OrmPropertyFactory.cs" />
     <Compile Include="Factories\PropertyClassFactory.cs" />
     <Compile Include="Factories\PropertyFactory.cs" />
+    <Compile Include="FileBuilder\DynamicHost2.cs" />
     <Compile Include="FileBuilder\ClassFile.cs" />
     <Compile Include="FileBuilder\Constructor.cs" />
+    <Compile Include="FileBuilder\DynamicTextTransformation2.cs" />
     <Compile Include="FileBuilder\Field.cs" />
+    <Compile Include="FileBuilder\FileProperties.cs" />
+    <Compile Include="FileBuilder\IDynamicHost2.cs" />
+    <Compile Include="FileBuilder\NullHost2.cs" />
     <Compile Include="FileBuilder\TypeWithName.cs" />
     <Compile Include="FileBuilder\FieldWithParameter.cs" />
     <Compile Include="FileBuilder\OutputFile.cs" />
@@ -110,6 +117,7 @@
     <Compile Include="Manager\BuilderManager.cs" />
     <Compile Include="Manager\OutputPaneManager.cs" />
     <Compile Include="Manager\ProgressBarManager.cs" />
+    <Compile Include="Manager\VsManager.cs" />
     <Compile Include="Model\BaseProperty.cs" />
     <Compile Include="Model\Builders\Base\ClassBuilderBase.cs" />
     <Compile Include="Model\Builders\Base\ConnectionfactoryBuilderBase.cs" />
@@ -182,7 +190,6 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="TemplateFileManager.cs" />
     <Compile Include="Templates\Template.cs" />
     <Compile Include="Templates\PropertyTemplateConstants.cs" />
     <Compile Include="Templates\TemplateParameter.cs" />

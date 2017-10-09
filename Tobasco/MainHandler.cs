@@ -19,7 +19,14 @@ namespace Tobasco
 
             foreach(var entity in entities)
             {
-                EntityHandlers.Add(entity.Name, new EntityHandler(entity, _information, GetHandlerOnName));
+                if (!EntityHandlers.ContainsKey(entity.Name))
+                {
+                    EntityHandlers.Add(entity.Name, new EntityHandler(entity, _information, GetHandlerOnName));
+                }
+                else
+                {
+                    throw new ArgumentException($"{entity.Name} already exists.");
+                }
             }
         }
 
@@ -52,7 +59,7 @@ namespace Tobasco
             }
         }
 
-        public IEnumerable<FileBuilder.OutputFile> GetOutputFiles(DynamicTextTransformation2 textTransformation)
+        public IEnumerable<FileBuilder.OutputFile> GetOutputFiles()
         {
             var outputFiles = new List<FileBuilder.OutputFile>();
             if(_information.ConnectionFactory != null)

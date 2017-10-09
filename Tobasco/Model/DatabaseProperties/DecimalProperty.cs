@@ -16,6 +16,10 @@ namespace Tobasco.Model.DatabaseProperties
         {
             get
             {
+                if (Property.DataType.DbType == Enums.DataDbType.Money || Property.DataType.DbType == Enums.DataDbType.Smallmoney)
+                {
+                    return GetDbValueType;
+                }
                 return $"decimal({Property.DataType.Precision},{Property.DataType.Scale})";
             }
         }

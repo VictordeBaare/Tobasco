@@ -11,14 +11,14 @@ using Tobasco;
 
 namespace TobascoTest.IGenerateRepository
 {
-    [GeneratedCode("Tobasco", "1.0.0.0")]
-    public partial interface IGenericRepository<T> where T : EntityBase, new()
-    {
-        IConnectionFactory ConnectionFactory { get; }
-
-        T Save(T entity);
-        T GetById(long id);
-        IEnumerable<T> Save(IEnumerable<T> entities);
-        IEnumerable<T> QueryMultiple(string StoredProcedure, DynamicParameters parameters, Func<GridReader, IEnumerable<T>> readerFunc);
-    }
+	[GeneratedCode("Tobasco", "1.0.0.0")]
+	public partial interface IGenericRepository<T> where T : EntityBase, new()
+	{
+		IConnectionFactory ConnectionFactory { get; }
+			
+		T Save(T entity);
+T GetById(long id); 
+IEnumerable<T> Save(IEnumerable<T> entities);
+IEnumerable<T> QueryMultiple(string StoredProcedure, DynamicParameters parameters, Func<GridReader, IEnumerable<T>> readerFunc);	
+	}
 }

@@ -1,7 +1,7 @@
 ﻿CREATE TABLE [dbo].[ChildObject](
 	 [Id]			bigint	IDENTITY (1,1)  NOT NULL
 	,[RowVersion]   rowversion         		NOT NULL
-	,TestChildProp1 nvarchar(100) NOT NULL
+	,TestChildProp1 varchar(100) NOT NULL
 	,[ModifiedBy]	nvarchar(256)			NOT NULL
 	 CONSTRAINT [DF_ChildObject_ModifiedBy] DEFAULT SUSER_SNAME()
 	,[ModifiedOn]	datetime2(7)			NOT NULL
@@ -13,7 +13,7 @@ GO
 CREATE TABLE [dbo].[ChildObject_historie] (
     [Id]                          bigint             NOT NULL
    ,[RowVersion]                  binary(8)          NOT NULL
-   ,TestChildProp1 nvarchar(100) NOT NULL   
+   ,TestChildProp1 varchar(100) NOT NULL   
    ,[ModifiedBy]                  nvarchar (256)     NOT NULL
    ,[ModifiedOn]                  DATETIME2(7)       NOT NULL
    ,DeletedBy                     nvarchar(256)     NULL

@@ -18,6 +18,9 @@ namespace Tobasco.Model
         [XmlAttribute("size")]
         public string Size { get; set; }
 
+        [XmlAttribute("dbtype")]
+        public DataDbType DbType { get; set; }
+
         [XmlAttribute("type")]
         public string Type { get; set; }
 

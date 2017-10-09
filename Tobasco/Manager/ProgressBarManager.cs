@@ -21,6 +21,11 @@ namespace Tobasco.Manager
             Reset();
         }
 
+        public static void Done()
+        {
+            statusBar.Clear();            
+        }
+
         public static void Reset()
         {
             _nTotal = 0;
