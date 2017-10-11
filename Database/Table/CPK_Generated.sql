@@ -35,10 +35,6 @@ CREATE NONCLUSTERED INDEX IX_CPK_historie_Id
 GO
 
 GO
--- ================================================================================
--- T r i g g e r s
--- ================================================================================
-
 CREATE TRIGGER [dbo].tu_CPK
             ON [dbo].CPK
            FOR UPDATE

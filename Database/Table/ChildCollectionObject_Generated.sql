@@ -43,10 +43,6 @@ CREATE NONCLUSTERED INDEX IX_ChildCollectionObject_FileMetOverervingId ON [dbo].
 GO
 
 GO
--- ================================================================================
--- T r i g g e r s
--- ================================================================================
-
 CREATE TRIGGER [dbo].tu_ChildCollectionObject
             ON [dbo].ChildCollectionObject
            FOR UPDATE

@@ -37,102 +37,26 @@ namespace Tobasco.Model.Builders
 
         public override string Name => Entity.Name;
                   
-        private TemplateParameter TriggerTempalteParameters()
-        {
-            var parameters = new TemplateParameter();
-            parameters.Add(SqlConstants.TableName, Name);
-            parameters.Add(SqlConstants.StpParameter, GetSqlParameters());
-            parameters.Add(SqlConstants.StpParameterName, GetSqlParameterNames("@"));
-            parameters.Add(SqlConstants.StpPropertyNames, GetSqlParameterNames(""));
-            parameters.Add(SqlConstants.StpDeletetedPropertyNames, GetSqlParameterNames("Deleted."));
-            return parameters;
-        }
                              
         private string GetIndexes()
         {
-            var builder = new StringBuilder();
-            List<DatabaseProperty> referenceProperties = GetSqlProperties.Where(x => x.Property.DataType.Datatype == Datatype.Reference).ToList();
-
-            if (Database.Tables.GenerateHistorie.Generate || Entity.GenerateReadonlyGuid || referenceProperties.Any())
-            {
-                OutputPaneManager.WriteToOutputPane("Adding indexes");
-                builder.AppendLine(GetDefaultHeader("I n d e x e s"));
-            }
-            else
-            {
-                OutputPaneManager.WriteToOutputPane("No indexes generated");
-            }
-
-            if (Database.Tables.GenerateHistorie.Generate)
-            {
-                builder.AppendLine($"CREATE NONCLUSTERED INDEX IX_{Name}_historie_Id");
-                builder.AppendLine($"                       ON [dbo].{Name}_historie");
-                builder.AppendLine($"                         (Id ASC)");
-                builder.AppendLine($"                  INCLUDE(ModifiedOn);");
-                builder.AppendLine($"GO");
-            }
-
-            if (Entity.GenerateReadonlyGuid)
-            {
-                builder.AppendLine($"CREATE NONCLUSTERED INDEX IX_UQ_{Name}_Uid");
-                builder.AppendLine($"                       ON [dbo].{Name}");
-                builder.AppendLine($"                         ([Uid] ASC");
-                builder.AppendLine($"                         )");
-                builder.AppendLine($"GO");
-            }
-
-            if (referenceProperties.Any())
-            {
-                foreach (var sqlprop in referenceProperties)
-                {
-                    var index = sqlprop.SelectNonClusteredIndex(Name);
-                    if (!string.IsNullOrEmpty(index))
-                    {
-                        builder.AppendLine($"{index}");
-                        builder.AppendLine("GO");
-                    }
-                }
-            }            
-
-            return builder.ToString();
+            var builder = new IndexBuilder(Entity, Database);
+            return builder.Build();
         }
 
         private string GetTriggers()
         {
-            StringBuilder builder = new StringBuilder();
-
             if (Database.Tables.GenerateHistorie.Generate)
             {
-                OutputPaneManager.WriteToOutputPane("Adding triggers");
-                builder.AppendLine(GetDefaultHeader("T r i g g e r s"));
-                builder.AppendLine(GetUpdateTrigger());
-                builder.AppendLine("GO");
-                builder.AppendLine(GetDeletedTrigger());
+                var builder = new TriggerBuilder(Entity, Database);
+                return builder.Build();
             }
             else
             {
                 OutputPaneManager.WriteToOutputPane("No triggers generated");
+                return string.Empty;
             }
-
-            return builder.ToString();
-        }
-
-        private string GetDeletedTrigger()
-        {
-            var template = new Template();
-            template.SetTemplate(Resources.SqlTriggerDelete);
-            template.Fill(TriggerTempalteParameters());
-            return template.GetText;        
-        }
-
-        private string GetUpdateTrigger()
-        {
-            var template = new Template();
-            template.SetTemplate(Resources.SqlTriggerUpdate);
-            template.Fill(TriggerTempalteParameters());
-
-            return template.GetText;
-        }        
+        }    
 
         public override IEnumerable<FileBuilder.OutputFile> Build()
         {
@@ -229,17 +153,6 @@ namespace Tobasco.Model.Builders
             }
 
             return outputFiles;
-        }
-
-        private static string GetDefaultHeader(string headerTekst)
-        {
-            var builder = new StringBuilder();
-
-            builder.AppendLine("-- ================================================================================");
-            builder.AppendLine($"-- {headerTekst}");
-            builder.AppendLine("-- ================================================================================");
-
-            return builder.ToString();
         }
     }
 }

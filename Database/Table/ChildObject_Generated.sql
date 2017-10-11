@@ -31,10 +31,6 @@ CREATE NONCLUSTERED INDEX IX_ChildObject_historie_Id
 GO
 
 GO
--- ================================================================================
--- T r i g g e r s
--- ================================================================================
-
 CREATE TRIGGER [dbo].tu_ChildObject
             ON [dbo].ChildObject
            FOR UPDATE

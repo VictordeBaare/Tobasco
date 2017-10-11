@@ -51,10 +51,6 @@ CREATE NONCLUSTERED INDEX IX_UQ_FileMetOvererving_Uid
 GO
 
 GO
--- ================================================================================
--- T r i g g e r s
--- ================================================================================
-
 CREATE TRIGGER [dbo].tu_FileMetOvererving
             ON [dbo].FileMetOvererving
            FOR UPDATE

@@ -132,10 +132,12 @@
     <Compile Include="Model\Builders\DatabaseBuilders\GetByIdHelper.cs" />
     <Compile Include="Model\Builders\DatabaseBuilders\GetByReferenceIdBuilder.cs" />
     <Compile Include="Model\Builders\DatabaseBuilders\HistorieTableBuilder.cs" />
+    <Compile Include="Model\Builders\DatabaseBuilders\IndexBuilder.cs" />
     <Compile Include="Model\Builders\DatabaseBuilders\InsertBuilder.cs" />
     <Compile Include="Model\Builders\DatabaseBuilders\MergeBuilder.cs" />
     <Compile Include="Model\Builders\DatabaseBuilders\TableBuilder.cs" />
     <Compile Include="Model\Builders\DatabaseBuilders\TableHelper.cs" />
+    <Compile Include="Model\Builders\DatabaseBuilders\TriggerBuilder.cs" />
     <Compile Include="Model\Builders\DatabaseBuilders\UpdateBuilder.cs" />
     <Compile Include="Model\Builders\DefaultClassBuilder.cs" />
     <Compile Include="Model\Builders\DefaultConnectionfactoryBuilder.cs" />
