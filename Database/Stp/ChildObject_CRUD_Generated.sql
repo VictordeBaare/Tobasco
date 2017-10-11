@@ -121,4 +121,3 @@ BEGIN
 	  FROM ChildObject
 	 WHERE ChildObject.Id = @id;
 END;
-GO

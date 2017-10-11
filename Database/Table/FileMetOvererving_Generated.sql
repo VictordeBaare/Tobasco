@@ -35,10 +35,6 @@ CREATE TABLE [dbo].[FileMetOvererving_historie] (
    ,DeletedAt                     datetime2(7)       NULL
 );
 GO
--- ================================================================================
--- I n d e x e s
--- ================================================================================
-
 CREATE NONCLUSTERED INDEX IX_FileMetOvererving_historie_Id
                        ON [dbo].FileMetOvererving_historie
                          (Id ASC)

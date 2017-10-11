@@ -25,10 +25,6 @@ CREATE TABLE [dbo].[ChildCollectionObject_historie] (
    ,DeletedAt                     datetime2(7)       NULL
 );
 GO
--- ================================================================================
--- I n d e x e s
--- ================================================================================
-
 CREATE NONCLUSTERED INDEX IX_ChildCollectionObject_historie_Id
                        ON [dbo].ChildCollectionObject_historie
                          (Id ASC)

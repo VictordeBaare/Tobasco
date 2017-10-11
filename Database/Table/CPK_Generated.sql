@@ -24,10 +24,6 @@ CREATE TABLE [dbo].[CPK_historie] (
    ,DeletedAt                     datetime2(7)      NULL
 );
 GO
--- ================================================================================
--- I n d e x e s
--- ================================================================================
-
 CREATE NONCLUSTERED INDEX IX_CPK_historie_Id
                        ON [dbo].CPK_historie
                          (Id ASC)

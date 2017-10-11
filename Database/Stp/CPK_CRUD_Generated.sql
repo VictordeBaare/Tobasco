@@ -133,4 +133,3 @@ Training,
 	  FROM CPK
 	 WHERE CPK.Id = @id;
 END;
-GO

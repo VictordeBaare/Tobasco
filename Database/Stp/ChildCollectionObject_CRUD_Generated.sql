@@ -156,4 +156,3 @@ TestChildProp2,
 	  FROM ChildCollectionObject
 	 WHERE ChildCollectionObject.FileMetOverervingId = @ReferenceName;
 END;
-GO

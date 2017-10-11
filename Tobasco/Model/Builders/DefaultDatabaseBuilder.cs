@@ -1,42 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using Tobasco.Constants;
 using Tobasco.Enums;
 using Tobasco.FileBuilder;
 using Tobasco.Manager;
 using Tobasco.Model.Builders.Base;
 using Tobasco.Model.Builders.DatabaseBuilders;
-using Tobasco.Model.DatabaseProperties;
-using Tobasco.Properties;
-using Tobasco.Templates;
 
 namespace Tobasco.Model.Builders
 {
     public class DefaultDatabaseBuilder : DatabaseBuilderBase
     {
-        private GetByIdBuilder _getByIdBuilder;
-        private InsertBuilder _insertBuilder;
-        private UpdateBuilder _updateBuilder;
-        private DeleteBuilder _deleteBuilder;
-        private TableBuilder _tableBuilder;
-        private HistorieTableBuilder _historieTableBuilder;
-        private GetByReferenceIdBuilder _referenceGetByIdBuilder;
-
         public DefaultDatabaseBuilder(Entity entity, Database database) : base(entity, database)
         {
-            _getByIdBuilder = new GetByIdBuilder(entity, database);
-            _insertBuilder = new InsertBuilder(entity, database);
-            _updateBuilder = new UpdateBuilder(entity, database);
-            _deleteBuilder = new DeleteBuilder(entity, database);
-            _tableBuilder = new TableBuilder(entity, database);
-            _historieTableBuilder = new HistorieTableBuilder(entity, database);
-            _referenceGetByIdBuilder = new GetByReferenceIdBuilder(entity, database);
         }
 
         public override string Name => Entity.Name;
-                  
                              
         private string GetIndexes()
         {
@@ -58,23 +37,34 @@ namespace Tobasco.Model.Builders
             }
         }    
 
-        public override IEnumerable<FileBuilder.OutputFile> Build()
+        public override IEnumerable<OutputFile> Build()
         {
-            var outputFiles = new List<FileBuilder.OutputFile>();
+            var outputFiles = new List<OutputFile>();
+
+            ProcessTableFile(outputFiles);
+
+            ProcessStpFile(outputFiles);
+
+            return outputFiles;
+        }
+
+        private void ProcessTableFile(List<OutputFile> outputFiles)
+        {
             if (Database.Tables.Generate)
             {
                 OutputPaneManager.WriteToOutputPane($"Generate Table for {Name}");
                 var tableFile = FileManager.StartNewSqlTableFile(Name, Database.Project, Database.Tables.Folder);
-                tableFile.Table = _tableBuilder.Build();
+                var tableBuilder = new TableBuilder(Entity, Database);
+                tableFile.Table = tableBuilder.Build();
 
                 if (Database.Tables.Generate && Database.Tables.GenerateHistorie.Generate)
                 {
-                    OutputPaneManager.WriteToOutputPane($"Generate HistorieTable for {Name}");
-                    tableFile.HistorieTable = _historieTableBuilder.Build();
+                    var builder = new HistorieTableBuilder(Entity, Database);
+                    tableFile.HistorieTable = builder.Build();
                 }
                 else
                 {
-                    OutputPaneManager.WriteToOutputPane($"== Do not generate HistorieTable for {Name} ");
+                    OutputPaneManager.WriteToOutputPane($"Do not generate HistorieTable for {Name} ");
                 }
 
                 tableFile.Indexes = GetIndexes();
@@ -86,73 +76,77 @@ namespace Tobasco.Model.Builders
             {
                 OutputPaneManager.WriteToOutputPane($"Do not generate Table for {Name}");
             }
-            
+        }
+
+        private void ProcessStpFile(List<OutputFile> outputFiles)
+        {
             if (Database.StoredProcedures.Generate)
             {
                 var crudFile = FileManager.StartNewSqlStpFile(Name + "_CRUD", Database.Project, Database.StoredProcedures.Folder);
-                
-                var builder = new StringBuilder();
 
-                if (Database.StoredProcedures.GenerateInsert.Generate)
-                {
-                    OutputPaneManager.WriteToOutputPane($"Generate Insert stp for {Name}");
-                    builder.AppendLine(_insertBuilder.Build());
-                    builder.AppendLine("GO");
-                }
-                else
-                {
-                    OutputPaneManager.WriteToOutputPane($"Do not generate Insert stp for {Name}");
-                }
-                if (Database.StoredProcedures.GenerateUpdate.Generate)
-                {
-                    OutputPaneManager.WriteToOutputPane($"Generate Update stp for {Name}");
-                    builder.AppendLine(_updateBuilder.Build());
-                    builder.AppendLine("GO");
-                }
-                else
-                {
-                    OutputPaneManager.WriteToOutputPane($"Do not generate Update stp for {Name}");
-                }
-                if (Database.StoredProcedures.GenerateDelete.Generate)
-                {
-                    OutputPaneManager.WriteToOutputPane($"Generate Delete stp for {Name}");
-                    builder.AppendLine(_deleteBuilder.Build());
-                    builder.AppendLine("GO");
-                }
+                GenerateOnCondition("Insert", () => Database.StoredProcedures.GenerateInsert.Generate, () => GenerateInsertMethod(crudFile));
 
-                else
-                {
-                    OutputPaneManager.WriteToOutputPane($"Do not generate Delete stp for {Name}");
-                }
-                if (Database.StoredProcedures.GenerateGetById.Generate)
-                {
-                    OutputPaneManager.WriteToOutputPane($"Generate GetById stp for {Name}");
-                    builder.AppendLine(_getByIdBuilder.Build());
-                    builder.AppendLine("GO");
-                }
-                if (Database.StoredProcedures.GenerateMerge.Generate)
-                {
-                    OutputPaneManager.WriteToOutputPane($"Generate Merge Stp for {Name}");
-                    var mergeBuilder = new MergeBuilder(Entity, Database);
-                    builder.AppendLine(mergeBuilder.Build());
-                    builder.AppendLine("GO");
-                }
-                if(Entity.Properties.Any(x => x.DataType.Datatype == Datatype.Reference))
+                GenerateOnCondition("Update", () => Database.StoredProcedures.GenerateUpdate.Generate, () => GenerateUpdateMethod(crudFile));
+
+                GenerateOnCondition("Delete", () => Database.StoredProcedures.GenerateDelete.Generate, () => GenerateDeleteMethod(crudFile));
+
+                GenerateOnCondition("GetById", () => Database.StoredProcedures.GenerateGetById.Generate, () => GenerateGetByIdMethod(crudFile));
+
+                GenerateOnCondition("Merge", () => Database.StoredProcedures.GenerateMerge.Generate, () => GenerateMergeMethod(crudFile));
+
+                if (Entity.Properties.Any(x => x.DataType.Datatype == Datatype.Reference))
                 {
                     foreach (var reference in Entity.Properties.Where(x => x.DataType.Datatype == Datatype.Reference))
                     {
-                        OutputPaneManager.WriteToOutputPane($"Generate GetByReference stp for {Name}");
-                        builder.AppendLine(_referenceGetByIdBuilder.Build(reference));
-                        builder.AppendLine("GO");
+                        var referenceGetByIdBuilder = new GetByReferenceIdBuilder(Entity, Database);
+                        crudFile.Methods.Add(referenceGetByIdBuilder.Build(reference));
                     }
                 }
 
-                crudFile.Content = builder;
-
                 outputFiles.Add(crudFile);
             }
+        }
 
-            return outputFiles;
+        private void GenerateInsertMethod(OutputFile crudFile)
+        {
+            var insertBuilder = new InsertBuilder(Entity, Database);
+            crudFile.Methods.Add(insertBuilder.Build());
+        }
+
+        private void GenerateUpdateMethod(OutputFile crudFile)
+        {
+            var updateBuilder = new UpdateBuilder(Entity, Database);
+            crudFile.Methods.Add(updateBuilder.Build());
+        }
+
+        private void GenerateDeleteMethod(OutputFile crudFile)
+        {
+            var deleteBuilder = new DeleteBuilder(Entity, Database);
+            crudFile.Methods.Add(deleteBuilder.Build());
+        }
+
+        private void GenerateGetByIdMethod(OutputFile crudFile)
+        {
+            var getByIdBuilder = new GetByIdBuilder(Entity, Database);
+            crudFile.Methods.Add(getByIdBuilder.Build());
+        }
+
+        private void GenerateMergeMethod(OutputFile crudFile)
+        {
+            var mergeBuilder = new MergeBuilder(Entity, Database);
+            crudFile.Methods.Add(mergeBuilder.Build());
+        }
+
+        private void GenerateOnCondition(string stpType, Func<bool> condition, Action method)
+        {
+            if (condition())
+            {
+                method();
+            }
+            else
+            {
+                OutputPaneManager.WriteToOutputPane($"Do not generate {stpType} stp for {Name}");
+            }
         }
     }
 }

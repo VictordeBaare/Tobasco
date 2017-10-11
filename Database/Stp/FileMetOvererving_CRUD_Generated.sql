@@ -166,4 +166,3 @@ TestChildProp9Id,
 	  FROM FileMetOvererving
 	 WHERE FileMetOvererving.Id = @id;
 END;
-GO

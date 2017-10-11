@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System;
+using System.Text;
 using Tobasco.Enums;
 
 namespace Tobasco.FileBuilder
@@ -7,11 +8,9 @@ namespace Tobasco.FileBuilder
     {
         public override FileType Type => FileType.Stp;
 
-        public StringBuilder Content { get; set; }
-
         public override string BuildContent()
         {
-            return Content.ToString();
+            return string.Join(Environment.NewLine + "GO" + Environment.NewLine, Methods);
         }
     }
 }
