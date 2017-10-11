@@ -723,6 +723,23 @@ namespace Tobasco.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to CREATE PROCEDURE [dbo].[%TableName%_Merge]
+        ///        @ModifiedBy nvarchar(256),
+        ///		@ModifiedOn datetime(7)
+        ///AS
+        ///BEGIN
+        ///		SET NOCOUNT ON;
+        ///		
+        ///
+        ///END;.
+        /// </summary>
+        internal static string SqlMergeStp {
+            get {
+                return ResourceManager.GetString("SqlMergeStp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to CREATE TABLE [dbo].[%TableName%](
         ///	 [Id]			bigint	IDENTITY (1,1)  NOT NULL
         ///	,[RowVersion]   rowversion         		NOT NULL

@@ -200,10 +200,17 @@ namespace Tobasco.Model.Builders
                 {
                     OutputPaneManager.WriteToOutputPane($"Do not generate Delete stp for {Name}");
                 }
-                if (Database.StoredProcedures.Generate)
+                if (Database.StoredProcedures.GenerateGetById.Generate)
                 {
                     OutputPaneManager.WriteToOutputPane($"Generate GetById stp for {Name}");
                     builder.AppendLine(_getByIdBuilder.Build());
+                    builder.AppendLine("GO");
+                }
+                if (Database.StoredProcedures.GenerateMerge.Generate)
+                {
+                    OutputPaneManager.WriteToOutputPane($"Generate Merge Stp for {Name}");
+                    var mergeBuilder = new MergeBuilder(Entity, Database);
+                    builder.AppendLine(mergeBuilder.Build());
                     builder.AppendLine("GO");
                 }
                 if(Entity.Properties.Any(x => x.DataType.Datatype == Datatype.Reference))

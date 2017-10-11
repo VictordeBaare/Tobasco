@@ -581,6 +581,17 @@ BEGIN
           );
 END;</value>
   </data>
+  <data name="SqlMergeStp" xml:space="preserve">
+    <value>CREATE PROCEDURE [dbo].[%TableName%_Merge]
+        @ModifiedBy nvarchar(256),
+		@ModifiedOn datetime(7)
+AS
+BEGIN
+		SET NOCOUNT ON;
+		
+
+END;</value>
+  </data>
   <data name="SqlTable" xml:space="preserve">
     <value>CREATE TABLE [dbo].[%TableName%](
 	 [Id]			bigint	IDENTITY (1,1)  NOT NULL

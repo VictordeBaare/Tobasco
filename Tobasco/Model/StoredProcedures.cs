@@ -12,5 +12,11 @@ namespace Tobasco.Model
 
         [XmlElement("Delete")]
         public GenerateElement GenerateDelete { get; set; }
+
+        [XmlElement("GetById")]
+        public GenerateElement GenerateGetById { get; set; }
+
+        [XmlElement("Merge")]
+        public GenerateElement GenerateMerge { get; set; }
     }
 }
