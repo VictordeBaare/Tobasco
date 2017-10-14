@@ -30,6 +30,23 @@ namespace Tobasco.Model.Builders.DatabaseBuilders
             }
         }
 
+        protected virtual List<string> GetSqlUpdateParameters()
+        {
+            var list = new List<string>();
+
+            foreach (DatabaseProperty selectSqlProperty in GetNonChildCollectionProperties)
+            {
+                list.Add($"{Name}.{selectSqlProperty.SelectSqlParameterNaam} = @{selectSqlProperty.SelectSqlParameterNaam},");
+            }
+
+            return list;
+        }
+
+        protected virtual List<string> GetTableProperties()
+        {
+            return GetNonChildCollectionProperties.Select(prop => $",{prop.SelectSqlTableProperty}").ToList();
+        }
+
         protected IEnumerable<DatabaseProperty> GetChildProperties
         {
             get { return GetSqlProperties.Where(x => x.Property.DataType.Datatype == Datatype.Child || x.Property.DataType.Datatype == Datatype.ReadonlyChild); }

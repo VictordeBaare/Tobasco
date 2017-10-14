@@ -1,70 +1,70 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<EntityInformation>
-    <EntityLocations>
-        <EntityLocation id="dataobject">
-            <FileLocation project="TobascoTest" folder="GeneratedEntity"></FileLocation>
-            <Namespaces>
-                <Namespace value="System.Dynamic"></Namespace>
-            </Namespaces>
-            <ORMapper type="Dapper"></ORMapper>
-        </EntityLocation>
-        <EntityLocation generaterules="true" id="businessobject">
-            <FileLocation project="TobascoTest" folder="GeneratedEntity2"></FileLocation>
-            <Namespaces>
-                <Namespace value="System.ComponentModel.DataAnnotations"></Namespace>
-            </Namespaces>
-        </EntityLocation>
-    </EntityLocations>
-    <BaseNamespaces>
-        <Namespace value="System.Collections.Generic"></Namespace>
-        <Namespace value="TobascoTest.TestEnums"></Namespace>
-    </BaseNamespaces>
-    <Mappers generate="true">
-        <Mapper>
-            <MapperLocation project="TobascoTest" folder="GeneratedMapper"></MapperLocation>
-            <InterfaceLocation project="TobascoTest" folder="GeneratedMapper"></InterfaceLocation>
-            <FromTo from="dataobject" to="businessobject"></FromTo>
-        </Mapper>
-        <Mapper>
-            <MapperLocation project="TobascoTest" folder="GeneratedMapper"></MapperLocation>
-            <InterfaceLocation project="TobascoTest" folder="GeneratedMapper"></InterfaceLocation>
-            <FromTo from="dataobject" to="businessobject"></FromTo>
-        </Mapper>
-    </Mappers>
-    <Database project="Database">
-        <StoredProcedures folder="Stp" generate="true">
-            <Insert generate="true"></Insert>
-            <Update generate="true"></Update>
-            <Delete generate="true"></Delete>
-            <GetById generate="true"></GetById>
-            <Merge generate="false"></Merge>
-        </StoredProcedures>
-        <Tables folder="Table" generate="true">
-            <Historie generate="true"></Historie>
-        </Tables>
-    </Database>
-    <Repository overridekey="repositorykey" EntityId="dataobject" generate="true">
-        <FileLocation project="TobascoTest" folder="GeneratedRepositoy"></FileLocation>
-        <Transaction useTransaction="false"> </Transaction>
-        <InterfaceLocation project="TobascoTest" folder="IGenerateRepository"></InterfaceLocation>
-        <Namespaces>
-            <Namespace value="TobascoTest.GeneratedEntity"></Namespace>
-            <Namespace value="Tobasco"></Namespace>
-        </Namespaces>
-    </Repository>
-    <DependencyInjection type="Ninject" overridekey="">
-        <Modules>
-            <Module name="Repository" type="Repository">
-                <Filelocation project="TobascoTest" folder="DependencyInjection"></Filelocation>
-            </Module>
-        </Modules>
-    </DependencyInjection>
-    <ConnectionFactory overridekey="">
-        <FileLocation project="TobascoTest" folder="GeneratedRepositoy"></FileLocation>
-        <InterfaceLocation project="TobascoTest" folder="IGenerateRepository"></InterfaceLocation>
-    </ConnectionFactory>
-    <GenericRepository overridekey="">
-        <FileLocation project="TobascoTest" folder="GeneratedRepositoy"></FileLocation>
-        <InterfaceLocation project="TobascoTest" folder="IGenerateRepository"></InterfaceLocation>
-    </GenericRepository>
+<EntityInformation xmlns="http://Tobasco/MainInfoSchema.xsd">
+  <EntityLocations>
+    <EntityLocation id="dataobject">
+      <FileLocation project="TobascoTest" folder="GeneratedEntity"></FileLocation>
+      <Namespaces>
+        <Namespace value="System.Dynamic"></Namespace>
+      </Namespaces>
+      <ORMapper type="Dapper" asd></ORMapper>
+    </EntityLocation>
+    <EntityLocation generaterules="true" id="businessobject">
+      <FileLocation project="TobascoTest" folder="GeneratedEntity2"></FileLocation>
+      <Namespaces>
+        <Namespace value="System.ComponentModel.DataAnnotations"></Namespace>
+      </Namespaces>
+    </EntityLocation>
+  </EntityLocations>
+  <BaseNamespaces>
+    <Namespace value="System.Collections.Generic"></Namespace>
+    <Namespace value="TobascoTest.TestEnums"></Namespace>
+  </BaseNamespaces>
+  <Mappers generate="true">
+    <Mapper>
+      <MapperLocation project="TobascoTest" folder="GeneratedMapper"></MapperLocation>
+      <InterfaceLocation project="TobascoTest" folder="GeneratedMapper"></InterfaceLocation>
+      <FromTo from="dataobject" to="businessobject"></FromTo>
+    </Mapper>
+    <Mapper>
+      <MapperLocation project="TobascoTest" folder="GeneratedMapper"></MapperLocation>
+      <InterfaceLocation project="TobascoTest" folder="GeneratedMapper"></InterfaceLocation>
+      <FromTo from="dataobject" to="businessobject"></FromTo>
+    </Mapper>
+  </Mappers>
+  <Database project="Database">
+    <StoredProcedures folder="Stp" generate="true">
+      <Insert generate="true"></Insert>
+      <Update generate="true"></Update>
+      <Delete generate="true"></Delete>
+      <GetById generate="true"></GetById>
+      <Merge generate="true"></Merge>
+    </StoredProcedures>
+    <Tables folder="Table" generate="true">
+      <Historie generate="true"></Historie>
+    </Tables>
+  </Database>
+  <Repository overridekey="repositorykey" EntityId="dataobject" generate="true">
+    <FileLocation project="TobascoTest" folder="GeneratedRepositoy"></FileLocation>
+    <Transaction useTransaction="false"> </Transaction>
+    <InterfaceLocation project="TobascoTest" folder="IGenerateRepository"></InterfaceLocation>
+    <Namespaces>
+      <Namespace value="TobascoTest.GeneratedEntity"></Namespace>
+      <Namespace value="Tobasco"></Namespace>
+    </Namespaces>
+  </Repository>
+  <DependencyInjection type="Ninject" overridekey="">
+    <Modules>
+      <Module name="Repository" type="Repository">
+        <Filelocation project="TobascoTest" folder="DependencyInjection"></Filelocation>
+      </Module>
+    </Modules>
+  </DependencyInjection>
+  <ConnectionFactory overridekey="">
+    <FileLocation project="TobascoTest" folder="GeneratedRepositoy"></FileLocation>
+    <InterfaceLocation project="TobascoTest" folder="IGenerateRepository"></InterfaceLocation>
+  </ConnectionFactory>
+  <GenericRepository overridekey="">
+    <FileLocation project="TobascoTest" folder="GeneratedRepositoy"></FileLocation>
+    <InterfaceLocation project="TobascoTest" folder="IGenerateRepository"></InterfaceLocation>
+  </GenericRepository>
 </EntityInformation>

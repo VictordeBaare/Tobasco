@@ -22,12 +22,7 @@ namespace Tobasco.Model.Builders.DatabaseBuilders
             parameters.Add(SqlConstants.TableProperties, GetTableProperties());
             parameters.Add(SqlConstants.Constraints, GetContraints());
             return parameters;
-        }
-
-        private List<string> GetTableProperties()
-        {
-            return GetNonChildCollectionProperties.Select(prop => $",{prop.SelectSqlTableProperty}").ToList();
-        }
+        }        
 
         private string GetContraints()
         {

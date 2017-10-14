@@ -6,6 +6,8 @@
         public const string TableProperties = "TableProperties";
         public const string Constraints = "Constraints";
         public const string StpPropertyNames = "StpPropertyNames";
+        public const string StpMergeSourcePropertyNames = "MergeSourcePropertyNames";
+        public const string StpMergeOutputAction = "MergeOutputAction";
         public const string StpDeletetedPropertyNames = "StpDeletetedPropertyNames";
         public const string StpParameter = "StpParameter";
         public const string StpParameterName = "StpParameterName";
@@ -15,5 +17,7 @@
         public const string DeclareChilds = "DeclareChilds";
         public const string ReferenceName = "ReferenceName";
         public const string ReferenceType = "ReferenceType";
+        public const string UpdateSetTableParemeters = "UpdateSetTableParemeters";
+        public const string MergeOutputParameters = "MergeOutputParameters";
     }
 }

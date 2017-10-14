@@ -189,7 +189,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="GeneratedDatabase\" />
-    <Folder Include="GeneratedMapper\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="DependencyInjection\TestGenerator2.txt4" />

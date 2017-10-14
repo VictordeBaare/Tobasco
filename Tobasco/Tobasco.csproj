@@ -138,6 +138,7 @@
     <Compile Include="Model\Builders\DatabaseBuilders\TableBuilder.cs" />
     <Compile Include="Model\Builders\DatabaseBuilders\TableHelper.cs" />
     <Compile Include="Model\Builders\DatabaseBuilders\TriggerBuilder.cs" />
+    <Compile Include="Model\Builders\DatabaseBuilders\TypeBuilder.cs" />
     <Compile Include="Model\Builders\DatabaseBuilders\UpdateBuilder.cs" />
     <Compile Include="Model\Builders\DefaultClassBuilder.cs" />
     <Compile Include="Model\Builders\DefaultConnectionfactoryBuilder.cs" />
@@ -207,6 +208,9 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
+    <None Include="Xml\MainInfoSchema.xsd">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -92,6 +92,8 @@ namespace Tobasco.Model.Builders
 
                 GenerateOnCondition("GetById", () => Database.StoredProcedures.GenerateGetById.Generate, () => GenerateGetByIdMethod(crudFile));
 
+                GenerateOnCondition("Type", () => Database.StoredProcedures.GenerateMerge.Generate, () => GenerateTypeMethod(crudFile));
+
                 GenerateOnCondition("Merge", () => Database.StoredProcedures.GenerateMerge.Generate, () => GenerateMergeMethod(crudFile));
 
                 if (Entity.Properties.Any(x => x.DataType.Datatype == Datatype.Reference))
@@ -135,6 +137,12 @@ namespace Tobasco.Model.Builders
         {
             var mergeBuilder = new MergeBuilder(Entity, Database);
             crudFile.Methods.Add(mergeBuilder.Build());
+        }
+
+        private void GenerateTypeMethod(OutputFile crudFile)
+        {
+            var typeBuilder = new TypeBuilder(Entity, Database);
+            crudFile.Methods.Add(typeBuilder.Build());
         }
 
         private void GenerateOnCondition(string stpType, Func<bool> condition, Action method)

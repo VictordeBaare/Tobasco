@@ -724,18 +724,43 @@ namespace Tobasco.Properties {
         
         /// <summary>
         ///   Looks up a localized string similar to CREATE PROCEDURE [dbo].[%TableName%_Merge]
+        ///		@DataTable [dbo].[%TableName%MergeType] READONLY,
         ///        @ModifiedBy nvarchar(256),
-        ///		@ModifiedOn datetime(7)
+        ///		@ModifiedOn datetime2(7),    
+        ///		@AbortOnConcurrency bit
         ///AS
         ///BEGIN
         ///		SET NOCOUNT ON;
         ///		
-        ///
-        ///END;.
+        ///		IF OBJECT_ID(&apos;tempdb..#output&apos;) IS NOT NULL
+        ///		BEGIN
+        ///			DROP TABLE #output
+        ///		END
+        ///		
+        ///		CREATE TABLE #output 
+        ///					(Id                   int           NOT NULL PRIMARY KEY
+        ///	                 ,[RowVersion]         binary(8)     NOT NULL
+        ///					 %TableProperties%
+        ///                   [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string SqlMergeStp {
             get {
                 return ResourceManager.GetString("SqlMergeStp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CREATE TYPE [dbo].[%TableName%MergeType] AS TABLE(
+        ///	 [Id] [bigint] NULL	
+        ///	,[RowVersion] [varbinary](8) NULL
+        ///	%TableProperties%
+        ///	,[Delete_Flag] [bit] NULL
+        ///	,[Id_Intern] [bigint] NOT NULL
+        ///).
+        /// </summary>
+        internal static string SqlMergeType {
+            get {
+                return ResourceManager.GetString("SqlMergeType", resourceCulture);
             }
         }
         

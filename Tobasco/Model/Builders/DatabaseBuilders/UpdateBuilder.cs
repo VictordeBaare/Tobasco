@@ -34,19 +34,6 @@ namespace Tobasco.Model.Builders.DatabaseBuilders
             parameters.Add(Resources.UpdateSetTableParemeters, GetSqlUpdateParameters());
 
             return parameters;
-        }
-
-        private List<string> GetSqlUpdateParameters()
-        {
-            var list = new List<string>();
-
-            foreach (DatabaseProperty selectSqlProperty in GetNonChildCollectionProperties)
-            {
-                list.Add($"{Name}.{selectSqlProperty.SelectSqlParameterNaam} = @{selectSqlProperty.SelectSqlParameterNaam},");
-            }
-
-            return list;
-        }
-
+        }  
     }
 }
