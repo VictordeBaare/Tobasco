@@ -16,6 +16,7 @@ namespace Tobasco
         {
             XmlSerializer entityserializer = new XmlSerializer(typeof(Entity));
             XmlSerializer serializer = new XmlSerializer(typeof(EntityInformation));
+
             var entityDictionary = new Dictionary<string, EntityHandler>();
             EntityInformation mainInformation;
             var xmls = Directory.GetFiles(path, "*.xml");

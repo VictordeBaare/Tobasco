@@ -6,7 +6,7 @@
       <Namespaces>
         <Namespace value="System.Dynamic"></Namespace>
       </Namespaces>
-      <ORMapper type="Dapper" asd></ORMapper>
+      <ORMapper type="Dapper"></ORMapper>
     </EntityLocation>
     <EntityLocation generaterules="true" id="businessobject">
       <FileLocation project="TobascoTest" folder="GeneratedEntity2"></FileLocation>

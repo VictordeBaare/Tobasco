@@ -208,6 +208,9 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
+    <None Include="Xml\EntitySchema.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Xml\MainInfoSchema.xsd">
       <SubType>Designer</SubType>
     </None>

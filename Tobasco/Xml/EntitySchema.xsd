@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="MainInfoSchema"
+    targetNamespace="http://Tobasco/EntitySchema.xsd"
+    elementFormDefault="qualified"
+    xmlns="http://Tobasco/EntitySchema.xsd"
+    xmlns:mstns="http://Tobasco/EntitySchema.xsd"
+    xmlns:xs="http://Tobasco/EntitySchema.xsd">
+  <xs:element name="Entity">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Properties">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Property" maxOccurs="unbounded" minOccurs="0">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="DataType">
+                      <xs:complexType>
+                        <xs:simpleContent>
+                          <xs:extension base="xs:string">
+                            <xs:attribute type="xs:string" name="name" use="optional"/>
+                            <xs:attribute type="xs:string" name="dbtype" use="optional"/>
+                            <xs:attribute type="xs:string" name="type" use="optional"/>
+                            <xs:attribute type="xs:string" name="generateforeignkey" use="optional"/>
+                            <xs:attribute type="xs:string" name="generateforeignkeyindex" use="optional"/>
+                          </xs:extension>
+                        </xs:simpleContent>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                  <xs:attribute type="xs:string" name="name" use="optional"/>
+                  <xs:attribute type="xs:string" name="required" use="optional"/>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+      <xs:attribute type="xs:string" name="name"/>
+      <xs:attribute type="xs:string" name="generateReadonlyGuid"/>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

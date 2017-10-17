@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<Entity name="ChildCollectionObject" generateReadonlyGuid="true">
+<Entity name="ChildCollectionObject" generateReadonlyGuid="true" >
   <Properties>
     <Property name="TestChildProp1" required="true">
       <DataType name="Decimal" dbtype="Money"></DataType>
@@ -8,7 +8,7 @@
       <DataType name="Decimal" dbtype="Smallmoney"></DataType>
     </Property>
       <Property name="FileMetOverervingId" required="true">
-          <DataType name="Reference" type="FileMetOvererving"></DataType>
+          <DataType name="Reference" type="FileMetOvererving" generateforeignkey="true" generateforeignkeyindex="true"></DataType>
       </Property>
   </Properties>
 </Entity>
