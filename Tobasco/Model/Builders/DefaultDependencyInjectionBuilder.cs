@@ -29,7 +29,7 @@ namespace Tobasco.Model.Builders
             classFile.Namespaces.AddRange(module.Namespaces.Select(x => x.Value));
             classFile.OwnNamespace = module.FileLocation.GetNamespace;
             LoadMethod(classFile);
-            AddNinjectBinder(classFile);
+            AddNinjectBinder(classFile, module);
             return classFile;
         }
 
@@ -43,12 +43,12 @@ namespace Tobasco.Model.Builders
             classfile.Methods.Add(template.GetText);            
         }
 
-        private void AddNinjectBinder(ClassFile classfile)
+        private void AddNinjectBinder(ClassFile classfile, Module module)
         {
             var template = new Template();
             template.SetTemplate(Resources.NinjectBinder);
             var parameters = new TemplateParameter();
-            parameters.Add("BindingScope", BindingExtension);
+            parameters.Add("BindingScope", ResolveBindingExtension(module, classfile));
             template.Fill(parameters);
             classfile.Methods.Add(template.GetText);
         }

@@ -54,7 +54,7 @@
   </Repository>
   <DependencyInjection type="Ninject" overridekey="">
     <Modules>
-      <Module name="Repository" type="Repository">
+      <Module name="Repository" type="Repository" scope="InRequestScope">
         <Filelocation project="TobascoTest" folder="DependencyInjection"></Filelocation>
       </Module>
     </Modules>

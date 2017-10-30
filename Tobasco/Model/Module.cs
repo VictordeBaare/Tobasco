@@ -12,6 +12,9 @@ namespace Tobasco.Model
         [XmlAttribute("type")]
         public ModuleType Type { get; set; }
 
+        [XmlAttribute("scope")]
+        public ScopeType Scope { get; set; }
+
         [XmlElement("Filelocation")]
         public FileLocation FileLocation { get; set; }
 

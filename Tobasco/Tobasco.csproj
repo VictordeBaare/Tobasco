@@ -87,6 +87,7 @@
     <Compile Include="Enums\FileType.cs" />
     <Compile Include="Enums\ModuleType.cs" />
     <Compile Include="Enums\OrmType.cs" />
+    <Compile Include="Enums\ScopeType.cs" />
     <Compile Include="Extensions\EnumExtensions.cs" />
     <Compile Include="Extensions\ListExtensions.cs" />
     <Compile Include="Extensions\StringBuilderExtensions.cs" />

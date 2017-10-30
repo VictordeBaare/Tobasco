@@ -5,6 +5,7 @@ using Ninject.Modules;
 using TobascoTest.GeneratedRepositoy;
 using TobascoTest.GeneratedEntity;
 using TobascoTest.IGenerateRepository;
+using Ninject.Web.Common;
 
 namespace TobascoTest.DependencyInjection
 {
@@ -28,7 +29,7 @@ NinjectBinder<IGenericRepository<FileMetOvererving>,GenericRepository<FileMetOve
 }
 protected void NinjectBinder<T, TY>() where TY : T
 {
-    Bind<T>().To<TY>();
+    Bind<T>().To<TY>().InRequestScope();
 }	
 	}
 }
