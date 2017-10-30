@@ -11,33 +11,234 @@
         <xs:element name="Properties">
           <xs:complexType>
             <xs:sequence>
-              <xs:element name="Property" maxOccurs="unbounded" minOccurs="0">
+              <xs:element name="Property" maxOccurs="unbounded" minOccurs="1">
                 <xs:complexType>
                   <xs:sequence>
                     <xs:element name="DataType">
                       <xs:complexType>
                         <xs:simpleContent>
                           <xs:extension base="xs:string">
-                            <xs:attribute type="xs:string" name="name" use="optional"/>
+                            <xs:attribute type="xs:string" name="name" use="required"/>
                             <xs:attribute type="xs:string" name="dbtype" use="optional"/>
                             <xs:attribute type="xs:string" name="type" use="optional"/>
-                            <xs:attribute type="xs:string" name="generateforeignkey" use="optional"/>
-                            <xs:attribute type="xs:string" name="generateforeignkeyindex" use="optional"/>
+                            <xs:attribute type="xs:boolean" name="generateforeignkey" use="optional" default="true"/>
+                            <xs:attribute type="xs:boolean" name="generateforeignkeyindex" use="optional" default="true"/>
                           </xs:extension>
                         </xs:simpleContent>
                       </xs:complexType>
                     </xs:element>
                   </xs:sequence>
-                  <xs:attribute type="xs:string" name="name" use="optional"/>
-                  <xs:attribute type="xs:string" name="required" use="optional"/>
+                  <xs:attribute type="xs:string" name="name" use="required"/>
+                  <xs:attribute type="xs:string" name="required" use="optional" default="false"/>
                 </xs:complexType>
               </xs:element>
             </xs:sequence>
           </xs:complexType>
         </xs:element>
       </xs:sequence>
-      <xs:attribute type="xs:string" name="name"/>
-      <xs:attribute type="xs:string" name="generateReadonlyGuid"/>
+      <xs:attribute type="xs:string" name="name" use="required"/>
+      <xs:attribute type="xs:boolean" name="generateReadonlyGuid" use="optional" default="false"/>
+    </xs:complexType>
+
+    <xs:element name="EntityInformation">
+      <xs:complexType>
+        <xs:sequence>
+          <xs:element name="EntityLocations">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="EntityLocation" maxOccurs="unbounded" minOccurs="0">
+                  <xs:complexType>
+                    <xs:sequence>
+                      <xs:element name="FileLocation" type="FileLocationType">
+                      </xs:element>
+                      <xs:element name="Namespaces">
+                        <xs:complexType>
+                          <xs:sequence>
+                            <xs:element name="Namespace" type="NamespaceType">
+                            </xs:element>
+                          </xs:sequence>
+                        </xs:complexType>
+                      </xs:element>
+                      <xs:element name="ORMapper" minOccurs="0">
+                        <xs:complexType>
+                          <xs:simpleContent>
+                            <xs:extension base="xs:string">
+                              <xs:attribute type="xs:string" name="type" use="required"/>
+                            </xs:extension>
+                          </xs:simpleContent>
+                        </xs:complexType>
+                      </xs:element>
+                    </xs:sequence>
+                    <xs:attribute type="xs:string" name="id" use="optional"/>
+                    <xs:attribute type="xs:string" name="generaterules" use="optional"/>
+                  </xs:complexType>
+                </xs:element>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="BaseNamespaces">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="Namespace" maxOccurs="unbounded" minOccurs="0" type="NamespaceType">
+                </xs:element>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="Mappers">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="Mapper" maxOccurs="unbounded" minOccurs="0">
+                  <xs:complexType>
+                    <xs:sequence>
+                      <xs:element name="MapperLocation" type="FileLocationType"></xs:element>
+                      <xs:element name="InterfaceLocation" type="FileLocationType"></xs:element>
+                      <xs:element name="FromTo">
+                        <xs:complexType>
+                          <xs:simpleContent>
+                            <xs:extension base="xs:string">
+                              <xs:attribute type="xs:string" name="from" use="optional"/>
+                              <xs:attribute type="xs:string" name="to" use="optional"/>
+                            </xs:extension>
+                          </xs:simpleContent>
+                        </xs:complexType>
+                      </xs:element>
+                    </xs:sequence>
+                  </xs:complexType>
+                </xs:element>
+              </xs:sequence>
+              <xs:attribute type="xs:string" name="generate"/>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="Database">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="StoredProcedures">
+                  <xs:complexType>
+                    <xs:sequence>
+                      <xs:element name="Insert" type="GenerateElementType">
+                      </xs:element>
+                      <xs:element name="Update" type="GenerateElementType">
+                      </xs:element>
+                      <xs:element name="Delete" type="GenerateElementType">
+                      </xs:element>
+                      <xs:element name="GetById" type="GenerateElementType">
+                      </xs:element>
+                      <xs:element name="Merge" type="GenerateElementType">
+                      </xs:element>
+                    </xs:sequence>
+                    <xs:attribute type="xs:string" name="folder" use="optional"/>
+                    <xs:attribute type="xs:string" name="generate" default="true"/>
+                  </xs:complexType>
+                </xs:element>
+                <xs:element name="Tables">
+                  <xs:complexType>
+                    <xs:sequence>
+                      <xs:element name="Historie" type="GenerateElementType">
+                      </xs:element>
+                    </xs:sequence>
+                    <xs:attribute type="xs:string" name="folder" use="optional"/>
+                    <xs:attribute type="xs:boolean" name="generate" default="true"/>
+                  </xs:complexType>
+                </xs:element>
+              </xs:sequence>
+              <xs:attribute type="xs:string" name="project" use="required"/>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="Repository">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="FileLocation" type="FileLocationType"></xs:element>
+                <xs:element name="Transaction">
+                  <xs:complexType>
+                    <xs:simpleContent>
+                      <xs:extension base="xs:string">
+                        <xs:attribute type="xs:boolean" name="useTransaction" default="false"/>
+                      </xs:extension>
+                    </xs:simpleContent>
+                  </xs:complexType>
+                </xs:element>
+                <xs:element name="InterfaceLocation" type="FileLocationType"></xs:element>
+                <xs:element name="Namespaces">
+                  <xs:complexType>
+                    <xs:sequence>
+                      <xs:element name="Namespace" maxOccurs="unbounded" minOccurs="0" type="NamespaceType"></xs:element>
+                    </xs:sequence>
+                  </xs:complexType>
+                </xs:element>
+              </xs:sequence>
+              <xs:attribute type="xs:string" name="overridekey"/>
+              <xs:attribute type="xs:string" name="EntityId"/>
+              <xs:attribute type="xs:boolean" name="generate" default="true"/>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="DependencyInjection">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="Modules">
+                  <xs:complexType>
+                    <xs:sequence>
+                      <xs:element name="Module">
+                        <xs:complexType>
+                          <xs:sequence>
+                            <xs:element name="Filelocation" type="FileLocationType"></xs:element>
+                          </xs:sequence>
+                          <xs:attribute type="xs:string" name="name"/>
+                          <xs:attribute type="xs:string" name="type"/>
+                        </xs:complexType>
+                      </xs:element>
+                    </xs:sequence>
+                  </xs:complexType>
+                </xs:element>
+              </xs:sequence>
+              <xs:attribute type="xs:string" name="type"/>
+              <xs:attribute type="xs:string" name="overridekey"/>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="ConnectionFactory">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="FileLocation" type="FileLocationType"></xs:element>
+                <xs:element name="InterfaceLocation" type="FileLocationType"></xs:element>
+              </xs:sequence>
+              <xs:attribute type="xs:string" name="overridekey"/>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="GenericRepository">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="FileLocation" type="FileLocationType"></xs:element>
+                <xs:element name="InterfaceLocation" type="FileLocationType"></xs:element>
+              </xs:sequence>
+              <xs:attribute type="xs:string" name="overridekey"/>
+            </xs:complexType>
+          </xs:element>
+        </xs:sequence>
+      </xs:complexType>
+    </xs:element>
+
+    <xs:complexType name="NamespaceType">
+      <xs:simpleContent>
+        <xs:extension base="xs:string">
+          <xs:attribute type="xs:string" name="value" use="required"/>
+        </xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+
+    <xs:complexType name="FileLocationType">
+      <xs:simpleContent>
+        <xs:extension base="xs:string">
+          <xs:attribute type="xs:string" name="project" use="required"/>
+          <xs:attribute type="xs:string" name="folder" use="optional"/>
+        </xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+
+    <xs:complexType name="GenerateElementType">
+      <xs:simpleContent>
+        <xs:extension base="xs:string">
+          <xs:attribute type="xs:boolean" name="generate" default="true"/>
+        </xs:extension>
+      </xs:simpleContent>
     </xs:complexType>
   </xs:element>
 </xs:schema>

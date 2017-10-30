@@ -92,6 +92,7 @@
     <Compile Include="GeneratedEntity\CPK_Generated.cs">
       <DependentUpon>TestGenerator2.txt4</DependentUpon>
     </Compile>
+    <Compile Include="GeneratedEntity\DifferentBase.cs" />
     <Compile Include="GeneratedEntity\EntityBase.cs" />
     <Compile Include="GeneratedEntity\FileMetOvererving_Generated.cs">
       <DependentUpon>TestGenerator2.txt4</DependentUpon>
@@ -166,7 +167,9 @@
     <Compile Include="Unittests\GetById.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="CPK.xml" />
+    <Content Include="CPK.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="TestChildCollectionObject.xml" />
     <Content Include="TestChildObject.xml" />
     <Content Include="TestEntity.xml" />

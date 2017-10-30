@@ -8,7 +8,7 @@ namespace TobascoTest.GeneratedEntity
 {
 	[GeneratedCode("Tobasco", "1.0.0.0")]
 [Serializable]
-	public  partial class CPK : EntityBase
+	public  partial class CPK : DifferentBase
 	{
 				
 		private string _training;
