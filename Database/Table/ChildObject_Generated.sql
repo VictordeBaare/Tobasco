@@ -1,11 +1,13 @@
 ﻿CREATE TABLE [dbo].[ChildObject](
-	 [Id]			bigint	IDENTITY (1,1)  NOT NULL
-	,[RowVersion]   rowversion         		NOT NULL
+	 [Id]			 bigint	IDENTITY (1,1)     NOT NULL
+	,[RowVersion]    rowversion         	   NOT NULL
 	,TestChildProp1 varchar(100) NOT NULL
-	,[ModifiedBy]	nvarchar(256)			NOT NULL
-	 CONSTRAINT [DF_ChildObject_ModifiedBy] DEFAULT SUSER_SNAME()
-	,[ModifiedOn]	datetime2(7)			NOT NULL
-	 CONSTRAINT [DF_ChildObject_ModifiedOn] DEFAULT SYSDATETIME()
+	,[ModifiedBy]	 nvarchar(256)			   NOT NULL
+	 CONSTRAINT [DF_ChildObject_ModifiedBy]    DEFAULT SUSER_SNAME()
+	,[ModifiedOn]	 datetime2(7)			   NOT NULL
+	 CONSTRAINT [DF_ChildObject_ModifiedOn]    DEFAULT SYSDATETIME()
+	,[ModifiedOnUTC] datetime2(7)			   NOT NULL
+	 CONSTRAINT [DF_ChildObject_ModifiedOnUTC] DEFAULT SYSUTCDATETIME()
 	,CONSTRAINT [PK_ChildObject] PRIMARY KEY CLUSTERED (Id ASC)
 	 
 );

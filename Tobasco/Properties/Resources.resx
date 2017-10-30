@@ -697,13 +697,15 @@ END</value>
   </data>
   <data name="SqlTable" xml:space="preserve">
     <value>CREATE TABLE [dbo].[%TableName%](
-	 [Id]			bigint	IDENTITY (1,1)  NOT NULL
-	,[RowVersion]   rowversion         		NOT NULL
+	 [Id]			 bigint	IDENTITY (1,1)     NOT NULL
+	,[RowVersion]    rowversion         	   NOT NULL
 	%TableProperties%
-	,[ModifiedBy]	nvarchar(256)			NOT NULL
-	 CONSTRAINT [DF_%TableName%_ModifiedBy] DEFAULT SUSER_SNAME()
-	,[ModifiedOn]	datetime2(7)			NOT NULL
-	 CONSTRAINT [DF_%TableName%_ModifiedOn] DEFAULT SYSDATETIME()
+	,[ModifiedBy]	 nvarchar(256)			   NOT NULL
+	 CONSTRAINT [DF_%TableName%_ModifiedBy]    DEFAULT SUSER_SNAME()
+	,[ModifiedOn]	 datetime2(7)			   NOT NULL
+	 CONSTRAINT [DF_%TableName%_ModifiedOn]    DEFAULT SYSDATETIME()
+	,[ModifiedOnUTC] datetime2(7)			   NOT NULL
+	 CONSTRAINT [DF_%TableName%_ModifiedOnUTC] DEFAULT SYSUTCDATETIME()
 	,CONSTRAINT [PK_%TableName%] PRIMARY KEY CLUSTERED (Id ASC)
 	 %Constraints%
 );</value>

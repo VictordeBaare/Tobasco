@@ -1,13 +1,15 @@
 ﻿CREATE TABLE [dbo].[CPK](
-	 [Id]			bigint	IDENTITY (1,1)  NOT NULL
-	,[RowVersion]   rowversion         		NOT NULL
+	 [Id]			 bigint	IDENTITY (1,1)     NOT NULL
+	,[RowVersion]    rowversion         	   NOT NULL
 	,Training nvarchar(100) NOT NULL
 ,Duur nvarchar(100) NOT NULL
 ,Kosten nvarchar(100) NOT NULL
-	,[ModifiedBy]	nvarchar(256)			NOT NULL
-	 CONSTRAINT [DF_CPK_ModifiedBy] DEFAULT SUSER_SNAME()
-	,[ModifiedOn]	datetime2(7)			NOT NULL
-	 CONSTRAINT [DF_CPK_ModifiedOn] DEFAULT SYSDATETIME()
+	,[ModifiedBy]	 nvarchar(256)			   NOT NULL
+	 CONSTRAINT [DF_CPK_ModifiedBy]    DEFAULT SUSER_SNAME()
+	,[ModifiedOn]	 datetime2(7)			   NOT NULL
+	 CONSTRAINT [DF_CPK_ModifiedOn]    DEFAULT SYSDATETIME()
+	,[ModifiedOnUTC] datetime2(7)			   NOT NULL
+	 CONSTRAINT [DF_CPK_ModifiedOnUTC] DEFAULT SYSUTCDATETIME()
 	,CONSTRAINT [PK_CPK] PRIMARY KEY CLUSTERED (Id ASC)
 	 
 );

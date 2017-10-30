@@ -766,16 +766,16 @@ namespace Tobasco.Properties {
         
         /// <summary>
         ///   Looks up a localized string similar to CREATE TABLE [dbo].[%TableName%](
-        ///	 [Id]			bigint	IDENTITY (1,1)  NOT NULL
-        ///	,[RowVersion]   rowversion         		NOT NULL
+        ///	 [Id]			 bigint	IDENTITY (1,1)     NOT NULL
+        ///	,[RowVersion]    rowversion         	   NOT NULL
         ///	%TableProperties%
-        ///	,[ModifiedBy]	nvarchar(256)			NOT NULL
-        ///	 CONSTRAINT [DF_%TableName%_ModifiedBy] DEFAULT SUSER_SNAME()
-        ///	,[ModifiedOn]	datetime2(7)			NOT NULL
-        ///	 CONSTRAINT [DF_%TableName%_ModifiedOn] DEFAULT SYSDATETIME()
-        ///	,CONSTRAINT [PK_%TableName%] PRIMARY KEY CLUSTERED (Id ASC)
-        ///	 %Constraints%
-        ///);.
+        ///	,[ModifiedBy]	 nvarchar(256)			   NOT NULL
+        ///	 CONSTRAINT [DF_%TableName%_ModifiedBy]    DEFAULT SUSER_SNAME()
+        ///	,[ModifiedOn]	 datetime2(7)			   NOT NULL
+        ///	 CONSTRAINT [DF_%TableName%_ModifiedOn]    DEFAULT SYSDATETIME()
+        ///	,[ModifiedOnUTC] datetime2(7)			   NOT NULL
+        ///	 CONSTRAINT [DF_%TableName%_ModifiedOnUTC] DEFAULT SYSUTCDATETIME()
+        ///	,CONSTRAINT [PK_%Tab [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string SqlTable {
             get {
