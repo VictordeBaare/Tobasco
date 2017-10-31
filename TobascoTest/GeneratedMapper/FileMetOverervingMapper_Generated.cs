@@ -8,12 +8,10 @@ namespace TobascoTest.GeneratedMapper
 	[GeneratedCode("Tobasco", "1.0.0.0")]
 	public  partial class FileMetOverervingMapper : IFileMetOverervingMapper
 	{
-		private IChildObjectMapper _childObjectMapper;
-private IChildCollectionObjectMapper _childCollectionObjectMapper;
-public FileMetOverervingMapper(IChildObjectMapper childObjectMapper, IChildCollectionObjectMapper childCollectionObjectMapper)
+		private IChildCollectionObjectMapper _childCollectionObjectMapper;
+public FileMetOverervingMapper(IChildCollectionObjectMapper childCollectionObjectMapper)
 {
-	_childObjectMapper = childObjectMapper;
-_childCollectionObjectMapper = childCollectionObjectMapper;
+	_childCollectionObjectMapper = childCollectionObjectMapper;
 	
 }		
 				
@@ -27,8 +25,6 @@ _childCollectionObjectMapper = childCollectionObjectMapper;
             TestChildProp4 = objectToMapFrom.TestChildProp4,
             TestChildProp5 = objectToMapFrom.TestChildProp5,
             TestChildProp6 = objectToMapFrom.TestChildProp6,
-            TestChildProp7 = _childObjectMapper.MapToObject(objectToMapFrom.TestChildProp7),
-            TestChildProp9 = _childObjectMapper.MapToObject(objectToMapFrom.TestChildProp9),
         };
 
         foreach(var property in objectToMapFrom.TestChildProp8)

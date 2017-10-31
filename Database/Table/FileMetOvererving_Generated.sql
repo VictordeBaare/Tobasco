@@ -8,8 +8,6 @@
 ,TestChildProp4 datetime2(7) NULL
 ,TestChildProp5 tinyint NULL
 ,TestChildProp6 decimal(12,2) NULL
-,TestChildProp7Id bigint NULL
-,TestChildProp9Id bigint NULL
 	,[ModifiedBy]	nvarchar(256)			NOT NULL
 	 CONSTRAINT [DF_{FileMetOvererving}_ModifiedBy] DEFAULT SUSER_SNAME()
 	,[ModifiedOn]	datetime2(7)			NOT NULL
@@ -26,9 +24,7 @@ CREATE TABLE [dbo].[FileMetOvererving_historie] (
 ,TestChildProp3 bigint NULL
 ,TestChildProp4 datetime2(7) NULL
 ,TestChildProp5 tinyint NULL
-,TestChildProp6 decimal(12,2) NULL
-,TestChildProp7Id bigint NULL
-,TestChildProp9Id bigint NULL   
+,TestChildProp6 decimal(12,2) NULL   
    ,[ModifiedBy]                  nvarchar (256)     NOT NULL
    ,[ModifiedOn]                  DATETIME2(7)       NOT NULL
    ,DeletedBy                     nvarchar(256)      NULL
@@ -62,8 +58,6 @@ TestChildProp3,
 TestChildProp4,
 TestChildProp5,
 TestChildProp6,
-TestChildProp7Id,
-TestChildProp9Id,
             [ModifiedBy],
             [ModifiedOn],
             DeletedBy,
@@ -77,8 +71,6 @@ Deleted.TestChildProp3,
 Deleted.TestChildProp4,
 Deleted.TestChildProp5,
 Deleted.TestChildProp6,
-Deleted.TestChildProp7Id,
-Deleted.TestChildProp9Id,
            Deleted.ModifiedBy,
            Deleted.ModifiedOn,
            NULL,
@@ -101,8 +93,6 @@ TestChildProp3,
 TestChildProp4,
 TestChildProp5,
 TestChildProp6,
-TestChildProp7Id,
-TestChildProp9Id,
 		    [ModifiedBy],
 		    [ModifiedOn],
 		    [DeletedBy],
@@ -116,8 +106,6 @@ Deleted.TestChildProp3,
 Deleted.TestChildProp4,
 Deleted.TestChildProp5,
 Deleted.TestChildProp6,
-Deleted.TestChildProp7Id,
-Deleted.TestChildProp9Id,
 		   Deleted.ModifiedBy,
 		   Deleted.ModifiedOn,
 		   ISNULL(LTRIM(RTRIM(CONVERT(nvarchar(128), CONTEXT_INFO()))), SUSER_SNAME()),

@@ -509,6 +509,29 @@ namespace Tobasco.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to internal static Dictionary&lt;long, %EntityName%&gt; Read(GridReader reader)
+        ///{
+        ///	%ChildReader%
+        ///	
+        ///	%ChildCollectionReader%
+        ///
+        ///    var items = reader.Read((%EntityName% item, %EntityName% returnItem) =&gt;
+        ///    {
+        ///        %ChildCollectionReadDictionary%
+        ///
+        ///        return returnItem;
+        ///    });
+        ///
+        ///    return items.ToDictionary(x =&gt; x.Id);        
+        ///}.
+        /// </summary>
+        internal static string RepositoryGetFullyByIdChildCollectionReader {
+            get {
+                return ResourceManager.GetString("RepositoryGetFullyByIdChildCollectionReader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to public %EntityName% Save(%EntityName%  %EntityNameLowerCase%)
         ///{
         ///	%SaveChild%	
