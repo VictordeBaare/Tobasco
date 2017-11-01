@@ -23,7 +23,7 @@ namespace Tobasco.Model.Builders.DatabaseBuilders
         private string BuildDeleteTrigger()
         {
             var template = new Template();
-            template.SetTemplate(Resources.SqlTriggerDelete);
+            template.SetTemplate(SqlResources.SqlTriggerDelete);
             template.Fill(GetParameters());
             return template.GetText;
         }
@@ -31,7 +31,7 @@ namespace Tobasco.Model.Builders.DatabaseBuilders
         private string BuildUpdateTrigger()
         {
             var template = new Template();
-            template.SetTemplate(Resources.SqlTriggerUpdate);
+            template.SetTemplate(SqlResources.SqlTriggerUpdate);
             template.Fill(GetParameters());
             return template.GetText;
         }

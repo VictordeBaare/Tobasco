@@ -263,7 +263,7 @@ END
 
 END
 GO
-CREATE PROCEDURE [dbo].ChildCollectionObject_GetFullByFileMetOvererving
+CREATE PROCEDURE [dbo].ChildCollectionObject_GetFullByFileMetOverervingId
 	@FileMetOverervingId bigint
 AS
 BEGIN

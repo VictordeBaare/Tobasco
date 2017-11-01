@@ -17,7 +17,7 @@ namespace Tobasco.Model.Builders.DatabaseBuilders
         public string Build()
         {
             var template = new Template();
-            template.SetTemplate(Resources.GetFullObjectByEntity);
+            template.SetTemplate(SqlResources.GetFullObjectByEntity);
             template.Fill(GetParameters());
             return template.GetText;
         }

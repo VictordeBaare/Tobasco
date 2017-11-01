@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Tobasco.Constants;
 using Tobasco.Properties;
 using Tobasco.Templates;
 
@@ -17,7 +18,7 @@ namespace Tobasco.Model.Builders.DatabaseBuilders
         public string Build()
         {
             var template = new Template();
-            template.SetTemplate(Entity.GenerateReadonlyGuid ? Resources.SqlInsertStpWithUid : Resources.SqlInsertStp);
+            template.SetTemplate(Entity.GenerateReadonlyGuid ? SqlResources.SqlInsertStpWithUid : SqlResources.SqlInsertStp);
             template.Fill(InsertTemplateParameters());
 
             return template.GetText;
@@ -26,10 +27,10 @@ namespace Tobasco.Model.Builders.DatabaseBuilders
         private TemplateParameter InsertTemplateParameters()
         {
             var parameters = new TemplateParameter();
-            parameters.Add(Resources.TableName, Name);
-            parameters.Add(Resources.StpParameter, GetSqlParameters());
-            parameters.Add(Resources.StpParameterName, GetSqlParameterNames("@"));
-            parameters.Add(Resources.StpPropertyNames, GetSqlParameterNames(""));
+            parameters.Add(SqlConstants.TableName, Name);
+            parameters.Add(SqlConstants.StpParameter, GetSqlParameters());
+            parameters.Add(SqlConstants.StpParameterName, GetSqlParameterNames("@"));
+            parameters.Add(SqlConstants.StpPropertyNames, GetSqlParameterNames(""));
             return parameters;
         }
 

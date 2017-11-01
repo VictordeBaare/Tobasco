@@ -13,7 +13,7 @@ namespace Tobasco.Model.Builders.DatabaseBuilders
         public string Build(Property reference)
         {
             var template = new Template();
-            template.SetTemplate(Resources.SqlGetByReferenceId);
+            template.SetTemplate(SqlResources.SqlGetByReferenceId);
             template.Fill(GetReferenceParameters(reference));
             return template.GetText;
         }
