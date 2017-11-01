@@ -28,11 +28,15 @@ namespace Tobasco.Model.Builders
         {
             var template = new Template();
             var trans = Repository.Transaction;
-            template.SetTemplate(trans != null && trans.UseTransaction ? Resources.RepositorySaveWithTransaction : Resources.RepositorySave);
+            template.SetTemplate(trans != null && trans.UseTransaction ? GetSaveWithTransactionTemplate : GetSaveWithoutTransactionTemplate);
             template.Fill(GetSaveParameters());
             return template.GetText;
         }
 
+        protected virtual string GetSaveWithTransactionTemplate => Resources.RepositorySaveWithTransaction;
+
+        protected virtual string GetSaveWithoutTransactionTemplate => Resources.RepositorySave;
+        
         protected TemplateParameter GetSaveParameters()
         {
             var parameters = new TemplateParameter();
@@ -110,8 +114,11 @@ namespace Tobasco.Model.Builders
             classFile.BaseClass = $": {GetRepositoryInterfaceName}";
             classFile.Methods.Add(GetSaveMethod());
             classFile.Methods.Add(GetByIdMethod());
-            classFile.Methods.Add(_getFullEntityByIdBuilder.Build());
-            classFile.Methods.Add(_getFullEntityByIdReaderBuilder.Build());
+            if (Entity.GetDatabase.StoredProcedures.GenerateGetById.Generate)
+            {
+                classFile.Methods.Add(_getFullEntityByIdBuilder.Build());
+                classFile.Methods.Add(_getFullEntityByIdReaderBuilder.Build());
+            }
             return classFile;
         }
 
@@ -126,7 +133,10 @@ namespace Tobasco.Model.Builders
             interfaceFile.OwnNamespace = Repository.InterfaceLocation.GetNamespace;
             interfaceFile.Methods.Add($"{GetEntityName} Save({GetEntityName} {GetEntityName.ToLower()});");
             interfaceFile.Methods.Add($"{GetEntityName} GetById(long id);");
-            interfaceFile.Methods.Add($"{GetEntityName} GetFullObjectById(long id);");
+            if (Entity.GetDatabase.StoredProcedures.GenerateGetById.Generate)
+            {
+                interfaceFile.Methods.Add($"{GetEntityName} GetFullObjectById(long id);");
+            }
             return interfaceFile;
         }
 
