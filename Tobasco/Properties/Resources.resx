@@ -145,15 +145,21 @@ namespace %OwnNamespace%
   <data name="ConnectionFactoryGetConnection" xml:space="preserve">
     <value>public SqlConnection GetConnection()
         {
-            lock (_lock)
+            SqlConnection connection = null;
+            SqlConnection tempConnection = null;
+            try
             {
-                if (_connection.State == ConnectionState.Closed || _connection.State == ConnectionState.Broken)
-                {
-                    _connection.Open();
-                }
+                tempConnection = new SqlConnection(_connectionstring);
+                tempConnection.Open();
+                connection = tempConnection;
+                tempConnection = null;
+            }
+            finally
+            {
+                tempConnection?.Dispose();
             }
 
-            return _connection;
+            return connection;
         }</value>
   </data>
   <data name="Constructor" xml:space="preserve">

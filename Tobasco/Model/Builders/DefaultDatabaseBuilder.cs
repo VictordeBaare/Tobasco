@@ -96,7 +96,7 @@ namespace Tobasco.Model.Builders
 
                 GenerateOnCondition("Merge", () => Database.StoredProcedures.GenerateMerge.Generate, () => GenerateMergeMethod(crudFile));
 
-                if (Entity.Properties.Any(x => x.DataType.Datatype == Datatype.Reference))
+                if (Database.StoredProcedures.GenerateGetById.Generate && Entity.Properties.Any(x => x.DataType.Datatype == Datatype.Reference))
                 {
                     foreach (var reference in Entity.Properties.Where(x => x.DataType.Datatype == Datatype.Reference))
                     {

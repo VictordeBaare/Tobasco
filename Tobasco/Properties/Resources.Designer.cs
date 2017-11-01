@@ -19,7 +19,7 @@ namespace Tobasco.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resources {
@@ -106,16 +106,21 @@ namespace Tobasco.Properties {
         /// <summary>
         ///   Looks up a localized string similar to public SqlConnection GetConnection()
         ///        {
-        ///            lock (_lock)
+        ///            SqlConnection connection = null;
+        ///            SqlConnection tempConnection = null;
+        ///            try
         ///            {
-        ///                if (_connection.State == ConnectionState.Closed || _connection.State == ConnectionState.Broken)
-        ///                {
-        ///                    _connection.Open();
-        ///                }
+        ///                tempConnection = new SqlConnection(_connectionstring);
+        ///                tempConnection.Open();
+        ///                connection = tempConnection;
+        ///                tempConnection = null;
+        ///            }
+        ///            finally
+        ///            {
+        ///                tempConnection?.Dispose();
         ///            }
         ///
-        ///            return _connection;
-        ///        }.
+        ///            return connec [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string ConnectionFactoryGetConnection {
             get {
