@@ -617,8 +617,8 @@ namespace Tobasco.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to CREATE PROCEDURE [dbo].%TableName%_GetFullBy%ReferenceType%
-        ///	@ReferenceName bigint
+        ///   Looks up a localized string similar to CREATE PROCEDURE [dbo].%TableName%_GetFullBy%ReferenceName%
+        ///	@%ReferenceName% bigint
         ///AS
         ///BEGIN
         ///
@@ -634,7 +634,7 @@ namespace Tobasco.Properties {
         ///		   [ModifiedBy],
         ///		   [ModifiedOn]
         ///	  FROM %TableName%
-        ///	 WHERE %TableName%.%ReferenceName% = @ReferenceName;
+        ///	 WHERE %TableName%.%ReferenceName% = @%ReferenceName%;
         ///END;.
         /// </summary>
         internal static string SqlGetByReferenceId {

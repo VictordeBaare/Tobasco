@@ -500,8 +500,8 @@ BEGIN
 END;</value>
   </data>
   <data name="SqlGetByReferenceId" xml:space="preserve">
-    <value>CREATE PROCEDURE [dbo].%TableName%_GetFullBy%ReferenceType%
-	@ReferenceName bigint
+    <value>CREATE PROCEDURE [dbo].%TableName%_GetFullBy%ReferenceName%
+	@%ReferenceName% bigint
 AS
 BEGIN
 
@@ -517,7 +517,7 @@ BEGIN
 		   [ModifiedBy],
 		   [ModifiedOn]
 	  FROM %TableName%
-	 WHERE %TableName%.%ReferenceName% = @ReferenceName;
+	 WHERE %TableName%.%ReferenceName% = @%ReferenceName%;
 END;</value>
   </data>
   <data name="SqlHistorieTable" xml:space="preserve">

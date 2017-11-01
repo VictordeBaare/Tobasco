@@ -21,7 +21,6 @@ namespace Tobasco.Model.Builders.DatabaseBuilders
         private TemplateParameter GetReferenceParameters(Property reference)
         {
             var parameters = GetParameters();
-            parameters.Add(SqlConstants.ReferenceType, reference.DataType.Type);
             parameters.Add(SqlConstants.ReferenceName, reference.Name);
             return parameters;
         }

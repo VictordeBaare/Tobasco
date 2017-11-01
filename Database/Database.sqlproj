@@ -73,6 +73,5 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Stp\TestGenerator2.txt4" />
-    <None Include="Table\TestGenerator2.txt4" />
   </ItemGroup>
 </Project>

@@ -264,7 +264,7 @@ END
 END
 GO
 CREATE PROCEDURE [dbo].ChildCollectionObject_GetFullByFileMetOvererving
-	@ReferenceName bigint
+	@FileMetOverervingId bigint
 AS
 BEGIN
 
@@ -282,5 +282,5 @@ TestChildProp2,
 		   [ModifiedBy],
 		   [ModifiedOn]
 	  FROM ChildCollectionObject
-	 WHERE ChildCollectionObject.FileMetOverervingId = @ReferenceName;
+	 WHERE ChildCollectionObject.FileMetOverervingId = @FileMetOverervingId;
 END;
