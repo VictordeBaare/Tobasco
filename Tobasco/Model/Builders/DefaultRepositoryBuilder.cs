@@ -33,9 +33,9 @@ namespace Tobasco.Model.Builders
             return template.GetText;
         }
 
-        protected virtual string GetSaveWithTransactionTemplate => Resources.RepositorySaveWithTransaction;
+        protected virtual string GetSaveWithTransactionTemplate => RepositoryResources.RepositorySaveWithTransaction;
 
-        protected virtual string GetSaveWithoutTransactionTemplate => Resources.RepositorySave;
+        protected virtual string GetSaveWithoutTransactionTemplate => RepositoryResources.RepositorySave;
         
         protected TemplateParameter GetSaveParameters()
         {
