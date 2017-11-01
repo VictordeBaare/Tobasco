@@ -53,21 +53,7 @@ public decimal? TestChildProp6
 	get { return _testchildprop6; }
 	set { SetField(ref _testchildprop6, value, nameof(TestChildProp6)); }
 }
-private ChildObject _testchildprop7;
-
-public ChildObject TestChildProp7
-{
-	get { return _testchildprop7; }
-	set { SetField(ref _testchildprop7, value, nameof(TestChildProp7)); }
-}
-public List<ChildCollectionObject> TestChildProp8 { get; } = new List<ChildCollectionObject>();
-private ChildObject _testchildprop9;
-
-public ChildObject TestChildProp9
-{
-	get { return _testchildprop9; }
-	set { SetField(ref _testchildprop9, value, nameof(TestChildProp9)); }
-}		
+public List<ChildCollectionObject> TestChildProp8 { get; } = new List<ChildCollectionObject>();		
 		public override ExpandoObject ToAnonymous()
 {
 	dynamic anymonous = base.ToAnonymous();
@@ -77,8 +63,6 @@ anymonous.TestChildProp3 = TestChildProp3;
 anymonous.TestChildProp4 = TestChildProp4;
 anymonous.TestChildProp5 = TestChildProp5;
 anymonous.TestChildProp6 = TestChildProp6;
-anymonous.TestChildProp7Id = TestChildProp7?.Id;
-anymonous.TestChildProp9Id = TestChildProp9?.Id;
 	return anymonous;
 }	
 	}

@@ -413,6 +413,23 @@ public %PropertyValueType% %PropertyName% { get; set; }</value>
     return _genericRepository.QueryMultiple("%GetByIdStp%", parameters, x =&gt; Read(x).Values).SingleOrDefault();
 }</value>
   </data>
+  <data name="RepositoryGetFullyByIdChildCollectionReader" xml:space="preserve">
+    <value>internal static Dictionary&lt;long, %EntityName%&gt; Read(GridReader reader)
+{
+	%ChildReader%
+	
+	%ChildCollectionReader%
+
+    var items = reader.Read((%EntityName% item, %EntityName% returnItem) =&gt;
+    {
+        %ChildCollectionReadDictionary%
+
+        return returnItem;
+    });
+
+    return items.ToDictionary(x =&gt; x.Id);        
+}</value>
+  </data>
   <data name="RepositorySave" xml:space="preserve">
     <value>public %EntityName% Save(%EntityName%  %EntityNameLowerCase%)
 {

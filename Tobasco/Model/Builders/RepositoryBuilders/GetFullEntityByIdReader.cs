@@ -16,10 +16,15 @@ namespace Tobasco.Model.Builders.RepositoryBuilders
         public string Build()
         {
             var template = new Template();
-            if(GetChildProperties.Any() || GetChildCollectionProperties.Any())
+            if(GetChildProperties.Any())
             {
                 template.SetTemplate(Resources.RepositoryGetFullByIdReader);
                 template.Fill(GetParatmers());
+            }
+            else if (GetChildCollectionProperties.Any())
+            {
+                template.SetTemplate(Resources.RepositoryGetFullyByIdChildCollectionReader);
+                template.Fill(GetChildCollectionReaderParameters());
             }
             else
             {
@@ -29,12 +34,22 @@ namespace Tobasco.Model.Builders.RepositoryBuilders
             return template.GetText;
         }
 
+        private TemplateParameter GetChildCollectionReaderParameters()
+        {
+            var parameters = base.GetParatmers();
+            parameters.Add(RepositoryBuilderConstants.ChildReadDictionary, GetChildReadAction());
+            parameters.Add(RepositoryBuilderConstants.ChildReader, GetChildReaders());
+            parameters.Add(RepositoryBuilderConstants.ChildCollectionReader, GetChildCollectionReaders());
+            parameters.Add(RepositoryBuilderConstants.ChildCollectionReadDictionary, GetChildCollectionReadAction("returnItem"));
+            return parameters;
+        }
+
         protected override TemplateParameter GetParatmers()
         {
             var parameters = base.GetParatmers();
             parameters.Add(RepositoryBuilderConstants.ChildCollectionReader, GetChildCollectionReaders());
             parameters.Add(RepositoryBuilderConstants.ChildReader, GetChildReaders());
-            parameters.Add(RepositoryBuilderConstants.ChildCollectionReadDictionary, GetChildCollectionReadAction());
+            parameters.Add(RepositoryBuilderConstants.ChildCollectionReadDictionary, GetChildCollectionReadAction("item"));
             parameters.Add(RepositoryBuilderConstants.ChildReadDictionary, GetChildReadAction());
             parameters.Add(RepositoryBuilderConstants.SplitOn, GetSplitOn());
             parameters.Add(RepositoryBuilderConstants.ReaderParameters, GetParameterReader());
@@ -97,16 +112,16 @@ namespace Tobasco.Model.Builders.RepositoryBuilders
             return list;
         }
 
-        private IEnumerable<string> GetChildCollectionReadAction()
+        private IEnumerable<string> GetChildCollectionReadAction(string itemName)
         {
             var list = new List<string>();
 
             foreach (var prop in GetChildCollectionProperties)
             {
                 var builder = new StringBuilder();
-                builder.AppendLine($"foreach (var obj in {prop.Name}Dict.Values.Where(x => x.{Entity.GetChildReferenceProperty(prop.DataType.Type, Entity.Entity.Name).Name} == item.Id))");
+                builder.AppendLine($"foreach (var obj in {prop.Name}Dict.Values.Where(x => x.{Entity.GetChildReferenceProperty(prop.DataType.Type, Entity.Entity.Name).Name} == {itemName}.Id))");
                 builder.AppendLine("{");
-                builder.AppendLine($"item.{prop.Name}.Add(obj);");
+                builder.AppendLine($"{itemName}.{prop.Name}.Add(obj);");
                 builder.AppendLine("}");
                 list.Add(builder.ToString());
             }
