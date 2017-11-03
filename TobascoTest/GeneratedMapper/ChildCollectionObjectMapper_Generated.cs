@@ -9,7 +9,6 @@ namespace TobascoTest.GeneratedMapper
 	public  partial class ChildCollectionObjectMapper : IChildCollectionObjectMapper
 	{
 				
-				
 		public ChildCollectionObject MapToObject(TobascoTest.GeneratedEntity2.ChildCollectionObject objectToMapFrom)
     {
         var objectToMapTo = new ChildCollectionObject

@@ -133,10 +133,6 @@ CREATE PROCEDURE [dbo].FileMetOvererving_GetFullById
 AS
 BEGIN
 
-	
-
-	
-
 	EXEC ChildCollectionObject_GetFullByFileMetOvererving
 
 	SELECT Id,

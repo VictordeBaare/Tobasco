@@ -19,7 +19,7 @@ namespace Tobasco.Model.Builders.DatabaseBuilders
             var template = new Template();
             template.SetTemplate(SqlResources.GetFullObjectByEntity);
             template.Fill(GetParameters());
-            return template.GetText;
+            return template.CleanText;
         }
     }
 }

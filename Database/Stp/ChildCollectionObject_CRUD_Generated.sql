@@ -118,12 +118,6 @@ CREATE PROCEDURE [dbo].ChildCollectionObject_GetFullById
 AS
 BEGIN
 
-	
-
-	
-
-	
-
 	SELECT Id,
 		   [RowVersion],
            FileMetOverervingId,
@@ -267,12 +261,6 @@ CREATE PROCEDURE [dbo].ChildCollectionObject_GetFullByFileMetOverervingId
 	@FileMetOverervingId bigint
 AS
 BEGIN
-
-	
-
-	
-
-	
 
 	SELECT Id,
 		   [RowVersion],

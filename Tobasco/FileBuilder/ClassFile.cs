@@ -32,7 +32,9 @@ namespace Tobasco.FileBuilder
             TemplateParameters.Add(FileConstants.Methods, Methods);
             Template.Fill(TemplateParameters);
 
-            return Template.GetText;
+            
+
+            return Template.CleanText;
         }
     }
 }

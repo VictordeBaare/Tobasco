@@ -12,7 +12,6 @@ namespace TobascoTest.GeneratedMapper
 public FileMetOverervingMapper(IChildCollectionObjectMapper childCollectionObjectMapper)
 {
 	_childCollectionObjectMapper = childCollectionObjectMapper;
-	
 }		
 				
 		public FileMetOvererving MapToObject(TobascoTest.GeneratedEntity2.FileMetOvererving objectToMapFrom)

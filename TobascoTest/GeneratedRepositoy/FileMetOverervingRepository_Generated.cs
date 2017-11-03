@@ -19,12 +19,10 @@ public FileMetOverervingRepository(IChildCollectionObjectRepository iChildCollec
 {
 	_iChildCollectionObjectRepository = iChildCollectionObjectRepository;
 _genericRepository = genericRepository;
-	
 }		
 				
 		public FileMetOvererving Save(FileMetOvererving  filemetovererving)
 {
-		
 	filemetovererving = _genericRepository.Save(filemetovererving);	
 	foreach(var toSaveItem in filemetovererving.TestChildProp8)
 {
@@ -47,8 +45,6 @@ public FileMetOvererving GetFullObjectById(long id)
 }
 internal static Dictionary<long, FileMetOvererving> Read(GridReader reader)
 {
-	
-	
 	var TestChildProp8Dict = ChildCollectionObjectRepository.Read(reader);
 
     var items = reader.Read((FileMetOvererving item, FileMetOvererving returnItem) =>
@@ -57,7 +53,6 @@ internal static Dictionary<long, FileMetOvererving> Read(GridReader reader)
 {
 returnItem.TestChildProp8.Add(obj);
 }
-
 
         return returnItem;
     });
