@@ -51,6 +51,7 @@ namespace Tobasco
                 catch (Exception ex)
                 {
                     OutputPaneManager.WriteToOutputPane($"An error occured during generating. Message: {ex.Message} Stacktrace {ex.StackTrace}");
+                    OutputPaneManager.WriteToOutputPane($"{ex.ToString()}");
                 }
 
             }).ContinueWith(x =>

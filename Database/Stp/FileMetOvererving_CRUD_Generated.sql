@@ -6,6 +6,7 @@
 @TestChildProp4 datetime2(7),
 @TestChildProp5 tinyint,
 @TestChildProp6 decimal(12,2),
+@TestChildProp7Id bigint,
     @ModifiedBy nvarchar(256)
 AS
 BEGIN
@@ -20,11 +21,12 @@ TestChildProp3,
 TestChildProp4,
 TestChildProp5,
 TestChildProp6,
+TestChildProp7Id,
 			[ModifiedBy],
 		    [ModifiedOn]
 		   )
 	OUTPUT Inserted.Id
-              ,Inserted.[Uid]
+              ,Inserted.[UId]
 		  ,Inserted.[RowVersion]
 		  ,Inserted.ModifiedOn
     VALUES
@@ -35,6 +37,7 @@ TestChildProp6,
 @TestChildProp4,
 @TestChildProp5,
 @TestChildProp6,
+@TestChildProp7Id,
            @ModifiedBy,
            SYSDATETIME()
           );
@@ -48,6 +51,7 @@ CREATE PROCEDURE [dbo].[FileMetOvererving_Update]
 @TestChildProp4 datetime2(7),
 @TestChildProp5 tinyint,
 @TestChildProp6 decimal(12,2),
+@TestChildProp7Id bigint,
         @RowVersion [rowversion],
         @ModifiedBy nvarchar(256)
 AS
@@ -70,7 +74,8 @@ FileMetOvererving.TestChildProp2 = @TestChildProp2,
 FileMetOvererving.TestChildProp3 = @TestChildProp3,
 FileMetOvererving.TestChildProp4 = @TestChildProp4,
 FileMetOvererving.TestChildProp5 = @TestChildProp5,
-FileMetOvererving.TestChildProp6 = @TestChildProp6,            
+FileMetOvererving.TestChildProp6 = @TestChildProp6,
+FileMetOvererving.TestChildProp7Id = @TestChildProp7Id,            
 			    FileMetOvererving.ModifiedBy = ISNULL(@ModifiedBy, SUSER_SNAME()),
 			    FileMetOvererving.ModifiedOn = SYSDATETIME()
 		OUTPUT Inserted.[RowVersion]
@@ -133,6 +138,10 @@ CREATE PROCEDURE [dbo].FileMetOvererving_GetFullById
 AS
 BEGIN
 
+	DECLARE @TestChildProp7 as bigint;
+
+	EXEC [dbo].ChildObject_GetFullById @TestChildProp7;
+
 	EXEC ChildCollectionObject_GetFullByFileMetOvererving
 
 	SELECT Id,
@@ -143,6 +152,7 @@ TestChildProp3,
 TestChildProp4,
 TestChildProp5,
 TestChildProp6,
+TestChildProp7Id,
 		   [ModifiedBy],
 		   [ModifiedOn]
 	  FROM FileMetOvererving
@@ -158,6 +168,7 @@ CREATE TYPE [dbo].[FileMetOverervingMergeType] AS TABLE(
 ,TestChildProp4 datetime2(7) NULL
 ,TestChildProp5 tinyint NULL
 ,TestChildProp6 decimal(12,2) NULL
+,TestChildProp7Id bigint NULL
 	,[Delete_Flag] [bit] NULL
 	,[Id_Intern] [bigint] NOT NULL
 )
@@ -185,6 +196,7 @@ BEGIN
 ,TestChildProp4 datetime2(7) NULL
 ,TestChildProp5 tinyint NULL
 ,TestChildProp6 decimal(12,2) NULL
+,TestChildProp7Id bigint NULL
                      ,Id_Intern           bigint        NULL
                      ,MergeAction         nvarchar(10)  NOT NULL -- 'INSERT', 'UPDATE', or 'DELETE'
                      ,WasDeleted          bit           NOT NULL
@@ -204,6 +216,7 @@ BEGIN
 [Target].TestChildProp4 = [Source].TestChildProp4,
 [Target].TestChildProp5 = [Source].TestChildProp5,
 [Target].TestChildProp6 = [Source].TestChildProp6,
+[Target].TestChildProp7Id = [Source].TestChildProp7Id,
 					  ModifiedBy     = @ModifiedBy,
                       ModifiedOn     = @ModifiedOn
 	 WHEN MATCHED
@@ -218,6 +231,7 @@ TestChildProp3,
 TestChildProp4,
 TestChildProp5,
 TestChildProp6,
+TestChildProp7Id,
 					 ModifiedBy,
 					 ModifiedOn
 					 )
@@ -229,6 +243,7 @@ TestChildProp6,
 [Source].TestChildProp4,
 [Source].TestChildProp5,
 [Source].TestChildProp6,
+[Source].TestChildProp7Id,
 					 @ModifiedBy,
                      @ModifiedOn					 
 					 )	 
@@ -240,6 +255,7 @@ TestChildProp6,
 ,IIF($action = 'DELETE', deleted.TestChildProp4, inserted.TestChildProp4)
 ,IIF($action = 'DELETE', deleted.TestChildProp5, inserted.TestChildProp5)
 ,IIF($action = 'DELETE', deleted.TestChildProp6, inserted.TestChildProp6)
+,IIF($action = 'DELETE', deleted.TestChildProp7Id, inserted.TestChildProp7Id)
 		  ,IIF($action = 'DELETE', deleted.ModifiedBy, inserted.ModifiedBy)
           ,IIF($action = 'DELETE', deleted.ModifiedOn, inserted.ModifiedOn)
 		  ,[Source].Id_Intern
@@ -254,7 +270,8 @@ TestChildProp2,
 TestChildProp3,
 TestChildProp4,
 TestChildProp5,
-TestChildProp6,   
+TestChildProp6,
+TestChildProp7Id,   
             Id_Intern,
             MergeAction,
             WasDeleted,
@@ -274,6 +291,7 @@ SELECT #output.Id,
 #output.TestChildProp4,
 #output.TestChildProp5,
 #output.TestChildProp6,
+#output.TestChildProp7Id,
        #output.Id_Intern,
        #output.MergeAction,
        #output.WasDeleted,

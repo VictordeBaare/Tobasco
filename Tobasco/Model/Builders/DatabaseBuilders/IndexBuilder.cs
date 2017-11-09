@@ -49,9 +49,9 @@ namespace Tobasco.Model.Builders.DatabaseBuilders
 
         private StringBuilder AddReadonlyGuidIndex(StringBuilder builder)
         {
-            builder.AppendLine($"CREATE NONCLUSTERED INDEX IX_UQ_{Name}_Uid");
+            builder.AppendLine($"CREATE NONCLUSTERED INDEX IX_UQ_{Name}_UId");
             builder.AppendLine($"                       ON [dbo].{Name}");
-            builder.AppendLine($"                         ([Uid] ASC");
+            builder.AppendLine($"                         ([UId] ASC");
             builder.AppendLine($"                         )");
             builder.AppendLine($"GO");
             return builder;

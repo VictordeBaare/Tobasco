@@ -1,7 +1,7 @@
 ﻿CREATE TABLE [dbo].[ChildCollectionObject](
 	 [Id]			bigint	IDENTITY (1,1)  NOT NULL
 	,[RowVersion]   rowversion         		NOT NULL
-	,[Uid]          uniqueidentifier        NOT NULL CONSTRAINT [DF_{ChildCollectionObject}_UId] DEFAULT NEWID()
+	,[UId]          uniqueidentifier        NOT NULL CONSTRAINT [DF_{ChildCollectionObject}_UId] DEFAULT NEWID()
 	,TestChildProp1 money NOT NULL
 ,TestChildProp2 smallmoney NOT NULL
 ,FileMetOverervingId bigint NOT NULL
@@ -47,6 +47,7 @@ BEGIN
     INSERT
       INTO [dbo].ChildCollectionObject_historie(
 			Id,
+			[UId],
 		    [RowVersion],
 		   TestChildProp1,
 TestChildProp2,
@@ -57,6 +58,7 @@ FileMetOverervingId,
             DeletedAt
            )
     SELECT DELETED.Id,
+		   DELETED.[UId],
            DELETED.[RowVersion],
 		  Deleted.TestChildProp1,
 Deleted.TestChildProp2,
@@ -76,6 +78,7 @@ BEGIN
 	INSERT
 	  INTO [dbo].ChildCollectionObject_historie(
 			Id,
+			[UId],
 		    [RowVersion],
            TestChildProp1,
 TestChildProp2,
@@ -86,6 +89,7 @@ FileMetOverervingId,
 		    [DeletedAt]
             )
 	SELECT Deleted.Id,
+		   Deleted.[UId],
 	       Deleted.[RowVersion],
 		  Deleted.TestChildProp1,
 Deleted.TestChildProp2,

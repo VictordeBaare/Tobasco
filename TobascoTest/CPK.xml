@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<Entity name="CPK" >
+<Entity name="CPK" xmlns="http://Tobasco/EntitySchema.xsd">
   <EntityLocations>
     <EntityLocation id="dataobject">
       <FileLocation project="TobascoTest" folder="GeneratedEntity"></FileLocation>

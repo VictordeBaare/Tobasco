@@ -20,7 +20,8 @@ namespace Tobasco.Model.Builders.DatabaseBuilders
             var parameters = new TemplateParameter();
             parameters.Add(SqlConstants.TableName, Name);
             parameters.Add(SqlConstants.TableProperties, GetTableProperties());
-            parameters.Add(SqlConstants.Constraints, GetContraints());
+            parameters.Add(SqlConstants.Constraints, GetContraints());          
+
             return parameters;
         }        
 

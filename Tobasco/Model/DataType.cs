@@ -36,10 +36,10 @@ namespace Tobasco.Model
         [XmlAttribute("scale")]
         public string Scale { get; set; }
 
-        [XmlAttribute("generateforeignkey")]
-        public bool GenerateForeignKey { get; set; }
+        [XmlAttribute("ignoreforeignkey")]
+        public bool IgnoreForeignKey { get; set; }
 
-        [XmlAttribute("generateforeignkeyindex")]
-        public bool GenerateForeignKeyIndex { get; set; }
+        [XmlAttribute("ignoreforeignkeyindex")]
+        public bool IgnoreForeignKeyIndex { get; set; }
     }
 }

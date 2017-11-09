@@ -1,13 +1,14 @@
 ﻿CREATE TABLE [dbo].[FileMetOvererving](
 	 [Id]			bigint	IDENTITY (1,1)  NOT NULL
 	,[RowVersion]   rowversion         		NOT NULL
-	,[Uid]          uniqueidentifier        NOT NULL CONSTRAINT [DF_{FileMetOvererving}_UId] DEFAULT NEWID()
+	,[UId]          uniqueidentifier        NOT NULL CONSTRAINT [DF_{FileMetOvererving}_UId] DEFAULT NEWID()
 	,TestChildProp1 nvarchar(100) NOT NULL
 ,TestChildProp2 int NULL
 ,TestChildProp3 bigint NULL
 ,TestChildProp4 datetime2(7) NULL
 ,TestChildProp5 tinyint NULL
 ,TestChildProp6 decimal(12,2) NULL
+,TestChildProp7Id bigint NULL
 	,[ModifiedBy]	nvarchar(256)			NOT NULL
 	 CONSTRAINT [DF_{FileMetOvererving}_ModifiedBy] DEFAULT SUSER_SNAME()
 	,[ModifiedOn]	datetime2(7)			NOT NULL
@@ -24,7 +25,8 @@ CREATE TABLE [dbo].[FileMetOvererving_historie] (
 ,TestChildProp3 bigint NULL
 ,TestChildProp4 datetime2(7) NULL
 ,TestChildProp5 tinyint NULL
-,TestChildProp6 decimal(12,2) NULL   
+,TestChildProp6 decimal(12,2) NULL
+,TestChildProp7Id bigint NULL   
    ,[ModifiedBy]                  nvarchar (256)     NOT NULL
    ,[ModifiedOn]                  DATETIME2(7)       NOT NULL
    ,DeletedBy                     nvarchar(256)      NULL
@@ -51,6 +53,7 @@ BEGIN
     INSERT
       INTO [dbo].FileMetOvererving_historie(
 			Id,
+			[UId],
 		    [RowVersion],
 		   TestChildProp1,
 TestChildProp2,
@@ -58,12 +61,14 @@ TestChildProp3,
 TestChildProp4,
 TestChildProp5,
 TestChildProp6,
+TestChildProp7Id,
             [ModifiedBy],
             [ModifiedOn],
             DeletedBy,
             DeletedAt
            )
     SELECT DELETED.Id,
+		   DELETED.[UId],
            DELETED.[RowVersion],
 		  Deleted.TestChildProp1,
 Deleted.TestChildProp2,
@@ -71,6 +76,7 @@ Deleted.TestChildProp3,
 Deleted.TestChildProp4,
 Deleted.TestChildProp5,
 Deleted.TestChildProp6,
+Deleted.TestChildProp7Id,
            Deleted.ModifiedBy,
            Deleted.ModifiedOn,
            NULL,
@@ -86,6 +92,7 @@ BEGIN
 	INSERT
 	  INTO [dbo].FileMetOvererving_historie(
 			Id,
+			[UId],
 		    [RowVersion],
            TestChildProp1,
 TestChildProp2,
@@ -93,12 +100,14 @@ TestChildProp3,
 TestChildProp4,
 TestChildProp5,
 TestChildProp6,
+TestChildProp7Id,
 		    [ModifiedBy],
 		    [ModifiedOn],
 		    [DeletedBy],
 		    [DeletedAt]
             )
 	SELECT Deleted.Id,
+		   Deleted.[UId],
 	       Deleted.[RowVersion],
 		  Deleted.TestChildProp1,
 Deleted.TestChildProp2,
@@ -106,6 +115,7 @@ Deleted.TestChildProp3,
 Deleted.TestChildProp4,
 Deleted.TestChildProp5,
 Deleted.TestChildProp6,
+Deleted.TestChildProp7Id,
 		   Deleted.ModifiedBy,
 		   Deleted.ModifiedOn,
 		   ISNULL(LTRIM(RTRIM(CONVERT(nvarchar(128), CONTEXT_INFO()))), SUSER_SNAME()),

@@ -250,7 +250,7 @@ namespace Tobasco.Properties {
         ///		    [ModifiedOn]
         ///		   )
         ///	OUTPUT Inserted.Id
-        ///              ,Inserted.[Uid]
+        ///              ,Inserted.[UId]
         ///		  ,Inserted.[RowVersion]
         ///		  ,Inserted.ModifiedOn
         ///    VALUES
@@ -332,7 +332,7 @@ namespace Tobasco.Properties {
         ///   Looks up a localized string similar to CREATE TABLE [dbo].[%TableName%](
         ///	 [Id]			bigint	IDENTITY (1,1)  NOT NULL
         ///	,[RowVersion]   rowversion         		NOT NULL
-        ///	,[Uid]          uniqueidentifier        NOT NULL CONSTRAINT [DF_{%TableName%}_UId] DEFAULT NEWID()
+        ///	,[UId]          uniqueidentifier        NOT NULL CONSTRAINT [DF_{%TableName%}_UId] DEFAULT NEWID()
         ///	%TableProperties%
         ///	,[ModifiedBy]	nvarchar(256)			NOT NULL
         ///	 CONSTRAINT [DF_{%TableName%}_ModifiedBy] DEFAULT SUSER_SNAME()
@@ -376,6 +376,37 @@ namespace Tobasco.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to CREATE TRIGGER [dbo].td_%TableName%
+        ///            ON [dbo].%TableName%
+        ///		   FOR DELETE
+        ///AS
+        ///BEGIN
+        ///	INSERT
+        ///	  INTO [dbo].%TableName%_historie(
+        ///			Id,
+        ///			[UId],
+        ///		    [RowVersion],
+        ///           %StpPropertyNames%
+        ///		    [ModifiedBy],
+        ///		    [ModifiedOn],
+        ///		    [DeletedBy],
+        ///		    [DeletedAt]
+        ///            )
+        ///	SELECT Deleted.Id,
+        ///		   Deleted.[UId],
+        ///	       Deleted.[RowVersion],
+        ///		  %StpDeletetedPropertyNames%
+        ///		   Deleted.ModifiedBy,
+        ///		   Deleted.ModifiedOn,
+        ///		   ISNULL(LTRIM(RTRIM(CONVERT(nvarchar(1 [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string SqlTriggerDeleteWithUid {
+            get {
+                return ResourceManager.GetString("SqlTriggerDeleteWithUid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to CREATE TRIGGER [dbo].tu_%TableName%
         ///            ON [dbo].%TableName%
         ///           FOR UPDATE
@@ -402,6 +433,36 @@ namespace Tobasco.Properties {
         internal static string SqlTriggerUpdate {
             get {
                 return ResourceManager.GetString("SqlTriggerUpdate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CREATE TRIGGER [dbo].tu_%TableName%
+        ///            ON [dbo].%TableName%
+        ///           FOR UPDATE
+        ///AS
+        ///BEGIN
+        ///    INSERT
+        ///      INTO [dbo].%TableName%_historie(
+        ///			Id,
+        ///			[UId],
+        ///		    [RowVersion],
+        ///		   %StpPropertyNames%
+        ///            [ModifiedBy],
+        ///            [ModifiedOn],
+        ///            DeletedBy,
+        ///            DeletedAt
+        ///           )
+        ///    SELECT DELETED.Id,
+        ///		   DELETED.[UId],
+        ///           DELETED.[RowVersion],
+        ///		  %StpDeletetedPropertyNames%
+        ///           Deleted.ModifiedBy,
+        ///           Deleted.ModifiedOn,        /// [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string SqlTriggerUpdateWithUid {
+            get {
+                return ResourceManager.GetString("SqlTriggerUpdateWithUid", resourceCulture);
             }
         }
         

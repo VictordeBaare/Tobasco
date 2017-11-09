@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<Entity name="ChildObject">
+<Entity name="ChildObject" xmlns="http://Tobasco/EntitySchema.xsd">
   <Properties>
     <Property name="TestChildProp1" required="true">
       <DataType name="String" size="100" dbtype="Varchar"></DataType>

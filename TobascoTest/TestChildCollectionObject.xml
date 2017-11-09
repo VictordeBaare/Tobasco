@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<Entity name="ChildCollectionObject" generateReadonlyGuid="true" >
+<Entity name="ChildCollectionObject" generateReadonlyGuid="true" xmlns="http://Tobasco/EntitySchema.xsd">
   <Properties>
     <Property name="TestChildProp1" required="true">
       <DataType name="Decimal" dbtype="Money"></DataType>

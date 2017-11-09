@@ -10,47 +10,29 @@ namespace TobascoTest.GeneratedRepositoy
 	[GeneratedCode("Tobasco", "1.0.0.0")]
 	public  partial class ConnectionFactory : IConnectionFactory
 	{
-		private readonly SqlConnection _connection;
-private readonly object _lock = new object();
-private bool _disposed;
+		private readonly string _connectionstring;
 public ConnectionFactory(string databasenaam)
 {
-	_connection = new SqlConnection(ConfigurationManager.ConnectionStrings[databasenaam].ConnectionString);
+	_connectionstring = ConfigurationManager.ConnectionStrings[databasenaam].ConnectionString;
 }		
 				
 		public SqlConnection GetConnection()
         {
-            lock (_lock)
+            SqlConnection connection = null;
+            SqlConnection tempConnection = null;
+            try
             {
-                if (_connection.State == ConnectionState.Closed || _connection.State == ConnectionState.Broken)
-                {
-                    _connection.Open();
-                }
+                tempConnection = new SqlConnection(_connectionstring);
+                tempConnection.Open();
+                connection = tempConnection;
+                tempConnection = null;
+            }
+            finally
+            {
+                tempConnection?.Dispose();
             }
 
-            return _connection;
-        }
-public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-private void Dispose(bool disposing)
-        {
-            if (!_disposed)
-            {
-                if (disposing)
-                {
-                    // ReSharper disable once UseNullPropagation
-                    if (_connection != null)
-                    {
-                        // ReSharper disable once InconsistentlySynchronizedField
-                        _connection.Dispose();
-                    }
-                }
-
-                _disposed = true;
-            }
+            return connection;
         }	
 	}
 }

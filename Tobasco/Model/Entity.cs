@@ -3,6 +3,7 @@ using System.Xml.Serialization;
 
 namespace Tobasco.Model
 {
+    [XmlRoot("Entity", Namespace = "http://Tobasco/EntitySchema.xsd")]
     public class Entity
     {
         [XmlAttribute("name")]

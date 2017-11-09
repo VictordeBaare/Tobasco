@@ -23,15 +23,18 @@ namespace Tobasco.Model.Builders.DatabaseBuilders
         private string BuildDeleteTrigger()
         {
             var template = new Template();
-            template.SetTemplate(SqlResources.SqlTriggerDelete);
+            template.SetTemplate(GetResourceTriggerDelete);
             template.Fill(GetParameters());
             return template.GetText;
         }
 
+        public virtual string GetResourceTriggerDelete => Entity.GenerateReadonlyGuid ? SqlResources.SqlTriggerDeleteWithUid : SqlResources.SqlTriggerDelete;
+        public virtual string GetResourceTriggerUpdate => Entity.GenerateReadonlyGuid ? SqlResources.SqlTriggerUpdateWithUid : SqlResources.SqlTriggerUpdate;
+
         private string BuildUpdateTrigger()
         {
             var template = new Template();
-            template.SetTemplate(SqlResources.SqlTriggerUpdate);
+            template.SetTemplate(GetResourceTriggerUpdate);
             template.Fill(GetParameters());
             return template.GetText;
         }

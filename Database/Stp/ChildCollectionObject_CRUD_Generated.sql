@@ -18,7 +18,7 @@ FileMetOverervingId,
 		    [ModifiedOn]
 		   )
 	OUTPUT Inserted.Id
-              ,Inserted.[Uid]
+              ,Inserted.[UId]
 		  ,Inserted.[RowVersion]
 		  ,Inserted.ModifiedOn
     VALUES

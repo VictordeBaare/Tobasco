@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Tobasco.Enums;
+using Tobasco.Manager;
 
 namespace Tobasco.Model.DatabaseProperties
 {
@@ -89,7 +90,7 @@ namespace Tobasco.Model.DatabaseProperties
         {
             if (string.IsNullOrEmpty(_selectChildConstraint))
             {
-                if (!Property.DataType.GenerateForeignKey)
+                if (!Property.DataType.IgnoreForeignKey)
                 {
                     var typeNaam = Property.DataType.Type;
                     _selectChildConstraint = $"CONSTRAINT [FK_{parentName}_{typeNaam}_Id] FOREIGN KEY ({Property.Name}Id) REFERENCES [dbo].[{typeNaam}] ([Id])";
@@ -102,7 +103,7 @@ namespace Tobasco.Model.DatabaseProperties
         {
             if (string.IsNullOrEmpty(_selectReferenceConstraint))
             {
-                if (Property.DataType.GenerateForeignKey)
+                if (!Property.DataType.IgnoreForeignKey)
                 {
                     var typeNaam = Property.DataType.Type;
                     _selectReferenceConstraint = $"CONSTRAINT [FK_{parentName}_{Property.Name}] FOREIGN KEY ({Property.Name}) REFERENCES [dbo].[{typeNaam}] ([Id])";
@@ -115,7 +116,7 @@ namespace Tobasco.Model.DatabaseProperties
         {
             if (string.IsNullOrEmpty(_selectNonClusteredIndex))
             {
-                if (Property.DataType.GenerateForeignKeyIndex)
+                if (!Property.DataType.IgnoreForeignKeyIndex)
                 {
                     _selectNonClusteredIndex = $"CREATE NONCLUSTERED INDEX IX_{parentName}_{Property.Name} ON [dbo].[{parentName}] ({Property.Name} ASC)";
                 }

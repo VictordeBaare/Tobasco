@@ -13,16 +13,23 @@ namespace TobascoTest.GeneratedRepositoy
 	[GeneratedCode("Tobasco", "1.0.0.0")]
 	public  partial class FileMetOverervingRepository : IFileMetOverervingRepository
 	{
-		private IChildCollectionObjectRepository _iChildCollectionObjectRepository;
-private IGenericRepository<FileMetOvererving> _genericRepository;
-public FileMetOverervingRepository(IChildCollectionObjectRepository iChildCollectionObjectRepository, IGenericRepository<FileMetOvererving> genericRepository)
+		private IGenericRepository<FileMetOvererving> _genericRepository;
+private IChildObjectRepository _iChildObjectRepository;
+private IChildCollectionObjectRepository _iChildCollectionObjectRepository;
+public FileMetOverervingRepository(IGenericRepository<FileMetOvererving> genericRepository, IChildObjectRepository iChildObjectRepository, IChildCollectionObjectRepository iChildCollectionObjectRepository)
 {
-	_iChildCollectionObjectRepository = iChildCollectionObjectRepository;
-_genericRepository = genericRepository;
+	_genericRepository = genericRepository;
+_iChildObjectRepository = iChildObjectRepository;
+_iChildCollectionObjectRepository = iChildCollectionObjectRepository;
 }		
 				
 		public FileMetOvererving Save(FileMetOvererving  filemetovererving)
 {
+	if (filemetovererving.TestChildProp7 != null)
+{
+filemetovererving.TestChildProp7 = _iChildObjectRepository.Save(filemetovererving.TestChildProp7);
+}
+	
 	filemetovererving = _genericRepository.Save(filemetovererving);	
 	foreach(var toSaveItem in filemetovererving.TestChildProp8)
 {
@@ -45,17 +52,24 @@ public FileMetOvererving GetFullObjectById(long id)
 }
 internal static Dictionary<long, FileMetOvererving> Read(GridReader reader)
 {
+	var TestChildProp7Dict = ChildObjectRepository.Read(reader);
+	
 	var TestChildProp8Dict = ChildCollectionObjectRepository.Read(reader);
 
-    var items = reader.Read((FileMetOvererving item, FileMetOvererving returnItem) =>
+    var items = reader.Read((FileMetOvererving item,long TestChildProp7) =>
     {
-        foreach (var obj in TestChildProp8Dict.Values.Where(x => x.FileMetOverervingId == returnItem.Id))
+        if (TestChildProp7Dict.ContainsKey(TestChildProp7))
 {
-returnItem.TestChildProp8.Add(obj);
+item.TestChildProp7 = TestChildProp7Dict[TestChildProp7];
 }
 
-        return returnItem;
-    });
+        foreach (var obj in TestChildProp8Dict.Values.Where(x => x.FileMetOverervingId == item.Id))
+{
+item.TestChildProp8.Add(obj);
+}
+
+        return item;
+    }, splitOn: "TestChildProp7");
 
     return items.ToDictionary(x => x.Id);        
 }	

@@ -273,7 +273,7 @@ BEGIN
 		    [ModifiedOn]
 		   )
 	OUTPUT Inserted.Id
-              ,Inserted.[Uid]
+              ,Inserted.[UId]
 		  ,Inserted.[RowVersion]
 		  ,Inserted.ModifiedOn
     VALUES
@@ -417,13 +417,14 @@ END</value>
     <value>CREATE TABLE [dbo].[%TableName%](
 	 [Id]			bigint	IDENTITY (1,1)  NOT NULL
 	,[RowVersion]   rowversion         		NOT NULL
-	,[Uid]          uniqueidentifier        NOT NULL CONSTRAINT [DF_{%TableName%}_UId] DEFAULT NEWID()
+	,[UId]          uniqueidentifier        NOT NULL CONSTRAINT [DF_{%TableName%}_UId] DEFAULT NEWID()
 	%TableProperties%
 	,[ModifiedBy]	nvarchar(256)			NOT NULL
 	 CONSTRAINT [DF_{%TableName%}_ModifiedBy] DEFAULT SUSER_SNAME()
 	,[ModifiedOn]	datetime2(7)			NOT NULL
 	 CONSTRAINT [DF_{%TableName%}_ModifiedOn] DEFAULT SYSDATETIME()
 	 CONSTRAINT [PK_{%TableName%}] PRIMARY KEY CLUSTERED (Id ASC)
+	 %Constraints%
 );</value>
   </data>
   <data name="SqlTriggerDelete" xml:space="preserve">
@@ -452,6 +453,34 @@ BEGIN
 	  FROM Deleted;
 END;</value>
   </data>
+  <data name="SqlTriggerDeleteWithUid" xml:space="preserve">
+    <value>CREATE TRIGGER [dbo].td_%TableName%
+            ON [dbo].%TableName%
+		   FOR DELETE
+AS
+BEGIN
+	INSERT
+	  INTO [dbo].%TableName%_historie(
+			Id,
+			[UId],
+		    [RowVersion],
+           %StpPropertyNames%
+		    [ModifiedBy],
+		    [ModifiedOn],
+		    [DeletedBy],
+		    [DeletedAt]
+            )
+	SELECT Deleted.Id,
+		   Deleted.[UId],
+	       Deleted.[RowVersion],
+		  %StpDeletetedPropertyNames%
+		   Deleted.ModifiedBy,
+		   Deleted.ModifiedOn,
+		   ISNULL(LTRIM(RTRIM(CONVERT(nvarchar(128), CONTEXT_INFO()))), SUSER_SNAME()),
+		   SYSDATETIME()
+	  FROM Deleted;
+END;</value>
+  </data>
   <data name="SqlTriggerUpdate" xml:space="preserve">
     <value>CREATE TRIGGER [dbo].tu_%TableName%
             ON [dbo].%TableName%
@@ -469,6 +498,34 @@ BEGIN
             DeletedAt
            )
     SELECT DELETED.Id,
+           DELETED.[RowVersion],
+		  %StpDeletetedPropertyNames%
+           Deleted.ModifiedBy,
+           Deleted.ModifiedOn,
+           NULL,
+           NULL
+      FROM Deleted;
+END;</value>
+  </data>
+  <data name="SqlTriggerUpdateWithUid" xml:space="preserve">
+    <value>CREATE TRIGGER [dbo].tu_%TableName%
+            ON [dbo].%TableName%
+           FOR UPDATE
+AS
+BEGIN
+    INSERT
+      INTO [dbo].%TableName%_historie(
+			Id,
+			[UId],
+		    [RowVersion],
+		   %StpPropertyNames%
+            [ModifiedBy],
+            [ModifiedOn],
+            DeletedBy,
+            DeletedAt
+           )
+    SELECT DELETED.Id,
+		   DELETED.[UId],
            DELETED.[RowVersion],
 		  %StpDeletetedPropertyNames%
            Deleted.ModifiedBy,

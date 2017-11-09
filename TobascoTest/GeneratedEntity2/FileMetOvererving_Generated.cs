@@ -24,6 +24,8 @@ public DateTime? TestChildProp4 { get; set; }
 public GeslachtType? TestChildProp5 { get; set; }
 
 public decimal? TestChildProp6 { get; set; }
+
+public ChildObject TestChildProp7 { get; set; }
 public List<ChildCollectionObject> TestChildProp8 { get; } = new List<ChildCollectionObject>();		
 			
 	}

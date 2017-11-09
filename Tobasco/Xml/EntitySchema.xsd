@@ -21,15 +21,15 @@
                             <xs:attribute type="xs:string" name="name" use="required"/>
                             <xs:attribute type="xs:string" name="dbtype" use="optional"/>
                             <xs:attribute type="xs:string" name="type" use="optional"/>
-                            <xs:attribute type="xs:boolean" name="generateforeignkey" use="optional" default="true"/>
-                            <xs:attribute type="xs:boolean" name="generateforeignkeyindex" use="optional" default="true"/>
+                            <xs:attribute type="xs:boolean" name="ignoreforeignkey" use="optional" default="false"/>
+                            <xs:attribute type="xs:boolean" name="ignoreforeignkeyindex" use="optional" default="false"/>
                           </xs:extension>
                         </xs:simpleContent>
                       </xs:complexType>
                     </xs:element>
                   </xs:sequence>
                   <xs:attribute type="xs:string" name="name" use="required"/>
-                  <xs:attribute type="xs:string" name="required" use="optional" default="false"/>
+                  <xs:attribute type="xs:boolean" name="required" use="optional" default="false"/>
                 </xs:complexType>
               </xs:element>
             </xs:sequence>
@@ -70,7 +70,7 @@
                       </xs:element>
                     </xs:sequence>
                     <xs:attribute type="xs:string" name="id" use="optional"/>
-                    <xs:attribute type="xs:string" name="generaterules" use="optional"/>
+                    <xs:attribute type="xs:boolean" name="generaterules" use="optional"/>
                   </xs:complexType>
                 </xs:element>
               </xs:sequence>
@@ -106,7 +106,7 @@
                   </xs:complexType>
                 </xs:element>
               </xs:sequence>
-              <xs:attribute type="xs:string" name="generate"/>
+              <xs:attribute type="xs:boolean" name="generate"/>
             </xs:complexType>
           </xs:element>
           <xs:element name="Database">
@@ -127,7 +127,7 @@
                       </xs:element>
                     </xs:sequence>
                     <xs:attribute type="xs:string" name="folder" use="optional"/>
-                    <xs:attribute type="xs:string" name="generate" default="true"/>
+                    <xs:attribute type="xs:boolean" name="generate" default="true"/>
                   </xs:complexType>
                 </xs:element>
                 <xs:element name="Tables">

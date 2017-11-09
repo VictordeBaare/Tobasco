@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<Entity name="FileMetOvererving" generateReadonlyGuid="true">
+<Entity name="FileMetOvererving" generateReadonlyGuid="true" xmlns="http://Tobasco/EntitySchema.xsd">
     <Properties>
         <Property name="TestChildProp1" required="true">
             <DataType name="String" size="100"></DataType>
@@ -19,9 +19,9 @@
         <Property name="TestChildProp6" required="false">
             <DataType name="Decimal" precision="12" scale="2"></DataType>
         </Property>
-        <!--<Property name="TestChildProp7" required="false">
+        <Property name="TestChildProp7" required="false">
             <DataType name="Child" type="ChildObject"></DataType>
-        </Property>-->
+        </Property>
         <Property name="TestChildProp8" required="true">
             <DataType name="ChildCollection" type="ChildCollectionObject"></DataType>
         </Property>
