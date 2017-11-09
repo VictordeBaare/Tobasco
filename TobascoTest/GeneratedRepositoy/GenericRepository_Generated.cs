@@ -20,7 +20,6 @@ namespace TobascoTest.GeneratedRepositoy
 		
 public GenericRepository(IConnectionFactory connectionFactory)
 {
-	
 	ConnectionFactory = connectionFactory;
 }		
 		public IConnectionFactory ConnectionFactory { get; }		

@@ -118,12 +118,6 @@ CREATE PROCEDURE [dbo].ChildCollectionObject_GetFullById
 AS
 BEGIN
 
-	
-
-	
-
-	
-
 	SELECT Id,
 		   [RowVersion],
            FileMetOverervingId,
@@ -263,16 +257,10 @@ END
 
 END
 GO
-CREATE PROCEDURE [dbo].ChildCollectionObject_GetFullByFileMetOvererving
-	@ReferenceName bigint
+CREATE PROCEDURE [dbo].ChildCollectionObject_GetFullByFileMetOverervingId
+	@FileMetOverervingId bigint
 AS
 BEGIN
-
-	
-
-	
-
-	
 
 	SELECT Id,
 		   [RowVersion],
@@ -282,5 +270,5 @@ TestChildProp2,
 		   [ModifiedBy],
 		   [ModifiedOn]
 	  FROM ChildCollectionObject
-	 WHERE ChildCollectionObject.FileMetOverervingId = @ReferenceName;
+	 WHERE ChildCollectionObject.FileMetOverervingId = @FileMetOverervingId;
 END;

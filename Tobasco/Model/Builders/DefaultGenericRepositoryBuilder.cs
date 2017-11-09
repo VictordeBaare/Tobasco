@@ -14,56 +14,56 @@ namespace Tobasco.Model.Builders
         protected virtual string SaveMethod()
         {
             var template = new Template();
-            template.SetTemplate(Resources.GenericRepositorySave);
+            template.SetTemplate(GenericRepositoryResources.GenericRepositorySave);
             return template.GetText;
         }
 
         protected virtual string ListSaveMethod()
         {
             var template = new Template();
-            template.SetTemplate(Resources.GenericRepositoryBulkSave);
+            template.SetTemplate(GenericRepositoryResources.GenericRepositoryBulkSave);
             return template.GetText;
         }
 
         protected virtual string InsertMethod()
         {
             var template = new Template();
-            template.SetTemplate(Resources.GenericRepositoryInsert);
+            template.SetTemplate(GenericRepositoryResources.GenericRepositoryInsert);
             return template.GetText;
         }
 
         protected virtual string DeleteMethod()
         {
             var template = new Template();
-            template.SetTemplate(Resources.GenericRepositoryDelete);
+            template.SetTemplate(GenericRepositoryResources.GenericRepositoryDelete);
             return template.GetText;
         }
 
         protected virtual string GetByIdMethod()
         {
             var template = new Template();
-            template.SetTemplate(Resources.GenericRepositoryGetById);
+            template.SetTemplate(GenericRepositoryResources.GenericRepositoryGetById);
             return template.GetText;
         }
 
         protected virtual string UpdateMethod()
         {
             var template = new Template();
-            template.SetTemplate(Resources.GenericRepositoryUpdate);
+            template.SetTemplate(GenericRepositoryResources.GenericRepositoryUpdate);
             return template.GetText;
         }
 
         protected virtual string ToAnonymousMethod()
         {
             var template = new Template();
-            template.SetTemplate(Resources.GenericRepositoryToAnonymous);
+            template.SetTemplate(GenericRepositoryResources.GenericRepositoryToAnonymous);
             return template.GetText;
         }
 
         protected virtual string QueryMutlipleT()
         {
             var template = new Template();
-            template.SetTemplate(Resources.GenericRepositoryQueryMultipleT);
+            template.SetTemplate(GenericRepositoryResources.GenericRepositoryQueryMultipleT);
             return template.GetText;
         }
 

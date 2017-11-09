@@ -117,12 +117,6 @@ CREATE PROCEDURE [dbo].CPK_GetFullById
 AS
 BEGIN
 
-	
-
-	
-
-	
-
 	SELECT Id,
 		   [RowVersion],
            Duur,

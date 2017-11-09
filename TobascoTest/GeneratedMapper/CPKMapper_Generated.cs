@@ -9,7 +9,6 @@ namespace TobascoTest.GeneratedMapper
 	public  partial class CPKMapper : ICPKMapper
 	{
 				
-				
 		public CPK MapToObject(TobascoTest.GeneratedEntity2.CPK objectToMapFrom)
     {
         var objectToMapTo = new CPK

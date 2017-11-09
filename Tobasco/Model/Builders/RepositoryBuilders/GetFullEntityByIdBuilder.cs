@@ -18,7 +18,7 @@ namespace Tobasco.Model.Builders.RepositoryBuilders
         public string Build()
         {
             var template = new Template();
-            template.SetTemplate(Resources.RepositoryGetFullObjectById);
+            template.SetTemplate(RepositoryResources.RepositoryGetFullObjectById);
             template.Fill(GetParatmers());
             return template.GetText;
         }

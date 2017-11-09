@@ -107,12 +107,6 @@ CREATE PROCEDURE [dbo].ChildObject_GetFullById
 AS
 BEGIN
 
-	
-
-	
-
-	
-
 	SELECT Id,
 		   [RowVersion],
            TestChildProp1,

@@ -117,129 +117,124 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AnymonousPropertySet" xml:space="preserve">
-    <value>AnymonousPropertySet</value>
-  </data>
-  <data name="ClassDapperMethod" xml:space="preserve">
-    <value>public override ExpandoObject ToAnonymous()
+  <data name="GenericRepositoryBulkSave" xml:space="preserve">
+    <value>public IEnumerable&lt;T&gt; Save(IEnumerable&lt;T&gt; entities)
 {
-	dynamic anymonous = base.ToAnonymous();
-	%AnymonousPropertySet%
-	return anymonous;
+	var enumerable = entities as IList&lt;T&gt; ?? entities.ToList();
+	foreach (var entity in enumerable)
+	{
+		Save(entity);
+	}
+	return enumerable;
 }</value>
   </data>
-  <data name="ClassFile" xml:space="preserve">
-    <value>%Namespaces%
-
-namespace %OwnNamespace%
+  <data name="GenericRepositoryDelete" xml:space="preserve">
+    <value>public void Delete(T entity)
 {
-	%Attributes%
-	public %Abstract% partial %Type% %ClassName%%Extension% %BaseClass%
+	using (var connection = ConnectionFactory.GetConnection())
 	{
-		%Constructor%		
-		%Properties%		
-		%Methods%	
+		connection.Execute($"[dbo].[{ typeof(T).Name}_Delete]",
+			new {entity.Id, entity.RowVersion, entity.ModifiedBy },
+			commandType: CommandType.StoredProcedure);
 	}
 }</value>
   </data>
-  <data name="ConnectionFactoryGetConnection" xml:space="preserve">
-    <value>public SqlConnection GetConnection()
-        {
-            SqlConnection connection = null;
-            SqlConnection tempConnection = null;
-            try
-            {
-                tempConnection = new SqlConnection(_connectionstring);
-                tempConnection.Open();
-                connection = tempConnection;
-                tempConnection = null;
-            }
-            finally
-            {
-                tempConnection?.Dispose();
-            }
-
-            return connection;
-        }</value>
-  </data>
-  <data name="Constructor" xml:space="preserve">
-    <value>%ConstructorFields%
-public %Name%(%ConstructorParameters%)
+  <data name="GenericRepositoryGetById" xml:space="preserve">
+    <value>public T GetById(long id)
 {
-	%FieldWithParameter%
-	%CustomImplementation%
-}</value>
-  </data>
-  <data name="DependencyInjection" xml:space="preserve">
-    <value>[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1506: AvoidExcessiveClassCoupling", Justification = "Generated file")]
-public override void Load()
-{
-    %DIParams%
-}</value>
-  </data>
-  <data name="InterfaceFile" xml:space="preserve">
-    <value>%Namespaces%
-
-namespace %OwnNamespace%
-{
-	%Attributes%
-	public partial %Type% %InterfaceName%%Extension%
+	T entity;
+	using (var connection = ConnectionFactory.GetConnection())
 	{
-		%Properties%
-			
-		%Methods%	
+		entity = connection.QuerySingle&lt;T&gt;($"[dbo].[{ typeof(T).Name}_GetById]",
+			new {Id = id},
+			commandType: CommandType.StoredProcedure);
 	}
+	entity.MarkOld();
+	return entity;
 }</value>
   </data>
-  <data name="NinjectBinder" xml:space="preserve">
-    <value>protected void NinjectBinder&lt;T, TY&gt;() where TY : T
+  <data name="GenericRepositoryInsert" xml:space="preserve">
+    <value>public T Insert(T entity)
 {
-    Bind&lt;T&gt;().To&lt;TY&gt;()%BindingScope%;
+	using (var connection = ConnectionFactory.GetConnection())
+	{
+		connection.Query&lt;long, byte[], T&gt;($"[dbo].[{typeof(T).Name}_Insert]", (id, rowversion) =&gt;
+		{
+			entity.Id = id;
+			entity.RowVersion = rowversion;
+			return entity;
+		}, ToAnonymous(entity, false), splitOn: "RowVersion", commandType: CommandType.StoredProcedure);
+	}
+	entity.MarkOld();
+	return entity;
 }</value>
   </data>
-  <data name="PrivateDispose" xml:space="preserve">
-    <value>private void Dispose(bool disposing)
+  <data name="GenericRepositoryQueryMultipleT" xml:space="preserve">
+    <value>public IEnumerable&lt;T&gt; QueryMultiple(string StoredProcedure, DynamicParameters parameters, Func&lt;GridReader, IEnumerable&lt;T&gt;&gt; readerFunc)
         {
-            if (!_disposed)
+            using (var connection = ConnectionFactory.GetConnection())
             {
-                if (disposing)
-                {
-                    // ReSharper disable once UseNullPropagation
-                    if (_connection != null)
-                    {
-                        // ReSharper disable once InconsistentlySynchronizedField
-                        _connection.Dispose();
-                    }
-                }
-
-                _disposed = true;
+                return readerFunc(connection.QueryMultiple(StoredProcedure, parameters, commandType: CommandType.StoredProcedure));
             }
         }</value>
   </data>
-  <data name="PropertyChildCollection" xml:space="preserve">
-    <value>public List&lt;%PropertyValueType%&gt; %PropertyName% { get; } = new List&lt;%PropertyValueType%&gt;();</value>
-  </data>
-  <data name="PropertyDapperDefault" xml:space="preserve">
-    <value>private %PropertyValueType% _%PropertyParameterName%;
-%BusinessRules%
-public %PropertyValueType% %PropertyName%
+  <data name="GenericRepositorySave" xml:space="preserve">
+    <value>public T Save(T entity)
 {
-	get { return _%PropertyParameterName%; }
-	set { SetField(ref _%PropertyParameterName%, value, nameof(%PropertyName%)); }
+	if(entity.IsDeleted)
+	{
+		Delete(entity);
+		return entity;
+	}
+	if(entity.IsNew)
+	{
+		return Insert(entity);
+	}
+	if(entity.IsDirty)
+	{
+		return Update(entity);
+	}
+	return entity;
 }</value>
   </data>
-  <data name="PropertyDefault" xml:space="preserve">
-    <value>%BusinessRules%
-public %PropertyValueType% %PropertyName% { get; set; }</value>
+  <data name="GenericRepositoryToAnonymous" xml:space="preserve">
+    <value>private DynamicParameters ToAnonymous(T entity, bool includeRowVersion)
+{
+	dynamic anonymousEntity = entity.ToAnonymous();
+	anonymousEntity.Id = entity.Id;
+	var parameters = new DynamicParameters(anonymousEntity);
+	if (includeRowVersion)
+	{
+		parameters.Add("RowVersion", entity.RowVersion, DbType.Binary);
+	}
+	return parameters;
+}</value>
   </data>
-  <data name="PropertyReadonlyGuid" xml:space="preserve">
-    <value>public %PropertyValueType% %PropertyName% { get; private set; }</value>
-  </data>
-  <data name="PublicDispose" xml:space="preserve">
-    <value>public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }</value>
+  <data name="GenericRepositoryUpdate" xml:space="preserve">
+    <value>public T Update(T entity)
+{
+	using (var connection = ConnectionFactory.GetConnection())
+	{
+		try
+		{
+			entity.RowVersion = connection.ExecuteScalar&lt;byte[]&gt;($"[dbo].[{ typeof(T).Name}_Update]",
+				ToAnonymous(entity, true),
+				commandType: CommandType.StoredProcedure);
+		}
+		catch(SqlException ex)
+		{
+			if (ex.Number == 50000 &amp;&amp; ex.Class == 16 &amp;&amp; ex.Message.Contains(" is al gewijzigd door een andere gebruiker."))
+			{
+				throw new DBConcurrencyException($"Dirty write detected while updating { typeof(T).Name} with id { entity.Id} at { DateTime.Now.ToString(CultureInfo.InvariantCulture)}");
+			}
+			else
+			{
+				throw;
+			}
+		}
+	}
+	entity.MarkOld();
+	return entity;
+}</value>
   </data>
 </root>

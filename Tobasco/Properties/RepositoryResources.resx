@@ -117,129 +117,79 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AnymonousPropertySet" xml:space="preserve">
-    <value>AnymonousPropertySet</value>
+  <data name="RepositoryGetById" xml:space="preserve">
+    <value />
   </data>
-  <data name="ClassDapperMethod" xml:space="preserve">
-    <value>public override ExpandoObject ToAnonymous()
+  <data name="RepositoryGetFullByIdReader" xml:space="preserve">
+    <value>internal static Dictionary&lt;long, %EntityName%&gt; Read(GridReader reader)
 {
-	dynamic anymonous = base.ToAnonymous();
-	%AnymonousPropertySet%
-	return anymonous;
+	%ChildReader%
+	
+	%ChildCollectionReader%
+
+    var items = reader.Read((%ReaderParameters%) =&gt;
+    {
+        %ChildReadDictionary%
+
+        %ChildCollectionReadDictionary%
+
+        return item;
+    }, splitOn: "%SplitOn%");
+
+    return items.ToDictionary(x =&gt; x.Id);        
 }</value>
   </data>
-  <data name="ClassFile" xml:space="preserve">
-    <value>%Namespaces%
-
-namespace %OwnNamespace%
+  <data name="RepositoryGetFullByIdReaderWithoutProp" xml:space="preserve">
+    <value>internal static Dictionary&lt;long, %EntityName%&gt; Read(GridReader reader)
 {
-	%Attributes%
-	public %Abstract% partial %Type% %ClassName%%Extension% %BaseClass%
+    return reader.Read&lt;%EntityName%&gt;().ToDictionary(x =&gt; x.Id);      
+}</value>
+  </data>
+  <data name="RepositoryGetFullObjectById" xml:space="preserve">
+    <value>public %EntityName% GetFullObjectById(long id)
+{
+    var parameters = new DynamicParameters();
+    parameters.Add("id", id);
+    return _genericRepository.QueryMultiple("%GetByIdStp%", parameters, x =&gt; Read(x).Values).SingleOrDefault();
+}</value>
+  </data>
+  <data name="RepositoryGetFullyByIdChildCollectionReader" xml:space="preserve">
+    <value>internal static Dictionary&lt;long, %EntityName%&gt; Read(GridReader reader)
+{
+	%ChildReader%
+	
+	%ChildCollectionReader%
+
+    var items = reader.Read((%EntityName% item, %EntityName% returnItem) =&gt;
+    {
+        %ChildCollectionReadDictionary%
+
+        return returnItem;
+    });
+
+    return items.ToDictionary(x =&gt; x.Id);        
+}</value>
+  </data>
+  <data name="RepositorySave" xml:space="preserve">
+    <value>public %EntityName% Save(%EntityName%  %EntityNameLowerCase%)
+{
+	%SaveChild%	
+	%EntityNameLowerCase% = _genericRepository.Save(%EntityNameLowerCase%);	
+	%SaveChildCollections%	
+	return %EntityNameLowerCase%;
+}</value>
+  </data>
+  <data name="RepositorySaveWithTransaction" xml:space="preserve">
+    <value>public %EntityName% Save(%EntityName%  %EntityNameLowerCase%)
+{
+	using (var trans = new TransactionScope())
 	{
-		%Constructor%		
-		%Properties%		
-		%Methods%	
+		%SaveChild%		
+		%EntityNameLowerCase% = _genericRepository.Save(%EntityNameLowerCase%);		
+		%SaveChildCollections%				
+		trans.Complete();
 	}
+	return %EntityNameLowerCase%;
 }</value>
-  </data>
-  <data name="ConnectionFactoryGetConnection" xml:space="preserve">
-    <value>public SqlConnection GetConnection()
-        {
-            SqlConnection connection = null;
-            SqlConnection tempConnection = null;
-            try
-            {
-                tempConnection = new SqlConnection(_connectionstring);
-                tempConnection.Open();
-                connection = tempConnection;
-                tempConnection = null;
-            }
-            finally
-            {
-                tempConnection?.Dispose();
-            }
-
-            return connection;
-        }</value>
-  </data>
-  <data name="Constructor" xml:space="preserve">
-    <value>%ConstructorFields%
-public %Name%(%ConstructorParameters%)
-{
-	%FieldWithParameter%
-	%CustomImplementation%
-}</value>
-  </data>
-  <data name="DependencyInjection" xml:space="preserve">
-    <value>[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1506: AvoidExcessiveClassCoupling", Justification = "Generated file")]
-public override void Load()
-{
-    %DIParams%
-}</value>
-  </data>
-  <data name="InterfaceFile" xml:space="preserve">
-    <value>%Namespaces%
-
-namespace %OwnNamespace%
-{
-	%Attributes%
-	public partial %Type% %InterfaceName%%Extension%
-	{
-		%Properties%
-			
-		%Methods%	
-	}
-}</value>
-  </data>
-  <data name="NinjectBinder" xml:space="preserve">
-    <value>protected void NinjectBinder&lt;T, TY&gt;() where TY : T
-{
-    Bind&lt;T&gt;().To&lt;TY&gt;()%BindingScope%;
-}</value>
-  </data>
-  <data name="PrivateDispose" xml:space="preserve">
-    <value>private void Dispose(bool disposing)
-        {
-            if (!_disposed)
-            {
-                if (disposing)
-                {
-                    // ReSharper disable once UseNullPropagation
-                    if (_connection != null)
-                    {
-                        // ReSharper disable once InconsistentlySynchronizedField
-                        _connection.Dispose();
-                    }
-                }
-
-                _disposed = true;
-            }
-        }</value>
-  </data>
-  <data name="PropertyChildCollection" xml:space="preserve">
-    <value>public List&lt;%PropertyValueType%&gt; %PropertyName% { get; } = new List&lt;%PropertyValueType%&gt;();</value>
-  </data>
-  <data name="PropertyDapperDefault" xml:space="preserve">
-    <value>private %PropertyValueType% _%PropertyParameterName%;
-%BusinessRules%
-public %PropertyValueType% %PropertyName%
-{
-	get { return _%PropertyParameterName%; }
-	set { SetField(ref _%PropertyParameterName%, value, nameof(%PropertyName%)); }
-}</value>
-  </data>
-  <data name="PropertyDefault" xml:space="preserve">
-    <value>%BusinessRules%
-public %PropertyValueType% %PropertyName% { get; set; }</value>
-  </data>
-  <data name="PropertyReadonlyGuid" xml:space="preserve">
-    <value>public %PropertyValueType% %PropertyName% { get; private set; }</value>
-  </data>
-  <data name="PublicDispose" xml:space="preserve">
-    <value>public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }</value>
   </data>
 </root>

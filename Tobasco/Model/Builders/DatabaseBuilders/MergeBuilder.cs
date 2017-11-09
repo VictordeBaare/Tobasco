@@ -19,7 +19,7 @@ namespace Tobasco.Model.Builders.DatabaseBuilders
         public string Build()
         {
             var template = new Template();
-            template.SetTemplate(Resources.SqlMergeStp);
+            template.SetTemplate(SqlResources.SqlMergeStp);
             template.Fill(GetParameters());
 
             return template.GetText;

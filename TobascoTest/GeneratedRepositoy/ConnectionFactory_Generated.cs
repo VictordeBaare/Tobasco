@@ -15,7 +15,6 @@ private readonly object _lock = new object();
 private bool _disposed;
 public ConnectionFactory(string databasenaam)
 {
-	
 	_connection = new SqlConnection(ConfigurationManager.ConnectionStrings[databasenaam].ConnectionString);
 }		
 				

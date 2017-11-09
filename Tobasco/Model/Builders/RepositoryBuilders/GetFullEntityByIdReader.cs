@@ -18,17 +18,17 @@ namespace Tobasco.Model.Builders.RepositoryBuilders
             var template = new Template();
             if(GetChildProperties.Any())
             {
-                template.SetTemplate(Resources.RepositoryGetFullByIdReader);
+                template.SetTemplate(RepositoryResources.RepositoryGetFullByIdReader);
                 template.Fill(GetParatmers());
             }
             else if (GetChildCollectionProperties.Any())
             {
-                template.SetTemplate(Resources.RepositoryGetFullyByIdChildCollectionReader);
+                template.SetTemplate(RepositoryResources.RepositoryGetFullyByIdChildCollectionReader);
                 template.Fill(GetChildCollectionReaderParameters());
             }
             else
             {
-                template.SetTemplate(Resources.RepositoryGetFullByIdReaderWithoutProp);
+                template.SetTemplate(RepositoryResources.RepositoryGetFullByIdReaderWithoutProp);
                 template.Fill(base.GetParatmers());
             }
             return template.GetText;
