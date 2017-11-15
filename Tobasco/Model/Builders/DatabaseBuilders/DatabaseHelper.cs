@@ -10,72 +10,79 @@ namespace Tobasco.Model.Builders.DatabaseBuilders
     {
         protected readonly Entity Entity;
         protected readonly Database Database;
-        protected readonly DatabasePropertyFactory Factory;
-        private IEnumerable<DatabaseProperty> _getSqlProperties;
 
         protected DatabaseHelper(Entity entity, Database database)
         {
             Entity = entity;
             Database = database;
-            Factory = new DatabasePropertyFactory();
         }
 
         public virtual string Name => Entity.Name;
 
-        protected virtual IEnumerable<DatabaseProperty> GetSqlProperties
-        {
-            get
-            {
-                return _getSqlProperties ?? (_getSqlProperties = Entity.Properties.Select(x => Factory.GetDatabaseProperty(x)));
-            }
-        }
-
-        protected virtual List<string> GetSqlUpdateParameters()
+        public virtual List<string> GetSqlUpdateParameters()
         {
             var list = new List<string>();
 
             foreach (DatabaseProperty selectSqlProperty in GetNonChildCollectionProperties)
             {
-                list.Add($"{Name}.{selectSqlProperty.SelectSqlParameterNaam} = @{selectSqlProperty.SelectSqlParameterNaam},");
+                list.Add($"{Name}.{selectSqlProperty.SelectSqlParameterNaam} = @{selectSqlProperty.SelectSqlParameterNaam}");
             }
+            list.Add($"{Name}.ModifiedBy = ISNULL(@ModifiedBy, SUSER_SNAME())");
+            list.Add($"{Name}.ModifiedOn = SYSDATETIME()");
 
             return list;
         }
 
-        protected virtual List<string> GetTableProperties()
+        public virtual List<string> GetTableProperties()
         {
             return GetNonChildCollectionProperties.Select(prop => $",{prop.SelectSqlTableProperty}").ToList();
         }
 
-        protected IEnumerable<DatabaseProperty> GetChildProperties
+        public IEnumerable<DatabaseProperty> GetChildProperties
         {
-            get { return GetSqlProperties.Where(x => x.Property.DataType.Datatype == Datatype.Child || x.Property.DataType.Datatype == Datatype.ReadonlyChild); }
+            get { return Entity.GetSqlProperties.Where(x => x.Property.DataType.Datatype == Datatype.Child || x.Property.DataType.Datatype == Datatype.ReadonlyChild); }
         }
 
-        protected IEnumerable<DatabaseProperty> GetNonChildCollectionProperties
+        public IEnumerable<DatabaseProperty> GetNonChildCollectionProperties
         {
-            get { return GetSqlProperties.Where(x => x.Property.DataType.Datatype != Datatype.ChildCollection); }
+            get { return Entity.GetSqlProperties.Where(x => x.Property.DataType.Datatype != Datatype.ChildCollection); }
         }
 
-        protected virtual List<string> GetSqlParameterNames(string leading = null)
+        public virtual List<string> GetSqlParameterNames()
         {
             var list = new List<string>();
 
             foreach (var sqlprop in GetNonChildCollectionProperties)
             {
-                list.Add($"{leading}{sqlprop.SelectSqlParameterNaam},");
+                list.Add($"{sqlprop.SelectSqlParameterNaam}");
             }
+            list.Add("ModifiedBy");
+            list.Add("ModifiedOn");
 
             return list;
         }
 
-        protected virtual List<string> GetSqlParameters()
+        public virtual List<string> GetSqlValueParameterNames()
         {
             var list = new List<string>();
 
             foreach (var sqlprop in GetNonChildCollectionProperties)
             {
-                list.Add($"@{sqlprop.SelectSqlParameter},");
+                list.Add($"@{sqlprop.SelectSqlParameterNaam}");
+            }
+            list.Add("@ModifiedBy");
+            list.Add("SYSDATETIME()");
+
+            return list;
+        }
+
+        public virtual List<string> GetSqlParameters()
+        {
+            var list = new List<string>();
+
+            foreach (var sqlprop in GetNonChildCollectionProperties)
+            {
+                list.Add($"@{sqlprop.SelectSqlParameter}");
             }
 
             return list;

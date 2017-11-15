@@ -16,7 +16,7 @@ namespace Tobasco
         {
             _information = information;
             EntityHandlers = new Dictionary<string, EntityHandler>();
-
+            EntityManager.Initialise(EntityHandlers);
             foreach(var entity in entities)
             {
                 if (!EntityHandlers.ContainsKey(entity.Name))

@@ -4,9 +4,9 @@ using Tobasco.Model.DatabaseProperties;
 
 namespace Tobasco.Factories
 {
-    public class DatabasePropertyFactory
+    public static class DatabasePropertyFactory
     {
-        public DatabaseProperty GetDatabaseProperty(Property propery)
+        public static DatabaseProperty GetDatabaseProperty(Property propery)
         {
             switch (propery.DataType.Datatype)
             {

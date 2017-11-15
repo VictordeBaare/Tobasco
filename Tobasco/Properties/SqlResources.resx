@@ -221,7 +221,7 @@ END;</value>
     <value>CREATE TABLE [dbo].[%TableName%_historie] (
     [Id]                          bigint             NOT NULL
    ,[RowVersion]                  binary(8)          NOT NULL
-   ,[Uid]                         uniqueidentifier   NOT NULL
+   ,[UId]                         uniqueidentifier   NOT NULL
    %TableProperties%   
    ,[ModifiedBy]                  nvarchar (256)     NOT NULL
    ,[ModifiedOn]                  DATETIME2(7)       NOT NULL
@@ -231,9 +231,7 @@ END;</value>
   </data>
   <data name="SqlInsertStp" xml:space="preserve">
     <value>CREATE PROCEDURE [dbo].[%TableName%_Insert]
-    @Id bigint output,
 	%StpParameter%
-    @ModifiedBy nvarchar(256)
 AS
 BEGIN
     SET NOCOUNT ON;
@@ -242,8 +240,6 @@ BEGIN
       INTO [dbo].%TableName% 
 	       (
 			%StpPropertyNames%
-			[ModifiedBy],
-		    [ModifiedOn]
 		   )
 	OUTPUT Inserted.Id
 		  ,Inserted.[RowVersion]
@@ -251,16 +247,12 @@ BEGIN
     VALUES
          (
 		   %StpParameterName%
-           @ModifiedBy,
-           SYSDATETIME()
           );
 END;</value>
   </data>
   <data name="SqlInsertStpWithUid" xml:space="preserve">
     <value>CREATE PROCEDURE [dbo].[%TableName%_Insert]
-    @Id bigint output,
 	%StpParameter%
-    @ModifiedBy nvarchar(256)
 AS
 BEGIN
     SET NOCOUNT ON;
@@ -269,8 +261,6 @@ BEGIN
       INTO [dbo].%TableName% 
 	       (
 			%StpPropertyNames%
-			[ModifiedBy],
-		    [ModifiedOn]
 		   )
 	OUTPUT Inserted.Id
               ,Inserted.[UId]
@@ -279,8 +269,6 @@ BEGIN
     VALUES
          (
 		   %StpParameterName%
-           @ModifiedBy,
-           SYSDATETIME()
           );
 END;</value>
   </data>
@@ -435,21 +423,9 @@ AS
 BEGIN
 	INSERT
 	  INTO [dbo].%TableName%_historie(
-			Id,
-		    [RowVersion],
            %StpPropertyNames%
-		    [ModifiedBy],
-		    [ModifiedOn],
-		    [DeletedBy],
-		    [DeletedAt]
             )
-	SELECT Deleted.Id,
-	       Deleted.[RowVersion],
-		  %StpDeletetedPropertyNames%
-		   Deleted.ModifiedBy,
-		   Deleted.ModifiedOn,
-		   ISNULL(LTRIM(RTRIM(CONVERT(nvarchar(128), CONTEXT_INFO()))), SUSER_SNAME()),
-		   SYSDATETIME()
+	SELECT 		  %StpDeletetedPropertyNames%
 	  FROM Deleted;
 END;</value>
   </data>
@@ -461,23 +437,10 @@ AS
 BEGIN
 	INSERT
 	  INTO [dbo].%TableName%_historie(
-			Id,
-			[UId],
-		    [RowVersion],
            %StpPropertyNames%
-		    [ModifiedBy],
-		    [ModifiedOn],
-		    [DeletedBy],
-		    [DeletedAt]
             )
-	SELECT Deleted.Id,
-		   Deleted.[UId],
-	       Deleted.[RowVersion],
+	SELECT 
 		  %StpDeletetedPropertyNames%
-		   Deleted.ModifiedBy,
-		   Deleted.ModifiedOn,
-		   ISNULL(LTRIM(RTRIM(CONVERT(nvarchar(128), CONTEXT_INFO()))), SUSER_SNAME()),
-		   SYSDATETIME()
 	  FROM Deleted;
 END;</value>
   </data>
@@ -489,21 +452,10 @@ AS
 BEGIN
     INSERT
       INTO [dbo].%TableName%_historie(
-			Id,
-		    [RowVersion],
 		   %StpPropertyNames%
-            [ModifiedBy],
-            [ModifiedOn],
-            DeletedBy,
-            DeletedAt
            )
-    SELECT DELETED.Id,
-           DELETED.[RowVersion],
+    SELECT 
 		  %StpDeletetedPropertyNames%
-           Deleted.ModifiedBy,
-           Deleted.ModifiedOn,
-           NULL,
-           NULL
       FROM Deleted;
 END;</value>
   </data>
@@ -515,32 +467,16 @@ AS
 BEGIN
     INSERT
       INTO [dbo].%TableName%_historie(
-			Id,
-			[UId],
-		    [RowVersion],
 		   %StpPropertyNames%
-            [ModifiedBy],
-            [ModifiedOn],
-            DeletedBy,
-            DeletedAt
            )
-    SELECT DELETED.Id,
-		   DELETED.[UId],
-           DELETED.[RowVersion],
+    SELECT 
 		  %StpDeletetedPropertyNames%
-           Deleted.ModifiedBy,
-           Deleted.ModifiedOn,
-           NULL,
-           NULL
       FROM Deleted;
 END;</value>
   </data>
   <data name="SqlUpdateStp" xml:space="preserve">
     <value>CREATE PROCEDURE [dbo].[%TableName%_Update]
-		@Id [bigint],
 		%StpParameter%
-        @RowVersion [rowversion],
-        @ModifiedBy nvarchar(256)
 AS
 BEGIN
 		SET NOCOUNT ON;
@@ -557,8 +493,6 @@ BEGIN
 		UPDATE [dbo].%TableName%
 		   SET 
 				%UpdateSetTableParemeters%            
-			    %TableName%.ModifiedBy = ISNULL(@ModifiedBy, SUSER_SNAME()),
-			    %TableName%.ModifiedOn = SYSDATETIME()
 		OUTPUT Inserted.[RowVersion]
 			  ,Inserted.ModifiedOn
 		  INTO #Output ([RowVersion]

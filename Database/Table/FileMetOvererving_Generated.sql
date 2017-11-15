@@ -14,12 +14,14 @@
 	,[ModifiedOn]	datetime2(7)			NOT NULL
 	 CONSTRAINT [DF_{FileMetOvererving}_ModifiedOn] DEFAULT SYSDATETIME()
 	 CONSTRAINT [PK_{FileMetOvererving}] PRIMARY KEY CLUSTERED (Id ASC)
+	 ,CONSTRAINT [FK_FileMetOvererving_ChildObject_Id] FOREIGN KEY (TestChildProp7Id) REFERENCES [dbo].[ChildObject] ([Id])
+
 );
 GO
 CREATE TABLE [dbo].[FileMetOvererving_historie] (
     [Id]                          bigint             NOT NULL
    ,[RowVersion]                  binary(8)          NOT NULL
-   ,[Uid]                         uniqueidentifier   NOT NULL
+   ,[UId]                         uniqueidentifier   NOT NULL
    ,TestChildProp1 nvarchar(100) NOT NULL
 ,TestChildProp2 int NULL
 ,TestChildProp3 bigint NULL
@@ -38,9 +40,9 @@ CREATE NONCLUSTERED INDEX IX_FileMetOvererving_historie_Id
                          (Id ASC)
                   INCLUDE(ModifiedOn);
 GO
-CREATE NONCLUSTERED INDEX IX_UQ_FileMetOvererving_Uid
+CREATE NONCLUSTERED INDEX IX_UQ_FileMetOvererving_UId
                        ON [dbo].FileMetOvererving
-                         ([Uid] ASC
+                         ([UId] ASC
                          )
 GO
 
@@ -52,20 +54,20 @@ AS
 BEGIN
     INSERT
       INTO [dbo].FileMetOvererving_historie(
-			Id,
-			[UId],
-		    [RowVersion],
-		   TestChildProp1,
+		   Id,
+[UId],
+[RowVersion],
+TestChildProp1,
 TestChildProp2,
 TestChildProp3,
 TestChildProp4,
 TestChildProp5,
 TestChildProp6,
 TestChildProp7Id,
-            [ModifiedBy],
-            [ModifiedOn],
-            DeletedBy,
-            DeletedAt
+ModifiedBy,
+ModifiedOn,
+DeletedBy,
+DeletedAt
            )
     SELECT DELETED.Id,
 		   DELETED.[UId],
@@ -77,10 +79,10 @@ Deleted.TestChildProp4,
 Deleted.TestChildProp5,
 Deleted.TestChildProp6,
 Deleted.TestChildProp7Id,
-           Deleted.ModifiedBy,
-           Deleted.ModifiedOn,
-           NULL,
-           NULL
+Deleted.ModifiedBy,
+Deleted.ModifiedOn,
+NULL,
+NULL
       FROM Deleted;
 END;
 GO
@@ -91,20 +93,20 @@ AS
 BEGIN
 	INSERT
 	  INTO [dbo].FileMetOvererving_historie(
-			Id,
-			[UId],
-		    [RowVersion],
-           TestChildProp1,
+           Id,
+[UId],
+[RowVersion],
+TestChildProp1,
 TestChildProp2,
 TestChildProp3,
 TestChildProp4,
 TestChildProp5,
 TestChildProp6,
 TestChildProp7Id,
-		    [ModifiedBy],
-		    [ModifiedOn],
-		    [DeletedBy],
-		    [DeletedAt]
+ModifiedBy,
+ModifiedOn,
+DeletedBy,
+DeletedAt
             )
 	SELECT Deleted.Id,
 		   Deleted.[UId],
@@ -116,10 +118,10 @@ Deleted.TestChildProp4,
 Deleted.TestChildProp5,
 Deleted.TestChildProp6,
 Deleted.TestChildProp7Id,
-		   Deleted.ModifiedBy,
-		   Deleted.ModifiedOn,
-		   ISNULL(LTRIM(RTRIM(CONVERT(nvarchar(128), CONTEXT_INFO()))), SUSER_SNAME()),
-		   SYSDATETIME()
+Deleted.ModifiedBy,
+Deleted.ModifiedOn,
+ISNULL(LTRIM(RTRIM(CONVERT(nvarchar(128), CONTEXT_INFO()))), SUSER_SNAME()),
+SYSDATETIME()
 	  FROM Deleted;
 END;
 

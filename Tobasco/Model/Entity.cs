@@ -1,5 +1,8 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Xml.Serialization;
+using Tobasco.Factories;
+using Tobasco.Model.DatabaseProperties;
 
 namespace Tobasco.Model
 {
@@ -40,6 +43,11 @@ namespace Tobasco.Model
         public ConnectionFactory ConnectionFactory { get; set; }
 
         public GenericRepository GenericRepository { get; set; }
+
+
+        private IEnumerable<DatabaseProperty> _getSqlProperties;
+        [XmlIgnore]
+        public virtual IEnumerable<DatabaseProperty> GetSqlProperties => _getSqlProperties ?? (_getSqlProperties = Properties.Select(x => DatabasePropertyFactory.GetDatabaseProperty(x)));
 
     }
 }

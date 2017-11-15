@@ -11,7 +11,8 @@ namespace Tobasco.Enums
         None = 0,
         Nvarchar = 1,
         Varchar = 2,
-        Money = 3,
-        Smallmoney = 4    
+        Char = 3,
+        Money = 4,
+        Smallmoney = 5    
     }
 }

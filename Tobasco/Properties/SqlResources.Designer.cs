@@ -186,7 +186,7 @@ namespace Tobasco.Properties {
         ///   Looks up a localized string similar to CREATE TABLE [dbo].[%TableName%_historie] (
         ///    [Id]                          bigint             NOT NULL
         ///   ,[RowVersion]                  binary(8)          NOT NULL
-        ///   ,[Uid]                         uniqueidentifier   NOT NULL
+        ///   ,[UId]                         uniqueidentifier   NOT NULL
         ///   %TableProperties%   
         ///   ,[ModifiedBy]                  nvarchar (256)     NOT NULL
         ///   ,[ModifiedOn]                  DATETIME2(7)       NOT NULL
@@ -202,9 +202,7 @@ namespace Tobasco.Properties {
         
         /// <summary>
         ///   Looks up a localized string similar to CREATE PROCEDURE [dbo].[%TableName%_Insert]
-        ///    @Id bigint output,
         ///	%StpParameter%
-        ///    @ModifiedBy nvarchar(256)
         ///AS
         ///BEGIN
         ///    SET NOCOUNT ON;
@@ -213,8 +211,6 @@ namespace Tobasco.Properties {
         ///      INTO [dbo].%TableName% 
         ///	       (
         ///			%StpPropertyNames%
-        ///			[ModifiedBy],
-        ///		    [ModifiedOn]
         ///		   )
         ///	OUTPUT Inserted.Id
         ///		  ,Inserted.[RowVersion]
@@ -222,8 +218,6 @@ namespace Tobasco.Properties {
         ///    VALUES
         ///         (
         ///		   %StpParameterName%
-        ///           @ModifiedBy,
-        ///           SYSDATETIME()
         ///          );
         ///END;.
         /// </summary>
@@ -235,9 +229,7 @@ namespace Tobasco.Properties {
         
         /// <summary>
         ///   Looks up a localized string similar to CREATE PROCEDURE [dbo].[%TableName%_Insert]
-        ///    @Id bigint output,
         ///	%StpParameter%
-        ///    @ModifiedBy nvarchar(256)
         ///AS
         ///BEGIN
         ///    SET NOCOUNT ON;
@@ -246,8 +238,6 @@ namespace Tobasco.Properties {
         ///      INTO [dbo].%TableName% 
         ///	       (
         ///			%StpPropertyNames%
-        ///			[ModifiedBy],
-        ///		    [ModifiedOn]
         ///		   )
         ///	OUTPUT Inserted.Id
         ///              ,Inserted.[UId]
@@ -256,8 +246,6 @@ namespace Tobasco.Properties {
         ///    VALUES
         ///         (
         ///		   %StpParameterName%
-        ///           @ModifiedBy,
-        ///           SYSDATETIME()
         ///          );
         ///END;.
         /// </summary>
@@ -354,20 +342,11 @@ namespace Tobasco.Properties {
         ///BEGIN
         ///	INSERT
         ///	  INTO [dbo].%TableName%_historie(
-        ///			Id,
-        ///		    [RowVersion],
         ///           %StpPropertyNames%
-        ///		    [ModifiedBy],
-        ///		    [ModifiedOn],
-        ///		    [DeletedBy],
-        ///		    [DeletedAt]
         ///            )
-        ///	SELECT Deleted.Id,
-        ///	       Deleted.[RowVersion],
-        ///		  %StpDeletetedPropertyNames%
-        ///		   Deleted.ModifiedBy,
-        ///		   Deleted.ModifiedOn,
-        ///		   ISNULL(LTRIM(RTRIM(CONVERT(nvarchar(128), CONTEXT_INFO()))), SUSER_SN [rest of string was truncated]&quot;;.
+        ///	SELECT 		  %StpDeletetedPropertyNames%
+        ///	  FROM Deleted;
+        ///END;.
         /// </summary>
         internal static string SqlTriggerDelete {
             get {
@@ -383,22 +362,12 @@ namespace Tobasco.Properties {
         ///BEGIN
         ///	INSERT
         ///	  INTO [dbo].%TableName%_historie(
-        ///			Id,
-        ///			[UId],
-        ///		    [RowVersion],
         ///           %StpPropertyNames%
-        ///		    [ModifiedBy],
-        ///		    [ModifiedOn],
-        ///		    [DeletedBy],
-        ///		    [DeletedAt]
         ///            )
-        ///	SELECT Deleted.Id,
-        ///		   Deleted.[UId],
-        ///	       Deleted.[RowVersion],
+        ///	SELECT 
         ///		  %StpDeletetedPropertyNames%
-        ///		   Deleted.ModifiedBy,
-        ///		   Deleted.ModifiedOn,
-        ///		   ISNULL(LTRIM(RTRIM(CONVERT(nvarchar(1 [rest of string was truncated]&quot;;.
+        ///	  FROM Deleted;
+        ///END;.
         /// </summary>
         internal static string SqlTriggerDeleteWithUid {
             get {
@@ -414,21 +383,12 @@ namespace Tobasco.Properties {
         ///BEGIN
         ///    INSERT
         ///      INTO [dbo].%TableName%_historie(
-        ///			Id,
-        ///		    [RowVersion],
         ///		   %StpPropertyNames%
-        ///            [ModifiedBy],
-        ///            [ModifiedOn],
-        ///            DeletedBy,
-        ///            DeletedAt
         ///           )
-        ///    SELECT DELETED.Id,
-        ///           DELETED.[RowVersion],
+        ///    SELECT 
         ///		  %StpDeletetedPropertyNames%
-        ///           Deleted.ModifiedBy,
-        ///           Deleted.ModifiedOn,
-        ///           NULL,
-        ///           NU [rest of string was truncated]&quot;;.
+        ///      FROM Deleted;
+        ///END;.
         /// </summary>
         internal static string SqlTriggerUpdate {
             get {
@@ -444,21 +404,12 @@ namespace Tobasco.Properties {
         ///BEGIN
         ///    INSERT
         ///      INTO [dbo].%TableName%_historie(
-        ///			Id,
-        ///			[UId],
-        ///		    [RowVersion],
         ///		   %StpPropertyNames%
-        ///            [ModifiedBy],
-        ///            [ModifiedOn],
-        ///            DeletedBy,
-        ///            DeletedAt
         ///           )
-        ///    SELECT DELETED.Id,
-        ///		   DELETED.[UId],
-        ///           DELETED.[RowVersion],
+        ///    SELECT 
         ///		  %StpDeletetedPropertyNames%
-        ///           Deleted.ModifiedBy,
-        ///           Deleted.ModifiedOn,        /// [rest of string was truncated]&quot;;.
+        ///      FROM Deleted;
+        ///END;.
         /// </summary>
         internal static string SqlTriggerUpdateWithUid {
             get {
@@ -468,10 +419,7 @@ namespace Tobasco.Properties {
         
         /// <summary>
         ///   Looks up a localized string similar to CREATE PROCEDURE [dbo].[%TableName%_Update]
-        ///		@Id [bigint],
         ///		%StpParameter%
-        ///        @RowVersion [rowversion],
-        ///        @ModifiedBy nvarchar(256)
         ///AS
         ///BEGIN
         ///		SET NOCOUNT ON;
@@ -488,7 +436,11 @@ namespace Tobasco.Properties {
         ///		UPDATE [dbo].%TableName%
         ///		   SET 
         ///				%UpdateSetTableParemeters%            
-        ///			    %TableName%.ModifiedB [rest of string was truncated]&quot;;.
+        ///		OUTPUT Inserted.[RowVersion]
+        ///			  ,Inserted.ModifiedOn
+        ///		  INTO #Output ([RowVersion]
+        ///						,ModifiedOn
+        ///					 [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string SqlUpdateStp {
             get {

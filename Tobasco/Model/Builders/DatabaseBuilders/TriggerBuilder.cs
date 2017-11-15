@@ -1,4 +1,6 @@
-﻿using System.Text;
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
 using Tobasco.Constants;
 using Tobasco.Properties;
 using Tobasco.Templates;
@@ -24,7 +26,7 @@ namespace Tobasco.Model.Builders.DatabaseBuilders
         {
             var template = new Template();
             template.SetTemplate(GetResourceTriggerDelete);
-            template.Fill(GetParameters());
+            template.Fill(GetParameters(true));
             return template.GetText;
         }
 
@@ -35,19 +37,60 @@ namespace Tobasco.Model.Builders.DatabaseBuilders
         {
             var template = new Template();
             template.SetTemplate(GetResourceTriggerUpdate);
-            template.Fill(GetParameters());
+            template.Fill(GetParameters(false));
             return template.GetText;
         }
 
-        private TemplateParameter GetParameters()
+        private TemplateParameter GetParameters(bool isDelete)
         {
             var parameters = new TemplateParameter();
             parameters.Add(SqlConstants.TableName, Name);
-            parameters.Add(SqlConstants.StpParameter, GetSqlParameters());
-            parameters.Add(SqlConstants.StpParameterName, GetSqlParameterNames("@"));
-            parameters.Add(SqlConstants.StpPropertyNames, GetSqlParameterNames(""));
-            parameters.Add(SqlConstants.StpDeletetedPropertyNames, GetSqlParameterNames("Deleted."));
+            parameters.Add(SqlConstants.StpPropertyNames, string.Join("," + Environment.NewLine, GetSqlParameterNames()));
+            parameters.Add(SqlConstants.StpDeletetedPropertyNames, string.Join("," + Environment.NewLine, GetDeletedParameterNames(isDelete)));
             return parameters;
+        }
+
+        public override List<string> GetSqlParameterNames()
+        {
+            var parameters = base.GetSqlParameterNames();
+            parameters.Insert(0, "Id");
+            parameters.Insert(1, "[RowVersion]");
+            if (Entity.GenerateReadonlyGuid)
+            {
+                parameters.Insert(1, "[UId]");
+            }            
+            parameters.Add("DeletedBy");
+            parameters.Add("DeletedAt");
+            return parameters;
+        }
+
+        protected virtual List<string> GetDeletedParameterNames(bool isDeleteTrigger)
+        {
+            var list = new List<string>();
+            list.Add("Deleted.Id");
+            if (Entity.GenerateReadonlyGuid)
+            {
+                list.Add("Deleted.[UId]");
+            }
+            list.Add("Deleted.[rowversion]");
+            foreach (var sqlprop in GetNonChildCollectionProperties)
+            {
+                list.Add($"Deleted.{sqlprop.SelectSqlParameterNaam}");
+            }
+            list.Add("Deleted.ModifiedBy");
+            list.Add("Deleted.ModifiedOn");
+            if (isDeleteTrigger)
+           { 
+                list.Add("ISNULL(LTRIM(RTRIM(CONVERT(nvarchar(128), CONTEXT_INFO()))), SUSER_SNAME())");
+                list.Add("SYSDATETIME()");
+            }
+            else
+            {
+                list.Add("NULL");
+                list.Add("NULL");
+            }
+
+            return list;
         }
     }
 }

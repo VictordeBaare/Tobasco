@@ -14,7 +14,6 @@ namespace TobascoTest.IGenerateRepository
 	{
 			
 		ChildObject Save(ChildObject childobject);
-ChildObject GetById(long id);
-ChildObject GetFullObjectById(long id);	
+ChildObject GetById(long id);	
 	}
 }

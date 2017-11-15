@@ -40,25 +40,25 @@ AS
 BEGIN
     INSERT
       INTO [dbo].CPK_historie(
-			Id,
-		    [RowVersion],
-		   Training,
+		   Id,
+[RowVersion],
+Training,
 Duur,
 Kosten,
-            [ModifiedBy],
-            [ModifiedOn],
-            DeletedBy,
-            DeletedAt
+ModifiedBy,
+ModifiedOn,
+DeletedBy,
+DeletedAt
            )
     SELECT DELETED.Id,
            DELETED.[RowVersion],
 		  Deleted.Training,
 Deleted.Duur,
 Deleted.Kosten,
-           Deleted.ModifiedBy,
-           Deleted.ModifiedOn,
-           NULL,
-           NULL
+Deleted.ModifiedBy,
+Deleted.ModifiedOn,
+NULL,
+NULL
       FROM Deleted;
 END;
 GO
@@ -69,25 +69,25 @@ AS
 BEGIN
 	INSERT
 	  INTO [dbo].CPK_historie(
-			Id,
-		    [RowVersion],
-           Training,
+           Id,
+[RowVersion],
+Training,
 Duur,
 Kosten,
-		    [ModifiedBy],
-		    [ModifiedOn],
-		    [DeletedBy],
-		    [DeletedAt]
+ModifiedBy,
+ModifiedOn,
+DeletedBy,
+DeletedAt
             )
 	SELECT Deleted.Id,
 	       Deleted.[RowVersion],
 		  Deleted.Training,
 Deleted.Duur,
 Deleted.Kosten,
-		   Deleted.ModifiedBy,
-		   Deleted.ModifiedOn,
-		   ISNULL(LTRIM(RTRIM(CONVERT(nvarchar(128), CONTEXT_INFO()))), SUSER_SNAME()),
-		   SYSDATETIME()
+Deleted.ModifiedBy,
+Deleted.ModifiedOn,
+ISNULL(LTRIM(RTRIM(CONVERT(nvarchar(128), CONTEXT_INFO()))), SUSER_SNAME()),
+SYSDATETIME()
 	  FROM Deleted;
 END;
 

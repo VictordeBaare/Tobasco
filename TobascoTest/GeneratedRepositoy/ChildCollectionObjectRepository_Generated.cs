@@ -29,16 +29,6 @@ public ChildCollectionObject GetById(long id)
         {
             return _genericRepository.GetById(id);
         }
-
-public ChildCollectionObject GetFullObjectById(long id)
-{
-    var parameters = new DynamicParameters();
-    parameters.Add("id", id);
-    return _genericRepository.QueryMultiple("[dbo].[ChildCollectionObject_GetFullById]", parameters, x => Read(x).Values).SingleOrDefault();
-}
-internal static Dictionary<long, ChildCollectionObject> Read(GridReader reader)
-{
-    return reader.Read<ChildCollectionObject>().ToDictionary(x => x.Id);      
-}	
+	
 	}
 }

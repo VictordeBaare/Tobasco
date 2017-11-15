@@ -115,6 +115,7 @@
     <Compile Include="FileProcessor.cs" />
     <Compile Include="MainHandler.cs" />
     <Compile Include="Manager\BuilderManager.cs" />
+    <Compile Include="Manager\EntityManager.cs" />
     <Compile Include="Manager\OutputPaneManager.cs" />
     <Compile Include="Manager\ProgressBarManager.cs" />
     <Compile Include="Manager\VsManager.cs" />

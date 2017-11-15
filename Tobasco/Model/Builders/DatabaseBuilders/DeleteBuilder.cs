@@ -18,7 +18,7 @@ namespace Tobasco.Model.Builders.DatabaseBuilders
         public string Build()
         {
             var template = new Template();
-            template.SetTemplate(SqlResources.SqlDeleteStp);
+            template.SetTemplate(GetTemplate);
             template.Fill(InsertTemplateParameters());
             return template.GetText;
         }
@@ -27,10 +27,12 @@ namespace Tobasco.Model.Builders.DatabaseBuilders
         {
             var parameters = new TemplateParameter();
             parameters.Add(SqlConstants.TableName, Name);
-            parameters.Add(SqlConstants.StpParameter, GetSqlParameters());
-            parameters.Add(SqlConstants.StpParameterName, GetSqlParameterNames("@"));
-            parameters.Add(SqlConstants.StpPropertyNames, GetSqlParameterNames(""));
+            parameters.Add(SqlConstants.StpParameter, string.Join("," + Environment.NewLine, GetSqlParameters()));
+            parameters.Add(SqlConstants.StpParameterName, string.Join("," + Environment.NewLine, GetSqlValueParameterNames()));
+            parameters.Add(SqlConstants.StpPropertyNames, string.Join("," + Environment.NewLine, GetSqlParameterNames()));
             return parameters;
         }
+
+        protected virtual string GetTemplate => SqlResources.SqlDeleteStp;
     }
 }

@@ -17,26 +17,6 @@ namespace Tobasco.Model.Builders
 
         public override string Name => Entity.Name;
                              
-        private string GetIndexes()
-        {
-            var builder = new IndexBuilder(Entity, Database);
-            return builder.Build();
-        }
-
-        private string GetTriggers()
-        {
-            if (Database.Tables.GenerateHistorie.Generate)
-            {
-                var builder = new TriggerBuilder(Entity, Database);
-                return builder.Build();
-            }
-            else
-            {
-                OutputPaneManager.WriteToOutputPane("No triggers generated");
-                return string.Empty;
-            }
-        }    
-
         public override IEnumerable<OutputFile> Build()
         {
             var outputFiles = new List<OutputFile>();
@@ -54,21 +34,19 @@ namespace Tobasco.Model.Builders
             {
                 OutputPaneManager.WriteToOutputPane($"Generate Table for {Name}");
                 var tableFile = FileManager.StartNewSqlTableFile(Name, Database.Project, Database.Tables.Folder);
-                var tableBuilder = new TableBuilder(Entity, Database);
-                tableFile.Table = tableBuilder.Build();
+                tableFile.Table = GetTableBuilder.Build();
 
                 if (Database.Tables.Generate && Database.Tables.GenerateHistorie.Generate)
                 {
-                    var builder = new HistorieTableBuilder(Entity, Database);
-                    tableFile.HistorieTable = builder.Build();
+                    tableFile.HistorieTable = GetHistorieTableBuilder.Build();
+                    tableFile.Triggers = GetTriggerBuilder.Build();
                 }
                 else
                 {
                     OutputPaneManager.WriteToOutputPane($"Do not generate HistorieTable for {Name} ");
                 }
 
-                tableFile.Indexes = GetIndexes();
-                tableFile.Triggers = GetTriggers();
+                tableFile.Indexes = GetIndexBuilder.Build();                
 
                 outputFiles.Add(tableFile);
             }
@@ -84,24 +62,23 @@ namespace Tobasco.Model.Builders
             {
                 var crudFile = FileManager.StartNewSqlStpFile(Name + "_CRUD", Database.Project, Database.StoredProcedures.Folder);
 
-                GenerateOnCondition("Insert", () => Database.StoredProcedures.GenerateInsert.Generate, () => GenerateInsertMethod(crudFile));
+                GenerateOnCondition("Insert", () => Database.StoredProcedures.GenerateInsert.Generate, () => crudFile.Methods.Add(GetInsertBuilder.Build()));
 
-                GenerateOnCondition("Update", () => Database.StoredProcedures.GenerateUpdate.Generate, () => GenerateUpdateMethod(crudFile));
+                GenerateOnCondition("Update", () => Database.StoredProcedures.GenerateUpdate.Generate, () => crudFile.Methods.Add(GetUpdateBuilder.Build()));
 
-                GenerateOnCondition("Delete", () => Database.StoredProcedures.GenerateDelete.Generate, () => GenerateDeleteMethod(crudFile));
+                GenerateOnCondition("Delete", () => Database.StoredProcedures.GenerateDelete.Generate, () => crudFile.Methods.Add(GetDeleteBuilder.Build()));
 
-                GenerateOnCondition("GetById", () => Database.StoredProcedures.GenerateGetById.Generate, () => GenerateGetByIdMethod(crudFile));
+                GenerateOnCondition("GetById", () => Database.StoredProcedures.GenerateGetById.Generate, () => crudFile.Methods.Add(GetByIdBuilder.Build()));
 
-                GenerateOnCondition("Type", () => Database.StoredProcedures.GenerateMerge.Generate, () => GenerateTypeMethod(crudFile));
+                GenerateOnCondition("Type", () => Database.StoredProcedures.GenerateMerge.Generate, () => crudFile.Methods.Add(GetTypeBuilder.Build()));
 
-                GenerateOnCondition("Merge", () => Database.StoredProcedures.GenerateMerge.Generate, () => GenerateMergeMethod(crudFile));
+                GenerateOnCondition("Merge", () => Database.StoredProcedures.GenerateMerge.Generate, () => crudFile.Methods.Add(GetMergeBuilder.Build()));
 
                 if (Database.StoredProcedures.GenerateGetById.Generate && Entity.Properties.Any(x => x.DataType.Datatype == Datatype.Reference))
                 {
                     foreach (var reference in Entity.Properties.Where(x => x.DataType.Datatype == Datatype.Reference))
                     {
-                        var referenceGetByIdBuilder = new GetByReferenceIdBuilder(Entity, Database);
-                        crudFile.Methods.Add(referenceGetByIdBuilder.Build(reference));
+                        crudFile.Methods.Add(GetByReferenceIdBuilder.Build(reference));
                     }
                 }
 
@@ -109,41 +86,17 @@ namespace Tobasco.Model.Builders
             }
         }
 
-        private void GenerateInsertMethod(OutputFile crudFile)
-        {
-            var insertBuilder = new InsertBuilder(Entity, Database);
-            crudFile.Methods.Add(insertBuilder.Build());
-        }
-
-        private void GenerateUpdateMethod(OutputFile crudFile)
-        {
-            var updateBuilder = new UpdateBuilder(Entity, Database);
-            crudFile.Methods.Add(updateBuilder.Build());
-        }
-
-        private void GenerateDeleteMethod(OutputFile crudFile)
-        {
-            var deleteBuilder = new DeleteBuilder(Entity, Database);
-            crudFile.Methods.Add(deleteBuilder.Build());
-        }
-
-        private void GenerateGetByIdMethod(OutputFile crudFile)
-        {
-            var getByIdBuilder = new GetByIdBuilder(Entity, Database);
-            crudFile.Methods.Add(getByIdBuilder.Build());
-        }
-
-        private void GenerateMergeMethod(OutputFile crudFile)
-        {
-            var mergeBuilder = new MergeBuilder(Entity, Database);
-            crudFile.Methods.Add(mergeBuilder.Build());
-        }
-
-        private void GenerateTypeMethod(OutputFile crudFile)
-        {
-            var typeBuilder = new TypeBuilder(Entity, Database);
-            crudFile.Methods.Add(typeBuilder.Build());
-        }
+        protected virtual InsertBuilder GetInsertBuilder => new InsertBuilder(Entity, Database);
+        protected virtual UpdateBuilder GetUpdateBuilder => new UpdateBuilder(Entity, Database);
+        protected virtual DeleteBuilder GetDeleteBuilder => new DeleteBuilder(Entity, Database);
+        protected virtual GetByIdBuilder GetByIdBuilder => new GetByIdBuilder(Entity, Database);
+        protected virtual MergeBuilder GetMergeBuilder => new MergeBuilder(Entity, Database);
+        protected virtual TypeBuilder GetTypeBuilder => new TypeBuilder(Entity, Database);
+        protected virtual TableBuilder GetTableBuilder => new TableBuilder(Entity, Database);
+        protected virtual HistorieTableBuilder GetHistorieTableBuilder => new HistorieTableBuilder(Entity, Database);
+        protected virtual IndexBuilder GetIndexBuilder => new IndexBuilder(Entity, Database);
+        protected virtual TriggerBuilder GetTriggerBuilder => new TriggerBuilder(Entity, Database);
+        protected virtual GetByReferenceIdBuilder GetByReferenceIdBuilder => new GetByReferenceIdBuilder(Entity, Database);
 
         private void GenerateOnCondition(string stpType, Func<bool> condition, Action method)
         {

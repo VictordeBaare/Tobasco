@@ -169,6 +169,8 @@ namespace Tobasco.Model.DatabaseProperties
                         return "nvarchar";
                     case DataDbType.Varchar:
                         return "varchar";
+                    case DataDbType.Char:
+                        return "char";
                     case DataDbType.Money:
                         return "money";
                     case DataDbType.Smallmoney:

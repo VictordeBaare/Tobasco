@@ -36,21 +36,21 @@ AS
 BEGIN
     INSERT
       INTO [dbo].ChildObject_historie(
-			Id,
-		    [RowVersion],
-		   TestChildProp1,
-            [ModifiedBy],
-            [ModifiedOn],
-            DeletedBy,
-            DeletedAt
+		   Id,
+[RowVersion],
+TestChildProp1,
+ModifiedBy,
+ModifiedOn,
+DeletedBy,
+DeletedAt
            )
     SELECT DELETED.Id,
            DELETED.[RowVersion],
 		  Deleted.TestChildProp1,
-           Deleted.ModifiedBy,
-           Deleted.ModifiedOn,
-           NULL,
-           NULL
+Deleted.ModifiedBy,
+Deleted.ModifiedOn,
+NULL,
+NULL
       FROM Deleted;
 END;
 GO
@@ -61,21 +61,21 @@ AS
 BEGIN
 	INSERT
 	  INTO [dbo].ChildObject_historie(
-			Id,
-		    [RowVersion],
-           TestChildProp1,
-		    [ModifiedBy],
-		    [ModifiedOn],
-		    [DeletedBy],
-		    [DeletedAt]
+           Id,
+[RowVersion],
+TestChildProp1,
+ModifiedBy,
+ModifiedOn,
+DeletedBy,
+DeletedAt
             )
 	SELECT Deleted.Id,
 	       Deleted.[RowVersion],
 		  Deleted.TestChildProp1,
-		   Deleted.ModifiedBy,
-		   Deleted.ModifiedOn,
-		   ISNULL(LTRIM(RTRIM(CONVERT(nvarchar(128), CONTEXT_INFO()))), SUSER_SNAME()),
-		   SYSDATETIME()
+Deleted.ModifiedBy,
+Deleted.ModifiedOn,
+ISNULL(LTRIM(RTRIM(CONVERT(nvarchar(128), CONTEXT_INFO()))), SUSER_SNAME()),
+SYSDATETIME()
 	  FROM Deleted;
 END;
 

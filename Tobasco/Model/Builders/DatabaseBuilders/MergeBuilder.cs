@@ -29,12 +29,12 @@ namespace Tobasco.Model.Builders.DatabaseBuilders
         {
             var parameters = new TemplateParameter();
             parameters.Add(SqlConstants.TableName, Entity.Name);
-            parameters.Add(SqlConstants.TableProperties, GetTableProperties());
-            parameters.Add(SqlConstants.StpPropertyNames, GetSqlParameterNames(string.Empty));
-            parameters.Add(SqlConstants.StpMergeSourcePropertyNames, GetSqlParameterNames("[Source]."));
-            parameters.Add(SqlConstants.StpMergeOutputAction, GetMergeOuputActions());
-            parameters.Add(SqlConstants.UpdateSetTableParemeters, GetSqlUpdateParameters());
-            parameters.Add(SqlConstants.MergeOutputParameters, GetSqlParameterNames("#output."));
+            parameters.Add(SqlConstants.TableProperties, string.Join("," + Environment.NewLine, GetTableProperties()));
+            parameters.Add(SqlConstants.StpPropertyNames, string.Join("," + Environment.NewLine, GetSqlValueParameterNames()));
+            //parameters.Add(SqlConstants.StpMergeSourcePropertyNames, GetSqlParameterNames("[Source]."));
+            parameters.Add(SqlConstants.StpMergeOutputAction, string.Join("," + Environment.NewLine, GetMergeOuputActions()));
+            parameters.Add(SqlConstants.UpdateSetTableParemeters, string.Join("," + Environment.NewLine, GetSqlUpdateParameters()));
+            //parameters.Add(SqlConstants.MergeOutputParameters, GetSqlParameterNames("#output."));
             return parameters;
         }
 
@@ -45,7 +45,7 @@ namespace Tobasco.Model.Builders.DatabaseBuilders
             return sqlParameters.Select(x => $",IIF($action = 'DELETE', deleted.{x.SelectSqlParameterNaam}, inserted.{x.SelectSqlParameterNaam})").ToList();
         }
 
-        protected override List<string> GetSqlUpdateParameters()
+        public override List<string> GetSqlUpdateParameters()
         {
             var list = new List<string>();
 

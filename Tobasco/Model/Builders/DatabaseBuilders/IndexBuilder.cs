@@ -24,7 +24,7 @@ namespace Tobasco.Model.Builders.DatabaseBuilders
                 AddReadonlyGuidIndex(builder);
             }
 
-            var refProps = GetSqlProperties.Where(x => x.Property.DataType.Datatype == Datatype.Reference).ToList();
+            var refProps = Entity.GetSqlProperties.Where(x => x.Property.DataType.Datatype == Datatype.Reference).ToList();
             foreach (var sqlprop in refProps)
             {
                 var index = sqlprop.SelectNonClusteredIndex(Name);

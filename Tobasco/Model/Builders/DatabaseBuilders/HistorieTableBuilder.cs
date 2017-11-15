@@ -18,9 +18,12 @@ namespace Tobasco.Model.Builders.DatabaseBuilders
         public string Build()
         {
             var template = new Template();
-            template.SetTemplate(Entity.GenerateReadonlyGuid ? SqlResources.SqlHistorieTableWithUid : SqlResources.SqlHistorieTable);
+            template.SetTemplate(Entity.GenerateReadonlyGuid ? GetTemplateUid : GetTemplate);
             template.Fill(GetParameters());
             return template.GetText;
-        }        
+        }
+
+        protected virtual string GetTemplate => SqlResources.SqlHistorieTable;
+        protected virtual string GetTemplateUid => SqlResources.SqlHistorieTableWithUid;
     }
 }

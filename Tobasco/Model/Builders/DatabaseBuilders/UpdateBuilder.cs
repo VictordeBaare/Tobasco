@@ -19,22 +19,34 @@ namespace Tobasco.Model.Builders.DatabaseBuilders
         public string Build()
         {
             var template = new Template();
-            template.SetTemplate(SqlResources.SqlUpdateStp);
+            template.SetTemplate(GetTemplate);
             template.Fill(UpdateTemplateParameters());
 
             return template.GetText;
         }
 
-        private TemplateParameter UpdateTemplateParameters()
+        public virtual string GetTemplate => SqlResources.SqlUpdateStp;
+
+        public virtual TemplateParameter UpdateTemplateParameters()
         {
             var parameters = new TemplateParameter();
             parameters.Add(SqlConstants.TableName, Name);
-            parameters.Add(SqlConstants.StpParameter, GetSqlParameters());
-            parameters.Add(SqlConstants.StpParameterName, GetSqlParameterNames("@"));
-            parameters.Add(SqlConstants.StpPropertyNames, GetSqlParameterNames(""));
-            parameters.Add(SqlConstants.UpdateSetTableParemeters, GetSqlUpdateParameters());
+            parameters.Add(SqlConstants.StpParameter, string.Join("," + Environment.NewLine, GetSqlParameters()));
+            parameters.Add(SqlConstants.StpParameterName, string.Join("," + Environment.NewLine, GetSqlValueParameterNames()));
+            parameters.Add(SqlConstants.StpPropertyNames, string.Join("," + Environment.NewLine, GetSqlParameterNames()));
+            parameters.Add(SqlConstants.UpdateSetTableParemeters, string.Join("," + Environment.NewLine, GetSqlUpdateParameters()));
 
             return parameters;
-        }  
+        }
+
+        public override List<string> GetSqlParameters()
+        {
+            var parameters = base.GetSqlParameters();
+            parameters.Insert(0, "@Id [bigint]");
+            parameters.Add("@RowVersion [rowversion]");
+            parameters.Add("@ModifiedBy nvarchar(256)");
+
+            return parameters;
+        }
     }
 }

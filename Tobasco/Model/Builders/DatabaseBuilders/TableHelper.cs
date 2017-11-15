@@ -36,7 +36,7 @@ namespace Tobasco.Model.Builders.DatabaseBuilders
                     builder.AppendLine($",{constraint}");
                 }
             }
-            foreach (var sqlprop in GetSqlProperties.Where(x => x.Property.DataType.Datatype == Datatype.Reference))
+            foreach (var sqlprop in Entity.GetSqlProperties.Where(x => x.Property.DataType.Datatype == Datatype.Reference))
             {
                 var constraint = sqlprop.SelectReferenceConstraint(Name);
                 if (!string.IsNullOrEmpty(constraint))
