@@ -11,5 +11,8 @@ namespace Tobasco.Model
 {
     public class Property : BaseProperty
     {
+        [XmlAttribute("ignorebusinessrule")]
+        public bool IgnoreBusinessRules { get; set; }
+
     }
 }

@@ -24,6 +24,8 @@ namespace Tobasco.Model.Builders.DatabaseBuilders
                 AddReadonlyGuidIndex(builder);
             }
 
+            AddAdditionalIndexes(builder);
+
             var refProps = Entity.GetSqlProperties.Where(x => x.Property.DataType.Datatype == Datatype.Reference).ToList();
             foreach (var sqlprop in refProps)
             {
@@ -37,13 +39,18 @@ namespace Tobasco.Model.Builders.DatabaseBuilders
             return builder.ToString();
         }
 
-        private StringBuilder AddHistorieIndex(StringBuilder builder)
+        protected virtual StringBuilder AddHistorieIndex(StringBuilder builder)
         {
             builder.AppendLine($"CREATE NONCLUSTERED INDEX IX_{Name}_historie_Id");
             builder.AppendLine($"                       ON [dbo].{Name}_historie");
             builder.AppendLine($"                         (Id ASC)");
             builder.AppendLine($"                  INCLUDE(ModifiedOn);");
             builder.AppendLine($"GO");
+            return builder;
+        }
+
+        protected virtual StringBuilder AddAdditionalIndexes(StringBuilder builder)
+        {
             return builder;
         }
 

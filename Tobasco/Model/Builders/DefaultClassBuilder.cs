@@ -38,7 +38,7 @@ namespace Tobasco.Model.Builders
             }
         }
 
-        private TemplateParameter GetParameters()
+        protected virtual TemplateParameter GetParameters()
         {
             var list = new List<string>();
             foreach (var property in GetProperties.Where(x => x.Property.DataType.Datatype != Datatype.ChildCollection))

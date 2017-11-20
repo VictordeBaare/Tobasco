@@ -32,7 +32,7 @@ namespace Tobasco.Model.Properties
 
         private string CalcBusinessRule()
         {
-            if (Property.DataType.Size != null && Property.DataType.Size != "max")
+            if (Property.DataType.Size != null && Property.DataType.Size != "max" && !Property.IgnoreBusinessRules)
             {
                 return $"[StringLength({Property.DataType.Size}, ErrorMessage = @\"Maximum length is {Property.DataType.Size} for {Property.Name}\")]";
             }

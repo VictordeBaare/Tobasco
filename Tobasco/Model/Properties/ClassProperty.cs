@@ -54,7 +54,7 @@ namespace Tobasco.Model.Properties
 
         private string GetRequiredRule()
         {
-            if (Property.Required)
+            if (Property.Required && !Property.IgnoreBusinessRules)
             {
                 return $"[Required(ErrorMessage = @\"{Property.Name} is required\")]";
             }

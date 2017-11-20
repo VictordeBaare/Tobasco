@@ -32,34 +32,37 @@ namespace Tobasco.Model.Properties
 
         private string CalcRangeBusinessRule()
         {
-            var min = Property.DataType.Min;
-            var max = Property.DataType.Max;
-            if (min != null && max != null)
+            if (!Property.IgnoreBusinessRules)
             {
-                return $"[Range({min}, {max})]";
-            }
-            if (min != null && max == null)
-            {
-                switch (Property.DataType.Datatype)
+                var min = Property.DataType.Min;
+                var max = Property.DataType.Max;
+                if (min != null && max != null)
                 {
-                    case Enums.Datatype.Int:
-                        return $"[Range({min}, int.MaxValue)]";
-                    case Enums.Datatype.Long:
-                        return $"[Range({min}, long.MaxValue)]";
-                    default:
-                        throw new ArgumentException($"Business rule for {Property.DataType.Datatype} could not be calculated");
+                    return $"[Range({min}, {max})]";
                 }
-            }
-            if (min == null && max != null)
-            {
-                switch (Property.DataType.Datatype)
+                if (min != null && max == null)
                 {
-                    case Enums.Datatype.Int:
-                        return $"[Range(int.MinValue, {max})]";
-                    case Enums.Datatype.Long:
-                        return $"[Range(long.MinValue, {max})]";
-                    default:
-                        throw new ArgumentException($"Business rule for {Property.DataType.Datatype} could not be calculated");
+                    switch (Property.DataType.Datatype)
+                    {
+                        case Enums.Datatype.Int:
+                            return $"[Range({min}, int.MaxValue)]";
+                        case Enums.Datatype.Long:
+                            return $"[Range({min}, long.MaxValue)]";
+                        default:
+                            throw new ArgumentException($"Business rule for {Property.DataType.Datatype} could not be calculated");
+                    }
+                }
+                if (min == null && max != null)
+                {
+                    switch (Property.DataType.Datatype)
+                    {
+                        case Enums.Datatype.Int:
+                            return $"[Range(int.MinValue, {max})]";
+                        case Enums.Datatype.Long:
+                            return $"[Range(long.MinValue, {max})]";
+                        default:
+                            throw new ArgumentException($"Business rule for {Property.DataType.Datatype} could not be calculated");
+                    }
                 }
             }
             return string.Empty;
