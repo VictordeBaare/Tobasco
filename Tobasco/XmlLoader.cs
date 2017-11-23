@@ -13,7 +13,7 @@ namespace Tobasco
     public class XmlLoader
     {      
         public MainHandler Load(string path)
-        {
+        {            
             XmlSerializer entityserializer = new XmlSerializer(typeof(Entity));
             XmlSerializer serializer = new XmlSerializer(typeof(EntityInformation));
 
@@ -29,10 +29,17 @@ namespace Tobasco
 
             foreach (var filepath in xmls.Where(x => !x.Contains("MainInfo")))
             {
-                using (var reader = new StreamReader(filepath))
+                try
                 {
-                    entities.Add((Entity)entityserializer.Deserialize(reader));
+                    using (var reader = new StreamReader(filepath))
+                    {
+                        entities.Add((Entity)entityserializer.Deserialize(reader));
+                    }
                 }
+                catch (Exception ex)
+                {
+                    throw new InvalidOperationException($"Error with reading xml: {filepath}", ex);
+                }                
             }
 
             return new MainHandler(mainInformation, entities);
