@@ -192,7 +192,9 @@ namespace %OwnNamespace%
 }</value>
   </data>
   <data name="NinjectBinder" xml:space="preserve">
-    <value>protected void NinjectBinder&lt;T, TY&gt;() where TY : T
+    <value>protected virtual void NinjectBinder&lt;T, TY&gt;() 
+			where TY : class, T
+			where T : class
 {
     Bind&lt;T&gt;().To&lt;TY&gt;()%BindingScope%;
 }</value>
