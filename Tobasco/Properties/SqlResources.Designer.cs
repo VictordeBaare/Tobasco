@@ -326,7 +326,8 @@ namespace Tobasco.Properties {
         ///	 CONSTRAINT [DF_{%TableName%}_ModifiedBy] DEFAULT SUSER_SNAME()
         ///	,[ModifiedOn]	datetime2(7)			NOT NULL
         ///	 CONSTRAINT [DF_{%TableName%}_ModifiedOn] DEFAULT SYSDATETIME()
-        ///	 CONSTRAINT [PK_{%TableName%}] PRIMARY KEY CLUSTERED [rest of string was truncated]&quot;;.
+        /// 	,[ModifiedOnUTC] datetime2(7)			   NOT NULL
+        ///	 CONS [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string SqlTableWithUid {
             get {

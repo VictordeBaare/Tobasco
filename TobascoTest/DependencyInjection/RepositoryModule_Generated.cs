@@ -26,7 +26,9 @@ NinjectBinder<IGenericRepository<ChildObject>,GenericRepository<ChildObject>>();
 NinjectBinder<IFileMetOverervingRepository,FileMetOverervingRepository>();
 NinjectBinder<IGenericRepository<FileMetOvererving>,GenericRepository<FileMetOvererving>>();
 }
-protected void NinjectBinder<T, TY>() where TY : T
+protected virtual void NinjectBinder<T, TY>() 
+			where TY : class, T
+			where T : class
 {
     Bind<T>().To<TY>().InRequestScope();
 }	

@@ -411,7 +411,9 @@ END</value>
 	 CONSTRAINT [DF_{%TableName%}_ModifiedBy] DEFAULT SUSER_SNAME()
 	,[ModifiedOn]	datetime2(7)			NOT NULL
 	 CONSTRAINT [DF_{%TableName%}_ModifiedOn] DEFAULT SYSDATETIME()
-	 CONSTRAINT [PK_{%TableName%}] PRIMARY KEY CLUSTERED (Id ASC)
+ 	,[ModifiedOnUTC] datetime2(7)			   NOT NULL
+	 CONSTRAINT [DF_%TableName%_ModifiedOnUTC] DEFAULT SYSUTCDATETIME()
+	,CONSTRAINT [PK_{%TableName%}] PRIMARY KEY CLUSTERED (Id ASC)
 	 %Constraints%
 );</value>
   </data>

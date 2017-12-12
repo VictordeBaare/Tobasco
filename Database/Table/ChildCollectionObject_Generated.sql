@@ -9,7 +9,9 @@
 	 CONSTRAINT [DF_{ChildCollectionObject}_ModifiedBy] DEFAULT SUSER_SNAME()
 	,[ModifiedOn]	datetime2(7)			NOT NULL
 	 CONSTRAINT [DF_{ChildCollectionObject}_ModifiedOn] DEFAULT SYSDATETIME()
-	 CONSTRAINT [PK_{ChildCollectionObject}] PRIMARY KEY CLUSTERED (Id ASC)
+ 	,[ModifiedOnUTC] datetime2(7)			   NOT NULL
+	 CONSTRAINT [DF_ChildCollectionObject_ModifiedOnUTC] DEFAULT SYSUTCDATETIME()
+	,CONSTRAINT [PK_{ChildCollectionObject}] PRIMARY KEY CLUSTERED (Id ASC)
 	 ,CONSTRAINT [FK_ChildCollectionObject_FileMetOverervingId] FOREIGN KEY (FileMetOverervingId) REFERENCES [dbo].[FileMetOvererving] ([Id])
 
 );
@@ -59,10 +61,11 @@ ModifiedOn,
 DeletedBy,
 DeletedAt
            )
-    SELECT DELETED.Id,
-		   DELETED.[UId],
-           DELETED.[RowVersion],
-		  Deleted.TestChildProp1,
+    SELECT 
+		  Deleted.Id,
+Deleted.[UId],
+Deleted.[rowversion],
+Deleted.TestChildProp1,
 Deleted.TestChildProp2,
 Deleted.FileMetOverervingId,
 Deleted.ModifiedBy,
@@ -90,10 +93,11 @@ ModifiedOn,
 DeletedBy,
 DeletedAt
             )
-	SELECT Deleted.Id,
-		   Deleted.[UId],
-	       Deleted.[RowVersion],
-		  Deleted.TestChildProp1,
+	SELECT 
+		  Deleted.Id,
+Deleted.[UId],
+Deleted.[rowversion],
+Deleted.TestChildProp1,
 Deleted.TestChildProp2,
 Deleted.FileMetOverervingId,
 Deleted.ModifiedBy,

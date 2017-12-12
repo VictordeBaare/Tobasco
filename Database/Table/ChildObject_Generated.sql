@@ -44,9 +44,10 @@ ModifiedOn,
 DeletedBy,
 DeletedAt
            )
-    SELECT DELETED.Id,
-           DELETED.[RowVersion],
-		  Deleted.TestChildProp1,
+    SELECT 
+		  Deleted.Id,
+Deleted.[rowversion],
+Deleted.TestChildProp1,
 Deleted.ModifiedBy,
 Deleted.ModifiedOn,
 NULL,
@@ -69,9 +70,9 @@ ModifiedOn,
 DeletedBy,
 DeletedAt
             )
-	SELECT Deleted.Id,
-	       Deleted.[RowVersion],
-		  Deleted.TestChildProp1,
+	SELECT 		  Deleted.Id,
+Deleted.[rowversion],
+Deleted.TestChildProp1,
 Deleted.ModifiedBy,
 Deleted.ModifiedOn,
 ISNULL(LTRIM(RTRIM(CONVERT(nvarchar(128), CONTEXT_INFO()))), SUSER_SNAME()),

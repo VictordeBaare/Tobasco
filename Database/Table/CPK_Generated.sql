@@ -50,9 +50,10 @@ ModifiedOn,
 DeletedBy,
 DeletedAt
            )
-    SELECT DELETED.Id,
-           DELETED.[RowVersion],
-		  Deleted.Training,
+    SELECT 
+		  Deleted.Id,
+Deleted.[rowversion],
+Deleted.Training,
 Deleted.Duur,
 Deleted.Kosten,
 Deleted.ModifiedBy,
@@ -79,9 +80,9 @@ ModifiedOn,
 DeletedBy,
 DeletedAt
             )
-	SELECT Deleted.Id,
-	       Deleted.[RowVersion],
-		  Deleted.Training,
+	SELECT 		  Deleted.Id,
+Deleted.[rowversion],
+Deleted.Training,
 Deleted.Duur,
 Deleted.Kosten,
 Deleted.ModifiedBy,
