@@ -6,12 +6,12 @@
 ,TestChildProp2 smallmoney NOT NULL
 ,FileMetOverervingId bigint NOT NULL
 	,[ModifiedBy]	nvarchar(256)			NOT NULL
-	 CONSTRAINT [DF_{ChildCollectionObject}_ModifiedBy] DEFAULT SUSER_SNAME()
+	 CONSTRAINT [DF_ChildCollectionObject_ModifiedBy] DEFAULT SUSER_SNAME()
 	,[ModifiedOn]	datetime2(7)			NOT NULL
-	 CONSTRAINT [DF_{ChildCollectionObject}_ModifiedOn] DEFAULT SYSDATETIME()
+	 CONSTRAINT [DF_ChildCollectionObject_ModifiedOn] DEFAULT SYSDATETIME()
  	,[ModifiedOnUTC] datetime2(7)			   NOT NULL
 	 CONSTRAINT [DF_ChildCollectionObject_ModifiedOnUTC] DEFAULT SYSUTCDATETIME()
-	,CONSTRAINT [PK_{ChildCollectionObject}] PRIMARY KEY CLUSTERED (Id ASC)
+	,CONSTRAINT [PK_ChildCollectionObject] PRIMARY KEY CLUSTERED (Id ASC)
 	 ,CONSTRAINT [FK_ChildCollectionObject_FileMetOverervingId] FOREIGN KEY (FileMetOverervingId) REFERENCES [dbo].[FileMetOvererving] ([Id])
 
 );

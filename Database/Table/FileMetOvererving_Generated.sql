@@ -10,12 +10,12 @@
 ,TestChildProp6 decimal(12,2) NULL
 ,TestChildProp7Id bigint NULL
 	,[ModifiedBy]	nvarchar(256)			NOT NULL
-	 CONSTRAINT [DF_{FileMetOvererving}_ModifiedBy] DEFAULT SUSER_SNAME()
+	 CONSTRAINT [DF_FileMetOvererving_ModifiedBy] DEFAULT SUSER_SNAME()
 	,[ModifiedOn]	datetime2(7)			NOT NULL
-	 CONSTRAINT [DF_{FileMetOvererving}_ModifiedOn] DEFAULT SYSDATETIME()
+	 CONSTRAINT [DF_FileMetOvererving_ModifiedOn] DEFAULT SYSDATETIME()
  	,[ModifiedOnUTC] datetime2(7)			   NOT NULL
 	 CONSTRAINT [DF_FileMetOvererving_ModifiedOnUTC] DEFAULT SYSUTCDATETIME()
-	,CONSTRAINT [PK_{FileMetOvererving}] PRIMARY KEY CLUSTERED (Id ASC)
+	,CONSTRAINT [PK_FileMetOvererving] PRIMARY KEY CLUSTERED (Id ASC)
 	 ,CONSTRAINT [FK_FileMetOvererving_ChildObject_Id] FOREIGN KEY (TestChildProp7Id) REFERENCES [dbo].[ChildObject] ([Id])
 
 );

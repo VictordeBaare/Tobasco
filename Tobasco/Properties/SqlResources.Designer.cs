@@ -323,11 +323,11 @@ namespace Tobasco.Properties {
         ///	,[UId]          uniqueidentifier        NOT NULL CONSTRAINT [DF_{%TableName%}_UId] DEFAULT NEWID()
         ///	%TableProperties%
         ///	,[ModifiedBy]	nvarchar(256)			NOT NULL
-        ///	 CONSTRAINT [DF_{%TableName%}_ModifiedBy] DEFAULT SUSER_SNAME()
+        ///	 CONSTRAINT [DF_%TableName%_ModifiedBy] DEFAULT SUSER_SNAME()
         ///	,[ModifiedOn]	datetime2(7)			NOT NULL
-        ///	 CONSTRAINT [DF_{%TableName%}_ModifiedOn] DEFAULT SYSDATETIME()
+        ///	 CONSTRAINT [DF_%TableName%_ModifiedOn] DEFAULT SYSDATETIME()
         /// 	,[ModifiedOnUTC] datetime2(7)			   NOT NULL
-        ///	 CONS [rest of string was truncated]&quot;;.
+        ///	 CONSTRAI [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string SqlTableWithUid {
             get {
