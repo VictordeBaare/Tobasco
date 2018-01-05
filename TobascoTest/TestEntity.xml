@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Entity name="FileMetOvererving" generateReadonlyGuid="true" xmlns="http://Tobasco/EntitySchema.xsd">
+    <Description>TestNaam</Description>
     <Properties>
         <Property name="TestChildProp1" required="true">
             <DataType name="String" size="100"></DataType>
@@ -21,6 +22,7 @@
         </Property>
         <Property name="TestChildProp7" required="false">
             <DataType name="Child" type="ChildObject"></DataType>
+            <Description>TestColumn</Description>
         </Property>
         <Property name="TestChildProp8" required="true">
             <DataType name="ChildCollection" type="ChildCollectionObject"></DataType>

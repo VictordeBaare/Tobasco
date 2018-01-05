@@ -46,7 +46,9 @@ namespace Tobasco.Model.Builders
                     OutputPaneManager.WriteToOutputPane($"Do not generate HistorieTable for {Name} ");
                 }
 
-                tableFile.Indexes = GetIndexBuilder.Build();                
+                tableFile.Indexes = GetIndexBuilder.Build();
+
+                tableFile.Description = GetDescriptionBuilder.Build();
 
                 outputFiles.Add(tableFile);
             }
@@ -97,6 +99,7 @@ namespace Tobasco.Model.Builders
         protected virtual IndexBuilder GetIndexBuilder => new IndexBuilder(Entity, Database);
         protected virtual TriggerBuilder GetTriggerBuilder => new TriggerBuilder(Entity, Database);
         protected virtual GetByReferenceIdBuilder GetByReferenceIdBuilder => new GetByReferenceIdBuilder(Entity, Database);
+        protected virtual DescriptionBuilder GetDescriptionBuilder => new DescriptionBuilder(Entity, Database);
 
         private void GenerateOnCondition(string stpType, Func<bool> condition, Action method)
         {

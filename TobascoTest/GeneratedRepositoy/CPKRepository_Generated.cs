@@ -17,6 +17,7 @@ namespace TobascoTest.GeneratedRepositoy
 public CPKRepository(IGenericRepository<CPK> genericRepository)
 {
 	_genericRepository = genericRepository;
+	
 }		
 				
 		public CPK Save(CPK  cpk)

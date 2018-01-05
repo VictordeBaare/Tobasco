@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Serialization;
+﻿using System.Xml.Serialization;
 
 namespace Tobasco.Model
 {
@@ -16,5 +11,7 @@ namespace Tobasco.Model
         public bool Required { get; set; }
 
         public DataType DataType { get; set; }
+
+        public string Description { get; set; }
     }
 }

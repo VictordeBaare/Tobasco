@@ -44,6 +44,7 @@ namespace Tobasco.Model
 
         public GenericRepository GenericRepository { get; set; }
 
+        public string Description { get; set; }
 
         private IEnumerable<DatabaseProperty> _getSqlProperties;
         [XmlIgnore]

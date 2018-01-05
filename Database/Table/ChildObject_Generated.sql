@@ -80,3 +80,7 @@ SYSDATETIME()
 	  FROM Deleted;
 END;
 
+GO
+EXEC sp_addextendedproperty N'Description', 'ChildObject', 'SCHEMA', N'dbo', 'TABLE', N'ChildObject', NULL, NULL
+GO
+

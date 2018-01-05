@@ -19,6 +19,8 @@ namespace Tobasco.FileBuilder
 
         public string Triggers { get; set; }
 
+        public string Description { get; set; }
+
         public override string BuildContent()
         {
             var builder = new StringBuilder();
@@ -29,6 +31,8 @@ namespace Tobasco.FileBuilder
             builder.AppendLine(Indexes);
             builder.AppendLine("GO");
             builder.AppendLine(Triggers);
+            builder.AppendLine("GO");
+            builder.AppendLine(Description);
             return builder.ToString();
         }
     }

@@ -61,6 +61,26 @@ namespace Tobasco.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to EXEC sp_addextendedproperty N&apos;Description&apos;, &apos;%Description%&apos;, &apos;SCHEMA&apos;, N&apos;dbo&apos;, &apos;TABLE&apos;, N&apos;%TableName%&apos;, &apos;COLUMN&apos;, N&apos;%Columnname%&apos;.
+        /// </summary>
+        internal static string DescriptionColumn {
+            get {
+                return ResourceManager.GetString("DescriptionColumn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to EXEC sp_addextendedproperty N&apos;Description&apos;, &apos;%Description%&apos;, &apos;SCHEMA&apos;, N&apos;dbo&apos;, &apos;TABLE&apos;, N&apos;%TableName%&apos;, NULL, NULL
+        ///GO
+        ///%DescriptionColumns%.
+        /// </summary>
+        internal static string DescriptionTable {
+            get {
+                return ResourceManager.GetString("DescriptionTable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to CREATE PROCEDURE [dbo].%TableName%_GetFullById
         ///	@id bigint
         ///AS

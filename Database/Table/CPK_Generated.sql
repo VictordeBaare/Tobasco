@@ -92,3 +92,7 @@ SYSDATETIME()
 	  FROM Deleted;
 END;
 
+GO
+EXEC sp_addextendedproperty N'Description', 'CPK', 'SCHEMA', N'dbo', 'TABLE', N'CPK', NULL, NULL
+GO
+

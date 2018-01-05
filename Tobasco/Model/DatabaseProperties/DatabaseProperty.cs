@@ -180,7 +180,5 @@ namespace Tobasco.Model.DatabaseProperties
                 }
             }
         }
-
-
     }
 }

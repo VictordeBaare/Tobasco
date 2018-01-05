@@ -26,7 +26,7 @@ namespace Tobasco.Templates
                 _templateText = string.IsNullOrEmpty(t.Key) ? RemoveLineWithEmptyAttribute(_templateText, $"%{t.Key}%") : _templateText.Replace($"%{t.Key}%", t.Value);
             }
 
-            _templateText = RemoveDoubleWhiteLines(_templateText);
+            //_templateText = RemoveDoubleWhiteLines(_templateText);
         }
 
         public string GetText => _templateText;

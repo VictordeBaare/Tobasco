@@ -19,5 +19,8 @@
         public const string ReferenceType = "ReferenceType";
         public const string UpdateSetTableParemeters = "UpdateSetTableParemeters";
         public const string MergeOutputParameters = "MergeOutputParameters";
+        public const string Description = "Description";
+        public const string DescriptionColumns = "DescriptionColumns";
+        public const string Columnname = "Columnname";
     }
 }
