@@ -17,13 +17,10 @@ namespace TobascoTest.GeneratedRepositoy
 public CPKRepository(IGenericRepository<CPK> genericRepository)
 {
 	_genericRepository = genericRepository;
-	
 }		
-				
 		public CPK Save(CPK  cpk)
 {
 	cpk = _genericRepository.Save(cpk);	
-		
 	return cpk;
 }
 public CPK GetById(long id)

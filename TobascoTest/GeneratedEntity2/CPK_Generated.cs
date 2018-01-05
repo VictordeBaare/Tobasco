@@ -10,7 +10,6 @@ namespace TobascoTest.GeneratedEntity2
 [Serializable]
 	public  partial class CPK 
 	{
-				
 		[Required(ErrorMessage = @"Training is required")]
 [StringLength(100, ErrorMessage = @"Maximum length is 100 for Training")]
 public string Training { get; set; }
@@ -20,6 +19,5 @@ public string Duur { get; set; }
 [Required(ErrorMessage = @"Kosten is required")]
 [StringLength(100, ErrorMessage = @"Maximum length is 100 for Kosten")]
 public string Kosten { get; set; }		
-			
 	}
 }

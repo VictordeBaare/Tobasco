@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Tobasco.Enums;
 using Tobasco.Factories;
@@ -49,6 +50,25 @@ namespace Tobasco.Model.Properties
                     }
                 }
                 return list;
+            }
+        }
+
+        public virtual string GetDescription
+        {
+            get
+            {
+                if (!string.IsNullOrEmpty(Property.Description))
+                {
+                    var splitted = Property.Description.Split(new[] { Environment.NewLine }, StringSplitOptions.None).ToList();
+                    for (int i = 0; i < splitted.Count; i++)
+                    {
+                        splitted[i] = $"///{splitted[i].Trim()}";
+                    }
+                    splitted.Insert(0, "/// <summary>");
+                    splitted.Add("/// <summary>");
+                    return string.Join(Environment.NewLine, splitted);
+                }
+                return string.Empty;
             }
         }
 

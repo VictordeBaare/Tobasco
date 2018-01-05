@@ -10,13 +10,11 @@ namespace TobascoTest.GeneratedEntity2
 [Serializable]
 	public  partial class ChildCollectionObject 
 	{
-				
 		[Required(ErrorMessage = @"TestChildProp1 is required")]
 public decimal TestChildProp1 { get; set; }
 [Required(ErrorMessage = @"TestChildProp2 is required")]
 public decimal TestChildProp2 { get; set; }
 [Required(ErrorMessage = @"FileMetOverervingId is required")]
 public long FileMetOverervingId { get; set; }		
-			
 	}
 }

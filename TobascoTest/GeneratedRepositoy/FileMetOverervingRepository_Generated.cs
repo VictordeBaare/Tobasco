@@ -21,9 +21,7 @@ public FileMetOverervingRepository(IGenericRepository<FileMetOvererving> generic
 	_genericRepository = genericRepository;
 _iChildObjectRepository = iChildObjectRepository;
 _iChildCollectionObjectRepository = iChildCollectionObjectRepository;
-	
 }		
-				
 		public FileMetOvererving Save(FileMetOvererving  filemetovererving)
 {
 	if (filemetovererving.TestChildProp7 != null)

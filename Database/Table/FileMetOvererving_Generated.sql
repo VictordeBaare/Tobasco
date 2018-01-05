@@ -132,4 +132,7 @@ END;
 GO
 EXEC sp_addextendedproperty N'Description', 'TestNaam', 'SCHEMA', N'dbo', 'TABLE', N'FileMetOvererving', NULL, NULL
 GO
-EXEC sp_addextendedproperty N'Description', 'TestColumn', 'SCHEMA', N'dbo', 'TABLE', N'FileMetOvererving', 'COLUMN', N'TestChildProp7Id'
+EXEC sp_addextendedproperty N'Description', 'TestColumn
+            asda
+        asd
+    asd', 'SCHEMA', N'dbo', 'TABLE', N'FileMetOvererving', 'COLUMN', N'TestChildProp7Id'

@@ -9,7 +9,6 @@
 	,[ModifiedOnUTC] datetime2(7)			   NOT NULL
 	 CONSTRAINT [DF_ChildObject_ModifiedOnUTC] DEFAULT SYSUTCDATETIME()
 	,CONSTRAINT [PK_ChildObject] PRIMARY KEY CLUSTERED (Id ASC)
-	 
 );
 GO
 CREATE TABLE [dbo].[ChildObject_historie] (
@@ -83,4 +82,3 @@ END;
 GO
 EXEC sp_addextendedproperty N'Description', 'ChildObject', 'SCHEMA', N'dbo', 'TABLE', N'ChildObject', NULL, NULL
 GO
-

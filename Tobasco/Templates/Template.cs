@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using Tobasco.Manager;
 
 namespace Tobasco.Templates
 {
@@ -23,7 +24,7 @@ namespace Tobasco.Templates
 
             foreach (var t in tags.GetParameters)
             {
-                _templateText = string.IsNullOrEmpty(t.Key) ? RemoveLineWithEmptyAttribute(_templateText, $"%{t.Key}%") : _templateText.Replace($"%{t.Key}%", t.Value);
+                _templateText = RemoveEmptyKeys(t, _templateText);
             }
 
             //_templateText = RemoveDoubleWhiteLines(_templateText);
@@ -31,19 +32,39 @@ namespace Tobasco.Templates
 
         public string GetText => _templateText;
 
-        private string RemoveLineWithEmptyAttribute(string text, string attributeName)
+        private string RemoveEmptyKeys(KeyValuePair<string, string> keyValuePair, string text)
         {
-            var lines = text.Split(new []{ Environment.NewLine }, StringSplitOptions.None).ToList();
-
-            for (int i = lines.Count - 1; i >= 0 ; i--)
+            if (string.IsNullOrEmpty(keyValuePair.Key))
             {
-                if (lines[i].Contains(attributeName))
-                {
-                    lines.RemoveAt(i);
+                var lines = text.Split(new[] { Environment.NewLine }, StringSplitOptions.None).ToList();                            
+                for (int i = lines.Count - 1; i >= 0; i--)
+                {                    
+                    if (lines[i].Contains($"%{keyValuePair.Key}%"))
+                    {
+                        lines.RemoveAt(i);
+                    }                    
                 }
+                return string.Join(Environment.NewLine, lines);
             }
-
-            return string.Join(Environment.NewLine, lines);
+            else if (string.IsNullOrEmpty(keyValuePair.Value))
+            {
+                var lines = text.Split(new[] { Environment.NewLine }, StringSplitOptions.None).ToList();
+                for (int i = lines.Count - 1; i >= 0; i--)
+                {
+                    if (lines[i].Trim().Equals($"%{keyValuePair.Key}%"))
+                    {
+                        lines.RemoveAt(i);
+                    }
+                    else
+                    {
+                        lines[i] = lines[i].Replace($"%{keyValuePair.Key}%", keyValuePair.Value);
+                    }
+                }
+                return string.Join(Environment.NewLine, lines);
+            }else
+            {
+                return _templateText.Replace($"%{keyValuePair.Key}%", keyValuePair.Value);
+            }
         }
 
         public string CleanText => RemoveDoubleWhiteLines(_templateText);

@@ -10,9 +10,7 @@ namespace TobascoTest.GeneratedEntity
 [Serializable]
 	public  partial class ChildObject : EntityBase
 	{
-				
 		private string _testchildprop1;
-
 public string TestChildProp1
 {
 	get { return _testchildprop1; }

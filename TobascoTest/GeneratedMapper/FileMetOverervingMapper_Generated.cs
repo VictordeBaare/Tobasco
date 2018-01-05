@@ -14,9 +14,7 @@ public FileMetOverervingMapper(IChildObjectMapper childObjectMapper, IChildColle
 {
 	_childObjectMapper = childObjectMapper;
 _childCollectionObjectMapper = childCollectionObjectMapper;
-	
 }		
-				
 		public FileMetOvererving MapToObject(TobascoTest.GeneratedEntity2.FileMetOvererving objectToMapFrom)
     {
         var objectToMapTo = new FileMetOvererving

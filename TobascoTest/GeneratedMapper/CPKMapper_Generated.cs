@@ -8,7 +8,6 @@ namespace TobascoTest.GeneratedMapper
 	[GeneratedCode("Tobasco", "1.0.0.0")]
 	public  partial class CPKMapper : ICPKMapper
 	{
-				
 		public CPK MapToObject(TobascoTest.GeneratedEntity2.CPK objectToMapFrom)
     {
         var objectToMapTo = new CPK

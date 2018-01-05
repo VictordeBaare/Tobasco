@@ -10,23 +10,19 @@ namespace TobascoTest.GeneratedEntity
 [Serializable]
 	public  partial class CPK : DifferentBase
 	{
-				
 		private string _training;
-
 public string Training
 {
 	get { return _training; }
 	set { SetField(ref _training, value, nameof(Training)); }
 }
 private string _duur;
-
 public string Duur
 {
 	get { return _duur; }
 	set { SetField(ref _duur, value, nameof(Duur)); }
 }
 private string _kosten;
-
 public string Kosten
 {
 	get { return _kosten; }

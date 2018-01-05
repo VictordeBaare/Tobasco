@@ -17,8 +17,7 @@ namespace TobascoTest.GeneratedRepositoy
 	[GeneratedCode("Tobasco", "1.0.0.0")]
 	public  partial class GenericRepository<T> : IGenericRepository<T> where T : EntityBase, new()
 	{
-		
-public GenericRepository(IConnectionFactory connectionFactory)
+		public GenericRepository(IConnectionFactory connectionFactory)
 {
 	ConnectionFactory = connectionFactory;
 }		

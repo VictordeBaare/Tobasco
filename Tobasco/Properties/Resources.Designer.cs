@@ -215,7 +215,8 @@ namespace Tobasco.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to public List&lt;%PropertyValueType%&gt; %PropertyName% { get; } = new List&lt;%PropertyValueType%&gt;();.
+        ///   Looks up a localized string similar to %Description%
+        ///public List&lt;%PropertyValueType%&gt; %PropertyName% { get; } = new List&lt;%PropertyValueType%&gt;();.
         /// </summary>
         internal static string PropertyChildCollection {
             get {
@@ -225,6 +226,7 @@ namespace Tobasco.Properties {
         
         /// <summary>
         ///   Looks up a localized string similar to private %PropertyValueType% _%PropertyParameterName%;
+        ///%Description%
         ///%BusinessRules%
         ///public %PropertyValueType% %PropertyName%
         ///{
@@ -239,7 +241,8 @@ namespace Tobasco.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to %BusinessRules%
+        ///   Looks up a localized string similar to %Description%
+        ///%BusinessRules%
         ///public %PropertyValueType% %PropertyName% { get; set; }.
         /// </summary>
         internal static string PropertyDefault {

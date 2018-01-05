@@ -15,7 +15,6 @@ public ConnectionFactory(string databasenaam)
 {
 	_connectionstring = ConfigurationManager.ConnectionStrings[databasenaam].ConnectionString;
 }		
-				
 		public SqlConnection GetConnection()
         {
             SqlConnection connection = null;

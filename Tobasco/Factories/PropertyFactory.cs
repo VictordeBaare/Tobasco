@@ -39,6 +39,7 @@ namespace Tobasco.Factories
             parameters.Add(PropertyTemplateConstants.PropertyName, prop.Property.Name);
             parameters.Add(PropertyTemplateConstants.PropertyParameterName, prop.Property.Name.ToLower());
             parameters.Add(PropertyTemplateConstants.BusinessRules, prop.CalcRules);
+            parameters.Add(PropertyTemplateConstants.Description, prop.GetDescription);
 
             return parameters;
         }

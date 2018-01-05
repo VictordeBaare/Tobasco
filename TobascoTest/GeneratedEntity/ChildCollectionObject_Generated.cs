@@ -10,23 +10,19 @@ namespace TobascoTest.GeneratedEntity
 [Serializable]
 	public  partial class ChildCollectionObject : EntityBase
 	{
-				
 		private decimal _testchildprop1;
-
 public decimal TestChildProp1
 {
 	get { return _testchildprop1; }
 	set { SetField(ref _testchildprop1, value, nameof(TestChildProp1)); }
 }
 private decimal _testchildprop2;
-
 public decimal TestChildProp2
 {
 	get { return _testchildprop2; }
 	set { SetField(ref _testchildprop2, value, nameof(TestChildProp2)); }
 }
 private long _filemetoverervingid;
-
 public long FileMetOverervingId
 {
 	get { return _filemetoverervingid; }

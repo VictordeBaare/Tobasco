@@ -11,7 +11,6 @@
 	,[ModifiedOnUTC] datetime2(7)			   NOT NULL
 	 CONSTRAINT [DF_CPK_ModifiedOnUTC] DEFAULT SYSUTCDATETIME()
 	,CONSTRAINT [PK_CPK] PRIMARY KEY CLUSTERED (Id ASC)
-	 
 );
 GO
 CREATE TABLE [dbo].[CPK_historie] (
@@ -95,4 +94,3 @@ END;
 GO
 EXEC sp_addextendedproperty N'Description', 'CPK', 'SCHEMA', N'dbo', 'TABLE', N'CPK', NULL, NULL
 GO
-

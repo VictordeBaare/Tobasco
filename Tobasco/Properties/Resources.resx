@@ -219,10 +219,12 @@ namespace %OwnNamespace%
         }</value>
   </data>
   <data name="PropertyChildCollection" xml:space="preserve">
-    <value>public List&lt;%PropertyValueType%&gt; %PropertyName% { get; } = new List&lt;%PropertyValueType%&gt;();</value>
+    <value>%Description%
+public List&lt;%PropertyValueType%&gt; %PropertyName% { get; } = new List&lt;%PropertyValueType%&gt;();</value>
   </data>
   <data name="PropertyDapperDefault" xml:space="preserve">
     <value>private %PropertyValueType% _%PropertyParameterName%;
+%Description%
 %BusinessRules%
 public %PropertyValueType% %PropertyName%
 {
@@ -231,7 +233,8 @@ public %PropertyValueType% %PropertyName%
 }</value>
   </data>
   <data name="PropertyDefault" xml:space="preserve">
-    <value>%BusinessRules%
+    <value>%Description%
+%BusinessRules%
 public %PropertyValueType% %PropertyName% { get; set; }</value>
   </data>
   <data name="PropertyReadonlyGuid" xml:space="preserve">

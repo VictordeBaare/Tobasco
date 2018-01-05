@@ -110,4 +110,3 @@ END;
 GO
 EXEC sp_addextendedproperty N'Description', 'ChildCollectionObject', 'SCHEMA', N'dbo', 'TABLE', N'ChildCollectionObject', NULL, NULL
 GO
-
