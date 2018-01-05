@@ -59,10 +59,10 @@ namespace Tobasco.Model.Properties
             {
                 if (!string.IsNullOrEmpty(Property.Description))
                 {
-                    var splitted = Property.Description.Split(new[] { Environment.NewLine }, StringSplitOptions.None).ToList();
+                    var splitted = Property.Description.Split(new[] { "\n" }, StringSplitOptions.None).ToList();
                     for (int i = 0; i < splitted.Count; i++)
                     {
-                        splitted[i] = $"///{splitted[i].Trim()}";
+                        splitted[i] = $"/// {splitted[i].Trim()}";
                     }
                     splitted.Insert(0, "/// <summary>");
                     splitted.Add("/// <summary>");

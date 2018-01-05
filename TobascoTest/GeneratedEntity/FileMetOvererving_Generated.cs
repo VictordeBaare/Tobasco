@@ -48,10 +48,7 @@ public decimal? TestChildProp6
 }
 private ChildObject _testchildprop7;
 /// <summary>
-///TestColumn
-            asda
-        asd
-    asd
+/// TestColumn
 /// <summary>
 public ChildObject TestChildProp7
 {
