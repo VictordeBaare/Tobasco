@@ -1,17 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Tobasco.Constants;
-using Tobasco.Properties;
+﻿using Tobasco.Properties;
 using Tobasco.Templates;
 
 namespace Tobasco.Model.Builders.DatabaseBuilders
 {
     public class HistorieTableBuilder : TableHelper
     {
-        public HistorieTableBuilder(Entity entity, Database database) : base(entity, database)
+        public HistorieTableBuilder(Entity entity, Database database, EntityInformation information) : base(entity, database, information)
         {
         }
 

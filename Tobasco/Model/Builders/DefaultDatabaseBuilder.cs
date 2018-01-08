@@ -11,7 +11,7 @@ namespace Tobasco.Model.Builders
 {
     public class DefaultDatabaseBuilder : DatabaseBuilderBase
     {
-        public DefaultDatabaseBuilder(Entity entity, Database database) : base(entity, database)
+        public DefaultDatabaseBuilder(Entity entity, Database database, EntityInformation information) : base(entity, database, information)
         {
         }
 
@@ -88,18 +88,18 @@ namespace Tobasco.Model.Builders
             }
         }
 
-        protected virtual InsertBuilder GetInsertBuilder => new InsertBuilder(Entity, Database);
-        protected virtual UpdateBuilder GetUpdateBuilder => new UpdateBuilder(Entity, Database);
-        protected virtual DeleteBuilder GetDeleteBuilder => new DeleteBuilder(Entity, Database);
-        protected virtual GetByIdBuilder GetByIdBuilder => new GetByIdBuilder(Entity, Database);
-        protected virtual MergeBuilder GetMergeBuilder => new MergeBuilder(Entity, Database);
-        protected virtual TypeBuilder GetTypeBuilder => new TypeBuilder(Entity, Database);
-        protected virtual TableBuilder GetTableBuilder => new TableBuilder(Entity, Database);
-        protected virtual HistorieTableBuilder GetHistorieTableBuilder => new HistorieTableBuilder(Entity, Database);
-        protected virtual IndexBuilder GetIndexBuilder => new IndexBuilder(Entity, Database);
-        protected virtual TriggerBuilder GetTriggerBuilder => new TriggerBuilder(Entity, Database);
-        protected virtual GetByReferenceIdBuilder GetByReferenceIdBuilder => new GetByReferenceIdBuilder(Entity, Database);
-        protected virtual DescriptionBuilder GetDescriptionBuilder => new DescriptionBuilder(Entity, Database);
+        protected virtual InsertBuilder GetInsertBuilder => new InsertBuilder(Entity, Database, MainInformation);
+        protected virtual UpdateBuilder GetUpdateBuilder => new UpdateBuilder(Entity, Database, MainInformation);
+        protected virtual DeleteBuilder GetDeleteBuilder => new DeleteBuilder(Entity, Database, MainInformation);
+        protected virtual GetByIdBuilder GetByIdBuilder => new GetByIdBuilder(Entity, Database, MainInformation);
+        protected virtual MergeBuilder GetMergeBuilder => new MergeBuilder(Entity, Database, MainInformation);
+        protected virtual TypeBuilder GetTypeBuilder => new TypeBuilder(Entity, Database, MainInformation);
+        protected virtual TableBuilder GetTableBuilder => new TableBuilder(Entity, Database, MainInformation);
+        protected virtual HistorieTableBuilder GetHistorieTableBuilder => new HistorieTableBuilder(Entity, Database, MainInformation);
+        protected virtual IndexBuilder GetIndexBuilder => new IndexBuilder(Entity, Database, MainInformation);
+        protected virtual TriggerBuilder GetTriggerBuilder => new TriggerBuilder(Entity, Database, MainInformation);
+        protected virtual GetByReferenceIdBuilder GetByReferenceIdBuilder => new GetByReferenceIdBuilder(Entity, Database, MainInformation);
+        protected virtual DescriptionBuilder GetDescriptionBuilder => new DescriptionBuilder(Entity, Database, MainInformation);
 
         private void GenerateOnCondition(string stpType, Func<bool> condition, Action method)
         {

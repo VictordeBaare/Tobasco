@@ -11,7 +11,7 @@ namespace Tobasco.Model.Builders.DatabaseBuilders
 {
     public class TypeBuilder : DatabaseHelper
     {
-        public TypeBuilder(Entity entity, Database database) : base(entity, database)
+        public TypeBuilder(Entity entity, Database database, EntityInformation information) : base(entity, database, information)
         {
         }
 

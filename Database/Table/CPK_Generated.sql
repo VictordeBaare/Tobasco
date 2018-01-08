@@ -94,3 +94,9 @@ END;
 GO
 EXEC sp_addextendedproperty N'Description', 'CPK', 'SCHEMA', N'dbo', 'TABLE', N'CPK', NULL, NULL
 GO
+EXEC sp_addextendedproperty N'Description', 'This is Training', 'SCHEMA', N'dbo', 'TABLE', N'CPK', 'COLUMN', N'Training'
+GO
+EXEC sp_addextendedproperty N'Description', 'This is Duur', 'SCHEMA', N'dbo', 'TABLE', N'CPK', 'COLUMN', N'Duur'
+GO
+EXEC sp_addextendedproperty N'Description', 'This is Kosten', 'SCHEMA', N'dbo', 'TABLE', N'CPK', 'COLUMN', N'Kosten'
+GO

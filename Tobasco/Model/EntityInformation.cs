@@ -27,5 +27,9 @@ namespace Tobasco.Model
         public ConnectionFactory ConnectionFactory { get; set; }
 
         public GenericRepository GenericRepository { get; set; }
+
+        public ValueElement EnumNamespace { get; set; }
+
+        public Description Description { get; set; }
     }
 }

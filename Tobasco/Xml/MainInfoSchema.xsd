@@ -49,6 +49,7 @@
             </xs:sequence>
           </xs:complexType>
         </xs:element>
+        <xs:element name="EnumNamespace" type="NamespaceType"></xs:element>
         <xs:element name="Mappers">
           <xs:complexType>
             <xs:sequence>
@@ -109,6 +110,11 @@
             <xs:attribute type="xs:string" name="project" use="required"/>
           </xs:complexType>
         </xs:element>
+          <xs:element name="Description">
+              <xs:complexType>
+                  <xs:attribute type="xs:boolean" name="required" default="false"/>
+              </xs:complexType>
+          </xs:element>
         <xs:element name="Repository">
           <xs:complexType>
             <xs:sequence>

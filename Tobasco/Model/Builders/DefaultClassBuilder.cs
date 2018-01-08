@@ -73,6 +73,7 @@ namespace Tobasco.Model.Builders
             file.IsAbstract = Entity.IsAbstract;
             file.BaseClass = Location.GetBaseClass;
             file.Namespaces.AddRange(Location.Namespaces.Select(x => x.Value).Concat(Information.Namespaces.Select(x => x.Value)));
+            file.Namespaces.Add(Information.EnumNamespace.Value);        
             file.Properties.AddRange(GetProperties.Select(x => x.GetProperty));
             file.Methods.Add(GenerateMethods());
             file.OwnNamespace = Location.FileLocation.GetNamespace;

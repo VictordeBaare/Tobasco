@@ -14,7 +14,7 @@ namespace Tobasco.Model.Builders.DatabaseBuilders
 
         public override string Name => Entity.Name;
 
-        public GetByIdHelper(Entity entity, Database database) : base(entity, database)
+        public GetByIdHelper(Entity entity, Database database, EntityInformation information) : base(entity, database, information)
         {
         }
 

@@ -17,8 +17,8 @@
   </EntityLocations>
   <BaseNamespaces>
     <Namespace value="System.Collections.Generic"></Namespace>
-    <Namespace value="TobascoTest.TestEnums"></Namespace>
   </BaseNamespaces>
+  <EnumNamespace value="TobascoTest.TestEnums"></EnumNamespace>
   <Mappers generate="true">
     <Mapper>
       <MapperLocation project="TobascoTest" folder="GeneratedMapper"></MapperLocation>
@@ -43,6 +43,7 @@
       <Historie generate="true"></Historie>
     </Tables>
   </Database>
+  <Description required="true"></Description>
   <Repository overridekey="repositorykey" EntityId="dataobject" generate="true">
     <FileLocation project="TobascoTest" folder="GeneratedRepositoy"></FileLocation>
     <Transaction useTransaction="false"> </Transaction>

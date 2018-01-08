@@ -218,7 +218,7 @@ namespace Tobasco
             get
             {
                 var type = BuilderManager.Get(GetDatabaseOverrideKey(), DefaultBuilderConstants.DatabaseBuilder);
-                return BuilderManager.InitializeBuilder<DatabaseBuilderBase>(type, new object[] { Entity, GetDatabase });
+                return BuilderManager.InitializeBuilder<DatabaseBuilderBase>(type, new object[] { Entity, GetDatabase, _mainInformation });
             }
         }
 

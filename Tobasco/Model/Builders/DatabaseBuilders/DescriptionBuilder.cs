@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Tobasco.Constants;
+using Tobasco.Manager;
 using Tobasco.Properties;
 using Tobasco.Templates;
 
@@ -8,7 +9,7 @@ namespace Tobasco.Model.Builders.DatabaseBuilders
 {
     public class DescriptionBuilder : DatabaseHelper
     {
-        public DescriptionBuilder(Entity entity, Database database) : base(entity, database)
+        public DescriptionBuilder(Entity entity, Database database, EntityInformation information) : base(entity, database, information)
         {
         }
 
@@ -35,10 +36,11 @@ namespace Tobasco.Model.Builders.DatabaseBuilders
         {
             var columnDescriptions = new List<string>();
             foreach(var prop in Entity.GetSqlProperties.Where(x => x.Property.DataType.Datatype != Enums.Datatype.ChildCollection))
-            {                
-                var builder = new DescriptionColumnBuilder(prop, Entity);
-                if (builder.HasValue)
+            {
+                OutputPaneManager.WriteToOutputPane($"{MainInformation.Description.Required}");
+                if (MainInformation.Description.Required || !string.IsNullOrEmpty(prop.Property.Description) || prop.Property.DataType.Datatype == Enums.Datatype.Enum)
                 {
+                    var builder = new DescriptionColumnBuilder(prop, Entity, MainInformation);
                     columnDescriptions.Add(builder.Build());
                 }
             }

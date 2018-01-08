@@ -132,4 +132,21 @@ END;
 GO
 EXEC sp_addextendedproperty N'Description', 'TestNaam', 'SCHEMA', N'dbo', 'TABLE', N'FileMetOvererving', NULL, NULL
 GO
+EXEC sp_addextendedproperty N'Description', 'This is TestChildProp1', 'SCHEMA', N'dbo', 'TABLE', N'FileMetOvererving', 'COLUMN', N'TestChildProp1'
+GO
+EXEC sp_addextendedproperty N'Description', 'This is TestChildProp2', 'SCHEMA', N'dbo', 'TABLE', N'FileMetOvererving', 'COLUMN', N'TestChildProp2'
+GO
+EXEC sp_addextendedproperty N'Description', 'This is TestChildProp3', 'SCHEMA', N'dbo', 'TABLE', N'FileMetOvererving', 'COLUMN', N'TestChildProp3'
+GO
+EXEC sp_addextendedproperty N'Description', 'This is TestChildProp4', 'SCHEMA', N'dbo', 'TABLE', N'FileMetOvererving', 'COLUMN', N'TestChildProp4'
+GO
+EXEC sp_addextendedproperty N'Description', '
+Enum values:
+Name: Onbekend, value: 0
+Name: Man, value: 1
+Name: Vrouw, value: 2', 'SCHEMA', N'dbo', 'TABLE', N'FileMetOvererving', 'COLUMN', N'TestChildProp5'
+GO
+EXEC sp_addextendedproperty N'Description', 'This is TestChildProp6', 'SCHEMA', N'dbo', 'TABLE', N'FileMetOvererving', 'COLUMN', N'TestChildProp6'
+GO
 EXEC sp_addextendedproperty N'Description', 'TestColumn', 'SCHEMA', N'dbo', 'TABLE', N'FileMetOvererving', 'COLUMN', N'TestChildProp7Id'
+GO

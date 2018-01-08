@@ -82,3 +82,5 @@ END;
 GO
 EXEC sp_addextendedproperty N'Description', 'ChildObject', 'SCHEMA', N'dbo', 'TABLE', N'ChildObject', NULL, NULL
 GO
+EXEC sp_addextendedproperty N'Description', 'This is TestChildProp1', 'SCHEMA', N'dbo', 'TABLE', N'ChildObject', 'COLUMN', N'TestChildProp1'
+GO

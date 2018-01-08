@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace TobascoTest.TestEnums
+﻿namespace TobascoTest.TestEnums
 {
     public enum GeslachtType
     {
+        Onbekend = 0,
+        Man = 1,
+        Vrouw = 2
     }
 }

@@ -61,7 +61,8 @@ namespace Tobasco.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to EXEC sp_addextendedproperty N&apos;Description&apos;, &apos;%Description%&apos;, &apos;SCHEMA&apos;, N&apos;dbo&apos;, &apos;TABLE&apos;, N&apos;%TableName%&apos;, &apos;COLUMN&apos;, N&apos;%Columnname%&apos;.
+        ///   Looks up a localized string similar to EXEC sp_addextendedproperty N&apos;Description&apos;, &apos;%Description%&apos;, &apos;SCHEMA&apos;, N&apos;dbo&apos;, &apos;TABLE&apos;, N&apos;%TableName%&apos;, &apos;COLUMN&apos;, N&apos;%Columnname%&apos;
+        ///GO.
         /// </summary>
         internal static string DescriptionColumn {
             get {

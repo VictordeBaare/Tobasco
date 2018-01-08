@@ -6,7 +6,7 @@ namespace Tobasco.Model.Builders.DatabaseBuilders
 {
     public class IndexBuilder : DatabaseHelper
     {
-        public IndexBuilder(Entity entity, Database database) : base(entity, database)
+        public IndexBuilder(Entity entity, Database database, EntityInformation information) : base(entity, database, information)
         {
         }
 

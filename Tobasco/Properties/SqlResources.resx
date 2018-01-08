@@ -118,7 +118,8 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="DescriptionColumn" xml:space="preserve">
-    <value>EXEC sp_addextendedproperty N'Description', '%Description%', 'SCHEMA', N'dbo', 'TABLE', N'%TableName%', 'COLUMN', N'%Columnname%'</value>
+    <value>EXEC sp_addextendedproperty N'Description', '%Description%', 'SCHEMA', N'dbo', 'TABLE', N'%TableName%', 'COLUMN', N'%Columnname%'
+GO</value>
   </data>
   <data name="DescriptionTable" xml:space="preserve">
     <value>EXEC sp_addextendedproperty N'Description', '%Description%', 'SCHEMA', N'dbo', 'TABLE', N'%TableName%', NULL, NULL

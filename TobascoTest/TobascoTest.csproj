@@ -166,7 +166,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>TestGenerator2.tt</DependentUpon>
     </Compile>
-    <Compile Include="Unittests\GetById.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="CPK.xml">

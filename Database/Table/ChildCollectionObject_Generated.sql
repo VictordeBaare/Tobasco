@@ -110,3 +110,9 @@ END;
 GO
 EXEC sp_addextendedproperty N'Description', 'ChildCollectionObject', 'SCHEMA', N'dbo', 'TABLE', N'ChildCollectionObject', NULL, NULL
 GO
+EXEC sp_addextendedproperty N'Description', 'This is TestChildProp1', 'SCHEMA', N'dbo', 'TABLE', N'ChildCollectionObject', 'COLUMN', N'TestChildProp1'
+GO
+EXEC sp_addextendedproperty N'Description', 'This is TestChildProp2', 'SCHEMA', N'dbo', 'TABLE', N'ChildCollectionObject', 'COLUMN', N'TestChildProp2'
+GO
+EXEC sp_addextendedproperty N'Description', 'This is FileMetOverervingId', 'SCHEMA', N'dbo', 'TABLE', N'ChildCollectionObject', 'COLUMN', N'FileMetOverervingId'
+GO

@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Reflection;
 using Tobasco.Constants;
 using Tobasco.Model.DatabaseProperties;
 using Tobasco.Properties;
@@ -14,11 +13,13 @@ namespace Tobasco.Model.Builders.DatabaseBuilders
     {
         private DatabaseProperty _property;
         private Entity _entity;
+        private EntityInformation _mainInformation;
 
-        public DescriptionColumnBuilder(DatabaseProperty property, Entity entity)
+        public DescriptionColumnBuilder(DatabaseProperty property, Entity entity, EntityInformation information)
         {
             _property = property;
             _entity = entity;
+            _mainInformation = information;
         }
 
         public virtual string GetTemplateColumnDescription => SqlResources.DescriptionColumn;
@@ -31,16 +32,71 @@ namespace Tobasco.Model.Builders.DatabaseBuilders
             return template.GetText;
         }
 
-        public bool HasValue => !string.IsNullOrEmpty(_property.Property.Description);
-
         private TemplateParameter GetParameters()
         {
             var parameters = new TemplateParameter();
             parameters.Add(SqlConstants.TableName, _entity.Name);
-            parameters.Add(SqlConstants.Description, _property.Property.Description);
+            parameters.Add(SqlConstants.Description, GetColumnDescription());
             parameters.Add(SqlConstants.Columnname, _property.SelectSqlParameterNaam);
             return parameters;
         }
 
+        private string GetColumnDescription()
+        {
+            if(_property.Property.DataType.Datatype == Enums.Datatype.Enum)
+            {
+                return GetEnumDescription();                
+            }
+
+            return GetPropertyDescription();
+        }
+
+        private string GetPropertyDescription()
+        {
+            if (!string.IsNullOrEmpty(_property.Property.Description))
+            {
+                return _property.Property.Description;
+            }
+            return $"This is {_property.Property.Name}";
+        }
+
+        private string GetEnumDescription()
+        {
+            Type item = GetEnumFromAssembly();
+
+            if (item != null)
+            {
+                var list = new List<string>();
+                if (string.IsNullOrEmpty(_property.Property.Description))
+                {
+                    list.Add(_property.Property.Description);
+                }
+                list.Add("Enum values:");
+                foreach (var field in item.GetFields(BindingFlags.Public | BindingFlags.Static))
+                {
+                    var value = field.GetValue(null);
+                    list.Add($"Name: {value.ToString()}, value: {(int)value}");
+                }
+                return string.Join(Environment.NewLine, list);
+            }
+            return GetPropertyDescription();
+        }
+
+        private Type GetEnumFromAssembly()
+        {
+            Assembly[] assemblies = AppDomain.CurrentDomain.GetAssemblies();
+
+            List<Type> types = new List<Type>();
+
+            foreach (Assembly assembly in assemblies)
+            {
+                Type type = assembly.GetType(_mainInformation.EnumNamespace.Value + "." + _property.Property.DataType.Type);
+                if (type != null && type.IsEnum)
+                    types.Add(type);
+            }
+
+            var item = types.FirstOrDefault();
+            return item;
+        }
     }
 }

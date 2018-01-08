@@ -159,6 +159,7 @@
     <Compile Include="Model\DatabaseProperties\DecimalProperty.cs" />
     <Compile Include="Model\DatabaseProperties\StringProperty.cs" />
     <Compile Include="Model\DependencyInjection.cs" />
+    <Compile Include="Model\Description.cs" />
     <Compile Include="Model\GenericRepository.cs" />
     <Compile Include="Model\InterfaceImplementation.cs" />
     <Compile Include="Model\GenerateElement.cs" />

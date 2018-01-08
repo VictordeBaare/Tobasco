@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Tobasco.Constants;
 using Tobasco.Properties;
 using Tobasco.Templates;
@@ -11,7 +7,7 @@ namespace Tobasco.Model.Builders.DatabaseBuilders
 {
     public class DeleteBuilder : DatabaseHelper
     {
-        public DeleteBuilder(Entity entity, Database database) : base(entity, database)
+        public DeleteBuilder(Entity entity, Database database, EntityInformation information) : base(entity, database, information)
         {
         }
 
