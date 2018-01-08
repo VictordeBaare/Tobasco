@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Tobasco.Constants;
+using Tobasco.Manager;
 using Tobasco.Model.DatabaseProperties;
 using Tobasco.Properties;
 using Tobasco.Templates;
@@ -74,8 +75,9 @@ namespace Tobasco.Model.Builders.DatabaseBuilders
                 list.Add("Enum values:");
                 foreach (var field in item.GetFields(BindingFlags.Public | BindingFlags.Static))
                 {
-                    var value = field.GetValue(null);
-                    list.Add($"Name: {value.ToString()}, value: {(int)value}");
+                    Enum value = (Enum)field.GetValue(null);
+                    OutputPaneManager.WriteToOutputPane(value.ToString());
+                    list.Add($"Name: {value.ToString()}, value: {Convert.ChangeType(value, value.GetTypeCode())}");
                 }
                 return string.Join(Environment.NewLine, list);
             }
@@ -90,6 +92,7 @@ namespace Tobasco.Model.Builders.DatabaseBuilders
 
             foreach (Assembly assembly in assemblies)
             {
+                OutputPaneManager.WriteToOutputPane(_mainInformation.EnumNamespace.Value + "." + _property.Property.DataType.Type);
                 Type type = assembly.GetType(_mainInformation.EnumNamespace.Value + "." + _property.Property.DataType.Type);
                 if (type != null && type.IsEnum)
                     types.Add(type);

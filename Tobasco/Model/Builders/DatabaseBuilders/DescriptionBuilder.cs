@@ -37,7 +37,6 @@ namespace Tobasco.Model.Builders.DatabaseBuilders
             var columnDescriptions = new List<string>();
             foreach(var prop in Entity.GetSqlProperties.Where(x => x.Property.DataType.Datatype != Enums.Datatype.ChildCollection))
             {
-                OutputPaneManager.WriteToOutputPane($"{MainInformation.Description.Required}");
                 if (MainInformation.Description.Required || !string.IsNullOrEmpty(prop.Property.Description) || prop.Property.DataType.Datatype == Enums.Datatype.Enum)
                 {
                     var builder = new DescriptionColumnBuilder(prop, Entity, MainInformation);
