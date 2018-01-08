@@ -43,7 +43,31 @@ namespace Tobasco.Model.Builders.DatabaseBuilders
                     columnDescriptions.Add(builder.Build());
                 }
             }
+            columnDescriptions.Add(GetIdDescription(SqlConstants.IdDescription, "Id"));
+            columnDescriptions.Add(GetIdDescription(SqlConstants.RowVersionDescription, "Rowversion"));
+            columnDescriptions.Add(GetIdDescription(SqlConstants.UIdDescription, "UId"));
+            columnDescriptions.Add(GetIdDescription(SqlConstants.ModifiedOnDescription, "ModifiedOn"));
+            columnDescriptions.Add(GetIdDescription(SqlConstants.ModifiedByDescription, "ModifiedBy"));
+            columnDescriptions.Add(GetIdDescription(SqlConstants.ModifiedOnUTCDescription, "ModifiedOnUTC"));
             return columnDescriptions;
+        }
+
+        private string GetIdDescription(string description, string columnName)
+        {
+            var template = new Template();
+            template.SetTemplate(SqlResources.DescriptionColumn);
+            template.Fill(GetChangeTrackingParametersParameters(description, columnName));
+            return template.GetText;
+        }
+
+
+        private TemplateParameter GetChangeTrackingParametersParameters(string description, string columnName)
+        {
+            var parameters = new TemplateParameter();
+            parameters.Add(SqlConstants.TableName, Entity.Name);
+            parameters.Add(SqlConstants.Description, description);
+            parameters.Add(SqlConstants.Columnname, columnName);
+            return parameters;
         }
     }
 }
