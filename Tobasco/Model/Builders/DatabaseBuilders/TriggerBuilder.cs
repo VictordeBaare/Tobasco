@@ -58,7 +58,8 @@ namespace Tobasco.Model.Builders.DatabaseBuilders
             if (Entity.GenerateReadonlyGuid)
             {
                 parameters.Insert(1, "[UId]");
-            }            
+            }
+            parameters.Add("ModifiedOnUTC");
             parameters.Add("DeletedBy");
             parameters.Add("DeletedAt");
             return parameters;
@@ -79,6 +80,7 @@ namespace Tobasco.Model.Builders.DatabaseBuilders
             }
             list.Add("Deleted.ModifiedBy");
             list.Add("Deleted.ModifiedOn");
+            list.Add("Deleted.ModifiedOnUTC");
             if (isDeleteTrigger)
            { 
                 list.Add("ISNULL(LTRIM(RTRIM(CONVERT(nvarchar(128), CONTEXT_INFO()))), SUSER_SNAME())");

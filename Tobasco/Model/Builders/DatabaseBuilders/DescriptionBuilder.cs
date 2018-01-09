@@ -23,19 +23,57 @@ namespace Tobasco.Model.Builders.DatabaseBuilders
             return template.GetText;
         }
 
+        public string BuildHistorie()
+        {
+            var template = new Template();
+            template.SetTemplate(GetTemplateTableDescription);
+            template.Fill(GetHistoryParameters());
+            return template.GetText;
+        }
+
         private TemplateParameter GetParameters()
         {
             var parameters = new TemplateParameter();
             parameters.Add(SqlConstants.TableName, Name);
             parameters.Add(SqlConstants.Description, string.IsNullOrEmpty(Entity.Description) ? Name : Entity.Description);
-            parameters.Add(SqlConstants.DescriptionColumns, GetColumnDescriptions());
+            parameters.Add(SqlConstants.DescriptionColumns, GetColumnDescriptions);
             return parameters;
         }
 
-        private List<string> GetColumnDescriptions()
+        private TemplateParameter GetHistoryParameters()
+        {
+            var parameters = new TemplateParameter();
+            parameters.Add(SqlConstants.TableName, $"{Name}_historie");
+            parameters.Add(SqlConstants.Description, string.IsNullOrEmpty(Entity.Description) ? Name : Entity.Description);
+            parameters.Add(SqlConstants.DescriptionColumns, GetHistoryColumnDescriptions);
+            return parameters;
+        }
+
+        private List<string> _getColumnDescriptions;
+        private List<string> GetColumnDescriptions => _getColumnDescriptions ?? (_getColumnDescriptions = ResolveColumns());
+        private List<string> _getHistoryColumnDescriptions;
+        private List<string> GetHistoryColumnDescriptions => _getHistoryColumnDescriptions ?? (_getHistoryColumnDescriptions = ResolveHistoryColumns());
+        private List<string> ResolveHistoryColumns()
         {
             var columnDescriptions = new List<string>();
-            foreach(var prop in Entity.GetSqlProperties.Where(x => x.Property.DataType.Datatype != Enums.Datatype.ChildCollection))
+            foreach (var prop in Entity.GetSqlProperties.Where(x => x.Property.DataType.Datatype != Enums.Datatype.ChildCollection))
+            {
+                if (MainInformation.Description.Required || !string.IsNullOrEmpty(prop.Property.Description) || prop.Property.DataType.Datatype == Enums.Datatype.Enum)
+                {
+                    var builder = new DescriptionHistoryColumnBuilder(prop, Entity, MainInformation);
+                    columnDescriptions.Add(builder.Build());
+                }
+            }
+            AddChangeTrackingColumns(columnDescriptions, $"{Entity.Name}_historie");
+            columnDescriptions.Add(GetChangeTrackingDescription(SqlConstants.DeletedAtDescription, "DeletedAt", $"{Entity.Name}_historie"));
+            columnDescriptions.Add(GetChangeTrackingDescription(SqlConstants.DeletedByDescription, "DeletedBy", $"{Entity.Name}_historie"));
+            return columnDescriptions;
+        }
+
+        private List<string> ResolveColumns()
+        {
+            var columnDescriptions = new List<string>();
+            foreach (var prop in Entity.GetSqlProperties.Where(x => x.Property.DataType.Datatype != Enums.Datatype.ChildCollection))
             {
                 if (MainInformation.Description.Required || !string.IsNullOrEmpty(prop.Property.Description) || prop.Property.DataType.Datatype == Enums.Datatype.Enum)
                 {
@@ -43,28 +81,36 @@ namespace Tobasco.Model.Builders.DatabaseBuilders
                     columnDescriptions.Add(builder.Build());
                 }
             }
-            columnDescriptions.Add(GetIdDescription(SqlConstants.IdDescription, "Id"));
-            columnDescriptions.Add(GetIdDescription(SqlConstants.RowVersionDescription, "Rowversion"));
-            columnDescriptions.Add(GetIdDescription(SqlConstants.UIdDescription, "UId"));
-            columnDescriptions.Add(GetIdDescription(SqlConstants.ModifiedOnDescription, "ModifiedOn"));
-            columnDescriptions.Add(GetIdDescription(SqlConstants.ModifiedByDescription, "ModifiedBy"));
-            columnDescriptions.Add(GetIdDescription(SqlConstants.ModifiedOnUTCDescription, "ModifiedOnUTC"));
+            AddChangeTrackingColumns(columnDescriptions, Entity.Name);
             return columnDescriptions;
         }
 
-        private string GetIdDescription(string description, string columnName)
+        protected virtual void AddChangeTrackingColumns(List<string> columnDescriptions, string tableName)
+        {
+            columnDescriptions.Add(GetChangeTrackingDescription(SqlConstants.IdDescription, "Id", tableName));
+            columnDescriptions.Add(GetChangeTrackingDescription(SqlConstants.RowVersionDescription, "Rowversion", tableName));
+            if (Entity.GenerateReadonlyGuid)
+            {
+                columnDescriptions.Add(GetChangeTrackingDescription(SqlConstants.UIdDescription, "UId", tableName));
+            }
+            columnDescriptions.Add(GetChangeTrackingDescription(SqlConstants.ModifiedOnDescription, "ModifiedOn", tableName));
+            columnDescriptions.Add(GetChangeTrackingDescription(SqlConstants.ModifiedByDescription, "ModifiedBy", tableName));
+            columnDescriptions.Add(GetChangeTrackingDescription(SqlConstants.ModifiedOnUTCDescription, "ModifiedOnUTC", tableName));
+        }
+
+        private string GetChangeTrackingDescription(string description, string columnName, string tableName)
         {
             var template = new Template();
             template.SetTemplate(SqlResources.DescriptionColumn);
-            template.Fill(GetChangeTrackingParametersParameters(description, columnName));
+            template.Fill(GetChangeTrackingParametersParameters(description, columnName, tableName));
             return template.GetText;
         }
 
 
-        private TemplateParameter GetChangeTrackingParametersParameters(string description, string columnName)
+        private TemplateParameter GetChangeTrackingParametersParameters(string description, string columnName, string tableName)
         {
             var parameters = new TemplateParameter();
-            parameters.Add(SqlConstants.TableName, Entity.Name);
+            parameters.Add(SqlConstants.TableName, tableName);
             parameters.Add(SqlConstants.Description, description);
             parameters.Add(SqlConstants.Columnname, columnName);
             return parameters;

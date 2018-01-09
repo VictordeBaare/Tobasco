@@ -131,6 +131,7 @@
     <Compile Include="Model\Builders\DatabaseBuilders\DeleteBuilder.cs" />
     <Compile Include="Model\Builders\DatabaseBuilders\DescriptionBuilder.cs" />
     <Compile Include="Model\Builders\DatabaseBuilders\DescriptionColumnBuilder.cs" />
+    <Compile Include="Model\Builders\DatabaseBuilders\DescriptionHistoryColumnBuilder.cs" />
     <Compile Include="Model\Builders\DatabaseBuilders\GetByIdBuilder.cs" />
     <Compile Include="Model\Builders\DatabaseBuilders\GetByIdHelper.cs" />
     <Compile Include="Model\Builders\DatabaseBuilders\GetByReferenceIdBuilder.cs" />

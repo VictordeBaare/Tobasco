@@ -31,5 +31,7 @@
         public const string ModifiedByDescription = "Login name that made the latest change to the row.";
         public const string ModifiedOnDescription = "Local timestamp of the latest change to the row.";
         public const string ModifiedOnUTCDescription = "UTC timestamp of the latest change to the row.";
+        public const string DeletedByDescription = "Login name that deleted the row.";
+        public const string DeletedAtDescription = "Local timestamp that the row was deleted";
     }
 }

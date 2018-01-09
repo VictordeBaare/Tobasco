@@ -221,7 +221,8 @@ END;</value>
    ,[RowVersion]                  binary(8)          NOT NULL
    %TableProperties%   
    ,[ModifiedBy]                  nvarchar (256)     NOT NULL
-   ,[ModifiedOn]                  DATETIME2(7)       NOT NULL
+   ,[ModifiedOn]                  datetime2(7)       NOT NULL
+   ,[ModifiedOnUTC] 			  datetime2(7)	     NOT NULL
    ,DeletedBy                     nvarchar(256)     NULL
    ,DeletedAt                     datetime2(7)      NULL
 );</value>
@@ -233,7 +234,8 @@ END;</value>
    ,[UId]                         uniqueidentifier   NOT NULL
    %TableProperties%   
    ,[ModifiedBy]                  nvarchar (256)     NOT NULL
-   ,[ModifiedOn]                  DATETIME2(7)       NOT NULL
+   ,[ModifiedOn]                  datetime2(7)       NOT NULL
+   ,[ModifiedOnUTC] 			  datetime2(7)	     NOT NULL
    ,DeletedBy                     nvarchar(256)      NULL
    ,DeletedAt                     datetime2(7)       NULL
 );</value>

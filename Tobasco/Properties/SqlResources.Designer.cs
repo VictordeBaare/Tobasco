@@ -192,7 +192,8 @@ namespace Tobasco.Properties {
         ///   ,[RowVersion]                  binary(8)          NOT NULL
         ///   %TableProperties%   
         ///   ,[ModifiedBy]                  nvarchar (256)     NOT NULL
-        ///   ,[ModifiedOn]                  DATETIME2(7)       NOT NULL
+        ///   ,[ModifiedOn]                  datetime2(7)       NOT NULL
+        ///   ,[ModifiedOnUTC] 			  datetime2(7)	     NOT NULL
         ///   ,DeletedBy                     nvarchar(256)     NULL
         ///   ,DeletedAt                     datetime2(7)      NULL
         ///);.
@@ -210,10 +211,10 @@ namespace Tobasco.Properties {
         ///   ,[UId]                         uniqueidentifier   NOT NULL
         ///   %TableProperties%   
         ///   ,[ModifiedBy]                  nvarchar (256)     NOT NULL
-        ///   ,[ModifiedOn]                  DATETIME2(7)       NOT NULL
+        ///   ,[ModifiedOn]                  datetime2(7)       NOT NULL
+        ///   ,[ModifiedOnUTC] 			  datetime2(7)	     NOT NULL
         ///   ,DeletedBy                     nvarchar(256)      NULL
-        ///   ,DeletedAt                     datetime2(7)       NULL
-        ///);.
+        ///   ,DeletedAt   [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string SqlHistorieTableWithUid {
             get {

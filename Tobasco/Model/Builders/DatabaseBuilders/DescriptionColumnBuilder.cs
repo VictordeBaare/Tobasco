@@ -12,9 +12,9 @@ namespace Tobasco.Model.Builders.DatabaseBuilders
 {
     public class DescriptionColumnBuilder
     {
-        private DatabaseProperty _property;
-        private Entity _entity;
-        private EntityInformation _mainInformation;
+        protected DatabaseProperty _property;
+        protected Entity _entity;
+        protected EntityInformation _mainInformation;
 
         public DescriptionColumnBuilder(DatabaseProperty property, Entity entity, EntityInformation information)
         {
@@ -33,7 +33,7 @@ namespace Tobasco.Model.Builders.DatabaseBuilders
             return template.GetText;
         }
 
-        private TemplateParameter GetParameters()
+        protected virtual TemplateParameter GetParameters()
         {
             var parameters = new TemplateParameter();
             parameters.Add(SqlConstants.TableName, _entity.Name);
@@ -42,7 +42,7 @@ namespace Tobasco.Model.Builders.DatabaseBuilders
             return parameters;
         }
 
-        private string GetColumnDescription()
+        protected string GetColumnDescription()
         {
             if(_property.Property.DataType.Datatype == Enums.Datatype.Enum)
             {
@@ -76,7 +76,6 @@ namespace Tobasco.Model.Builders.DatabaseBuilders
                 foreach (var field in item.GetFields(BindingFlags.Public | BindingFlags.Static))
                 {
                     Enum value = (Enum)field.GetValue(null);
-                    OutputPaneManager.WriteToOutputPane(value.ToString());
                     list.Add($"Name: {value.ToString()}, value: {Convert.ChangeType(value, value.GetTypeCode())}");
                 }
                 return string.Join(Environment.NewLine, list);
@@ -92,7 +91,6 @@ namespace Tobasco.Model.Builders.DatabaseBuilders
 
             foreach (Assembly assembly in assemblies)
             {
-                OutputPaneManager.WriteToOutputPane(_mainInformation.EnumNamespace.Value + "." + _property.Property.DataType.Type);
                 Type type = assembly.GetType(_mainInformation.EnumNamespace.Value + "." + _property.Property.DataType.Type);
                 if (type != null && type.IsEnum)
                     types.Add(type);

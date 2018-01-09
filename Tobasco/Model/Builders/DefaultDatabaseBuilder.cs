@@ -48,7 +48,17 @@ namespace Tobasco.Model.Builders
 
                 tableFile.Indexes = GetIndexBuilder.Build();
 
-                tableFile.Description = GetDescriptionBuilder.Build();
+
+                if (Database.Tables.Generate)
+                {
+                    var descriptionBuilder = GetDescriptionBuilder;
+                    tableFile.Description = descriptionBuilder.Build();
+
+                    if (Database.Tables.GenerateHistorie.Generate)
+                    {
+                        tableFile.DescriptionHistory = descriptionBuilder.BuildHistorie();
+                    }
+                }                
 
                 outputFiles.Add(tableFile);
             }
