@@ -33,7 +33,15 @@ namespace Tobasco.Manager
 
         internal static Project GetProject(DTE dte, string projectName)
         {
-            return GetAllProjects(dte).First(p => p.Name == projectName);
+            var project = GetAllProjects(dte).FirstOrDefault(p => p.Name == projectName);
+            if(project != null)
+            {
+                return project;
+            }
+            else
+            {
+                throw new ArgumentNullException(nameof(projectName), $"Project with the name {projectName} could not be found.");
+            }
         }
 
         internal static IEnumerable<Project> GetAllProjects(DTE dte)
