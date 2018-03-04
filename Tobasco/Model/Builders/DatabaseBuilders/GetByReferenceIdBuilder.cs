@@ -6,7 +6,7 @@ namespace Tobasco.Model.Builders.DatabaseBuilders
 {
     public class GetByReferenceIdBuilder : GetByIdHelper
     {
-        public GetByReferenceIdBuilder(Entity entity, Database database, EntityInformation information) : base(entity, database, information)
+        public GetByReferenceIdBuilder(Entity entity, Database database) : base(entity, database)
         {
         }
 

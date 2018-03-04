@@ -6,7 +6,7 @@ namespace Tobasco.Model.Builders.Base
     public abstract class DatabaseBuilderBase : DatabaseHelper
     {
 
-        protected DatabaseBuilderBase(Entity entity, Database database, EntityInformation information) : base(entity, database, information)
+        protected DatabaseBuilderBase(Entity entity, Database database) : base(entity, database)
         {
         }
 

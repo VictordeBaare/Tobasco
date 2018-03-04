@@ -42,7 +42,7 @@
     <Tables folder="Table" generate="true">
       <Historie generate="true"></Historie>
     </Tables>
-  </Database>
+  </Database>    
   <Description required="true"></Description>
   <Repository overridekey="repositorykey" EntityId="dataobject" generate="true">
     <FileLocation project="TobascoTest" folder="GeneratedRepositoy"></FileLocation>

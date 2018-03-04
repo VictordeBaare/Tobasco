@@ -5,7 +5,7 @@ namespace Tobasco.Model.Builders.DatabaseBuilders
 {
     public class HistorieTableBuilder : TableHelper
     {
-        public HistorieTableBuilder(Entity entity, Database database, EntityInformation information) : base(entity, database, information)
+        public HistorieTableBuilder(Entity entity, Database database) : base(entity, database)
         {
         }
 

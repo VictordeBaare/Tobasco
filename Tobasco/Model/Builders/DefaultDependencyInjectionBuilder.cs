@@ -15,7 +15,7 @@ namespace Tobasco.Model.Builders
     public class DefaultDependencyInjectionBuilder : DependencyInjectionBuilderBase
     {
 
-        public DefaultDependencyInjectionBuilder(IEnumerable<EntityHandler> entityHandlers) : base(entityHandlers)
+        public DefaultDependencyInjectionBuilder() : base()
         {
             
         }
@@ -58,7 +58,7 @@ namespace Tobasco.Model.Builders
             var parameters = new TemplateParameter();
             var bindings = new List<string>();
 
-            foreach (var handler in EntityHandlers)
+            foreach (var handler in EntityManager.EntityHandlers.Values)
             {
                 var repositoryBuilder = handler.GetRepositoryBuilder;
                 if (repositoryBuilder != null && handler.GetRepository != null && handler.GetRepository.Generate)

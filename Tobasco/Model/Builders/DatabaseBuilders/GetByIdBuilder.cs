@@ -5,7 +5,7 @@ namespace Tobasco.Model.Builders.DatabaseBuilders
 {
     public class GetByIdBuilder : GetByIdHelper
     {
-        public GetByIdBuilder(Entity entity, Database database, EntityInformation information) : base(entity, database, information)
+        public GetByIdBuilder(Entity entity, Database database) : base(entity, database)
         {
         }
 

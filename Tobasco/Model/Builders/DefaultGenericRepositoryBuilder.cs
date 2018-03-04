@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Tobasco.FileBuilder;
+using Tobasco.Manager;
 using Tobasco.Model.Builders.Base;
 using Tobasco.Properties;
 using Tobasco.Templates;
@@ -9,7 +10,7 @@ namespace Tobasco.Model.Builders
 {
     public class DefaultGenericRepositoryBuilder : GenericRepositoryBuilderBase
     {
-        public DefaultGenericRepositoryBuilder(EntityInformation information) : base(information) { }
+        public DefaultGenericRepositoryBuilder() : base() { }
 
         protected virtual string SaveMethod()
         {
@@ -71,9 +72,9 @@ namespace Tobasco.Model.Builders
         {
             var classFile = FileManager.StartNewClassFile(GetGenericRepositoryName, Classlocation.Project, Classlocation.Folder);
             classFile.Namespaces.AddRange(new[] { "System.Configuration", "System.Data.SqlClient", "Dapper", "System.Data", Interfacelocation.GetProjectLocation, "System.Linq", "System.Collections.Generic", "static Dapper.SqlMapper" });
-            classFile.Namespaces.AddRange(Information.Repository.Namespaces.Select(x => x.Value).Concat(Information.GenericRepository.Namespaces.Select(x => x.Value)));
+            classFile.Namespaces.AddRange(MainInfoManager.EntityInformation.Repository.Namespaces.Select(x => x.Value).Concat(MainInfoManager.EntityInformation.GenericRepository.Namespaces.Select(x => x.Value)));
             classFile.Namespaces.Add("System.Globalization");
-            classFile.OwnNamespace = Information.Repository.FileLocation.GetNamespace;
+            classFile.OwnNamespace = MainInfoManager.EntityInformation.Repository.FileLocation.GetNamespace;
             classFile.NameExtension = "<T>";
             classFile.BaseClass = ": IGenericRepository<T> where T : EntityBase, new()";
             classFile.Constructor.Parameters.Add(new TypeWithName("connectionFactory", "IConnectionFactory"));
@@ -94,7 +95,7 @@ namespace Tobasco.Model.Builders
         {
             var interfaceFile = FileManager.StartNewInterfaceFile(GetInterfaceGenericRepositoryName, Interfacelocation.Project, Interfacelocation.Folder);
             interfaceFile.Namespaces.AddRange(new[] { "System.Configuration", "System.Data.SqlClient", Interfacelocation.GetProjectLocation, "System.Collections.Generic", "Dapper", "static Dapper.SqlMapper" });
-            interfaceFile.Namespaces.AddRange(Information.Repository.Namespaces.Select(x => x.Value).Concat(Information.GenericRepository.Namespaces.Select(x => x.Value)));
+            interfaceFile.Namespaces.AddRange(MainInfoManager.EntityInformation.Repository.Namespaces.Select(x => x.Value).Concat(MainInfoManager.EntityInformation.GenericRepository.Namespaces.Select(x => x.Value)));
             interfaceFile.OwnNamespace = Interfacelocation.GetNamespace;
             interfaceFile.NameExtension = "<T> where T : EntityBase, new()";
             interfaceFile.Properties.Add("IConnectionFactory ConnectionFactory { get; }");

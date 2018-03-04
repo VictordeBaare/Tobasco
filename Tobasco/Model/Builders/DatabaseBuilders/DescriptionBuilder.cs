@@ -9,7 +9,7 @@ namespace Tobasco.Model.Builders.DatabaseBuilders
 {
     public class DescriptionBuilder : DatabaseHelper
     {
-        public DescriptionBuilder(Entity entity, Database database, EntityInformation information) : base(entity, database, information)
+        public DescriptionBuilder(Entity entity, Database database) : base(entity, database)
         {
         }
 
@@ -58,9 +58,9 @@ namespace Tobasco.Model.Builders.DatabaseBuilders
             var columnDescriptions = new List<string>();
             foreach (var prop in Entity.GetSqlProperties.Where(x => x.Property.DataType.Datatype != Enums.Datatype.ChildCollection))
             {
-                if (MainInformation.Description.Required || !string.IsNullOrEmpty(prop.Property.Description) || prop.Property.DataType.Datatype == Enums.Datatype.Enum)
+                if (MainInfoManager.EntityInformation.Description.Required || !string.IsNullOrEmpty(prop.Property.Description) || prop.Property.DataType.Datatype == Enums.Datatype.Enum)
                 {
-                    var builder = new DescriptionHistoryColumnBuilder(prop, Entity, MainInformation);
+                    var builder = new DescriptionHistoryColumnBuilder(prop, Entity);
                     columnDescriptions.Add(builder.Build());
                 }
             }
@@ -75,9 +75,9 @@ namespace Tobasco.Model.Builders.DatabaseBuilders
             var columnDescriptions = new List<string>();
             foreach (var prop in Entity.GetSqlProperties.Where(x => x.Property.DataType.Datatype != Enums.Datatype.ChildCollection))
             {
-                if (MainInformation.Description.Required || !string.IsNullOrEmpty(prop.Property.Description) || prop.Property.DataType.Datatype == Enums.Datatype.Enum)
+                if (MainInfoManager.EntityInformation.Description.Required || !string.IsNullOrEmpty(prop.Property.Description) || prop.Property.DataType.Datatype == Enums.Datatype.Enum)
                 {
-                    var builder = new DescriptionColumnBuilder(prop, Entity, MainInformation);
+                    var builder = new DescriptionColumnBuilder(prop, Entity);
                     columnDescriptions.Add(builder.Build());
                 }
             }

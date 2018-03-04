@@ -41,7 +41,8 @@
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>TobascoSign.pfx</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="envdte, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
@@ -116,6 +117,8 @@
     <Compile Include="MainHandler.cs" />
     <Compile Include="Manager\BuilderManager.cs" />
     <Compile Include="Manager\EntityManager.cs" />
+    <Compile Include="Manager\MainInfoManager.cs" />
+    <Compile Include="Manager\FileOutputManager.cs" />
     <Compile Include="Manager\OutputPaneManager.cs" />
     <Compile Include="Manager\ProgressBarManager.cs" />
     <Compile Include="Manager\VsManager.cs" />
@@ -241,7 +244,6 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
-    <None Include="TobascoSign.pfx" />
     <None Include="Xml\EntitySchema.xsd">
       <SubType>Designer</SubType>
     </None>

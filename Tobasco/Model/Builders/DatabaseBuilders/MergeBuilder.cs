@@ -9,7 +9,7 @@ namespace Tobasco.Model.Builders.DatabaseBuilders
 {
     public class MergeBuilder : DatabaseHelper
     {
-        public MergeBuilder(Entity entity, Database database, EntityInformation information) : base(entity, database, information)
+        public MergeBuilder(Entity entity, Database database) : base(entity, database)
         {
 
         }

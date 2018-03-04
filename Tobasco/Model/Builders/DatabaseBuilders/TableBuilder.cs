@@ -5,7 +5,7 @@ namespace Tobasco.Model.Builders.DatabaseBuilders
 {
     public class TableBuilder : TableHelper
     {
-        public TableBuilder(Entity entity, Database database, EntityInformation information) : base(entity, database, information)
+        public TableBuilder(Entity entity, Database database) : base(entity, database)
         {
         }
 

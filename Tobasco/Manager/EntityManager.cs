@@ -1,18 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Tobasco.Model;
 
 namespace Tobasco.Manager
 {
     public static class EntityManager
     {
-        private static Dictionary<string, EntityHandler> EntityHandlers;
+        public static Dictionary<string, EntityHandler> EntityHandlers { get; private set; }
 
-        public static void Initialise(Dictionary<string, EntityHandler> entities)
+        public static void Initialise(List<Entity> entities)
         {
-            EntityHandlers = entities;
+            EntityHandlers = new Dictionary<string, EntityHandler>();
+            foreach (var entity in entities)
+            {
+                if (!EntityHandlers.ContainsKey(entity.Name))
+                {
+                    EntityHandlers.Add(entity.Name, new EntityHandler(entity));
+                }
+                else
+                {
+                    throw new ArgumentException($"{entity.Name} already exists.");
+                }
+            }
         }
 
         public static EntityHandler GetEntityOnName(string name)

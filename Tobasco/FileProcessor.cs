@@ -37,11 +37,12 @@ namespace Tobasco
                 {
                     OutputPaneManager.WriteToOutputPane("Load xmls.");
                     XmlLoader loader = new XmlLoader();
-                    var handler = loader.Load(path);
+                    loader.Load(path);
                     OutputPaneManager.WriteToOutputPane("Start generating.");
 
                     OutputPaneManager.WriteToOutputPane("Get output files.");
-                    var outputFiles = handler.GetOutputFiles();
+                    var outputFiles = FileOutputManager.ResolveSingleOutputFiles();
+                    outputFiles.AddRange(FileOutputManager.ResolveEntityFiles());
                     ProgressBarManager.SetTotal((uint)outputFiles.Count(), "");
                     OutputPaneManager.WriteToOutputPane($"{outputFiles.Count()} files found. ");
 

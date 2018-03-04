@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Tobasco.FileBuilder;
+using Tobasco.Manager;
 using Tobasco.Model.Builders.Base;
 using Tobasco.Properties;
 
@@ -7,7 +8,7 @@ namespace Tobasco.Model.Builders
 {
     public class DefaultConnectionfactoryBuilder : ConnectionfactoryBuilderBase
     {
-        public DefaultConnectionfactoryBuilder(EntityInformation information) : base(information) { }
+        public DefaultConnectionfactoryBuilder() : base() { }
 
         public override IEnumerable<FileBuilder.OutputFile> Build()
         {
@@ -22,7 +23,7 @@ namespace Tobasco.Model.Builders
 
             var interfaceFile = FileManager.StartNewInterfaceFile(GetConnectionFactoryInterfaceName, interfacelocation.Project, interfacelocation.Folder);
             interfaceFile.Namespaces.Add("System.Data.SqlClient");
-            interfaceFile.OwnNamespace = Information.Repository.InterfaceLocation.GetNamespace;
+            interfaceFile.OwnNamespace = MainInfoManager.EntityInformation.Repository.InterfaceLocation.GetNamespace;
             interfaceFile.Methods.Add("SqlConnection GetConnection();");
             return new List<FileBuilder.OutputFile> { classFile, interfaceFile };
         }

@@ -1,19 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Tobasco.FileBuilder;
+﻿using Tobasco.FileBuilder;
 
 namespace Tobasco.Model.Builders.Base
 {
     public abstract class DependencyInjectionBuilderBase
     {
-        protected readonly IEnumerable<EntityHandler> EntityHandlers;
-
-        protected DependencyInjectionBuilderBase(IEnumerable<EntityHandler> entityHandlers)
+        protected DependencyInjectionBuilderBase()
         {
-            EntityHandlers = entityHandlers;
+
         }
 
         protected string ResolveBindingExtension(Module module, ClassFile classfile)
@@ -32,6 +25,6 @@ namespace Tobasco.Model.Builders.Base
             }
         }
 
-        public abstract FileBuilder.OutputFile Build(Module module);
+        public abstract OutputFile Build(Module module);
     }
 }

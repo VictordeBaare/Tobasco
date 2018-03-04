@@ -17,7 +17,7 @@ namespace Tobasco.Model.Builders
     public class DefaultClassBuilder : ClassBuilderBase
     {
 
-        public DefaultClassBuilder(Entity entity, EntityLocation location, EntityInformation information) : base(entity, location, information) 
+        public DefaultClassBuilder(Entity entity, EntityLocation location) : base(entity, location) 
         {
         }
 
@@ -72,8 +72,8 @@ namespace Tobasco.Model.Builders
             file.ClassAttributes.Add("[Serializable]");
             file.IsAbstract = Entity.IsAbstract;
             file.BaseClass = Location.GetBaseClass;
-            file.Namespaces.AddRange(Location.Namespaces.Select(x => x.Value).Concat(Information.Namespaces.Select(x => x.Value)));
-            file.Namespaces.Add(Information.EnumNamespace.Value);        
+            file.Namespaces.AddRange(Location.Namespaces.Select(x => x.Value).Concat(MainInfoManager.GetBasicNamespaces));
+            file.Namespaces.Add(MainInfoManager.GetEnumNamespace);        
             file.Properties.AddRange(GetProperties.Select(x => x.GetProperty));
             file.Methods.Add(GenerateMethods());
             file.OwnNamespace = Location.FileLocation.GetNamespace;

@@ -10,13 +10,11 @@ namespace Tobasco.Model.Builders.DatabaseBuilders
     {
         protected readonly Entity Entity;
         protected readonly Database Database;
-        protected readonly EntityInformation MainInformation;
 
-        protected DatabaseHelper(Entity entity, Database database, EntityInformation information)
+        protected DatabaseHelper(Entity entity, Database database)
         {
             Entity = entity;
             Database = database;
-            MainInformation = information;
         }
 
         public virtual string Name => Entity.Name;

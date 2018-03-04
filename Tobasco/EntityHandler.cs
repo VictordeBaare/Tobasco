@@ -5,7 +5,6 @@ using Tobasco.Constants;
 using Tobasco.Enums;
 using Tobasco.Manager;
 using Tobasco.Model;
-using Tobasco.Model.Builders;
 using Tobasco.Model.Builders.Base;
 
 namespace Tobasco
@@ -13,45 +12,41 @@ namespace Tobasco
     public class EntityHandler
     {
         private readonly Entity _entity;
-        private readonly EntityInformation _mainInformation;
         private readonly Dictionary<string, ClassBuilderBase> _classBuilderDictionary;
-        private readonly Func<string, EntityHandler> _getHandlerOnName;
 
-        public EntityHandler(Entity entity, EntityInformation mainInformation, Func<string, EntityHandler> getHandlerOnName)
+        public EntityHandler(Entity entity)
         {
             _entity = entity;
-            _mainInformation = mainInformation;
             _classBuilderDictionary = new Dictionary<string, ClassBuilderBase>();
-            _getHandlerOnName = getHandlerOnName;
         }
         
         public string GetMapperInterface(string naam)
         {
-            var handler = _getHandlerOnName(naam);
+            var handler = EntityManager.GetEntityOnName(naam);
             return handler.GetMapperBuilder.SelectMapperInterface;
         }
 
         public string GetMapperInterfaceParameter(string naam)
         {
-            var handler = _getHandlerOnName(naam);
+            var handler = EntityManager.GetEntityOnName(naam);
             return handler.GetMapperBuilder.SelectMapperParameter;
         }
 
         public string GetRepositoryInterface(string naam)
         {
-            var handler = _getHandlerOnName(naam);
+            var handler = EntityManager.GetEntityOnName(naam);
             return handler.GetRepositoryBuilder.GetRepositoryInterfaceName;
         }
 
         public string GetRepositoryOnName(string naam)
         {
-            var handler = _getHandlerOnName(naam);
+            var handler = EntityManager.GetEntityOnName(naam);
             return handler.GetRepositoryBuilder.GetRepositoryName;
         }
 
         public Property GetChildReferenceProperty(string type, string parent)
         {
-            var handler = _getHandlerOnName(type);
+            var handler = EntityManager.GetEntityOnName(type);
             if (handler == null)
             {
                 throw new ArgumentNullException($"No handler was found with the type: {type}");
@@ -66,7 +61,7 @@ namespace Tobasco
 
         public string GetProjectLocation(string naam, string id)
         {
-            var handler = _getHandlerOnName(naam);
+            var handler = EntityManager.GetEntityOnName(naam);
             return handler.GetEntityLocationOnId(id).FileLocation.GetProjectLocation;
         }
 
@@ -110,7 +105,7 @@ namespace Tobasco
                 {
                     return _entity.EntityLocations;
                 }
-                return _mainInformation.EntityLocations;
+                return MainInfoManager.EntityInformation.EntityLocations;
             }
         }
 
@@ -122,7 +117,7 @@ namespace Tobasco
                 {
                     return _entity.Repository;
                 }
-                return _mainInformation.Repository;
+                return MainInfoManager.EntityInformation.Repository;
             }
         }
 
@@ -134,7 +129,7 @@ namespace Tobasco
                 {
                     return _entity.Database;
                 }
-                return _mainInformation.Database;
+                return MainInfoManager.EntityInformation.Database;
             }
         }
 
@@ -146,7 +141,7 @@ namespace Tobasco
                 {
                     return _entity.Mappers;
                 }
-                return _mainInformation.Mappers;
+                return MainInfoManager.EntityInformation.Mappers;
             }
         }
 
@@ -170,7 +165,7 @@ namespace Tobasco
                 return _classBuilderDictionary[entitylocation.Id];
             }
             var type = BuilderManager.Get(entitylocation.Overridekey, DefaultBuilderConstants.ClassBuilder);
-            var classBuilder = BuilderManager.InitializeBuilder<ClassBuilderBase>(type, new object[] { _entity, entitylocation, _mainInformation });
+            var classBuilder = BuilderManager.InitializeBuilder<ClassBuilderBase>(type, new object[] { _entity, entitylocation });
 
             var id = entitylocation.Id ?? "LocationId" + _classBuilderDictionary.Count + 1;
             _classBuilderDictionary.Add(id, classBuilder);
@@ -183,7 +178,7 @@ namespace Tobasco
             {
                 return GetDatabase.Overridekey;
             }
-            return _mainInformation.Database?.Overridekey;
+            return MainInfoManager.EntityInformation.Database?.Overridekey;
         }
 
         private string GetMappersOverrideKey()
@@ -192,7 +187,7 @@ namespace Tobasco
             {
                 return GetMappers.Overridekey;
             }
-            return _mainInformation.Mappers?.Overridekey;
+            return MainInfoManager.EntityInformation.Mappers?.Overridekey;
         }
 
         private string GetRepositoryOverrideKey()
@@ -201,7 +196,7 @@ namespace Tobasco
             {
                 return GetRepository.Overridekey;
             }
-            return _mainInformation.Repository?.Overridekey;
+            return MainInfoManager.EntityInformation.Repository?.Overridekey;
         }
 
         public ClassBuilderBase GetClassBuilder(string id)
@@ -218,7 +213,7 @@ namespace Tobasco
             get
             {
                 var type = BuilderManager.Get(GetDatabaseOverrideKey(), DefaultBuilderConstants.DatabaseBuilder);
-                return BuilderManager.InitializeBuilder<DatabaseBuilderBase>(type, new object[] { Entity, GetDatabase, _mainInformation });
+                return BuilderManager.InitializeBuilder<DatabaseBuilderBase>(type, new object[] { Entity, GetDatabase });
             }
         }
 

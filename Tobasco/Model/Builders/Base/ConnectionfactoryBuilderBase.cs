@@ -1,22 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using Tobasco.Manager;
 
 namespace Tobasco.Model.Builders.Base
 {
     public abstract class ConnectionfactoryBuilderBase
     {
-        protected readonly EntityInformation Information;
-
-        protected ConnectionfactoryBuilderBase(EntityInformation information)
+        protected ConnectionfactoryBuilderBase()
         {
-            Information = information;
         }
 
-        protected FileLocation classlocation => Information.ConnectionFactory.FileLocation;
-        protected FileLocation interfacelocation => Information.ConnectionFactory.InterfaceLocation;
+        protected FileLocation classlocation => MainInfoManager.EntityInformation.ConnectionFactory.FileLocation;
+        protected FileLocation interfacelocation => MainInfoManager.EntityInformation.ConnectionFactory.InterfaceLocation;
 
         public virtual string GetConnectionFactoryName
         {

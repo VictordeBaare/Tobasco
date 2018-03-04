@@ -1,22 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using Tobasco.Manager;
 
 namespace Tobasco.Model.Builders.Base
 {
     public abstract class GenericRepositoryBuilderBase
     {
-        protected readonly EntityInformation Information;
-
-        protected GenericRepositoryBuilderBase(EntityInformation information)
+        protected GenericRepositoryBuilderBase()
         {
-            Information = information;
         }
 
-        public FileLocation Classlocation => Information.GenericRepository.FileLocation;
-        public FileLocation Interfacelocation => Information.GenericRepository.InterfaceLocation;
+        public FileLocation Classlocation => MainInfoManager.EntityInformation.GenericRepository.FileLocation;
+        public FileLocation Interfacelocation => MainInfoManager.EntityInformation.GenericRepository.InterfaceLocation;
 
         public virtual string GetGenericRepositoryName
         {

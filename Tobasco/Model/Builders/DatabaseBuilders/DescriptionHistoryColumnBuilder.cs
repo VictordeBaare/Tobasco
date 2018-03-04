@@ -6,7 +6,7 @@ namespace Tobasco.Model.Builders.DatabaseBuilders
 {
     public class DescriptionHistoryColumnBuilder : DescriptionColumnBuilder
     {
-        public DescriptionHistoryColumnBuilder(DatabaseProperty property, Entity entity, EntityInformation information) : base(property, entity, information)
+        public DescriptionHistoryColumnBuilder(DatabaseProperty property, Entity entity) : base(property, entity)
         {
         }
 

@@ -8,7 +8,7 @@ namespace Tobasco.Model.Builders.DatabaseBuilders
 {
     public class InsertBuilder : DatabaseHelper
     {
-        public InsertBuilder(Entity entity, Database database, EntityInformation information) : base(entity, database, information)
+        public InsertBuilder(Entity entity, Database database) : base(entity, database)
         {
         }
 

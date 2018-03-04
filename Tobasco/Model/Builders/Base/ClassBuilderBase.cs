@@ -10,17 +10,15 @@ namespace Tobasco.Model.Builders.Base
     {
         protected readonly Entity Entity;
         protected readonly EntityLocation Location;
-        protected readonly EntityInformation Information;
         private IEnumerable<ClassProperty> _getProperties;
         private IEnumerable<ClassProperty> _getChildChildCollectionProperties;
         private IEnumerable<ClassProperty> _getNonChildCollectionProperties;
         private readonly PropertyClassFactory _propertyFactory;
 
-        protected ClassBuilderBase(Entity entity, EntityLocation location, EntityInformation information)
+        protected ClassBuilderBase(Entity entity, EntityLocation location)
         {
             Entity = entity;
             Location = location;
-            Information = information;
             _propertyFactory = new PropertyClassFactory(location.ORMapper, location.GenerateRules);
         }
 

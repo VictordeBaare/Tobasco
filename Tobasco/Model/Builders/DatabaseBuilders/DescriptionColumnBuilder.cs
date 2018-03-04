@@ -14,13 +14,11 @@ namespace Tobasco.Model.Builders.DatabaseBuilders
     {
         protected DatabaseProperty _property;
         protected Entity _entity;
-        protected EntityInformation _mainInformation;
 
-        public DescriptionColumnBuilder(DatabaseProperty property, Entity entity, EntityInformation information)
+        public DescriptionColumnBuilder(DatabaseProperty property, Entity entity)
         {
             _property = property;
             _entity = entity;
-            _mainInformation = information;
         }
 
         public virtual string GetTemplateColumnDescription => SqlResources.DescriptionColumn;
@@ -91,7 +89,7 @@ namespace Tobasco.Model.Builders.DatabaseBuilders
 
             foreach (Assembly assembly in assemblies)
             {
-                Type type = assembly.GetType(_mainInformation.EnumNamespace.Value + "." + _property.Property.DataType.Type);
+                Type type = assembly.GetType(MainInfoManager.EntityInformation.EnumNamespace.Value + "." + _property.Property.DataType.Type);
                 if (type != null && type.IsEnum)
                     types.Add(type);
             }
