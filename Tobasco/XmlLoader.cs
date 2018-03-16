@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Xml;
 using System.Xml.Serialization;
 using Tobasco.Manager;
 using Tobasco.Model;
@@ -30,15 +31,14 @@ namespace Tobasco
             }
             
 
-            var entities = new List<Entity>();
+            var entities = new List<NameWithPath>();
             foreach (var filepath in xmls.Where(x => !x.Contains("MainInfo")))
             {
                 try
                 {
-                    using (var reader = new StreamReader(filepath))
-                    {
-                        entities.Add((Entity)entityserializer.Deserialize(reader));
-                    }
+                    XmlDocument doc = new XmlDocument();
+                    doc.Load(filepath);
+                    entities.Add(new NameWithPath { Name = doc.GetElementsByTagName("Entity")[0].Attributes["name"].Value, Path = filepath });
                 }
                 catch (Exception ex)
                 {

@@ -25,7 +25,7 @@ namespace Tobasco
 
         public static FileProcessor Create(object textTransformation)
         {
-            DynamicTextTransformation2 transformation = DynamicTextTransformation2.Create(textTransformation);            
+            DynamicTextTransformation2 transformation = DynamicTextTransformation2.Create(textTransformation);
             return new FileProcessor(transformation);
         }
 
@@ -101,7 +101,7 @@ namespace Tobasco
                 }
             }
 
-            ProjectSync(_dte.Solution.FindProjectItem(_templateFile), filesToProcess);
+            ProjectSync(_templateProjectItem, filesToProcess);
             CleanUpTemplatePlaceholders();
             var items = VsManager.GetOutputFilesAsProjectItems(_dte, filesToProcess);
             WriteVsProperties(items, filesToProcess);

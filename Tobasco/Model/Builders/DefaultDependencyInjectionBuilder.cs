@@ -58,8 +58,9 @@ namespace Tobasco.Model.Builders
             var parameters = new TemplateParameter();
             var bindings = new List<string>();
 
-            foreach (var handler in EntityManager.EntityHandlers.Values)
+            foreach (var handlerFunc in EntityManager.EntityHandlers)
             {
+                var handler = handlerFunc.Value(handlerFunc.Key);
                 var repositoryBuilder = handler.GetRepositoryBuilder;
                 if (repositoryBuilder != null && handler.GetRepository != null && handler.GetRepository.Generate)
                 {
@@ -69,6 +70,7 @@ namespace Tobasco.Model.Builders
                     classfile.Namespaces.Add(handler.GetEntityLocationOnId(handler.GetRepository.EntityId).FileLocation.GetProjectLocation, s => !classfile.Namespaces.Contains(s));
                     classfile.Namespaces.Add(handler.GetRepository.InterfaceLocation.GetProjectLocation, s => !classfile.Namespaces.Contains(s));
                 }
+                handler = null;
             }
 
             parameters.Add(DependencyInjectionConstants.Bindings, string.Join(Environment.NewLine, bindings));
