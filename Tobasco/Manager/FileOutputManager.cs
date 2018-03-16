@@ -41,28 +41,25 @@ namespace Tobasco.Manager
             return outputFiles;
         }
 
-        internal static List<OutputFile> ResolveEntityFiles()
+        internal static List<OutputFile> ResolveEntityFiles(EntityHandler handler)
         {
             var outputFiles = new List<OutputFile>();
-            foreach (var handlerFunc in EntityManager.EntityHandlers)
+
+            OutputPaneManager.WriteToOutputPane($"Start adding files for {handler.Entity.Name}");
+            outputFiles.AddRange(handler.GetEntityLocations.SelectMany(x => handler.GetClassBuilder(x).Build()));
+            if (handler.GetRepository != null && handler.GetRepository.Generate)
             {
-                var name = handlerFunc.Key;
-                var handler = handlerFunc.Value(name);
-                OutputPaneManager.WriteToOutputPane($"Start adding files for {name}");
-                outputFiles.AddRange(handler.GetEntityLocations.SelectMany(x => handler.GetClassBuilder(x).Build()));
-                if (handler.GetRepository != null && handler.GetRepository.Generate)
-                {
-                    OutputPaneManager.WriteToOutputPane("Add repository file");
-                    outputFiles.AddRange(handler.GetRepositoryBuilder.Build());
-                }
-                OutputPaneManager.WriteToOutputPane("Add database files");
-                outputFiles.AddRange(handler.GetDatabaseBuilder.Build());
-                if (handler.GetMappers != null && handler.GetMappers.Generate)
-                {
-                    OutputPaneManager.WriteToOutputPane("Add Mapper files");
-                    outputFiles.AddRange(handler.GetMappers.Mapper.SelectMany(x => handler.GetMapperBuilder.Build(x)));
-                }
+                OutputPaneManager.WriteToOutputPane("Add repository file");
+                outputFiles.AddRange(handler.GetRepositoryBuilder.Build());
             }
+            OutputPaneManager.WriteToOutputPane("Add database files");
+            outputFiles.AddRange(handler.GetDatabaseBuilder.Build());
+            if (handler.GetMappers != null && handler.GetMappers.Generate)
+            {
+                OutputPaneManager.WriteToOutputPane("Add Mapper files");
+                outputFiles.AddRange(handler.GetMappers.Mapper.SelectMany(x => handler.GetMapperBuilder.Build(x)));
+            }
+
             return outputFiles;
         }
 

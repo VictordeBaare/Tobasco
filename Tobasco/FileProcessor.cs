@@ -42,12 +42,12 @@ namespace Tobasco
 
                     OutputPaneManager.WriteToOutputPane("Get output files.");
                     var outputFiles = FileOutputManager.ResolveSingleOutputFiles();
-                    outputFiles.AddRange(FileOutputManager.ResolveEntityFiles());
-                    ProgressBarManager.SetTotal((uint)outputFiles.Count(), "");
-                    OutputPaneManager.WriteToOutputPane($"{outputFiles.Count()} files found. ");
-
-                    OutputPaneManager.WriteToOutputPane("Process output files");
                     Process(outputFiles);
+                    outputFiles = null;
+                    foreach (var handlerFunc in EntityManager.EntityHandlers)
+                    {
+                        Process(FileOutputManager.ResolveEntityFiles(handlerFunc.Value(handlerFunc.Key)));
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -79,7 +79,7 @@ namespace Tobasco
 
         }
 
-        public virtual IEnumerable<OutputFile> Process(IEnumerable<OutputFile> files)
+        public virtual void Process(IEnumerable<OutputFile> files)
         {
             var filesToProcess = new List<OutputFile>();
 
@@ -106,7 +106,7 @@ namespace Tobasco
             var items = VsManager.GetOutputFilesAsProjectItems(_dte, filesToProcess);
             WriteVsProperties(items, filesToProcess);
 
-            return filesToProcess;
+            filesToProcess = null;
         }
 
 

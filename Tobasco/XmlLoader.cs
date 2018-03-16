@@ -9,9 +9,9 @@ using Tobasco.Model;
 
 namespace Tobasco
 {
-    public class XmlLoader
+    internal class XmlLoader
     {      
-        public void Load(string path)
+        internal void Load(string path)
         {            
             XmlSerializer entityserializer = new XmlSerializer(typeof(Entity));
             XmlSerializer serializer = new XmlSerializer(typeof(EntityInformation));
