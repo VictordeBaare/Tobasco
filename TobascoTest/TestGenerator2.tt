@@ -18,5 +18,5 @@
 	processor.UseAutoFormatting = false;
     BuilderManager.Add("repositorykey", typeof(RepositoryOverrideBuilder));
 
-	processor.BeginProcessing(Host.ResolvePath(string.Empty));
+	processor.BeginProcessing(Host.ResolvePath("Xmls"));
 #>

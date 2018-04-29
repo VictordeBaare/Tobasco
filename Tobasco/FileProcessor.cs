@@ -41,13 +41,13 @@ namespace Tobasco
                     OutputPaneManager.WriteToOutputPane("Start generating.");
 
                     OutputPaneManager.WriteToOutputPane("Get output files.");
-                    var outputFiles = FileOutputManager.ResolveSingleOutputFiles();
-                    Process(outputFiles);
-                    outputFiles = null;
+                    var outputFiles = FileOutputManager.ResolveSingleOutputFiles();                   
+                    
                     foreach (var handlerFunc in EntityManager.EntityHandlers)
                     {
-                        Process(FileOutputManager.ResolveEntityFiles(handlerFunc.Value(handlerFunc.Key)));
+                        outputFiles.AddRange(FileOutputManager.ResolveEntityFiles(handlerFunc.Value(handlerFunc.Key)));
                     }
+                    Process(outputFiles);
                 }
                 catch (Exception ex)
                 {
