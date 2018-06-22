@@ -83,7 +83,7 @@ namespace Tobasco.Model.Builders.DatabaseBuilders
             list.Add("Deleted.ModifiedOnUTC");
             if (isDeleteTrigger)
            { 
-                list.Add("ISNULL(LTRIM(RTRIM(CONVERT(nvarchar(128), CONTEXT_INFO()))), SUSER_SNAME())");
+                list.Add("ISNULL(LTRIM(RTRIM(CONVERT(varchar(128), CONTEXT_INFO()))), CAST(SUSER_SNAME() AS varchar(128)))");
                 list.Add("SYSDATETIME()");
             }
             else

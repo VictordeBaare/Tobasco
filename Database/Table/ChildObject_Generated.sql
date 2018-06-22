@@ -79,7 +79,7 @@ Deleted.TestChildProp1,
 Deleted.ModifiedBy,
 Deleted.ModifiedOn,
 Deleted.ModifiedOnUTC,
-ISNULL(LTRIM(RTRIM(CONVERT(nvarchar(128), CONTEXT_INFO()))), SUSER_SNAME()),
+ISNULL(LTRIM(RTRIM(CONVERT(varchar(128), CONTEXT_INFO()))), CAST(SUSER_SNAME() AS varchar(128))),
 SYSDATETIME()
 	  FROM Deleted;
 END;
