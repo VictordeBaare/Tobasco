@@ -11,7 +11,8 @@ BEGIN
 	       (
 			TestChildProp1,
 ModifiedBy,
-ModifiedOn
+ModifiedOn,
+ModifiedOnUTC
 		   )
 	OUTPUT Inserted.Id
 		  ,Inserted.[RowVersion]
@@ -20,7 +21,8 @@ ModifiedOn
          (
 		   @TestChildProp1,
 @ModifiedBy,
-SYSDATETIME()
+SYSDATETIME(),
+SYSUTCDATETIME()
           );
 END;
 GO

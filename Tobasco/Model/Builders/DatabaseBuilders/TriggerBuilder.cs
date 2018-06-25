@@ -73,7 +73,7 @@ namespace Tobasco.Model.Builders.DatabaseBuilders
             {
                 list.Add("Deleted.[UId]");
             }
-            list.Add("Deleted.[rowversion]");
+            list.Add("Deleted.[RowVersion]");
             foreach (var sqlprop in GetNonChildCollectionProperties)
             {
                 list.Add($"Deleted.{sqlprop.SelectSqlParameterNaam}");

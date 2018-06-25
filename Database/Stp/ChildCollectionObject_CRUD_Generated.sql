@@ -15,7 +15,8 @@ BEGIN
 TestChildProp2,
 FileMetOverervingId,
 ModifiedBy,
-ModifiedOn
+ModifiedOn,
+ModifiedOnUTC
 		   )
 	OUTPUT Inserted.Id
               ,Inserted.[UId]
@@ -27,7 +28,8 @@ ModifiedOn
 @TestChildProp2,
 @FileMetOverervingId,
 @ModifiedBy,
-SYSDATETIME()
+SYSDATETIME(),
+SYSUTCDATETIME()
           );
 END;
 GO

@@ -23,7 +23,8 @@ TestChildProp5,
 TestChildProp6,
 TestChildProp7Id,
 ModifiedBy,
-ModifiedOn
+ModifiedOn,
+ModifiedOnUTC
 		   )
 	OUTPUT Inserted.Id
               ,Inserted.[UId]
@@ -39,7 +40,8 @@ ModifiedOn
 @TestChildProp6,
 @TestChildProp7Id,
 @ModifiedBy,
-SYSDATETIME()
+SYSDATETIME(),
+SYSUTCDATETIME()
           );
 END;
 GO

@@ -40,6 +40,7 @@ namespace Tobasco.Model.Builders
                 {
                     tableFile.HistorieTable = GetHistorieTableBuilder.Build();
                     tableFile.Triggers = GetTriggerBuilder.Build();
+                    tableFile.Views = GetHistorieViewBuilder.Build();
                 }
                 else
                 {
@@ -106,6 +107,7 @@ namespace Tobasco.Model.Builders
         protected virtual TypeBuilder GetTypeBuilder => new TypeBuilder(Entity, Database);
         protected virtual TableBuilder GetTableBuilder => new TableBuilder(Entity, Database);
         protected virtual HistorieTableBuilder GetHistorieTableBuilder => new HistorieTableBuilder(Entity, Database);
+        protected virtual HistorieViewBuilder GetHistorieViewBuilder => new HistorieViewBuilder(Entity, Database);
         protected virtual IndexBuilder GetIndexBuilder => new IndexBuilder(Entity, Database);
         protected virtual TriggerBuilder GetTriggerBuilder => new TriggerBuilder(Entity, Database);
         protected virtual GetByReferenceIdBuilder GetByReferenceIdBuilder => new GetByReferenceIdBuilder(Entity, Database);

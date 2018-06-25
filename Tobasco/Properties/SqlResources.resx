@@ -240,6 +240,134 @@ END;</value>
    ,DeletedAt                     datetime2(7)       NULL
 );</value>
   </data>
+  <data name="SqlHistorieView" xml:space="preserve">
+    <value>CREATE VIEW [dbo].%TableName%_historie_view
+	WITH SCHEMABINDING
+AS
+	WITH CTE_historie 
+	    (Id,
+		 [RowVersion],
+		%StpPropertyNames%		   
+		 DeletedBy,
+		 DeletedAt,              
+		 [Source]
+		) AS
+	(
+		SELECT Id,
+			   [RowVersion],
+			  %StpPropertyNames%		   
+			   DeletedBy,
+			   DeletedAt,
+			   'History'
+		  FROM [dbo].%TableName%_historie
+		  
+		 UNION ALL
+		 
+		SELECT Id,
+			   [RowVersion],
+			   %StpPropertyNames%			   
+			   NULL,
+			   NULL,
+			   'Main'
+		  FROM [dbo].%TableName%
+	)
+		,CTE_historie_order
+		(Id,
+		 [RowVersion],
+		%StpPropertyNames%			   
+		 DeletedBy,                    
+		 DeletedAt,                   
+		 [Source],
+		 ChronologicalOrder
+		) AS
+	(
+		SELECT Id,
+			   [RowVersion],
+			   %StpPropertyNames%		   
+			   DeletedBy,
+               DeletedAt,
+               [Source],
+               ROW_NUMBER() OVER (PARTITION BY CTE_historie.Id
+                                      ORDER BY CTE_historie.[RowVersion]
+                                 ) AS ChronologicalOrder
+		  FROM CTE_historie
+	)
+	SELECT Id,
+           [RowVersion],
+		  %StpPropertyNames%
+           DeletedBy,
+           DeletedAt,
+           [Source],
+           ChronologicalOrder
+      FROM CTE_historie_order;</value>
+  </data>
+  <data name="SqlHistorieViewWithUid" xml:space="preserve">
+    <value>CREATE VIEW [dbo].%TableName%_historie_view
+	WITH SCHEMABINDING
+AS
+	WITH CTE_historie 
+	    (Id,
+		 [UId],
+		 [RowVersion],		 
+		%StpPropertyNames%		   
+		 DeletedBy,
+		 DeletedAt,              
+		 [Source]
+		) AS
+	(
+		SELECT Id,
+			   [UId],
+			   [RowVersion],
+			  %StpPropertyNames%		   
+			   DeletedBy,
+			   DeletedAt,
+			   'History'
+		  FROM [dbo].%TableName%_historie
+		  
+		 UNION ALL
+		 
+		SELECT Id,
+		       [UId],
+			   [RowVersion],
+			   %StpPropertyNames%			   
+			   NULL,
+			   NULL,
+			   'Main'
+		  FROM [dbo].%TableName%
+	)
+		,CTE_historie_order
+		(Id,
+		 [UId],
+		 [RowVersion],
+		%StpPropertyNames%			   
+		 DeletedBy,                    
+		 DeletedAt,                   
+		 [Source],
+		 ChronologicalOrder
+		) AS
+	(
+		SELECT Id,
+		       [UId],
+			   [RowVersion],
+			   %StpPropertyNames%		   
+			   DeletedBy,
+               DeletedAt,
+               [Source],
+               ROW_NUMBER() OVER (PARTITION BY CTE_historie.Id
+                                      ORDER BY CTE_historie.[RowVersion]
+                                 ) AS ChronologicalOrder
+		  FROM CTE_historie
+	)
+	SELECT Id,
+	       [UId],
+           [RowVersion],
+		  %StpPropertyNames%
+           DeletedBy,
+           DeletedAt,
+           [Source],
+           ChronologicalOrder
+      FROM CTE_historie_order;</value>
+  </data>
   <data name="SqlInsertStp" xml:space="preserve">
     <value>CREATE PROCEDURE [dbo].[%TableName%_Insert]
 	%StpParameter%

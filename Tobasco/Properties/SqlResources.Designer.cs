@@ -19,7 +19,7 @@ namespace Tobasco.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class SqlResources {
@@ -219,6 +219,80 @@ namespace Tobasco.Properties {
         internal static string SqlHistorieTableWithUid {
             get {
                 return ResourceManager.GetString("SqlHistorieTableWithUid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CREATE VIEW [dbo].%TableName%_historie_view
+        ///	WITH SCHEMABINDING
+        ///AS
+        ///	WITH CTE_historie 
+        ///	    (Id,
+        ///		 [RowVersion],
+        ///		%StpPropertyNames%		   
+        ///		 DeletedBy,
+        ///		 DeletedAt,              
+        ///		 [Source]
+        ///		) AS
+        ///	(
+        ///		SELECT Id,
+        ///			   [RowVersion],
+        ///			  %StpPropertyNames%		   
+        ///			   DeletedBy,
+        ///			   DeletedAt,
+        ///			   &apos;History&apos;
+        ///		  FROM [dbo].%TableName%_historie
+        ///		  
+        ///		 UNION ALL
+        ///		 
+        ///		SELECT Id,
+        ///			   [RowVersion],
+        ///			   %StpPropertyNames%			   
+        ///			   NULL,
+        ///			   NULL,
+        ///			   &apos;Main&apos;
+        ///		  FROM  [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string SqlHistorieView {
+            get {
+                return ResourceManager.GetString("SqlHistorieView", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CREATE VIEW [dbo].%TableName%_historie_view
+        ///	WITH SCHEMABINDING
+        ///AS
+        ///	WITH CTE_historie 
+        ///	    (Id,
+        ///		 [UId],
+        ///		 [RowVersion],		 
+        ///		%StpPropertyNames%		   
+        ///		 DeletedBy,
+        ///		 DeletedAt,              
+        ///		 [Source]
+        ///		) AS
+        ///	(
+        ///		SELECT Id,
+        ///			   [UId],
+        ///			   [RowVersion],
+        ///			  %StpPropertyNames%		   
+        ///			   DeletedBy,
+        ///			   DeletedAt,
+        ///			   &apos;History&apos;
+        ///		  FROM [dbo].%TableName%_historie
+        ///		  
+        ///		 UNION ALL
+        ///		 
+        ///		SELECT Id,
+        ///		       [UId],
+        ///			   [RowVersion],
+        ///			   %StpPropertyNames%			   
+        ///			  [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string SqlHistorieViewWithUid {
+            get {
+                return ResourceManager.GetString("SqlHistorieViewWithUid", resourceCulture);
             }
         }
         

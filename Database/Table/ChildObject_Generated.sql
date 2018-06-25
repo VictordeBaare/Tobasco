@@ -42,12 +42,13 @@ TestChildProp1,
 ModifiedBy,
 ModifiedOn,
 ModifiedOnUTC,
+ModifiedOnUTC,
 DeletedBy,
 DeletedAt
            )
     SELECT 
 		  Deleted.Id,
-Deleted.[rowversion],
+Deleted.[RowVersion],
 Deleted.TestChildProp1,
 Deleted.ModifiedBy,
 Deleted.ModifiedOn,
@@ -70,11 +71,12 @@ TestChildProp1,
 ModifiedBy,
 ModifiedOn,
 ModifiedOnUTC,
+ModifiedOnUTC,
 DeletedBy,
 DeletedAt
             )
 	SELECT 		  Deleted.Id,
-Deleted.[rowversion],
+Deleted.[RowVersion],
 Deleted.TestChildProp1,
 Deleted.ModifiedBy,
 Deleted.ModifiedOn,
@@ -118,3 +120,81 @@ EXEC sp_addextendedproperty N'Description', 'Local timestamp that the row was de
 GO
 EXEC sp_addextendedproperty N'Description', 'Login name that deleted the row.', 'SCHEMA', N'dbo', 'TABLE', N'ChildObject_historie', 'COLUMN', N'DeletedBy'
 GO
+GO
+CREATE VIEW [dbo].ChildObject_historie_view
+	WITH SCHEMABINDING
+AS
+	WITH CTE_historie 
+	    (Id,
+		 [RowVersion],
+		TestChildProp1,
+ModifiedBy,
+ModifiedOn,
+ModifiedOnUTC,		   
+		 DeletedBy,
+		 DeletedAt,              
+		 [Source]
+		) AS
+	(
+		SELECT Id,
+			   [RowVersion],
+			  TestChildProp1,
+ModifiedBy,
+ModifiedOn,
+ModifiedOnUTC,		   
+			   DeletedBy,
+			   DeletedAt,
+			   'History'
+		  FROM [dbo].ChildObject_historie
+		  
+		 UNION ALL
+		 
+		SELECT Id,
+			   [RowVersion],
+			   TestChildProp1,
+ModifiedBy,
+ModifiedOn,
+ModifiedOnUTC,			   
+			   NULL,
+			   NULL,
+			   'Main'
+		  FROM [dbo].ChildObject
+	)
+		,CTE_historie_order
+		(Id,
+		 [RowVersion],
+		TestChildProp1,
+ModifiedBy,
+ModifiedOn,
+ModifiedOnUTC,			   
+		 DeletedBy,                    
+		 DeletedAt,                   
+		 [Source],
+		 ChronologicalOrder
+		) AS
+	(
+		SELECT Id,
+			   [RowVersion],
+			   TestChildProp1,
+ModifiedBy,
+ModifiedOn,
+ModifiedOnUTC,		   
+			   DeletedBy,
+               DeletedAt,
+               [Source],
+               ROW_NUMBER() OVER (PARTITION BY CTE_historie.Id
+                                      ORDER BY CTE_historie.[RowVersion]
+                                 ) AS ChronologicalOrder
+		  FROM CTE_historie
+	)
+	SELECT Id,
+           [RowVersion],
+		  TestChildProp1,
+ModifiedBy,
+ModifiedOn,
+ModifiedOnUTC,
+           DeletedBy,
+           DeletedAt,
+           [Source],
+           ChronologicalOrder
+      FROM CTE_historie_order;

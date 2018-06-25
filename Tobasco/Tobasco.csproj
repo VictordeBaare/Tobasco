@@ -139,6 +139,7 @@
     <Compile Include="Model\Builders\DatabaseBuilders\GetByIdHelper.cs" />
     <Compile Include="Model\Builders\DatabaseBuilders\GetByReferenceIdBuilder.cs" />
     <Compile Include="Model\Builders\DatabaseBuilders\HistorieTableBuilder.cs" />
+    <Compile Include="Model\Builders\DatabaseBuilders\HistorieViewBuilder.cs" />
     <Compile Include="Model\Builders\DatabaseBuilders\IndexBuilder.cs" />
     <Compile Include="Model\Builders\DatabaseBuilders\InsertBuilder.cs" />
     <Compile Include="Model\Builders\DatabaseBuilders\MergeBuilder.cs" />

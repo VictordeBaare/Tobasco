@@ -60,13 +60,14 @@ FileMetOverervingId,
 ModifiedBy,
 ModifiedOn,
 ModifiedOnUTC,
+ModifiedOnUTC,
 DeletedBy,
 DeletedAt
            )
     SELECT 
 		  Deleted.Id,
 Deleted.[UId],
-Deleted.[rowversion],
+Deleted.[RowVersion],
 Deleted.TestChildProp1,
 Deleted.TestChildProp2,
 Deleted.FileMetOverervingId,
@@ -94,13 +95,14 @@ FileMetOverervingId,
 ModifiedBy,
 ModifiedOn,
 ModifiedOnUTC,
+ModifiedOnUTC,
 DeletedBy,
 DeletedAt
             )
 	SELECT 
 		  Deleted.Id,
 Deleted.[UId],
-Deleted.[rowversion],
+Deleted.[RowVersion],
 Deleted.TestChildProp1,
 Deleted.TestChildProp2,
 Deleted.FileMetOverervingId,
@@ -158,3 +160,99 @@ EXEC sp_addextendedproperty N'Description', 'Local timestamp that the row was de
 GO
 EXEC sp_addextendedproperty N'Description', 'Login name that deleted the row.', 'SCHEMA', N'dbo', 'TABLE', N'ChildCollectionObject_historie', 'COLUMN', N'DeletedBy'
 GO
+GO
+CREATE VIEW [dbo].ChildCollectionObject_historie_view
+	WITH SCHEMABINDING
+AS
+	WITH CTE_historie 
+	    (Id,
+		 [UId],
+		 [RowVersion],		 
+		TestChildProp1,
+TestChildProp2,
+FileMetOverervingId,
+ModifiedBy,
+ModifiedOn,
+ModifiedOnUTC,		   
+		 DeletedBy,
+		 DeletedAt,              
+		 [Source]
+		) AS
+	(
+		SELECT Id,
+			   [UId],
+			   [RowVersion],
+			  TestChildProp1,
+TestChildProp2,
+FileMetOverervingId,
+ModifiedBy,
+ModifiedOn,
+ModifiedOnUTC,		   
+			   DeletedBy,
+			   DeletedAt,
+			   'History'
+		  FROM [dbo].ChildCollectionObject_historie
+		  
+		 UNION ALL
+		 
+		SELECT Id,
+		       [UId],
+			   [RowVersion],
+			   TestChildProp1,
+TestChildProp2,
+FileMetOverervingId,
+ModifiedBy,
+ModifiedOn,
+ModifiedOnUTC,			   
+			   NULL,
+			   NULL,
+			   'Main'
+		  FROM [dbo].ChildCollectionObject
+	)
+		,CTE_historie_order
+		(Id,
+		 [UId],
+		 [RowVersion],
+		TestChildProp1,
+TestChildProp2,
+FileMetOverervingId,
+ModifiedBy,
+ModifiedOn,
+ModifiedOnUTC,			   
+		 DeletedBy,                    
+		 DeletedAt,                   
+		 [Source],
+		 ChronologicalOrder
+		) AS
+	(
+		SELECT Id,
+		       [UId],
+			   [RowVersion],
+			   TestChildProp1,
+TestChildProp2,
+FileMetOverervingId,
+ModifiedBy,
+ModifiedOn,
+ModifiedOnUTC,		   
+			   DeletedBy,
+               DeletedAt,
+               [Source],
+               ROW_NUMBER() OVER (PARTITION BY CTE_historie.Id
+                                      ORDER BY CTE_historie.[RowVersion]
+                                 ) AS ChronologicalOrder
+		  FROM CTE_historie
+	)
+	SELECT Id,
+	       [UId],
+           [RowVersion],
+		  TestChildProp1,
+TestChildProp2,
+FileMetOverervingId,
+ModifiedBy,
+ModifiedOn,
+ModifiedOnUTC,
+           DeletedBy,
+           DeletedAt,
+           [Source],
+           ChronologicalOrder
+      FROM CTE_historie_order;

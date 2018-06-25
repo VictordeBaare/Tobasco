@@ -15,7 +15,8 @@ BEGIN
 Duur,
 Kosten,
 ModifiedBy,
-ModifiedOn
+ModifiedOn,
+ModifiedOnUTC
 		   )
 	OUTPUT Inserted.Id
 		  ,Inserted.[RowVersion]
@@ -26,7 +27,8 @@ ModifiedOn
 @Duur,
 @Kosten,
 @ModifiedBy,
-SYSDATETIME()
+SYSDATETIME(),
+SYSUTCDATETIME()
           );
 END;
 GO

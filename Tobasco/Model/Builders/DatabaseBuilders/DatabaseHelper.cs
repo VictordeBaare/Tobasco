@@ -58,6 +58,7 @@ namespace Tobasco.Model.Builders.DatabaseBuilders
             }
             list.Add("ModifiedBy");
             list.Add("ModifiedOn");
+            list.Add("ModifiedOnUTC");
 
             return list;
         }
@@ -72,6 +73,7 @@ namespace Tobasco.Model.Builders.DatabaseBuilders
             }
             list.Add("@ModifiedBy");
             list.Add("SYSDATETIME()");
+            list.Add("SYSUTCDATETIME()");
 
             return list;
         }

@@ -23,6 +23,8 @@ namespace Tobasco.FileBuilder
 
         public string DescriptionHistory { get; set; }
 
+        public string Views { get; set; }
+
         public override string BuildContent()
         {
             var builder = new StringBuilder();
@@ -37,6 +39,8 @@ namespace Tobasco.FileBuilder
             builder.AppendLine(Description);
             builder.AppendLine("GO");
             builder.AppendLine(DescriptionHistory);
+            builder.AppendLine("GO");
+            builder.AppendLine(Views);
             return builder.ToString();
         }
     }

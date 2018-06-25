@@ -48,12 +48,13 @@ Kosten,
 ModifiedBy,
 ModifiedOn,
 ModifiedOnUTC,
+ModifiedOnUTC,
 DeletedBy,
 DeletedAt
            )
     SELECT 
 		  Deleted.Id,
-Deleted.[rowversion],
+Deleted.[RowVersion],
 Deleted.Training,
 Deleted.Duur,
 Deleted.Kosten,
@@ -80,11 +81,12 @@ Kosten,
 ModifiedBy,
 ModifiedOn,
 ModifiedOnUTC,
+ModifiedOnUTC,
 DeletedBy,
 DeletedAt
             )
 	SELECT 		  Deleted.Id,
-Deleted.[rowversion],
+Deleted.[RowVersion],
 Deleted.Training,
 Deleted.Duur,
 Deleted.Kosten,
@@ -138,3 +140,93 @@ EXEC sp_addextendedproperty N'Description', 'Local timestamp that the row was de
 GO
 EXEC sp_addextendedproperty N'Description', 'Login name that deleted the row.', 'SCHEMA', N'dbo', 'TABLE', N'CPK_historie', 'COLUMN', N'DeletedBy'
 GO
+GO
+CREATE VIEW [dbo].CPK_historie_view
+	WITH SCHEMABINDING
+AS
+	WITH CTE_historie 
+	    (Id,
+		 [RowVersion],
+		Training,
+Duur,
+Kosten,
+ModifiedBy,
+ModifiedOn,
+ModifiedOnUTC,		   
+		 DeletedBy,
+		 DeletedAt,              
+		 [Source]
+		) AS
+	(
+		SELECT Id,
+			   [RowVersion],
+			  Training,
+Duur,
+Kosten,
+ModifiedBy,
+ModifiedOn,
+ModifiedOnUTC,		   
+			   DeletedBy,
+			   DeletedAt,
+			   'History'
+		  FROM [dbo].CPK_historie
+		  
+		 UNION ALL
+		 
+		SELECT Id,
+			   [RowVersion],
+			   Training,
+Duur,
+Kosten,
+ModifiedBy,
+ModifiedOn,
+ModifiedOnUTC,			   
+			   NULL,
+			   NULL,
+			   'Main'
+		  FROM [dbo].CPK
+	)
+		,CTE_historie_order
+		(Id,
+		 [RowVersion],
+		Training,
+Duur,
+Kosten,
+ModifiedBy,
+ModifiedOn,
+ModifiedOnUTC,			   
+		 DeletedBy,                    
+		 DeletedAt,                   
+		 [Source],
+		 ChronologicalOrder
+		) AS
+	(
+		SELECT Id,
+			   [RowVersion],
+			   Training,
+Duur,
+Kosten,
+ModifiedBy,
+ModifiedOn,
+ModifiedOnUTC,		   
+			   DeletedBy,
+               DeletedAt,
+               [Source],
+               ROW_NUMBER() OVER (PARTITION BY CTE_historie.Id
+                                      ORDER BY CTE_historie.[RowVersion]
+                                 ) AS ChronologicalOrder
+		  FROM CTE_historie
+	)
+	SELECT Id,
+           [RowVersion],
+		  Training,
+Duur,
+Kosten,
+ModifiedBy,
+ModifiedOn,
+ModifiedOnUTC,
+           DeletedBy,
+           DeletedAt,
+           [Source],
+           ChronologicalOrder
+      FROM CTE_historie_order;
