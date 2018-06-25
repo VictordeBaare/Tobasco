@@ -42,6 +42,41 @@ public FileMetOvererving GetById(long id)
         {
             return _genericRepository.GetById(id);
         }
+
+public FileMetOvererving GetFullObjectById(long id)
+{
+    var parameters = new DynamicParameters();
+    parameters.Add("id", id);
+    return _genericRepository.QueryMultiple("[dbo].[FileMetOvererving_GetFullById]", parameters, x => Read(x).Values).SingleOrDefault();
+}
+internal static Dictionary<long, FileMetOvererving> Read(GridReader reader)
+{
+	var TestChildProp7Dict = ChildObjectRepository.Read(reader);
 	
+	var TestChildProp8Dict = ChildCollectionObjectRepository.Read(reader);
+
+    var items = reader.Read((FileMetOvererving item,long TestChildProp7) =>
+    {
+        if (TestChildProp7Dict.ContainsKey(TestChildProp7))
+{
+item.TestChildProp7 = TestChildProp7Dict[TestChildProp7];
+}
+
+        foreach (var obj in TestChildProp8Dict.Values.Where(x => x.FileMetOverervingId == item.Id))
+{
+item.TestChildProp8.Add(obj);
+}
+
+        return item;
+    }, splitOn: "TestChildProp7");
+
+    return items.ToDictionary(x => x.Id);        
+}
+public FileMetOvererving GetFullObjectByUId(Guid uid)
+{
+    var parameters = new DynamicParameters();
+    parameters.Add("UId", uid);
+    return _genericRepository.QueryMultiple("[dbo].[FileMetOvererving_GetFullByUId]", parameters, x => Read(x).Values).SingleOrDefault();
+}	
 	}
 }

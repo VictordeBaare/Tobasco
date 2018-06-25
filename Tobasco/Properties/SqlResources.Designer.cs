@@ -109,6 +109,33 @@ namespace Tobasco.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to CREATE PROCEDURE [dbo].%TableName%_GetFullByUId
+        ///	@UId uniqueidentifier
+        ///AS
+        ///BEGIN
+        ///
+        ///	DECLARE @id bigint;
+        ///	
+        ///	SELECT @id = Id
+        ///	  FROM %TableName%
+        ///	 WHERE %TableName%.[UId] = @UId;
+        ///
+        ///	%DeclareChilds%
+        ///
+        ///	%Childs_GetById%
+        ///
+        ///	%ChildCollection_GetByParentIdStp%
+        ///
+        ///	EXEC [dbo].%TableName%_GetFullById @id
+        ///END;.
+        /// </summary>
+        internal static string GetFullObjectByEntityUid {
+            get {
+                return ResourceManager.GetString("GetFullObjectByEntityUid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to CREATE PROCEDURE [dbo].[%TableName%_Delete]
         ///		@Id [bigint]
         ///       ,@RowVersion [rowversion]

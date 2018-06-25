@@ -36,7 +36,7 @@ namespace Tobasco.Model.Builders.DatabaseBuilders
             {
                 return _getChildCollectionByParentId ?? (_getChildCollectionByParentId = Entity.Properties
                     .Where(x => x.DataType.Datatype == Datatype.ChildCollection)
-                    .Select(x => $"EXEC {x.DataType.Type}_GetFullBy{Entity.Name}"));
+                    .Select(x => $"EXEC {x.DataType.Type}_GetFullBy{Entity.Name} @id"));
             }
         }
 

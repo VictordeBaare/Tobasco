@@ -16,12 +16,12 @@ namespace Tobasco.Model.Builders
     public class DefaultRepositoryBuilder : RepositoryBuilderBase
     {
         private GetFullEntityByIdBuilder _getFullEntityByIdBuilder;
-        private GetFullEntityByIdReader _getFullEntityByIdReaderBuilder;
+        private GetFullEntityReader _getFullEntityByIdReaderBuilder;
 
         public DefaultRepositoryBuilder(EntityHandler entity, Repository repository) : base(entity, repository)
         {
             _getFullEntityByIdBuilder = new GetFullEntityByIdBuilder(entity, repository);
-            _getFullEntityByIdReaderBuilder = new GetFullEntityByIdReader(entity, repository);
+            _getFullEntityByIdReaderBuilder = new GetFullEntityReader(entity, repository);
         }        
 
         protected virtual string GetSaveMethod()
@@ -118,6 +118,11 @@ namespace Tobasco.Model.Builders
             {
                 classFile.Methods.Add(_getFullEntityByIdBuilder.Build());
                 classFile.Methods.Add(_getFullEntityByIdReaderBuilder.Build());
+                if (Entity.Entity.GenerateReadonlyGuid)
+                {
+                    var getfullbyuid = new GetFullEntityByUidBuilder(Entity, Entity.GetRepository);
+                    classFile.Methods.Add(getfullbyuid.Build());
+                }
             }
             return classFile;
         }
@@ -136,6 +141,10 @@ namespace Tobasco.Model.Builders
             if (Entity.GetDatabase.StoredProcedures.GenerateGetById.Generate)
             {
                 interfaceFile.Methods.Add($"{GetEntityName} GetFullObjectById(long id);");
+                if (Entity.Entity.GenerateReadonlyGuid)
+                {
+                    interfaceFile.Methods.Add($"{GetEntityName} GetFullObjectByUId(Guid uid);");
+                }
             }
             return interfaceFile;
         }

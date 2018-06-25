@@ -13,5 +13,6 @@
         public const string ChildReadDictionary = "ChildReadDictionary";
         public const string ChildCollectionReadDictionary = "ChildCollectionReadDictionary";
         public const string GetByIdStp = "GetByIdStp";
+        public const string GetByUIdStp = "GetByUIdStp";
     }
 }

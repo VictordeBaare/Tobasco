@@ -7,9 +7,9 @@ using Tobasco.Templates;
 
 namespace Tobasco.Model.Builders.RepositoryBuilders
 {
-    public class GetFullEntityByIdReader : GetFullEntityByIdHelper
+    public class GetFullEntityReader : GetFullEntityByIdHelper
     {
-        public GetFullEntityByIdReader(EntityHandler entity, Repository repository) : base(entity, repository)
+        public GetFullEntityReader(EntityHandler entity, Repository repository) : base(entity, repository)
         {
         }
 

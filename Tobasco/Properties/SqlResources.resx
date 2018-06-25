@@ -147,6 +147,27 @@ BEGIN
 	 WHERE %TableName%.Id = @id;
 END;</value>
   </data>
+  <data name="GetFullObjectByEntityUid" xml:space="preserve">
+    <value>CREATE PROCEDURE [dbo].%TableName%_GetFullByUId
+	@UId uniqueidentifier
+AS
+BEGIN
+
+	DECLARE @id bigint;
+	
+	SELECT @id = Id
+	  FROM %TableName%
+	 WHERE %TableName%.[UId] = @UId;
+
+	%DeclareChilds%
+
+	%Childs_GetById%
+
+	%ChildCollection_GetByParentIdStp%
+
+	EXEC [dbo].%TableName%_GetFullById @id
+END;</value>
+  </data>
   <data name="SqlDeleteStp" xml:space="preserve">
     <value>CREATE PROCEDURE [dbo].[%TableName%_Delete]
 		@Id [bigint]

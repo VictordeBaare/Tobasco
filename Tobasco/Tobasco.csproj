@@ -138,6 +138,7 @@
     <Compile Include="Model\Builders\DatabaseBuilders\GetByIdBuilder.cs" />
     <Compile Include="Model\Builders\DatabaseBuilders\GetByIdHelper.cs" />
     <Compile Include="Model\Builders\DatabaseBuilders\GetByReferenceIdBuilder.cs" />
+    <Compile Include="Model\Builders\DatabaseBuilders\GetByUidBuilder.cs" />
     <Compile Include="Model\Builders\DatabaseBuilders\HistorieTableBuilder.cs" />
     <Compile Include="Model\Builders\DatabaseBuilders\HistorieViewBuilder.cs" />
     <Compile Include="Model\Builders\DatabaseBuilders\IndexBuilder.cs" />
@@ -157,7 +158,9 @@
     <Compile Include="Model\Builders\DefaultRepositoryBuilder.cs" />
     <Compile Include="Model\Builders\RepositoryBuilders\GetFullEntityByIdBuilder.cs" />
     <Compile Include="Model\Builders\RepositoryBuilders\GetFullEntityByIdHelper.cs" />
-    <Compile Include="Model\Builders\RepositoryBuilders\GetFullEntityByIdReader.cs" />
+    <Compile Include="Model\Builders\RepositoryBuilders\GetFullEntityByUidHelper.cs" />
+    <Compile Include="Model\Builders\RepositoryBuilders\GetFullEntityReader.cs" />
+    <Compile Include="Model\Builders\RepositoryBuilders\GetFullEntityByUidBuilder.cs" />
     <Compile Include="Model\Builders\RepositoryBuilders\RepositoryHelper.cs" />
     <Compile Include="Model\ConnectionFactory.cs" />
     <Compile Include="Model\DatabaseProperties\DatabaseProperty.cs" />

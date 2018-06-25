@@ -83,6 +83,8 @@ namespace Tobasco.Model.Builders
 
                 GenerateOnCondition("GetById", () => Database.StoredProcedures.GenerateGetById.Generate, () => crudFile.Methods.Add(GetByIdBuilder.Build()));
 
+                GenerateOnCondition("GetByUId", () => Database.StoredProcedures.GenerateGetById.Generate && Entity.GenerateReadonlyGuid, () => crudFile.Methods.Add(GetByUIdBuilder.Build()));
+
                 GenerateOnCondition("Type", () => Database.StoredProcedures.GenerateMerge.Generate, () => crudFile.Methods.Add(GetTypeBuilder.Build()));
 
                 GenerateOnCondition("Merge", () => Database.StoredProcedures.GenerateMerge.Generate, () => crudFile.Methods.Add(GetMergeBuilder.Build()));
@@ -103,6 +105,7 @@ namespace Tobasco.Model.Builders
         protected virtual UpdateBuilder GetUpdateBuilder => new UpdateBuilder(Entity, Database);
         protected virtual DeleteBuilder GetDeleteBuilder => new DeleteBuilder(Entity, Database);
         protected virtual GetByIdBuilder GetByIdBuilder => new GetByIdBuilder(Entity, Database);
+        protected virtual GetByUidBuilder GetByUIdBuilder => new GetByUidBuilder(Entity, Database);
         protected virtual MergeBuilder GetMergeBuilder => new MergeBuilder(Entity, Database);
         protected virtual TypeBuilder GetTypeBuilder => new TypeBuilder(Entity, Database);
         protected virtual TableBuilder GetTableBuilder => new TableBuilder(Entity, Database);

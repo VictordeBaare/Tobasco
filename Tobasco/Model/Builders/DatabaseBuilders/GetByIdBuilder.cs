@@ -9,7 +9,6 @@ namespace Tobasco.Model.Builders.DatabaseBuilders
         {
         }
 
-
         public string Build()
         {
             var template = new Template();
