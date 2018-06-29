@@ -119,7 +119,7 @@ namespace Tobasco.Model.Properties
                             break;
                         case Datatype.Guid:
                         case Datatype.ReadOnlyGuid:
-                            _getValueType = "Guid";
+                            _getValueType = $"Guid{isRequired}";
                             break;
                         case Datatype.Child:
                         case Datatype.ReadonlyChild:
