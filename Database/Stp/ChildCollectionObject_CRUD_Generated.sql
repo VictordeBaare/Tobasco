@@ -119,6 +119,7 @@ CREATE PROCEDURE [dbo].ChildCollectionObject_GetFullById
 	@id bigint
 AS
 BEGIN
+            SET NOCOUNT ON;
 
 	SELECT Id,
 		   [RowVersion],
@@ -135,6 +136,7 @@ CREATE PROCEDURE [dbo].ChildCollectionObject_GetFullByUId
 	@UId uniqueidentifier
 AS
 BEGIN
+          SET NOCOUNT ON;
 
 	DECLARE @id bigint;
 	

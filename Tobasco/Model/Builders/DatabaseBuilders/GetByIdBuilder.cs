@@ -9,10 +9,12 @@ namespace Tobasco.Model.Builders.DatabaseBuilders
         {
         }
 
+        protected override string Template => SqlResources.GetFullObjectByEntity;
+
         public string Build()
         {
             var template = new Template();
-            template.SetTemplate(SqlResources.GetFullObjectByEntity);
+            template.SetTemplate(Template);
             template.Fill(GetParameters());
             return template.CleanText;
         }

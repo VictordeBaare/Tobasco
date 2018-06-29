@@ -139,12 +139,16 @@ CREATE PROCEDURE [dbo].FileMetOvererving_GetFullById
 	@id bigint
 AS
 BEGIN
+            SET NOCOUNT ON;
 
-	DECLARE @TestChildProp7 as bigint;
+	DECLARE @TestChildProp7Id as bigint;
+SELECT @TestChildProp7Id = TestChildProp7Id
+  FROM [dbo].FileMetOvererving
+ WHERE FileMetOvererving.Id = @id;
 
-	EXEC [dbo].ChildObject_GetFullById @TestChildProp7;
+	EXEC [dbo].ChildObject_GetFullById @TestChildProp7Id;
 
-	EXEC ChildCollectionObject_GetFullByFileMetOvererving @id
+	EXEC ChildCollectionObject_GetFullByFileMetOverervingId @id
 
 	SELECT Id,
 		   [RowVersion],
@@ -165,18 +169,13 @@ CREATE PROCEDURE [dbo].FileMetOvererving_GetFullByUId
 	@UId uniqueidentifier
 AS
 BEGIN
+          SET NOCOUNT ON;
 
 	DECLARE @id bigint;
 	
 	SELECT @id = Id
 	  FROM FileMetOvererving
 	 WHERE FileMetOvererving.[UId] = @UId;
-
-	DECLARE @TestChildProp7 as bigint;
-
-	EXEC [dbo].ChildObject_GetFullById @TestChildProp7;
-
-	EXEC ChildCollectionObject_GetFullByFileMetOvererving @id
 
 	EXEC [dbo].FileMetOvererving_GetFullById @id
 END;

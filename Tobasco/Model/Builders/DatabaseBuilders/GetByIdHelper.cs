@@ -1,18 +1,22 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using Tobasco.Constants;
 using Tobasco.Enums;
+using Tobasco.Model.DatabaseProperties;
 using Tobasco.Templates;
 
 namespace Tobasco.Model.Builders.DatabaseBuilders
 {
-    public class GetByIdHelper : DatabaseHelper
+    public abstract class GetByIdHelper : DatabaseHelper
     {
-        private IEnumerable<string> _getDeclareChilds;
-        private IEnumerable<string> _getChildCollectionByParentId;
-        private IEnumerable<string> _getChild_ByIdStp;
+        protected IEnumerable<string> _getDeclareChilds;
+        protected IEnumerable<string> _getChildCollectionByParentId;
+        protected IEnumerable<string> _getChild_ByIdStp;
 
         public override string Name => Entity.Name;
+
+        protected abstract string Template { get; }
 
         public GetByIdHelper(Entity entity, Database database) : base(entity, database)
         {
@@ -36,7 +40,7 @@ namespace Tobasco.Model.Builders.DatabaseBuilders
             {
                 return _getChildCollectionByParentId ?? (_getChildCollectionByParentId = Entity.Properties
                     .Where(x => x.DataType.Datatype == Datatype.ChildCollection)
-                    .Select(x => $"EXEC {x.DataType.Type}_GetFullBy{Entity.Name} @id"));
+                    .Select(x => $"EXEC {x.DataType.Type}_GetFullBy{Entity.Name}Id @id"));
             }
         }
 
@@ -44,19 +48,29 @@ namespace Tobasco.Model.Builders.DatabaseBuilders
         {
             get
             {
-                return _getDeclareChilds ?? (_getDeclareChilds = Entity.Properties
-                    .Where(x => x.DataType.Datatype == Datatype.ReadonlyChild || x.DataType.Datatype == Datatype.Child)
-                    .Select(x => $"DECLARE @{x.Name} as bigint;"));
+                return _getDeclareChilds ?? (_getDeclareChilds = Entity.GetSqlProperties
+                    .Where(x => x.Property.DataType.Datatype == Datatype.ReadonlyChild || x.Property.DataType.Datatype == Datatype.Child)
+                    .Select(x => GetChildDeclareId(x, "@id")));
             }
+        }
+
+        protected string GetChildDeclareId(DatabaseProperty property, string parameterName)
+        {
+            StringBuilder stringbuilder = new StringBuilder();
+            stringbuilder.AppendLine($"DECLARE @{property.SelectSqlParameterNaam} as bigint;");
+            stringbuilder.AppendLine($"SELECT @{property.SelectSqlParameterNaam} = {property.SelectSqlParameterNaam}");
+            stringbuilder.AppendLine($"  FROM [dbo].{Entity.Name}");
+            stringbuilder.AppendLine($" WHERE {Entity.Name}.Id = {parameterName};");
+            return stringbuilder.ToString();
         }
 
         protected virtual IEnumerable<string> GetChild_ByIdStp
         {
             get
             {
-                return _getChild_ByIdStp ?? (_getChild_ByIdStp = Entity.Properties
-                    .Where(x => x.DataType.Datatype == Datatype.ReadonlyChild || x.DataType.Datatype == Datatype.Child)
-                    .Select(x => $"EXEC [dbo].{x.DataType.Type}_GetFullById @{x.Name};"));
+                return _getChild_ByIdStp ?? (_getChild_ByIdStp = Entity.GetSqlProperties
+                    .Where(x => x.Property.DataType.Datatype == Datatype.ReadonlyChild || x.Property.DataType.Datatype == Datatype.Child)
+                    .Select(x => $"EXEC [dbo].{x.Property.DataType.Type}_GetFullById @{x.SelectSqlParameterNaam};"));
             }
         }
     }

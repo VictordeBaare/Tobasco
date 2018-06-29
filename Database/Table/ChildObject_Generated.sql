@@ -34,6 +34,11 @@ CREATE TRIGGER [dbo].tu_ChildObject
            FOR UPDATE
 AS
 BEGIN
+
+    -- SET NOCOUNT ON added to prevent extra result sets from
+    -- interfering with SELECT statements.
+    SET NOCOUNT ON;
+
     INSERT
       INTO [dbo].ChildObject_historie(
 		   Id,
@@ -41,7 +46,6 @@ BEGIN
 TestChildProp1,
 ModifiedBy,
 ModifiedOn,
-ModifiedOnUTC,
 ModifiedOnUTC,
 DeletedBy,
 DeletedAt
@@ -63,6 +67,11 @@ CREATE TRIGGER [dbo].td_ChildObject
 		   FOR DELETE
 AS
 BEGIN
+
+    -- SET NOCOUNT ON added to prevent extra result sets from
+    -- interfering with SELECT statements.
+    SET NOCOUNT ON;
+
 	INSERT
 	  INTO [dbo].ChildObject_historie(
            Id,
@@ -70,7 +79,6 @@ BEGIN
 TestChildProp1,
 ModifiedBy,
 ModifiedOn,
-ModifiedOnUTC,
 ModifiedOnUTC,
 DeletedBy,
 DeletedAt
@@ -133,7 +141,7 @@ ModifiedOn,
 ModifiedOnUTC,		   
 		 DeletedBy,
 		 DeletedAt,              
-		 [Source]
+		 [FromSource]
 		) AS
 	(
 		SELECT Id,
@@ -169,7 +177,7 @@ ModifiedOn,
 ModifiedOnUTC,			   
 		 DeletedBy,                    
 		 DeletedAt,                   
-		 [Source],
+		 [FromSource],
 		 ChronologicalOrder
 		) AS
 	(
@@ -181,7 +189,7 @@ ModifiedOn,
 ModifiedOnUTC,		   
 			   DeletedBy,
                DeletedAt,
-               [Source],
+               [FromSource],
                ROW_NUMBER() OVER (PARTITION BY CTE_historie.Id
                                       ORDER BY CTE_historie.[RowVersion]
                                  ) AS ChronologicalOrder
@@ -195,6 +203,6 @@ ModifiedOn,
 ModifiedOnUTC,
            DeletedBy,
            DeletedAt,
-           [Source],
+           [FromSource],
            ChronologicalOrder
       FROM CTE_historie_order;

@@ -118,6 +118,7 @@ CREATE PROCEDURE [dbo].CPK_GetFullById
 	@id bigint
 AS
 BEGIN
+            SET NOCOUNT ON;
 
 	SELECT Id,
 		   [RowVersion],

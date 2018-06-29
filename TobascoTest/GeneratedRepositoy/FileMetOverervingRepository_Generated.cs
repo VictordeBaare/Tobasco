@@ -47,7 +47,7 @@ public FileMetOvererving GetFullObjectById(long id)
 {
     var parameters = new DynamicParameters();
     parameters.Add("id", id);
-    return _genericRepository.QueryMultiple("[dbo].[FileMetOvererving_GetFullById]", parameters, x => Read(x).Values).SingleOrDefault();
+    return _genericRepository.ExecuteQueryMultiple("[dbo].[FileMetOvererving_GetFullById]", parameters, x => Read(x).Values).SingleOrDefault();
 }
 internal static Dictionary<long, FileMetOvererving> Read(GridReader reader)
 {
@@ -76,7 +76,7 @@ public FileMetOvererving GetFullObjectByUId(Guid uid)
 {
     var parameters = new DynamicParameters();
     parameters.Add("UId", uid);
-    return _genericRepository.QueryMultiple("[dbo].[FileMetOvererving_GetFullByUId]", parameters, x => Read(x).Values).SingleOrDefault();
+    return _genericRepository.ExecuteQueryMultiple("[dbo].[FileMetOvererving_GetFullByUId]", parameters, x => Read(x).Values).SingleOrDefault();
 }	
 	}
 }

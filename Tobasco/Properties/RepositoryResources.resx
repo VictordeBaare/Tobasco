@@ -150,7 +150,7 @@
 {
     var parameters = new DynamicParameters();
     parameters.Add("id", id);
-    return _genericRepository.QueryMultiple("%GetByIdStp%", parameters, x =&gt; Read(x).Values).SingleOrDefault();
+    return _genericRepository.ExecuteQueryMultiple("%GetByIdStp%", parameters, x =&gt; Read(x).Values).SingleOrDefault();
 }</value>
   </data>
   <data name="RepositoryGetFullObjectByUId" xml:space="preserve">
@@ -158,7 +158,7 @@
 {
     var parameters = new DynamicParameters();
     parameters.Add("UId", uid);
-    return _genericRepository.QueryMultiple("%GetByUIdStp%", parameters, x =&gt; Read(x).Values).SingleOrDefault();
+    return _genericRepository.ExecuteQueryMultiple("%GetByUIdStp%", parameters, x =&gt; Read(x).Values).SingleOrDefault();
 }</value>
   </data>
   <data name="RepositoryGetFullyByIdChildCollectionReader" xml:space="preserve">

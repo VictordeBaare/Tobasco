@@ -131,6 +131,7 @@ GO
 	@id bigint
 AS
 BEGIN
+            SET NOCOUNT ON;
 
 	%DeclareChilds%
 
@@ -152,18 +153,13 @@ END;</value>
 	@UId uniqueidentifier
 AS
 BEGIN
+          SET NOCOUNT ON;
 
 	DECLARE @id bigint;
 	
 	SELECT @id = Id
 	  FROM %TableName%
 	 WHERE %TableName%.[UId] = @UId;
-
-	%DeclareChilds%
-
-	%Childs_GetById%
-
-	%ChildCollection_GetByParentIdStp%
 
 	EXEC [dbo].%TableName%_GetFullById @id
 END;</value>
@@ -271,7 +267,7 @@ AS
 		%StpPropertyNames%		   
 		 DeletedBy,
 		 DeletedAt,              
-		 [Source]
+		 [FromSource]
 		) AS
 	(
 		SELECT Id,
@@ -298,7 +294,7 @@ AS
 		%StpPropertyNames%			   
 		 DeletedBy,                    
 		 DeletedAt,                   
-		 [Source],
+		 [FromSource],
 		 ChronologicalOrder
 		) AS
 	(
@@ -307,7 +303,7 @@ AS
 			   %StpPropertyNames%		   
 			   DeletedBy,
                DeletedAt,
-               [Source],
+               [FromSource],
                ROW_NUMBER() OVER (PARTITION BY CTE_historie.Id
                                       ORDER BY CTE_historie.[RowVersion]
                                  ) AS ChronologicalOrder
@@ -318,7 +314,7 @@ AS
 		  %StpPropertyNames%
            DeletedBy,
            DeletedAt,
-           [Source],
+           [FromSource],
            ChronologicalOrder
       FROM CTE_historie_order;</value>
   </data>
@@ -333,7 +329,7 @@ AS
 		%StpPropertyNames%		   
 		 DeletedBy,
 		 DeletedAt,              
-		 [Source]
+		 [FromSource]
 		) AS
 	(
 		SELECT Id,
@@ -363,7 +359,7 @@ AS
 		%StpPropertyNames%			   
 		 DeletedBy,                    
 		 DeletedAt,                   
-		 [Source],
+		 [FromSource],
 		 ChronologicalOrder
 		) AS
 	(
@@ -373,7 +369,7 @@ AS
 			   %StpPropertyNames%		   
 			   DeletedBy,
                DeletedAt,
-               [Source],
+               [FromSource],
                ROW_NUMBER() OVER (PARTITION BY CTE_historie.Id
                                       ORDER BY CTE_historie.[RowVersion]
                                  ) AS ChronologicalOrder
@@ -385,7 +381,7 @@ AS
 		  %StpPropertyNames%
            DeletedBy,
            DeletedAt,
-           [Source],
+           [FromSource],
            ChronologicalOrder
       FROM CTE_historie_order;</value>
   </data>
@@ -583,6 +579,11 @@ END</value>
 		   FOR DELETE
 AS
 BEGIN
+
+    -- SET NOCOUNT ON added to prevent extra result sets from
+    -- interfering with SELECT statements.
+    SET NOCOUNT ON;
+
 	INSERT
 	  INTO [dbo].%TableName%_historie(
            %StpPropertyNames%
@@ -597,6 +598,11 @@ END;</value>
 		   FOR DELETE
 AS
 BEGIN
+
+    -- SET NOCOUNT ON added to prevent extra result sets from
+    -- interfering with SELECT statements.
+    SET NOCOUNT ON;
+
 	INSERT
 	  INTO [dbo].%TableName%_historie(
            %StpPropertyNames%
@@ -612,6 +618,11 @@ END;</value>
            FOR UPDATE
 AS
 BEGIN
+
+    -- SET NOCOUNT ON added to prevent extra result sets from
+    -- interfering with SELECT statements.
+    SET NOCOUNT ON;
+
     INSERT
       INTO [dbo].%TableName%_historie(
 		   %StpPropertyNames%
@@ -627,6 +638,12 @@ END;</value>
            FOR UPDATE
 AS
 BEGIN
+
+    -- SET NOCOUNT ON added to prevent extra result sets from
+    -- interfering with SELECT statements.
+    SET NOCOUNT ON;
+
+
     INSERT
       INTO [dbo].%TableName%_historie(
 		   %StpPropertyNames%

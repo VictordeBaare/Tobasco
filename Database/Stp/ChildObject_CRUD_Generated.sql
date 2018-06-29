@@ -108,6 +108,7 @@ CREATE PROCEDURE [dbo].ChildObject_GetFullById
 	@id bigint
 AS
 BEGIN
+            SET NOCOUNT ON;
 
 	SELECT Id,
 		   [RowVersion],

@@ -86,6 +86,7 @@ namespace Tobasco.Properties {
         ///	@id bigint
         ///AS
         ///BEGIN
+        ///            SET NOCOUNT ON;
         ///
         ///	%DeclareChilds%
         ///
@@ -113,18 +114,13 @@ namespace Tobasco.Properties {
         ///	@UId uniqueidentifier
         ///AS
         ///BEGIN
+        ///          SET NOCOUNT ON;
         ///
         ///	DECLARE @id bigint;
         ///	
         ///	SELECT @id = Id
         ///	  FROM %TableName%
         ///	 WHERE %TableName%.[UId] = @UId;
-        ///
-        ///	%DeclareChilds%
-        ///
-        ///	%Childs_GetById%
-        ///
-        ///	%ChildCollection_GetByParentIdStp%
         ///
         ///	EXEC [dbo].%TableName%_GetFullById @id
         ///END;.
@@ -259,7 +255,7 @@ namespace Tobasco.Properties {
         ///		%StpPropertyNames%		   
         ///		 DeletedBy,
         ///		 DeletedAt,              
-        ///		 [Source]
+        ///		 [FromSource]
         ///		) AS
         ///	(
         ///		SELECT Id,
@@ -278,7 +274,7 @@ namespace Tobasco.Properties {
         ///			   NULL,
         ///			   NULL,
         ///			   &apos;Main&apos;
-        ///		  FROM  [rest of string was truncated]&quot;;.
+        ///		  F [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string SqlHistorieView {
             get {
@@ -297,7 +293,7 @@ namespace Tobasco.Properties {
         ///		%StpPropertyNames%		   
         ///		 DeletedBy,
         ///		 DeletedAt,              
-        ///		 [Source]
+        ///		 [FromSource]
         ///		) AS
         ///	(
         ///		SELECT Id,
@@ -315,7 +311,7 @@ namespace Tobasco.Properties {
         ///		       [UId],
         ///			   [RowVersion],
         ///			   %StpPropertyNames%			   
-        ///			  [rest of string was truncated]&quot;;.
+        /// [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string SqlHistorieViewWithUid {
             get {
@@ -464,6 +460,11 @@ namespace Tobasco.Properties {
         ///		   FOR DELETE
         ///AS
         ///BEGIN
+        ///
+        ///    -- SET NOCOUNT ON added to prevent extra result sets from
+        ///    -- interfering with SELECT statements.
+        ///    SET NOCOUNT ON;
+        ///
         ///	INSERT
         ///	  INTO [dbo].%TableName%_historie(
         ///           %StpPropertyNames%
@@ -484,6 +485,11 @@ namespace Tobasco.Properties {
         ///		   FOR DELETE
         ///AS
         ///BEGIN
+        ///
+        ///    -- SET NOCOUNT ON added to prevent extra result sets from
+        ///    -- interfering with SELECT statements.
+        ///    SET NOCOUNT ON;
+        ///
         ///	INSERT
         ///	  INTO [dbo].%TableName%_historie(
         ///           %StpPropertyNames%
@@ -505,6 +511,11 @@ namespace Tobasco.Properties {
         ///           FOR UPDATE
         ///AS
         ///BEGIN
+        ///
+        ///    -- SET NOCOUNT ON added to prevent extra result sets from
+        ///    -- interfering with SELECT statements.
+        ///    SET NOCOUNT ON;
+        ///
         ///    INSERT
         ///      INTO [dbo].%TableName%_historie(
         ///		   %StpPropertyNames%
@@ -526,6 +537,12 @@ namespace Tobasco.Properties {
         ///           FOR UPDATE
         ///AS
         ///BEGIN
+        ///
+        ///    -- SET NOCOUNT ON added to prevent extra result sets from
+        ///    -- interfering with SELECT statements.
+        ///    SET NOCOUNT ON;
+        ///
+        ///
         ///    INSERT
         ///      INTO [dbo].%TableName%_historie(
         ///		   %StpPropertyNames%

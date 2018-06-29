@@ -13,10 +13,13 @@ namespace Tobasco.Model.Builders.DatabaseBuilders
         public GetByUidBuilder(Entity entity, Database database) : base(entity, database)
         {
         }
+
+        protected override string Template => SqlResources.GetFullObjectByEntityUid;
+
         public string Build()
         {
             var template = new Template();
-            template.SetTemplate(SqlResources.GetFullObjectByEntityUid);
+            template.SetTemplate(Template);
             template.Fill(GetParameters());
             return template.CleanText;
         }

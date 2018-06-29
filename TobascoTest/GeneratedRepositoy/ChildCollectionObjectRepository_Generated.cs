@@ -32,7 +32,7 @@ public ChildCollectionObject GetFullObjectById(long id)
 {
     var parameters = new DynamicParameters();
     parameters.Add("id", id);
-    return _genericRepository.QueryMultiple("[dbo].[ChildCollectionObject_GetFullById]", parameters, x => Read(x).Values).SingleOrDefault();
+    return _genericRepository.ExecuteQueryMultiple("[dbo].[ChildCollectionObject_GetFullById]", parameters, x => Read(x).Values).SingleOrDefault();
 }
 internal static Dictionary<long, ChildCollectionObject> Read(GridReader reader)
 {
@@ -42,7 +42,7 @@ public ChildCollectionObject GetFullObjectByUId(Guid uid)
 {
     var parameters = new DynamicParameters();
     parameters.Add("UId", uid);
-    return _genericRepository.QueryMultiple("[dbo].[ChildCollectionObject_GetFullByUId]", parameters, x => Read(x).Values).SingleOrDefault();
+    return _genericRepository.ExecuteQueryMultiple("[dbo].[ChildCollectionObject_GetFullByUId]", parameters, x => Read(x).Values).SingleOrDefault();
 }	
 	}
 }

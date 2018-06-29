@@ -111,7 +111,7 @@ namespace Tobasco.Properties {
         ///{
         ///    var parameters = new DynamicParameters();
         ///    parameters.Add(&quot;id&quot;, id);
-        ///    return _genericRepository.QueryMultiple(&quot;%GetByIdStp%&quot;, parameters, x =&gt; Read(x).Values).SingleOrDefault();
+        ///    return _genericRepository.ExecuteQueryMultiple(&quot;%GetByIdStp%&quot;, parameters, x =&gt; Read(x).Values).SingleOrDefault();
         ///}.
         /// </summary>
         internal static string RepositoryGetFullObjectById {
@@ -125,7 +125,7 @@ namespace Tobasco.Properties {
         ///{
         ///    var parameters = new DynamicParameters();
         ///    parameters.Add(&quot;UId&quot;, uid);
-        ///    return _genericRepository.QueryMultiple(&quot;%GetByUIdStp%&quot;, parameters, x =&gt; Read(x).Values).SingleOrDefault();
+        ///    return _genericRepository.ExecuteQueryMultiple(&quot;%GetByUIdStp%&quot;, parameters, x =&gt; Read(x).Values).SingleOrDefault();
         ///}.
         /// </summary>
         internal static string RepositoryGetFullObjectByUId {

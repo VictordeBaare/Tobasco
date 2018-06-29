@@ -58,8 +58,7 @@ namespace Tobasco.Model.Builders.DatabaseBuilders
             if (Entity.GenerateReadonlyGuid)
             {
                 parameters.Insert(1, "[UId]");
-            }
-            parameters.Add("ModifiedOnUTC");
+            }            
             parameters.Add("DeletedBy");
             parameters.Add("DeletedAt");
             return parameters;
