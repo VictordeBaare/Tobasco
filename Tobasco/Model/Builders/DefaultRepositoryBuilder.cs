@@ -163,8 +163,11 @@ namespace Tobasco.Model.Builders
         protected virtual void AddFieldsWithParameterToConstructor(ClassFile classFile)
         {
             AddGenericRepositoryParameter(classFile);
-            foreach (var item in Entity.SelectChildRepositoryInterfaces(Entity.Entity.Properties.Where(x => x.DataType.Datatype == Datatype.ChildCollection || x.DataType.Datatype == Datatype.Child))){
-                classFile.Constructor.AddFieldWithParameter(new Field("private", $"_{item.FirstCharToLower()}", item), new TypeWithName(item.FirstCharToLower(), item));
+            foreach (var item in Entity.SelectChildRepositoryInterfaces(Entity.Entity.Properties.Where(x => x.DataType.Datatype == Datatype.ChildCollection || x.DataType.Datatype == Datatype.Child))){                
+                if(classFile.Constructor.ParameterWithField.All(x => x.Field.Name != $"_{item.FirstCharToLower()}"))
+                {
+                    classFile.Constructor.AddFieldWithParameter(new Field("private", $"_{item.FirstCharToLower()}", item), new TypeWithName(item.FirstCharToLower(), item));
+                }
             }            
         }
 

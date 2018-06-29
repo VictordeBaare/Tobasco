@@ -14,7 +14,7 @@ namespace Tobasco.FileBuilder
             Fields.Add(field);
             Parameters.Add(parameter);
             ParameterWithField.Add(new FieldWithParameter { Field = field, Parameter = parameter });
-        }
+        }        
 
         public List<FieldWithParameter> ParameterWithField { get; } = new List<FieldWithParameter>();
 
