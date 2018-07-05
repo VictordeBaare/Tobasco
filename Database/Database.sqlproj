@@ -70,4 +70,7 @@
     <Build Include="Stp\ChildObject_CRUD_Generated.sql" />
     <Build Include="Stp\FileMetOvererving_CRUD_Generated.sql" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Stp\TestGenerator2.txt4" />
+  </ItemGroup>
 </Project>

@@ -27,16 +27,6 @@ public CPK GetById(long id)
         {
             return _genericRepository.GetById(id);
         }
-
-public CPK GetFullObjectById(long id)
-{
-    var parameters = new DynamicParameters();
-    parameters.Add("id", id);
-    return _genericRepository.ExecuteQueryMultiple("[dbo].[CPK_GetFullById]", parameters, x => Read(x).Values).SingleOrDefault();
-}
-internal static Dictionary<long, CPK> Read(GridReader reader)
-{
-    return reader.Read<CPK>().ToDictionary(x => x.Id);      
-}	
+	
 	}
 }

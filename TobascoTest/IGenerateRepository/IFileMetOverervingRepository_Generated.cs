@@ -14,8 +14,6 @@ namespace TobascoTest.IGenerateRepository
 	{
 			
 		FileMetOvererving Save(FileMetOvererving filemetovererving);
-FileMetOvererving GetById(long id);
-FileMetOvererving GetFullObjectById(long id);
-FileMetOvererving GetFullObjectByUId(Guid uid);	
+FileMetOvererving GetById(long id);	
 	}
 }

@@ -22,7 +22,7 @@ namespace Tobasco.Model.Builders.DatabaseBuilders
         {
         }
 
-        protected virtual TemplateParameter GetParameters()
+        public virtual TemplateParameter GetParameters()
         {
             var parameters = new TemplateParameter();
             parameters.Add(SqlConstants.StpPropertyNames, GetNonChildCollectionProperties.OrderBy(x => x.Property.Name).ThenByDescending(x => x.Property.DataType.Datatype != Datatype.Child).ThenByDescending(x => x.Property.DataType.Datatype != Datatype.Child).Select(x =>$"{x.SelectSqlParameterNaam},"));
@@ -33,8 +33,8 @@ namespace Tobasco.Model.Builders.DatabaseBuilders
 
             return parameters;
         }
-
-        protected virtual IEnumerable<string> GetChildCollectionGetByParentId
+        
+        public virtual IEnumerable<string> GetChildCollectionGetByParentId
         {
             get
             {
@@ -43,8 +43,8 @@ namespace Tobasco.Model.Builders.DatabaseBuilders
                     .Select(x => $"EXEC {x.DataType.Type}_GetFullBy{Entity.Name}Id @id"));
             }
         }
-
-        protected virtual IEnumerable<string> DeclareChilds
+        
+        public virtual IEnumerable<string> DeclareChilds
         {
             get
             {
@@ -53,8 +53,8 @@ namespace Tobasco.Model.Builders.DatabaseBuilders
                     .Select(x => GetChildDeclareId(x, "@id")));
             }
         }
-
-        protected string GetChildDeclareId(DatabaseProperty property, string parameterName)
+        
+        public string GetChildDeclareId(DatabaseProperty property, string parameterName)
         {
             StringBuilder stringbuilder = new StringBuilder();
             stringbuilder.AppendLine($"DECLARE @{property.SelectSqlParameterNaam} as bigint;");
@@ -63,8 +63,8 @@ namespace Tobasco.Model.Builders.DatabaseBuilders
             stringbuilder.AppendLine($" WHERE {Entity.Name}.Id = {parameterName};");
             return stringbuilder.ToString();
         }
-
-        protected virtual IEnumerable<string> GetChild_ByIdStp
+        
+        public virtual IEnumerable<string> GetChild_ByIdStp
         {
             get
             {

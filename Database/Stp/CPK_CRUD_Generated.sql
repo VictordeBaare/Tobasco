@@ -113,20 +113,3 @@ BEGIN
 			THROW 55501, @message, 1;
 		  END;
 END;
-GO
-CREATE PROCEDURE [dbo].CPK_GetFullById
-	@id bigint
-AS
-BEGIN
-            SET NOCOUNT ON;
-
-	SELECT Id,
-		   [RowVersion],
-           Duur,
-Kosten,
-Training,
-		   [ModifiedBy],
-		   [ModifiedOn]
-	  FROM CPK
-	 WHERE CPK.Id = @id;
-END;

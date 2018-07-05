@@ -14,7 +14,6 @@ namespace TobascoTest.IGenerateRepository
 	{
 			
 		CPK Save(CPK cpk);
-CPK GetById(long id);
-CPK GetFullObjectById(long id);	
+CPK GetById(long id);	
 	}
 }

@@ -103,18 +103,3 @@ BEGIN
 			THROW 55501, @message, 1;
 		  END;
 END;
-GO
-CREATE PROCEDURE [dbo].ChildObject_GetFullById
-	@id bigint
-AS
-BEGIN
-            SET NOCOUNT ON;
-
-	SELECT Id,
-		   [RowVersion],
-           TestChildProp1,
-		   [ModifiedBy],
-		   [ModifiedOn]
-	  FROM ChildObject
-	 WHERE ChildObject.Id = @id;
-END;

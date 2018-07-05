@@ -31,7 +31,7 @@ namespace Tobasco.Model.Builders.DatabaseBuilders
             return parameters;
         }
 
-        protected override IEnumerable<string> GetChildCollectionGetByParentId
+        public override IEnumerable<string> GetChildCollectionGetByParentId
         {
             get
             {
@@ -41,7 +41,7 @@ namespace Tobasco.Model.Builders.DatabaseBuilders
             }
         }
 
-        protected override IEnumerable<string> DeclareChilds
+        public override IEnumerable<string> DeclareChilds
         {
             get
             {

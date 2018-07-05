@@ -19,7 +19,7 @@ namespace Tobasco.Model.Builders.DatabaseBuilders
             return template.GetText;
         }
 
-        private TemplateParameter InsertTemplateParameters()
+        protected virtual TemplateParameter InsertTemplateParameters()
         {
             var parameters = new TemplateParameter();
             parameters.Add(SqlConstants.TableName, Name);
