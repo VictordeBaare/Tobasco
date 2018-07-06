@@ -13,167 +13,168 @@ using Tobasco.Templates;
 
 namespace Tobasco.Model.Builders
 {
-    public class DefaultRepositoryBuilder : RepositoryBuilderBase
-    {
-        private GetFullEntityByIdBuilder _getFullEntityByIdBuilder;
-        private GetFullEntityReader _getFullEntityByIdReaderBuilder;
+	public class DefaultRepositoryBuilder : RepositoryBuilderBase
+	{
 
-        public DefaultRepositoryBuilder(EntityHandler entity, Repository repository) : base(entity, repository)
-        {
-            _getFullEntityByIdBuilder = new GetFullEntityByIdBuilder(entity, repository);
-            _getFullEntityByIdReaderBuilder = new GetFullEntityReader(entity, repository);
-        }        
+		public DefaultRepositoryBuilder(EntityHandler entity, Repository repository) : base(entity, repository)
+		{
+		}
 
-        protected virtual string GetSaveMethod()
-        {
-            var template = new Template();
-            var trans = Repository.Transaction;
-            template.SetTemplate(trans != null && trans.UseTransaction ? GetSaveWithTransactionTemplate : GetSaveWithoutTransactionTemplate);
-            template.Fill(GetSaveParameters());
-            return template.GetText;
-        }
+		protected virtual string GetSaveMethod()
+		{
+			var template = new Template();
+			var trans = Repository.Transaction;
+			template.SetTemplate(trans != null && trans.UseTransaction ? GetSaveWithTransactionTemplate : GetSaveWithoutTransactionTemplate);
+			template.Fill(GetSaveParameters());
+			return template.GetText;
+		}
 
-        protected virtual string GetSaveWithTransactionTemplate => RepositoryResources.RepositorySaveWithTransaction;
+		protected virtual GetFullEntityByIdBuilder GetFullEntityByIdBuilder => new GetFullEntityByIdBuilder(Entity, Repository);
 
-        protected virtual string GetSaveWithoutTransactionTemplate => RepositoryResources.RepositorySave;
-        
-        protected TemplateParameter GetSaveParameters()
-        {
-            var parameters = new TemplateParameter();
+		protected virtual GetFullEntityReader GetFullEntityByIdReaderBuilder => new GetFullEntityReader(Entity, Repository);
 
-            parameters.Add(RepositoryBuilderConstants.SaveChild, GetSaveableChilds());
-            parameters.Add(RepositoryBuilderConstants.SaveChildCollections, GetSaveableChildCollection());
-            parameters.Add(RepositoryBuilderConstants.EntityName, GetEntityName);
-            parameters.Add(RepositoryBuilderConstants.EntityNameLowerCase, GetEntityName.ToLower());
+		protected virtual string GetSaveWithTransactionTemplate => RepositoryResources.RepositorySaveWithTransaction;
 
-            return parameters;
-        }
+		protected virtual string GetSaveWithoutTransactionTemplate => RepositoryResources.RepositorySave;
 
-        private List<string> GetSaveableChilds()
-        {
-            var list = new List<string>();
-            foreach (var itemToSave in GetChildProperties)
-            {
-                if (itemToSave.Required)
-                {
-                    list.Add($"{GetEntityName.ToLower()}.{itemToSave.Name} = _{Entity.GetRepositoryInterface(itemToSave.DataType.Type).FirstCharToLower()}.Save({GetEntityName.ToLower()}.{itemToSave.Name});");
-                }
-                else
-                {
-                    var builder = new StringBuilder();
-                    builder.AppendLine($"if ({GetEntityName.ToLower()}.{itemToSave.Name} != null)");
-                    builder.AppendLine("{");
-                    builder.AppendLine($"{GetEntityName.ToLower()}.{itemToSave.Name} = _{Entity.GetRepositoryInterface(itemToSave.DataType.Type).FirstCharToLower()}.Save({GetEntityName.ToLower()}.{itemToSave.Name});");
-                    builder.AppendLine("}");
-                    list.Add(builder.ToString());
-                }
-            }
-            return list;
-        }
+		protected TemplateParameter GetSaveParameters()
+		{
+			var parameters = new TemplateParameter();
 
-        private List<string> GetSaveableChildCollection()
-        {
-            var list = new List<string>();
+			parameters.Add(RepositoryBuilderConstants.SaveChild, GetSaveableChilds());
+			parameters.Add(RepositoryBuilderConstants.SaveChildCollections, GetSaveableChildCollection());
+			parameters.Add(RepositoryBuilderConstants.EntityName, GetEntityName);
+			parameters.Add(RepositoryBuilderConstants.EntityNameLowerCase, GetEntityName.ToLower());
 
-            foreach (var itemToSave in GetChildCollectionProperties)
-            {
-                var builder = new StringBuilder();
-                builder.AppendLineWithTabs($"foreach(var toSaveItem in {GetEntityName.ToLower()}.{itemToSave.Name})", 0);
-                builder.AppendLineWithTabs("{", 0);
-                builder.AppendLineWithTabs($"toSaveItem.{Entity.GetChildReferenceProperty(itemToSave.DataType.Type, GetEntityName).Name} = {GetEntityName.ToLower()}.Id;", 1);
-                builder.AppendLineWithTabs($"_{Entity.GetRepositoryInterface(itemToSave.DataType.Type).FirstCharToLower()}.Save(toSaveItem);", 1);
-                builder.AppendLineWithTabs("}", 0);
-                list.Add(builder.ToString());
-            }
-            
-            return list;
-        }
+			return parameters;
+		}
 
-        protected virtual string GetByIdMethod()
-        {
-            var builder = new StringBuilder();
-            builder.AppendLineWithTabs($"public {GetEntityName} GetById(long id)", 0);
-            builder.AppendLineWithTabs("{", 2);
-            builder.AppendLineWithTabs("return _genericRepository.GetById(id);", 3);
-            builder.AppendLineWithTabs("}", 2);
-            return builder.ToString();
-        }
+		private List<string> GetSaveableChilds()
+		{
+			var list = new List<string>();
+			foreach (var itemToSave in GetChildProperties)
+			{
+				if (itemToSave.Required)
+				{
+					list.Add($"{GetEntityName.ToLower()}.{itemToSave.Name} = _{Entity.GetRepositoryInterface(itemToSave.DataType.Type).FirstCharToLower()}.Save({GetEntityName.ToLower()}.{itemToSave.Name});");
+				}
+				else
+				{
+					var builder = new StringBuilder();
+					builder.AppendLine($"if ({GetEntityName.ToLower()}.{itemToSave.Name} != null)");
+					builder.AppendLine("{");
+					builder.AppendLine($"{GetEntityName.ToLower()}.{itemToSave.Name} = _{Entity.GetRepositoryInterface(itemToSave.DataType.Type).FirstCharToLower()}.Save({GetEntityName.ToLower()}.{itemToSave.Name});");
+					builder.AppendLine("}");
+					list.Add(builder.ToString());
+				}
+			}
+			return list;
+		}
 
-     
-        protected virtual ClassFile GetClassFile()
-        {
-            var classFile = FileManager.StartNewClassFile(GetRepositoryName, Repository.FileLocation.Project, Repository.FileLocation.Folder);
-            classFile.Namespaces.AddRange(GetRepositoryNamespaces);
-            classFile.Namespaces.Add(Repository.InterfaceLocation.GetProjectLocation);
-            classFile.Namespaces.Add("System.Collections.Generic");
-            classFile.Namespaces.Add("Dapper");
-            classFile.Namespaces.Add("System.Linq");
-            classFile.Namespaces.Add("static Dapper.SqlMapper");
-            classFile.OwnNamespace = Repository.FileLocation.GetNamespace;
-            AddFieldsWithParameterToConstructor(classFile);
-            classFile.BaseClass = $": {GetRepositoryInterfaceName}";
-            classFile.Methods.Add(GetSaveMethod());
-            classFile.Methods.Add(GetByIdMethod());
-            if (Entity.GetDatabase.StoredProcedures.GenerateGetById.Generate)
-            {
-                classFile.Methods.Add(_getFullEntityByIdBuilder.Build());
-                classFile.Methods.Add(_getFullEntityByIdReaderBuilder.Build());
-                if (Entity.Entity.GenerateReadonlyGuid)
-                {
-                    var getfullbyuid = new GetFullEntityByUidBuilder(Entity, Entity.GetRepository);
-                    classFile.Methods.Add(getfullbyuid.Build());
-                }
-            }
-            return classFile;
-        }
+		private List<string> GetSaveableChildCollection()
+		{
+			var list = new List<string>();
 
-        protected virtual InterfaceFile GetInterfaceFile()
-        {
-            var interfaceFile = FileManager.StartNewInterfaceFile(GetRepositoryInterfaceName, Repository.InterfaceLocation.Project, Repository.InterfaceLocation.Folder);
-            interfaceFile.Namespaces.Add(Repository.InterfaceLocation.GetProjectLocation);
-            interfaceFile.Namespaces.Add("static Dapper.SqlMapper");
-            interfaceFile.Namespaces.Add("Dapper");
-            interfaceFile.Namespaces.Add("System.Linq");
-            interfaceFile.Namespaces.AddRange(GetRepositoryNamespaces);
-            interfaceFile.OwnNamespace = Repository.InterfaceLocation.GetNamespace;
-            interfaceFile.Methods.Add($"{GetEntityName} Save({GetEntityName} {GetEntityName.ToLower()});");
-            interfaceFile.Methods.Add($"{GetEntityName} GetById(long id);");
-            if (Entity.GetDatabase.StoredProcedures.GenerateGetById.Generate)
-            {
-                interfaceFile.Methods.Add($"{GetEntityName} GetFullObjectById(long id);");
-                if (Entity.Entity.GenerateReadonlyGuid)
-                {
-                    interfaceFile.Methods.Add($"{GetEntityName} GetFullObjectByUId(Guid uid);");
-                }
-            }
-            return interfaceFile;
-        }
+			foreach (var itemToSave in GetChildCollectionProperties)
+			{
+				var builder = new StringBuilder();
+				builder.AppendLineWithTabs($"foreach(var toSaveItem in {GetEntityName.ToLower()}.{itemToSave.Name})", 0);
+				builder.AppendLineWithTabs("{", 0);
+				builder.AppendLineWithTabs($"toSaveItem.{GetChildReferenceProperty(itemToSave).Name} = {GetEntityName.ToLower()}.Id;", 1);
+				builder.AppendLineWithTabs($"_{Entity.GetRepositoryInterface(itemToSave.DataType.Type).FirstCharToLower()}.Save(toSaveItem);", 1);
+				builder.AppendLineWithTabs("}", 0);
+				list.Add(builder.ToString());
+			}
 
-        public override IEnumerable<FileBuilder.OutputFile> Build()
-        {
-            OutputPaneManager.WriteToOutputPane($"Build {GetRepositoryName} for {Entity.GetRepository.FileLocation.GetProjectLocation}");
-            var classFile = GetClassFile();
+			return list;
+		}
 
-            OutputPaneManager.WriteToOutputPane($"Build {GetRepositoryInterfaceName} for {Entity.GetRepository.InterfaceLocation.GetProjectLocation}");
-            var interfaceFile = GetInterfaceFile();
+		protected virtual string GetByIdMethod()
+		{
+			var builder = new StringBuilder();
+			builder.AppendLineWithTabs($"public {GetEntityName} GetById(long id)", 0);
+			builder.AppendLineWithTabs("{", 2);
+			builder.AppendLineWithTabs("return _genericRepository.GetById(id);", 3);
+			builder.AppendLineWithTabs("}", 2);
+			return builder.ToString();
+		}
 
-            return new List<FileBuilder.OutputFile> { classFile, interfaceFile };
-        }
 
-        protected virtual void AddFieldsWithParameterToConstructor(ClassFile classFile)
-        {
-            AddGenericRepositoryParameter(classFile);
-            foreach (var item in Entity.SelectChildRepositoryInterfaces(Entity.Entity.Properties.Where(x => x.DataType.Datatype == Datatype.ChildCollection || x.DataType.Datatype == Datatype.Child))){                
-                if(classFile.Constructor.ParameterWithField.All(x => x.Field.Name != $"_{item.FirstCharToLower()}"))
-                {
-                    classFile.Constructor.AddFieldWithParameter(new Field("private", $"_{item.FirstCharToLower()}", item), new TypeWithName(item.FirstCharToLower(), item));
-                }
-            }            
-        }
+		protected virtual ClassFile GetClassFile()
+		{
+			var classFile = FileManager.StartNewClassFile(GetRepositoryName, Repository.FileLocation.Project, Repository.FileLocation.Folder);
+			classFile.Namespaces.AddRange(GetRepositoryNamespaces);
+			classFile.Namespaces.Add(Repository.InterfaceLocation.GetProjectLocation);
+			classFile.Namespaces.Add("System.Collections.Generic");
+			classFile.Namespaces.Add("Dapper");
+			classFile.Namespaces.Add("System.Linq");
+			classFile.Namespaces.Add("static Dapper.SqlMapper");
+			classFile.OwnNamespace = Repository.FileLocation.GetNamespace;
+			AddFieldsWithParameterToConstructor(classFile);
+			classFile.BaseClass = $": {GetRepositoryInterfaceName}";
+			classFile.Methods.Add(GetSaveMethod());
+			classFile.Methods.Add(GetByIdMethod());
+			if (Entity.GetDatabase.StoredProcedures.GenerateGetById.Generate)
+			{
+				classFile.Methods.Add(GetFullEntityByIdBuilder.Build());
+				classFile.Methods.Add(GetFullEntityByIdReaderBuilder.Build());
+				if (Entity.Entity.GenerateReadonlyGuid)
+				{
+					var getfullbyuid = new GetFullEntityByUidBuilder(Entity, Entity.GetRepository);
+					classFile.Methods.Add(getfullbyuid.Build());
+				}
+			}
+			return classFile;
+		}
 
-        protected virtual void AddGenericRepositoryParameter(ClassFile classFile)
-        {
-            classFile.Constructor.AddFieldWithParameter(new Field("private", "_genericRepository", $"IGenericRepository<{GetEntityName}>"), new TypeWithName("genericRepository", $"IGenericRepository<{GetEntityName}>"));
-        }
-    }
+		protected virtual InterfaceFile GetInterfaceFile()
+		{
+			var interfaceFile = FileManager.StartNewInterfaceFile(GetRepositoryInterfaceName, Repository.InterfaceLocation.Project, Repository.InterfaceLocation.Folder);
+			interfaceFile.Namespaces.Add(Repository.InterfaceLocation.GetProjectLocation);
+			interfaceFile.Namespaces.Add("static Dapper.SqlMapper");
+			interfaceFile.Namespaces.Add("Dapper");
+			interfaceFile.Namespaces.Add("System.Linq");
+			interfaceFile.Namespaces.AddRange(GetRepositoryNamespaces);
+			interfaceFile.OwnNamespace = Repository.InterfaceLocation.GetNamespace;
+			interfaceFile.Methods.Add($"{GetEntityName} Save({GetEntityName} {GetEntityName.ToLower()});");
+			interfaceFile.Methods.Add($"{GetEntityName} GetById(long id);");
+			if (Entity.GetDatabase.StoredProcedures.GenerateGetById.Generate)
+			{
+				interfaceFile.Methods.Add($"{GetEntityName} GetFullObjectById(long id);");
+				if (Entity.Entity.GenerateReadonlyGuid)
+				{
+					interfaceFile.Methods.Add($"{GetEntityName} GetFullObjectByUId(Guid uid);");
+				}
+			}
+			return interfaceFile;
+		}
+
+		public override IEnumerable<FileBuilder.OutputFile> Build()
+		{
+			OutputPaneManager.WriteToOutputPane($"Build {GetRepositoryName} for {Entity.GetRepository.FileLocation.GetProjectLocation}");
+			var classFile = GetClassFile();
+
+			OutputPaneManager.WriteToOutputPane($"Build {GetRepositoryInterfaceName} for {Entity.GetRepository.InterfaceLocation.GetProjectLocation}");
+			var interfaceFile = GetInterfaceFile();
+
+			return new List<FileBuilder.OutputFile> { classFile, interfaceFile };
+		}
+
+		protected virtual void AddFieldsWithParameterToConstructor(ClassFile classFile)
+		{
+			AddGenericRepositoryParameter(classFile);
+			foreach (var item in Entity.SelectChildRepositoryInterfaces(Entity.Entity.Properties.Where(x => x.DataType.Datatype == Datatype.ChildCollection || x.DataType.Datatype == Datatype.Child)))
+			{
+				if (classFile.Constructor.ParameterWithField.All(x => x.Field.Name != $"_{item.FirstCharToLower()}"))
+				{
+					classFile.Constructor.AddFieldWithParameter(new Field("private", $"_{item.FirstCharToLower()}", item), new TypeWithName(item.FirstCharToLower(), item));
+				}
+			}
+		}
+
+		protected virtual void AddGenericRepositoryParameter(ClassFile classFile)
+		{
+			classFile.Constructor.AddFieldWithParameter(new Field("private", "_genericRepository", $"IGenericRepository<{GetEntityName}>"), new TypeWithName("genericRepository", $"IGenericRepository<{GetEntityName}>"));
+		}
+	}
 }
