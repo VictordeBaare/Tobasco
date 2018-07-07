@@ -40,7 +40,10 @@ namespace Tobasco.FileBuilder
 
         public string Name { get; set; }
         public string FileName { get; set; }
-
+        public string FullName { get
+            {
+                return $"{Name}_Generated{GetFileTypeExtension()}";
+            } }
         public string BaseClass { get; set; }
 
         public string FolderName { get; set; }
@@ -52,5 +55,20 @@ namespace Tobasco.FileBuilder
         public FileProperties FileProperties { get; set; }
 
         public List<string> ClassAttributes { get; set; } = new List<string>();
+
+        public string GetFileTypeExtension()
+        {
+            switch (Type)
+            {
+                case FileType.Class:
+                case FileType.Interface:
+                    return ".cs";
+                case FileType.Table:
+                case FileType.Stp:
+                    return ".sql";
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+        }        
     }
 }

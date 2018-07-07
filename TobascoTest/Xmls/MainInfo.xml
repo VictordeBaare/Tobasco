@@ -19,7 +19,7 @@
     <Namespace value="System.Collections.Generic"></Namespace>
   </BaseNamespaces>
   <EnumNamespace value="TobascoTest.TestEnums"></EnumNamespace>
-  <Mappers generate="true">
+  <Mappers generate="false">
     <Mapper>
       <MapperLocation project="TobascoTest" folder="GeneratedMapper"></MapperLocation>
       <InterfaceLocation project="TobascoTest" folder="GeneratedMapper"></InterfaceLocation>

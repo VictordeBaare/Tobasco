@@ -114,6 +114,8 @@
     <Compile Include="FileBuilder\StpFile.cs" />
     <Compile Include="FileBuilder\TableFile.cs" />
     <Compile Include="FileProcessor.cs" />
+    <Compile Include="Tobasco.cs" />
+    <Compile Include="Generation\FileProcessor.cs" />
     <Compile Include="MainHandler.cs" />
     <Compile Include="Manager\BuilderManager.cs" />
     <Compile Include="Manager\EntityManager.cs" />
@@ -256,6 +258,7 @@
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
