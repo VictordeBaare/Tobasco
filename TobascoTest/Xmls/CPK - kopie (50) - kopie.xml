@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Entity name="CPK50" xmlns="http://Tobasco/EntitySchema.xsd">
+  <EntityLocations>
+    <EntityLocation id="dataobject">
+      <FileLocation project="TobascoTest" folder="GeneratedEntity"></FileLocation>
+      <Namespaces>
+        <Namespace value="System.Dynamic"></Namespace>
+      </Namespaces>
+      <BaseClass value="DifferentBase"></BaseClass>
+      <ORMapper type="Dapper"></ORMapper>
+    </EntityLocation>
+    <EntityLocation generaterules="true" id="businessobject">
+      <FileLocation project="TobascoTest" folder="GeneratedEntity2"></FileLocation>
+      <Namespaces>
+        <Namespace value="System.ComponentModel.DataAnnotations"></Namespace>
+      </Namespaces>
+    </EntityLocation>
+  </EntityLocations>
+  <Properties>
+    <Property name="Training" required="true">
+      <DataType name="String" size="100"></DataType>
+    </Property>
+
+    <Property name="Duur" required="true">
+      <DataType name="String" size="100"></DataType>
+    </Property>
+    <Property name="Kosten" required="true">
+      <DataType name="String" size="100"></DataType>
+    </Property>
+  </Properties>
+</Entity>

@@ -73,22 +73,7 @@
     <Compile Include="DependencyInjection\RepositoryModule_Generated.cs">
       <DependentUpon>TestGenerator2.txt4</DependentUpon>
     </Compile>
-    <Compile Include="GeneratedEntity2\ChildCollectionObject_Generated.cs">
-      <DependentUpon>TestGenerator2.txt4</DependentUpon>
-    </Compile>
-    <Compile Include="GeneratedEntity2\ChildObject_Generated.cs">
-      <DependentUpon>TestGenerator2.txt4</DependentUpon>
-    </Compile>
     <Compile Include="GeneratedEntity2\CPK_Generated.cs">
-      <DependentUpon>TestGenerator2.txt4</DependentUpon>
-    </Compile>
-    <Compile Include="GeneratedEntity2\FileMetOvererving_Generated.cs">
-      <DependentUpon>TestGenerator2.txt4</DependentUpon>
-    </Compile>
-    <Compile Include="GeneratedEntity\ChildCollectionObject_Generated.cs">
-      <DependentUpon>TestGenerator2.txt4</DependentUpon>
-    </Compile>
-    <Compile Include="GeneratedEntity\ChildObject_Generated.cs">
       <DependentUpon>TestGenerator2.txt4</DependentUpon>
     </Compile>
     <Compile Include="GeneratedEntity\CPK_Generated.cs">
@@ -96,9 +81,6 @@
     </Compile>
     <Compile Include="GeneratedEntity\DifferentBase.cs" />
     <Compile Include="GeneratedEntity\EntityBase.cs" />
-    <Compile Include="GeneratedEntity\FileMetOvererving_Generated.cs">
-      <DependentUpon>TestGenerator2.txt4</DependentUpon>
-    </Compile>
     <Compile Include="GeneratedRepositoy\ChildCollectionObjectRepository_Generated.cs">
       <DependentUpon>TestGenerator2.txt4</DependentUpon>
     </Compile>
@@ -106,6 +88,165 @@
       <DependentUpon>TestGenerator2.txt4</DependentUpon>
     </Compile>
     <Compile Include="GeneratedRepositoy\ConnectionFactory_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedRepositoy\CPK10Repository_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedRepositoy\CPK11Repository_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedRepositoy\CPK12Repository_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedRepositoy\CPK13Repository_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedRepositoy\CPK14Repository_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedRepositoy\CPK15Repository_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedRepositoy\CPK16Repository_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedRepositoy\CPK17Repository_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedRepositoy\CPK18Repository_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedRepositoy\CPK19Repository_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedRepositoy\CPK1Repository_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedRepositoy\CPK20Repository_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedRepositoy\CPK21Repository_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedRepositoy\CPK222Repository_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedRepositoy\CPK22Repository_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedRepositoy\CPK23Repository_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedRepositoy\CPK24Repository_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedRepositoy\CPK25Repository_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedRepositoy\CPK26Repository_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedRepositoy\CPK27Repository_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedRepositoy\CPK28Repository_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedRepositoy\CPK29Repository_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedRepositoy\CPK2Repository_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedRepositoy\CPK30Repository_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedRepositoy\CPK31Repository_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedRepositoy\CPK32Repository_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedRepositoy\CPK33Repository_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedRepositoy\CPK34Repository_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedRepositoy\CPK35Repository_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedRepositoy\CPK36Repository_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedRepositoy\CPK37Repository_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedRepositoy\CPK38Repository_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedRepositoy\CPK39Repository_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedRepositoy\CPK3Repository_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedRepositoy\CPK40Repository_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedRepositoy\CPK41Repository_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedRepositoy\CPK42Repository_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedRepositoy\CPK43Repository_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedRepositoy\CPK44Repository_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedRepositoy\CPK45Repository_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedRepositoy\CPK46Repository_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedRepositoy\CPK47Repository_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedRepositoy\CPK48Repository_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedRepositoy\CPK49Repository_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedRepositoy\CPK4Repository_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedRepositoy\CPK50Repository_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedRepositoy\CPK51Repository_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedRepositoy\CPK52Repository_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedRepositoy\CPK5Repository_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedRepositoy\CPK6Repository_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedRepositoy\CPK7Repository_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedRepositoy\CPK8Repository_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedRepositoy\CPK9Repository_Generated.cs">
       <DependentUpon>TestGenerator2.txt4</DependentUpon>
     </Compile>
     <Compile Include="GeneratedRepositoy\CPKRepository_Generated.cs">
@@ -126,6 +267,165 @@
     <Compile Include="IGenerateRepository\IConnectionFactory_Generated.cs">
       <DependentUpon>TestGenerator2.txt4</DependentUpon>
     </Compile>
+    <Compile Include="IGenerateRepository\ICPK10Repository_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="IGenerateRepository\ICPK11Repository_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="IGenerateRepository\ICPK12Repository_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="IGenerateRepository\ICPK13Repository_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="IGenerateRepository\ICPK14Repository_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="IGenerateRepository\ICPK15Repository_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="IGenerateRepository\ICPK16Repository_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="IGenerateRepository\ICPK17Repository_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="IGenerateRepository\ICPK18Repository_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="IGenerateRepository\ICPK19Repository_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="IGenerateRepository\ICPK1Repository_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="IGenerateRepository\ICPK20Repository_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="IGenerateRepository\ICPK21Repository_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="IGenerateRepository\ICPK222Repository_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="IGenerateRepository\ICPK22Repository_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="IGenerateRepository\ICPK23Repository_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="IGenerateRepository\ICPK24Repository_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="IGenerateRepository\ICPK25Repository_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="IGenerateRepository\ICPK26Repository_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="IGenerateRepository\ICPK27Repository_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="IGenerateRepository\ICPK28Repository_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="IGenerateRepository\ICPK29Repository_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="IGenerateRepository\ICPK2Repository_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="IGenerateRepository\ICPK30Repository_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="IGenerateRepository\ICPK31Repository_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="IGenerateRepository\ICPK32Repository_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="IGenerateRepository\ICPK33Repository_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="IGenerateRepository\ICPK34Repository_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="IGenerateRepository\ICPK35Repository_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="IGenerateRepository\ICPK36Repository_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="IGenerateRepository\ICPK37Repository_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="IGenerateRepository\ICPK38Repository_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="IGenerateRepository\ICPK39Repository_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="IGenerateRepository\ICPK3Repository_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="IGenerateRepository\ICPK40Repository_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="IGenerateRepository\ICPK41Repository_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="IGenerateRepository\ICPK42Repository_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="IGenerateRepository\ICPK43Repository_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="IGenerateRepository\ICPK44Repository_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="IGenerateRepository\ICPK45Repository_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="IGenerateRepository\ICPK46Repository_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="IGenerateRepository\ICPK47Repository_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="IGenerateRepository\ICPK48Repository_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="IGenerateRepository\ICPK49Repository_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="IGenerateRepository\ICPK4Repository_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="IGenerateRepository\ICPK50Repository_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="IGenerateRepository\ICPK51Repository_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="IGenerateRepository\ICPK52Repository_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="IGenerateRepository\ICPK5Repository_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="IGenerateRepository\ICPK6Repository_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="IGenerateRepository\ICPK7Repository_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="IGenerateRepository\ICPK8Repository_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="IGenerateRepository\ICPK9Repository_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
     <Compile Include="IGenerateRepository\ICPKRepository_Generated.cs">
       <DependentUpon>TestGenerator2.txt4</DependentUpon>
     </Compile>
@@ -144,6 +444,61 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Xmls\CPK - kopie %2810%29.xml" />
+    <Content Include="Xmls\CPK - kopie %2811%29.xml" />
+    <Content Include="Xmls\CPK - kopie %2812%29.xml" />
+    <Content Include="Xmls\CPK - kopie %2813%29.xml" />
+    <Content Include="Xmls\CPK - kopie %2814%29.xml" />
+    <Content Include="Xmls\CPK - kopie %2815%29.xml" />
+    <Content Include="Xmls\CPK - kopie %2816%29.xml" />
+    <Content Include="Xmls\CPK - kopie %2817%29.xml" />
+    <Content Include="Xmls\CPK - kopie %2818%29.xml" />
+    <Content Include="Xmls\CPK - kopie %2819%29.xml" />
+    <Content Include="Xmls\CPK - kopie %282%29.xml" />
+    <Content Include="Xmls\CPK - kopie %2820%29.xml" />
+    <Content Include="Xmls\CPK - kopie %2821%29.xml" />
+    <Content Include="Xmls\CPK - kopie %2822%29 - kopie.xml" />
+    <Content Include="Xmls\CPK - kopie %2822%29.xml" />
+    <Content Include="Xmls\CPK - kopie %2823%29 - kopie.xml" />
+    <Content Include="Xmls\CPK - kopie %2824%29 - kopie.xml" />
+    <Content Include="Xmls\CPK - kopie %2825%29 - kopie.xml" />
+    <Content Include="Xmls\CPK - kopie %2826%29 - kopie.xml" />
+    <Content Include="Xmls\CPK - kopie %2827%29 - kopie.xml" />
+    <Content Include="Xmls\CPK - kopie %2828%29 - kopie.xml" />
+    <Content Include="Xmls\CPK - kopie %2829%29 - kopie.xml" />
+    <Content Include="Xmls\CPK - kopie %283%29.xml" />
+    <Content Include="Xmls\CPK - kopie %2830%29 - kopie.xml" />
+    <Content Include="Xmls\CPK - kopie %2831%29 - kopie.xml" />
+    <Content Include="Xmls\CPK - kopie %2832%29 - kopie.xml" />
+    <Content Include="Xmls\CPK - kopie %2833%29 - kopie.xml" />
+    <Content Include="Xmls\CPK - kopie %2834%29 - kopie.xml" />
+    <Content Include="Xmls\CPK - kopie %2835%29 - kopie.xml" />
+    <Content Include="Xmls\CPK - kopie %2836%29 - kopie.xml" />
+    <Content Include="Xmls\CPK - kopie %2837%29 - kopie.xml" />
+    <Content Include="Xmls\CPK - kopie %2838%29 - kopie.xml" />
+    <Content Include="Xmls\CPK - kopie %2839%29 - kopie.xml" />
+    <Content Include="Xmls\CPK - kopie %284%29.xml" />
+    <Content Include="Xmls\CPK - kopie %2840%29 - kopie.xml" />
+    <Content Include="Xmls\CPK - kopie %2841%29 - kopie.xml" />
+    <Content Include="Xmls\CPK - kopie %2842%29 - kopie.xml" />
+    <Content Include="Xmls\CPK - kopie %2843%29 - kopie.xml" />
+    <Content Include="Xmls\CPK - kopie %2844%29 - kopie.xml" />
+    <Content Include="Xmls\CPK - kopie %2845%29 - kopie.xml" />
+    <Content Include="Xmls\CPK - kopie %2846%29 - kopie.xml" />
+    <Content Include="Xmls\CPK - kopie %2847%29 - kopie.xml" />
+    <Content Include="Xmls\CPK - kopie %2848%29 - kopie.xml" />
+    <Content Include="Xmls\CPK - kopie %2849%29 - kopie.xml" />
+    <Content Include="Xmls\CPK - kopie %285%29.xml" />
+    <Content Include="Xmls\CPK - kopie %2850%29 - kopie.xml" />
+    <Content Include="Xmls\CPK - kopie %2851%29 - kopie.xml" />
+    <Content Include="Xmls\CPK - kopie %2852%29 - kopie.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Xmls\CPK - kopie %286%29.xml" />
+    <Content Include="Xmls\CPK - kopie %287%29.xml" />
+    <Content Include="Xmls\CPK - kopie %288%29.xml" />
+    <Content Include="Xmls\CPK - kopie %289%29.xml" />
+    <Content Include="Xmls\CPK - kopie.xml" />
     <Content Include="Xmls\CPK.xml">
       <SubType>Designer</SubType>
     </Content>

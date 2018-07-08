@@ -15,8 +15,11 @@
 #>
 <#
 	var processor = FileProcessor2.Create(this);
-	processor.UseAutoFormatting = false;
     BuilderManager.Add("repositorykey", typeof(RepositoryOverrideBuilder));
 
-	processor.BeginProcessing(Host.ResolvePath("Xmls"));
+	processor.BeginProcessing(Host.ResolvePath("Xmls"), options =>
+            {
+                options.CleanUnusedTxt4Files = false;
+				options.EntitiesToGenerate = new[] {"CPK"};
+            });
 #>

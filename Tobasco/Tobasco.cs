@@ -1,13 +1,11 @@
 ﻿using EnvDTE;
-using EnvDTE80;
 using Microsoft.VisualStudio.Shell;
 using System;
 using System.Collections.Generic;
-using System.IO;
+using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Tobasco.FileBuilder;
+using Tobasco.Generation;
 using Tobasco.Manager;
 
 namespace Tobasco
@@ -18,13 +16,13 @@ namespace Tobasco
         private readonly DTE _dte;
         private readonly List<string> _templatePlaceholderList = new List<string>();
         private readonly string _templateFile;
-        public bool UseAutoFormatting { get; set; } = false;
+        private GenerationOptions _options;
 
         public static FileProcessor2 Create(object textTransformation)
         {
             DynamicTextTransformation2 transformation = DynamicTextTransformation2.Create(textTransformation);
             return new FileProcessor2(transformation);
-        }
+        }               
 
         private FileProcessor2(object textTransformation)
         {
@@ -52,8 +50,10 @@ namespace Tobasco
             _templateProjectItem = _dte.Solution.FindProjectItem(_templateFile);
         }
 
-        public void BeginProcessing(string path)
+        public void BeginProcessing(string path, Action<GenerationOptions> options)
         {
+            _options = new GenerationOptions();
+            options.Invoke(_options);
             System.Threading.Tasks.Task.Factory.StartNew(() =>
             {
                 try
@@ -67,18 +67,32 @@ namespace Tobasco
 
                     OutputPaneManager.WriteToOutputPane("Get output files.");
                     var outputFiles = FileOutputManager.ResolveSingleOutputFiles();                    
-
-                    foreach (var handlerFunc in EntityManager.EntityHandlers)
-                    {
-                        outputFiles.AddRange(FileOutputManager.ResolveEntityFiles(handlerFunc.Value(handlerFunc.Key)));
-                    }
                     
-                    foreach(var file in outputFiles)
-                    {
-                        processor.ProcessClassFile(file);
+                    foreach (var handlerFunc in EntityManager.EntityHandlers)
+                    {                        
+                        outputFiles.AddRange(FileOutputManager.ResolveEntityFiles(handlerFunc.Value(handlerFunc.Key)));                        
                     }
+
+                    if (_options.EntitiesToGenerate.Any())
+                    {
+                        foreach (var file in outputFiles.Where(x => _options.EntitiesToGenerate.Contains(x.Name)))
+                        {
+                            processor.ProcessClassFile(file);
+                        }
+                    }
+                    else
+                    {
+                        foreach (var file in outputFiles)
+                        {
+                            processor.ProcessClassFile(file);
+                        }
+                    }                   
+
                     processor.CleanTemplateFiles();
-                    processor.RemoveUnusedTemplateFiles();
+                    if (_options.CleanUnusedTxt4Files)
+                    {
+                        processor.RemoveUnusedTemplateFiles();
+                    }
                 }
                 catch (Exception ex)
                 {

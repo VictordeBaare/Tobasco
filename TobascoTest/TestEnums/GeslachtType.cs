@@ -1,4 +1,6 @@
-﻿namespace TobascoTest.TestEnums
+﻿using Tobasco;
+
+namespace TobascoTest.TestEnums
 {
     public enum GeslachtType
     {
