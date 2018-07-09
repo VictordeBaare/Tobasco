@@ -10,7 +10,7 @@ using Tobasco.Manager;
 
 namespace Tobasco
 {
-    public class FileProcessor2
+    public class TobascoGenerator
     {
         private readonly ProjectItem _templateProjectItem;
         private readonly DTE _dte;
@@ -18,13 +18,13 @@ namespace Tobasco
         private readonly string _templateFile;
         private GenerationOptions _options;
 
-        public static FileProcessor2 Create(object textTransformation)
+        public static TobascoGenerator Create(object textTransformation)
         {
             DynamicTextTransformation2 transformation = DynamicTextTransformation2.Create(textTransformation);
-            return new FileProcessor2(transformation);
+            return new TobascoGenerator(transformation);
         }               
 
-        private FileProcessor2(object textTransformation)
+        private TobascoGenerator(object textTransformation)
         {
             if (textTransformation == null)
             {
@@ -73,7 +73,7 @@ namespace Tobasco
                         outputFiles.AddRange(FileOutputManager.ResolveEntityFiles(handlerFunc.Value(handlerFunc.Key)));                        
                     }
 
-                    if (_options.EntitiesToGenerate.Any())
+                    if (_options.GenerateSubSet)
                     {
                         foreach (var file in outputFiles.Where(x => _options.EntitiesToGenerate.Contains(x.Name)))
                         {
@@ -86,9 +86,12 @@ namespace Tobasco
                         {
                             processor.ProcessClassFile(file);
                         }
-                    }                   
+                    }
 
-                    processor.CleanTemplateFiles();
+                    if (!_options.GenerateSubSet)
+                    {
+                        processor.CleanTemplateFiles();
+                    }
                     if (_options.CleanUnusedTxt4Files)
                     {
                         processor.RemoveUnusedTemplateFiles();

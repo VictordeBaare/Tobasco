@@ -73,7 +73,340 @@
     <Compile Include="DependencyInjection\RepositoryModule_Generated.cs">
       <DependentUpon>TestGenerator2.txt4</DependentUpon>
     </Compile>
+    <Compile Include="GeneratedEntity2\ChildCollectionObject_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedEntity2\ChildObject_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedEntity2\CPK10_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedEntity2\CPK11_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedEntity2\CPK12_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedEntity2\CPK13_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedEntity2\CPK14_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedEntity2\CPK15_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedEntity2\CPK16_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedEntity2\CPK17_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedEntity2\CPK18_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedEntity2\CPK19_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedEntity2\CPK1_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedEntity2\CPK20_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedEntity2\CPK21_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedEntity2\CPK222_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedEntity2\CPK22_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedEntity2\CPK23_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedEntity2\CPK24_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedEntity2\CPK25_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedEntity2\CPK26_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedEntity2\CPK27_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedEntity2\CPK28_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedEntity2\CPK29_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedEntity2\CPK2_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedEntity2\CPK30_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedEntity2\CPK31_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedEntity2\CPK32_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedEntity2\CPK33_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedEntity2\CPK34_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedEntity2\CPK35_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedEntity2\CPK36_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedEntity2\CPK37_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedEntity2\CPK38_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedEntity2\CPK39_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedEntity2\CPK3_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedEntity2\CPK40_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedEntity2\CPK41_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedEntity2\CPK42_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedEntity2\CPK43_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedEntity2\CPK44_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedEntity2\CPK45_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedEntity2\CPK46_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedEntity2\CPK47_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedEntity2\CPK48_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedEntity2\CPK49_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedEntity2\CPK4_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedEntity2\CPK50_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedEntity2\CPK51_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedEntity2\CPK52_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedEntity2\CPK5_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedEntity2\CPK6_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedEntity2\CPK7_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedEntity2\CPK8_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedEntity2\CPK9_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
     <Compile Include="GeneratedEntity2\CPK_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedEntity2\FileMetOvererving_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedEntity\ChildCollectionObject_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedEntity\ChildObject_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedEntity\CPK10_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedEntity\CPK11_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedEntity\CPK12_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedEntity\CPK13_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedEntity\CPK14_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedEntity\CPK15_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedEntity\CPK16_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedEntity\CPK17_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedEntity\CPK18_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedEntity\CPK19_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedEntity\CPK1_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedEntity\CPK20_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedEntity\CPK21_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedEntity\CPK222_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedEntity\CPK22_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedEntity\CPK23_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedEntity\CPK24_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedEntity\CPK25_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedEntity\CPK26_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedEntity\CPK27_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedEntity\CPK28_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedEntity\CPK29_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedEntity\CPK2_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedEntity\CPK30_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedEntity\CPK31_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedEntity\CPK32_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedEntity\CPK33_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedEntity\CPK34_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedEntity\CPK35_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedEntity\CPK36_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedEntity\CPK37_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedEntity\CPK38_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedEntity\CPK39_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedEntity\CPK3_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedEntity\CPK40_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedEntity\CPK41_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedEntity\CPK42_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedEntity\CPK43_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedEntity\CPK44_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedEntity\CPK45_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedEntity\CPK46_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedEntity\CPK47_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedEntity\CPK48_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedEntity\CPK49_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedEntity\CPK4_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedEntity\CPK50_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedEntity\CPK51_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedEntity\CPK52_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedEntity\CPK5_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedEntity\CPK6_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedEntity\CPK7_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedEntity\CPK8_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedEntity\CPK9_Generated.cs">
       <DependentUpon>TestGenerator2.txt4</DependentUpon>
     </Compile>
     <Compile Include="GeneratedEntity\CPK_Generated.cs">
@@ -81,6 +414,9 @@
     </Compile>
     <Compile Include="GeneratedEntity\DifferentBase.cs" />
     <Compile Include="GeneratedEntity\EntityBase.cs" />
+    <Compile Include="GeneratedEntity\FileMetOvererving_Generated.cs">
+      <DependentUpon>TestGenerator2.txt4</DependentUpon>
+    </Compile>
     <Compile Include="GeneratedRepositoy\ChildCollectionObjectRepository_Generated.cs">
       <DependentUpon>TestGenerator2.txt4</DependentUpon>
     </Compile>

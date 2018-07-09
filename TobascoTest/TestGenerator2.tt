@@ -14,12 +14,11 @@
 <# //System.Diagnostics.Debugger.Launch(); 
 #>
 <#
-	var processor = FileProcessor2.Create(this);
+	var processor = TobascoGenerator.Create(this);
     BuilderManager.Add("repositorykey", typeof(RepositoryOverrideBuilder));
 
 	processor.BeginProcessing(Host.ResolvePath("Xmls"), options =>
             {
-                options.CleanUnusedTxt4Files = false;
-				options.EntitiesToGenerate = new[] {"CPK"};
+                options.CleanUnusedTxt4Files = false;				
             });
 #>

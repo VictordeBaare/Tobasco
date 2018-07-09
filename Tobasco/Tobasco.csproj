@@ -115,7 +115,7 @@
     <Compile Include="FileBuilder\TableFile.cs" />
     <Compile Include="FileProcessor.cs" />
     <Compile Include="Generation\GenerationOptions.cs" />
-    <Compile Include="Tobasco.cs" />
+    <Compile Include="TobascoGenerator.cs" />
     <Compile Include="Generation\FileProcessor.cs" />
     <Compile Include="MainHandler.cs" />
     <Compile Include="Manager\BuilderManager.cs" />
