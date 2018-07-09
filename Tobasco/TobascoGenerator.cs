@@ -65,7 +65,6 @@ namespace Tobasco
                     loader.Load(path);
                     OutputPaneManager.WriteToOutputPane("Start generating.");
 
-                    OutputPaneManager.WriteToOutputPane("Get output files.");
                     var outputFiles = FileOutputManager.ResolveSingleOutputFiles();                    
                     
                     foreach (var handlerFunc in EntityManager.EntityHandlers)
@@ -75,6 +74,8 @@ namespace Tobasco
 
                     if (_options.GenerateSubSet)
                     {
+                        OutputPaneManager.WriteToOutputPane($"Generate a subset of the xmls. {string.Join(", ", _options.EntitiesToGenerate)}");
+
                         foreach (var file in outputFiles.Where(x => _options.EntitiesToGenerate.Contains(x.Name)))
                         {
                             processor.ProcessClassFile(file);
@@ -82,6 +83,8 @@ namespace Tobasco
                     }
                     else
                     {
+                        OutputPaneManager.WriteToOutputPane("Generate all the xmls.");
+
                         foreach (var file in outputFiles)
                         {
                             processor.ProcessClassFile(file);
@@ -90,10 +93,14 @@ namespace Tobasco
 
                     if (!_options.GenerateSubSet)
                     {
+                        OutputPaneManager.WriteToOutputPane("Clean existing .txt4 placeholders.");
+
                         processor.CleanTemplateFiles();
                     }
                     if (_options.CleanUnusedTxt4Files)
                     {
+                        OutputPaneManager.WriteToOutputPane("Remove existing old .txt4 placeholders.");
+
                         processor.RemoveUnusedTemplateFiles();
                     }
                 }

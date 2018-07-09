@@ -38,6 +38,7 @@ namespace Tobasco.Generation
 
             if (!FileExist(outputFile) || IsFileContentDifferent(outputFile))
             {
+                OutputPaneManager.WriteToOutputPane($"Process {outputFile.Name}");
                 ProcessFile(outputFile, placeHolder);
             }
             RegisterProcessedFile(outputFile);

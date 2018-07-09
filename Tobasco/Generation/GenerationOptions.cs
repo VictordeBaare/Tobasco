@@ -15,6 +15,6 @@ namespace Tobasco.Generation
         /// </summary>
         public string[] EntitiesToGenerate { get; set; } = new string[] { };
 
-        public bool GenerateSubSet { get { return EntitiesToGenerate.Any(); } }
+        public bool GenerateSubSet { get { return EntitiesToGenerate.Any(); } }        
     }
 }

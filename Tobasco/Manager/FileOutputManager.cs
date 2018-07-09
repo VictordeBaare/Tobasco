@@ -13,30 +13,15 @@ namespace Tobasco.Manager
             var outputFiles = new List<OutputFile>();
             if (MainInfoManager.EntityInformation.ConnectionFactory != null)
             {
-                OutputPaneManager.WriteToOutputPane("Add Connectionfactory file");
                 outputFiles.AddRange(ConnectionFactoryBuilder.Build());
-            }
-            else
-            {
-                OutputPaneManager.WriteToOutputPane("There is no connectionfactory defined");
             }
             if (MainInfoManager.EntityInformation.GenericRepository != null)
             {
-                OutputPaneManager.WriteToOutputPane("Add Genericrepository file");
                 outputFiles.AddRange(GenericRepositoryBuilder.Build());
-            }
-            else
-            {
-                OutputPaneManager.WriteToOutputPane("There is no genericrepository defined");
             }
             if (MainInfoManager.EntityInformation.DependencyInjection?.Modules != null)
             {
-                OutputPaneManager.WriteToOutputPane("Add file for dependency injection");
                 outputFiles.AddRange(MainInfoManager.EntityInformation.DependencyInjection.Modules.Select(x => DependencyInjectionBuilder.Build(x)));
-            }
-            else
-            {
-                OutputPaneManager.WriteToOutputPane("Do not add file for dependency injection");
             }
             return outputFiles;
         }
@@ -45,18 +30,14 @@ namespace Tobasco.Manager
         {
             var outputFiles = new List<OutputFile>();
 
-            OutputPaneManager.WriteToOutputPane($"Start adding files for {handler.Entity.Name}");
             outputFiles.AddRange(handler.GetEntityLocations.SelectMany(x => handler.GetClassBuilder(x).Build()));
             if (handler.GetRepository != null && handler.GetRepository.Generate)
             {
-                OutputPaneManager.WriteToOutputPane("Add repository file");
                 outputFiles.AddRange(handler.GetRepositoryBuilder.Build());
             }
-            OutputPaneManager.WriteToOutputPane("Add database files");
             outputFiles.AddRange(handler.GetDatabaseBuilder.Build());
             if (handler.GetMappers != null && handler.GetMappers.Generate)
             {
-                OutputPaneManager.WriteToOutputPane("Add Mapper files");
                 outputFiles.AddRange(handler.GetMappers.Mapper.SelectMany(x => handler.GetMapperBuilder.Build(x)));
             }
 

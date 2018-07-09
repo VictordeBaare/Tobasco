@@ -35,18 +35,18 @@ namespace Tobasco
             {
                 try
                 {
-                    OutputPaneManager.WriteToOutputPane("Load xmls.");
+                    OutputPaneManager.WriteToOutputPane("Load Tobasco xmls.");
                     XmlLoader loader = new XmlLoader();
                     loader.Load(path);
-                    OutputPaneManager.WriteToOutputPane("Start generating.");
+                    OutputPaneManager.WriteToOutputPane("Start generating files.");
 
-                    OutputPaneManager.WriteToOutputPane("Get output files.");
                     var outputFiles = FileOutputManager.ResolveSingleOutputFiles();                   
                     
                     foreach (var handlerFunc in EntityManager.EntityHandlers)
                     {
                         outputFiles.AddRange(FileOutputManager.ResolveEntityFiles(handlerFunc.Value(handlerFunc.Key)));
                     }
+
                     Process(outputFiles);
                 }
                 catch (Exception ex)
