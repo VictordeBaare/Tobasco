@@ -127,15 +127,16 @@
 	
 	%ChildCollectionReader%
 
-    var items = reader.Read((%ReaderParameters%) =&gt;
+		var items = reader.Read((%ReaderParameters%) =&gt;
     {
         %ChildReadDictionary%
-
-        %ChildCollectionReadDictionary%
+        
 
         return item;
     }, splitOn: "%SplitOn%");
-
+		
+    %ChildCollectionReadDictionary%
+		
     return items.ToDictionary(x =&gt; x.Id);        
 }</value>
   </data>
@@ -161,19 +162,16 @@
     return _genericRepository.ExecuteQueryMultiple("%GetByUIdStp%", parameters, x =&gt; Read(x).Values).SingleOrDefault();
 }</value>
   </data>
-  <data name="RepositoryGetFullyByIdChildCollectionReader" xml:space="preserve">
+	<data name="RepositoryGetFullyByIdChildCollectionReader" xml:space="preserve">
     <value>internal static Dictionary&lt;long, %EntityName%&gt; Read(GridReader reader)
 {
 	%ChildReader%
 	
 	%ChildCollectionReader%
 
-    var items = reader.Read((%EntityName% item, %EntityName% returnItem) =&gt;
-    {
-        %ChildCollectionReadDictionary%
-
-        return returnItem;
-    });
+    var items = reader.Read&lt;%EntityName%&gt;();
+		
+		%ChildCollectionReadDictionary%
 
     return items.ToDictionary(x =&gt; x.Id);        
 }</value>

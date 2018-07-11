@@ -76,15 +76,16 @@ namespace Tobasco.Properties {
         ///	
         ///	%ChildCollectionReader%
         ///
-        ///    var items = reader.Read((%ReaderParameters%) =&gt;
+        ///		var items = reader.Read((%ReaderParameters%) =&gt;
         ///    {
         ///        %ChildReadDictionary%
-        ///
-        ///        %ChildCollectionReadDictionary%
+        ///        
         ///
         ///        return item;
         ///    }, splitOn: &quot;%SplitOn%&quot;);
-        ///
+        ///		
+        ///    %ChildCollectionReadDictionary%
+        ///		
         ///    return items.ToDictionary(x =&gt; x.Id);        
         ///}.
         /// </summary>
@@ -141,12 +142,9 @@ namespace Tobasco.Properties {
         ///	
         ///	%ChildCollectionReader%
         ///
-        ///    var items = reader.Read((%EntityName% item, %EntityName% returnItem) =&gt;
-        ///    {
-        ///        %ChildCollectionReadDictionary%
-        ///
-        ///        return returnItem;
-        ///    });
+        ///    var items = reader.Read&lt;%EntityName%&gt;();
+        ///		
+        ///		%ChildCollectionReadDictionary%
         ///
         ///    return items.ToDictionary(x =&gt; x.Id);        
         ///}.

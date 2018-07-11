@@ -40,7 +40,7 @@ namespace Tobasco.Model.Builders.RepositoryBuilders
 			parameters.Add(RepositoryBuilderConstants.ChildReadDictionary, GetChildReadAction());
 			parameters.Add(RepositoryBuilderConstants.ChildReader, GetChildReaders());
 			parameters.Add(RepositoryBuilderConstants.ChildCollectionReader, GetChildCollectionReaders());
-			parameters.Add(RepositoryBuilderConstants.ChildCollectionReadDictionary, GetChildCollectionReadAction("returnItem"));
+			parameters.Add(RepositoryBuilderConstants.ChildCollectionReadDictionary, GetChildCollectionReadAction());
 			return parameters;
 		}
 
@@ -49,7 +49,7 @@ namespace Tobasco.Model.Builders.RepositoryBuilders
 			var parameters = base.GetParatmers();
 			parameters.Add(RepositoryBuilderConstants.ChildCollectionReader, GetChildCollectionReaders());
 			parameters.Add(RepositoryBuilderConstants.ChildReader, GetChildReaders());
-			parameters.Add(RepositoryBuilderConstants.ChildCollectionReadDictionary, GetChildCollectionReadAction("item"));
+			parameters.Add(RepositoryBuilderConstants.ChildCollectionReadDictionary, GetChildCollectionReadAction());
 			parameters.Add(RepositoryBuilderConstants.ChildReadDictionary, GetChildReadAction());
 			parameters.Add(RepositoryBuilderConstants.SplitOn, GetSplitOn());
 			parameters.Add(RepositoryBuilderConstants.ReaderParameters, GetParameterReader());
@@ -60,7 +60,7 @@ namespace Tobasco.Model.Builders.RepositoryBuilders
 		{
 			var list = new List<string>();
 
-			foreach (var prop in GetChildCollectionProperties)
+			foreach (var prop in GetChildCollectionProperties.OrderBy(p => p.Name))
 			{
 				list.Add($"var {prop.Name}Dict = {Entity.GetRepositoryOnName(prop.DataType.Type)}.Read(reader);");
 			}
@@ -92,9 +92,9 @@ namespace Tobasco.Model.Builders.RepositoryBuilders
 			foreach (var prop in GetChildProperties)
 			{
 				var builder = new StringBuilder();
-				builder.AppendLine($"if ({prop.Name}Dict.ContainsKey({prop.Name}))");
+				builder.AppendLine($"if ({prop.Name}.HasValue && {prop.Name}Dict.ContainsKey({prop.Name}.Value))");
 				builder.AppendLine("{");
-				builder.AppendLine($"item.{prop.Name} = {prop.Name}Dict[{prop.Name}];");
+				builder.AppendLine($"item.{prop.Name} = {prop.Name}Dict[{prop.Name}.Value];");
 				builder.AppendLine("}");
 				list.Add(builder.ToString());
 			}
@@ -112,18 +112,26 @@ namespace Tobasco.Model.Builders.RepositoryBuilders
 			return list;
 		}
 
-		private IEnumerable<string> GetChildCollectionReadAction(string itemName)
+		private IEnumerable<string> GetChildCollectionReadAction()
 		{
 			var list = new List<string>();
-
-			foreach (var prop in GetChildCollectionProperties)
+			var childCollectionProperties = GetChildCollectionProperties;
+			if (childCollectionProperties != null && childCollectionProperties.Any())
 			{
 				var builder = new StringBuilder();
-				builder.AppendLine($"foreach (var obj in {prop.Name}Dict.Values.Where(x => x.{GetChildReferenceProperty(prop).Name} == {itemName}.Id))");
+				builder.AppendLine("foreach (var item in items)");
 				builder.AppendLine("{");
-				builder.AppendLine($"{itemName}.{prop.Name}.Add(obj);");
-				builder.AppendLine("}");
 				list.Add(builder.ToString());
+				foreach (var prop in childCollectionProperties)
+				{
+					builder = new StringBuilder();
+					builder.AppendLine($"foreach (var obj in {prop.Name}Dict.Values.Where(x => x.{GetChildReferenceProperty(prop).Name} == item.Id))");
+					builder.AppendLine("{");
+					builder.AppendLine($"item.{prop.Name}.Add(obj);");
+					builder.AppendLine("}");
+					list.Add(builder.ToString());
+				}
+				list.Add("}");
 			}
 
 			return list;
@@ -135,12 +143,12 @@ namespace Tobasco.Model.Builders.RepositoryBuilders
 
 			foreach (var prop in GetChildProperties)
 			{
-				list.Add(prop.Name);
+				list.Add(prop.Name + "Id");
 			}
 
 			foreach (var prop in GetChildReadonlyProperties)
 			{
-				list.Add(prop.Name);
+				list.Add(prop.Name + "Id");
 			}
 
 			return string.Join(",", list);
@@ -154,12 +162,12 @@ namespace Tobasco.Model.Builders.RepositoryBuilders
 
 			foreach (var prop in GetChildProperties)
 			{
-				list.Add($"long {prop.Name}");
+				list.Add($"long? {prop.Name}");
 			}
 
 			foreach (var prop in GetChildReadonlyProperties)
 			{
-				list.Add($"long {prop.Name}");
+				list.Add($"long? {prop.Name}");
 			}
 
 			return string.Join(",", list);
