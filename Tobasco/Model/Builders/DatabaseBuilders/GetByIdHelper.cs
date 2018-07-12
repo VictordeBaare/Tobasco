@@ -43,6 +43,7 @@ namespace Tobasco.Model.Builders.DatabaseBuilders
 			{
 				return _getChildCollectionByParentId ?? (_getChildCollectionByParentId = Entity.Properties
 					.Where(x => x.DataType.Datatype == Datatype.ChildCollection)
+					.OrderBy(x => x.Name)
 					.Select(x => $"EXEC {x.DataType.Type}_GetFullBy{Entity.Name}Id @id"));
 			}
 		}
@@ -73,6 +74,7 @@ namespace Tobasco.Model.Builders.DatabaseBuilders
 			{
 				return _getChild_ByIdStp ?? (_getChild_ByIdStp = Entity.GetSqlProperties
 					.Where(x => x.Property.DataType.Datatype == Datatype.ReadonlyChild || x.Property.DataType.Datatype == Datatype.Child)
+					.OrderBy(x => x.Property.Name)
 					.Select(x => $"EXEC [dbo].{x.Property.DataType.Type}_GetFullById @{x.SelectSqlParameterNaam};"));
 			}
 		}
