@@ -67,6 +67,26 @@ anymonous.TestChildProp5 = TestChildProp5;
 anymonous.TestChildProp6 = TestChildProp6;
 anymonous.TestChildProp7Id = TestChildProp7?.Id;
 	return anymonous;
-}	
+}
+
+public override IEnumerable<EntityBase> GetChildren()
+{
+foreach (var item in base.GetChildren())
+{									   
+	yield return item;					   
+}									   
+if(TestChildProp8 !=null)
+{
+foreach (var item in TestChildProp8)
+{
+yield return item;
+}
+}
+if(TestChildProp7 !=null)
+{
+yield return TestChildProp7;
+}
+}
+	
 	}
 }

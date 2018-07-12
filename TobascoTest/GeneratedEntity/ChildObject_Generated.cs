@@ -21,6 +21,15 @@ public string TestChildProp1
 	dynamic anymonous = base.ToAnonymous();
 	anymonous.TestChildProp1 = TestChildProp1;
 	return anymonous;
-}	
+}
+
+public override IEnumerable<EntityBase> GetChildren()
+{
+foreach (var item in base.GetChildren())
+{									   
+	yield return item;					   
+}									   
+}
+	
 	}
 }

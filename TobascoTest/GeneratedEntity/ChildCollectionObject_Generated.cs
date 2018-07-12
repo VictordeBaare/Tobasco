@@ -35,6 +35,15 @@ public long FileMetOverervingId
 anymonous.TestChildProp2 = TestChildProp2;
 anymonous.FileMetOverervingId = FileMetOverervingId;
 	return anymonous;
-}	
+}
+
+public override IEnumerable<EntityBase> GetChildren()
+{
+foreach (var item in base.GetChildren())
+{									   
+	yield return item;					   
+}									   
+}
+	
 	}
 }

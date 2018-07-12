@@ -3,55 +3,58 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Dynamic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TobascoTest.GeneratedEntity
 {
-    public class EntityBase : INotifyPropertyChanged
-    {
-        public long Id { get; set; }
+	public class EntityBase : INotifyPropertyChanged
+	{
+		public long Id { get; set; }
 
-        public string ModifiedBy { get; set; }
-        public DateTime ModifiedOn { get; set; }
+		public string ModifiedBy { get; set; }
+		public DateTime ModifiedOn { get; set; }
 
-        public DateTime MutatieDatumTijd { get; set; }
+		public DateTime MutatieDatumTijd { get; set; }
 
-        public byte[] RowVersion { get; set; }
+		public byte[] RowVersion { get; set; }
 
-        public bool IsDirty { get; private set; }
+		public bool IsDirty { get; private set; }
 
-        public bool IsNew { get { return Id == 0; } }
+		public bool IsNew { get { return Id == 0; } }
 
-        public virtual bool IsDeleted { get; protected set; } = false;
+		public virtual bool IsDeleted { get; protected set; } = false;
 
-        public event PropertyChangedEventHandler PropertyChanged;
+		public event PropertyChangedEventHandler PropertyChanged;
 
-        protected void SetField<T>(ref T field, T value, string propertyName)
-        {
-            if (!EqualityComparer<T>.Default.Equals(field, value))
-            {
-                field = value;
-                IsDirty = true;
-                OnPropertyChanged(propertyName);
-            }
-        }
+		protected void SetField<T>(ref T field, T value, string propertyName)
+		{
+			if (!EqualityComparer<T>.Default.Equals(field, value))
+			{
+				field = value;
+				IsDirty = true;
+				OnPropertyChanged(propertyName);
+			}
+		}
 
-        public virtual ExpandoObject ToAnonymous() { return new ExpandoObject(); }
+		public virtual ExpandoObject ToAnonymous() { return new ExpandoObject(); }
 
-        protected virtual void OnPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
+		protected virtual void OnPropertyChanged(string propertyName)
+		{
+			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+		}
 
-        public void MarkOld()
-        {
-            IsDirty = false;
-        }
+		public void MarkOld()
+		{
+			IsDirty = false;
+		}
 
-        public void MarkDeleted()
-        {
-            IsDeleted = true;
-        }
-    }
+		public void MarkDeleted()
+		{
+			IsDeleted = true;
+		}
+
+		public virtual IEnumerable<EntityBase> GetChildren()
+		{
+			return Enumerable.Empty<EntityBase>();
+		}
+	}
 }

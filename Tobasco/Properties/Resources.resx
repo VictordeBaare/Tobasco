@@ -126,7 +126,9 @@
 	dynamic anymonous = base.ToAnonymous();
 	%AnymonousPropertySet%
 	return anymonous;
-}</value>
+}
+
+%GetChildrenOverrideMethod%</value>
   </data>
   <data name="ClassFile" xml:space="preserve">
     <value>%Namespaces%
