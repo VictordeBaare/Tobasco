@@ -148,6 +148,29 @@ BEGIN
 	 WHERE %TableName%.Id = @id;
 END;</value>
   </data>
+	<data name="GetFullObjectByEntityWithUid" xml:space="preserve">
+    <value>CREATE PROCEDURE [dbo].%TableName%_GetFullById
+	@id bigint
+AS
+BEGIN
+            SET NOCOUNT ON;
+
+	%DeclareChilds%
+
+	%Childs_GetById%
+
+	%ChildCollection_GetByParentIdStp%
+
+	SELECT Id,
+				 Uid,
+		   [RowVersion],
+           %StpPropertyNames%
+		   [ModifiedBy],
+		   [ModifiedOn]
+	  FROM %TableName%
+	 WHERE %TableName%.Id = @id;
+END;</value>
+  </data>
   <data name="GetFullObjectByEntityUid" xml:space="preserve">
     <value>CREATE PROCEDURE [dbo].%TableName%_GetFullByUId
 	@UId uniqueidentifier
