@@ -27,12 +27,12 @@ namespace Tobasco.Model.Builders.DatabaseBuilders
         {
             var parameters = new TemplateParameter();
             parameters.Add(SqlConstants.TableName, Entity.Name);
-            parameters.Add(SqlConstants.TableProperties, string.Join("," + Environment.NewLine, GetTableProperties()));
-            parameters.Add(SqlConstants.StpPropertyNames, string.Join("," + Environment.NewLine, GetSqlValueParameterNames()));
-            //parameters.Add(SqlConstants.StpMergeSourcePropertyNames, GetSqlParameterNames("[Source]."));
-            parameters.Add(SqlConstants.StpMergeOutputAction, string.Join("," + Environment.NewLine, GetMergeOuputActions()));
-            parameters.Add(SqlConstants.UpdateSetTableParemeters, string.Join("," + Environment.NewLine, GetSqlUpdateParameters()));
-            //parameters.Add(SqlConstants.MergeOutputParameters, GetSqlParameterNames("#output."));
+            parameters.Add(SqlConstants.TableProperties, string.Join(Environment.NewLine, GetTableProperties()));
+            parameters.Add(SqlConstants.StpPropertyNames, string.Join("," +Environment.NewLine, GetSqlParameterNames()));
+            parameters.Add(SqlConstants.StpMergeSourcePropertyNames, string.Join("," + Environment.NewLine, GetMergeInsertParameters()));
+            parameters.Add(SqlConstants.StpMergeOutputAction, string.Join(Environment.NewLine, GetMergeOuputActions()));
+            parameters.Add(SqlConstants.UpdateSetTableParemeters, string.Join(Environment.NewLine, GetSqlUpdateParameters()));
+            parameters.Add(SqlConstants.MergeOutputParameters, GetMergeOutputParameters());
             return parameters;
         }
 
@@ -43,13 +43,27 @@ namespace Tobasco.Model.Builders.DatabaseBuilders
             return sqlParameters.Select(x => $",IIF($action = 'DELETE', deleted.{x.SelectSqlParameterNaam}, inserted.{x.SelectSqlParameterNaam})").ToList();
         }
 
+        private List<string> GetMergeInsertParameters()
+        {
+            var sqlparams = GetSqlParameterNames();
+
+            return sqlparams.Select(x => $"[Source].{x}").ToList();
+        }
+
+        private List<string> GetMergeOutputParameters()
+        {
+            var sqlParams = GetSqlParameterNames();
+
+            return sqlParams.Select(x => $"#output.{x}").ToList();
+        }
+
         public override List<string> GetSqlUpdateParameters()
         {
             var list = new List<string>();
 
             foreach (var selectSqlProperty in GetNonChildCollectionProperties)
             {
-                list.Add($"[Target].{selectSqlProperty.SelectSqlParameterNaam} = [Source].{selectSqlProperty.SelectSqlParameterNaam},");
+                list.Add($"{selectSqlProperty.SelectSqlParameterNaam} = [Source].{selectSqlProperty.SelectSqlParameterNaam},");
             }
 
             return list;

@@ -148,7 +148,7 @@ BEGIN
 	 WHERE %TableName%.Id = @id;
 END;</value>
   </data>
-	<data name="GetFullObjectByEntityWithUid" xml:space="preserve">
+  <data name="GetFullObjectByEntityWithUid" xml:space="preserve">
     <value>CREATE PROCEDURE [dbo].%TableName%_GetFullById
 	@id bigint
 AS
@@ -493,8 +493,6 @@ BEGIN
 	      THEN INSERT
 					 (
 					 %StpPropertyNames%
-					 ModifiedBy,
-					 ModifiedOn
 					 )
 			   VALUES
 					 (

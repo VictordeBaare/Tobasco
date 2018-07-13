@@ -76,7 +76,7 @@ namespace Tobasco
                     {
                         OutputPaneManager.WriteToOutputPane($"Generate a subset of the xmls. {string.Join(", ", _options.EntitiesToGenerate)}");
 
-                        foreach (var file in outputFiles.Where(x => _options.EntitiesToGenerate.Contains(x.Name)))
+                        foreach (var file in outputFiles.Where(x => _options.EntitiesToGenerate.Contains(x.Name.Replace("_CRUD", ""))))
                         {
                             processor.ProcessClassFile(file);
                         }
