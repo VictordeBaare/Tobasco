@@ -161,6 +161,65 @@ namespace Tobasco.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to CREATE PROCEDURE [dbo].%TableName%_GetFullByIds
+        ///	@Ids AS [dbo].BigintType READONLY
+        ///AS
+        ///BEGIN
+        ///            SET NOCOUNT ON;
+        ///	%DeclareChildIdLists%
+        ///	%Childs_GetByIds%
+        ///
+        ///	%ChildCollection_GetByIds%	
+        ///
+        ///	SELECT Id,
+        ///		   [RowVersion],
+        ///           %StpPropertyNames%
+        ///		   [ModifiedBy],
+        ///		   [ModifiedOn]
+        ///	  FROM %TableName%
+        ///	  WHERE EXISTS (SELECT 1
+        ///                     FROM @Ids
+        ///                    WHERE [@Ids].Id = %TableName%.Id
+        ///                  );
+        ///END;.
+        /// </summary>
+        internal static string GetFullObjectByIds {
+            get {
+                return ResourceManager.GetString("GetFullObjectByIds", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CREATE PROCEDURE [dbo].%TableName%_GetFullByIds
+        ///	@Ids AS [dbo].BigintType READONLY
+        ///AS
+        ///BEGIN
+        ///            SET NOCOUNT ON;
+        ///	%DeclareChildIdLists%
+        ///	%Childs_GetByIds%
+        ///
+        ///	%ChildCollection_GetByIds%	
+        ///
+        ///	SELECT Id,
+        ///				Uid,	
+        ///		   [RowVersion],
+        ///           %StpPropertyNames%
+        ///		   [ModifiedBy],
+        ///		   [ModifiedOn]
+        ///	  FROM %TableName%
+        ///	  WHERE EXISTS (SELECT 1
+        ///                     FROM @Ids
+        ///                    WHERE [@Ids].Id = %TableName%.Id
+        ///                  );
+        ///END;.
+        /// </summary>
+        internal static string GetFullObjectByIdsWithUid {
+            get {
+                return ResourceManager.GetString("GetFullObjectByIdsWithUid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to CREATE PROCEDURE [dbo].[%TableName%_Delete]
         ///		@Id [bigint]
         ///       ,@RowVersion [rowversion]
@@ -217,24 +276,43 @@ namespace Tobasco.Properties {
         ///AS
         ///BEGIN
         ///
-        ///	%DeclareChilds%
-        ///
-        ///	%Childs_GetById%
-        ///
-        ///	%ChildCollection_GetByParentIdStp%
-        ///
-        ///	SELECT Id,
-        ///		   [RowVersion],
-        ///           %StpPropertyNames%
-        ///		   [ModifiedBy],
-        ///		   [ModifiedOn]
+        ///	DECLARE @Ids AS [dbo].BigintType;
+        ///	INSERT INTO @Ids
+        ///	SELECT Id
         ///	  FROM %TableName%
         ///	 WHERE %TableName%.%ReferenceName% = @%ReferenceName%;
+        ///
+        ///	EXEC [dbo].%TableName%_GetFullByIds @Ids;
         ///END;.
         /// </summary>
         internal static string SqlGetByReferenceId {
             get {
                 return ResourceManager.GetString("SqlGetByReferenceId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CREATE PROCEDURE [dbo].%TableName%_GetFullBy%ReferenceName%s
+        ///	@%ReferenceName% [dbo].BigintType READONLY
+        ///AS
+        ///BEGIN
+        ///
+        ///	DECLARE @Ids AS [dbo].BigintType;
+        ///	INSERT INTO @Ids
+        ///	SELECT  %TableName%.Id
+        ///	  FROM %TableName%
+        ///	 WHERE EXISTS( 
+        ///						SELECT 1 
+        ///						FROM @%ReferenceName%
+        ///						WHERE %TableName%.%ReferenceName% = [@%ReferenceName%].Id
+        ///					);
+        ///
+        ///	EXEC [dbo].%TableName%_GetFullByIds @Ids;
+        ///END;.
+        /// </summary>
+        internal static string SqlGetByReferenceIdList {
+            get {
+                return ResourceManager.GetString("SqlGetByReferenceIdList", resourceCulture);
             }
         }
         

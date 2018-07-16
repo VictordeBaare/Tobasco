@@ -115,6 +115,8 @@
     <Compile Include="FileBuilder\TableFile.cs" />
     <Compile Include="FileProcessor.cs" />
     <Compile Include="Generation\GenerationOptions.cs" />
+    <Compile Include="Model\Builders\DatabaseBuilders\GetByIdListBuilder.cs" />
+    <Compile Include="Model\Builders\DatabaseBuilders\GetByReferenceIdListBuilder.cs" />
     <Compile Include="TobascoGenerator.cs" />
     <Compile Include="Generation\FileProcessor.cs" />
     <Compile Include="MainHandler.cs" />
