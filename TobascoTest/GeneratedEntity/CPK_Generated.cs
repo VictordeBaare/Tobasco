@@ -16,6 +16,12 @@ public string Training
 	get { return _training; }
 	set { SetField(ref _training, value, nameof(Training)); }
 }
+private CPK1 _aaa;
+public CPK1 aaa
+{
+	get { return _aaa; }
+	set { SetField(ref _aaa, value, nameof(aaa)); }
+}
 private string _duur;
 public string Duur
 {
@@ -32,6 +38,7 @@ public string Kosten
 {
 	dynamic anymonous = base.ToAnonymous();
 	anymonous.Training = Training;
+anymonous.aaaId = aaa.Id;
 anymonous.Duur = Duur;
 anymonous.Kosten = Kosten;
 	return anymonous;
@@ -43,6 +50,10 @@ foreach (var item in base.GetChildren())
 {									   
 	yield return item;					   
 }									   
+if(aaa !=null)
+{
+yield return aaa;
+}
 }
 	
 	}

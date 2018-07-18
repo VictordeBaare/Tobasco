@@ -13,6 +13,8 @@ namespace TobascoTest.GeneratedEntity2
 		[Required(ErrorMessage = @"Training is required")]
 [StringLength(100, ErrorMessage = @"Maximum length is 100 for Training")]
 public string Training { get; set; }
+[Required(ErrorMessage = @"aaa is required")]
+public CPK1 aaa { get; set; }
 [Required(ErrorMessage = @"Duur is required")]
 [StringLength(100, ErrorMessage = @"Maximum length is 100 for Duur")]
 public string Duur { get; set; }

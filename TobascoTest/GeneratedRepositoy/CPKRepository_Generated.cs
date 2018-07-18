@@ -27,6 +27,30 @@ public CPK GetById(long id)
         {
             return _genericRepository.GetById(id);
         }
-	
+
+public CPK GetFullObjectById(long id)
+{
+    var parameters = new DynamicParameters();
+    parameters.Add("id", id);
+    return _genericRepository.ExecuteQueryMultiple("[dbo].[CPK_GetFullById]", parameters, x => Read(x).Values).SingleOrDefault();
+}
+internal static Dictionary<long, CPK> Read(GridReader reader)
+{
+	var aaaDict = CPK1Repository.Read(reader);
+
+		var items = reader.Read((CPK item,long? aaa) =>
+    {
+        if (aaa.HasValue && aaaDict.ContainsKey(aaa.Value))
+{
+item.aaa = aaaDict[aaa.Value];
+}
+
+        
+
+        return item;
+    }, splitOn: "aaaId");
+		
+    return items.ToDictionary(x => x.Id);        
+}	
 	}
 }

@@ -2,6 +2,7 @@
 	 [Id]			 bigint	IDENTITY (1,1)     NOT NULL
 	,[RowVersion]    rowversion         	   NOT NULL
 	,Training nvarchar(100) NOT NULL
+,aaaId bigint NOT NULL
 ,Duur nvarchar(100) NOT NULL
 ,Kosten nvarchar(100) NOT NULL
 	,[ModifiedBy]	 nvarchar(256)			   NOT NULL
@@ -11,12 +12,15 @@
 	,[ModifiedOnUTC] datetime2(7)			   NOT NULL
 	 CONSTRAINT [DF_CPK_ModifiedOnUTC] DEFAULT SYSUTCDATETIME()
 	,CONSTRAINT [PK_CPK] PRIMARY KEY CLUSTERED (Id ASC)
+	 ,CONSTRAINT [FK_CPK_CPK1_Id] FOREIGN KEY (aaaId) REFERENCES [dbo].[CPK1] ([Id])
+
 );
 GO
 CREATE TABLE [dbo].[CPK_historie] (
     [Id]                          bigint             NOT NULL
    ,[RowVersion]                  binary(8)          NOT NULL
    ,Training nvarchar(100) NOT NULL
+,aaaId bigint NOT NULL
 ,Duur nvarchar(100) NOT NULL
 ,Kosten nvarchar(100) NOT NULL   
    ,[ModifiedBy]                  nvarchar (256)     NOT NULL
@@ -48,6 +52,7 @@ BEGIN
 		   Id,
 [RowVersion],
 Training,
+aaaId,
 Duur,
 Kosten,
 ModifiedBy,
@@ -60,6 +65,7 @@ DeletedAt
 		  Deleted.Id,
 Deleted.[RowVersion],
 Deleted.Training,
+Deleted.aaaId,
 Deleted.Duur,
 Deleted.Kosten,
 Deleted.ModifiedBy,
@@ -85,6 +91,7 @@ BEGIN
            Id,
 [RowVersion],
 Training,
+aaaId,
 Duur,
 Kosten,
 ModifiedBy,
@@ -96,6 +103,7 @@ DeletedAt
 	SELECT 		  Deleted.Id,
 Deleted.[RowVersion],
 Deleted.Training,
+Deleted.aaaId,
 Deleted.Duur,
 Deleted.Kosten,
 Deleted.ModifiedBy,
@@ -110,6 +118,8 @@ GO
 EXEC sp_addextendedproperty N'Description', 'CPK', 'SCHEMA', N'dbo', 'TABLE', N'CPK', NULL, NULL
 GO
 EXEC sp_addextendedproperty N'Description', 'This is Training', 'SCHEMA', N'dbo', 'TABLE', N'CPK', 'COLUMN', N'Training'
+GO
+EXEC sp_addextendedproperty N'Description', 'This is aaa', 'SCHEMA', N'dbo', 'TABLE', N'CPK', 'COLUMN', N'aaaId'
 GO
 EXEC sp_addextendedproperty N'Description', 'This is Duur', 'SCHEMA', N'dbo', 'TABLE', N'CPK', 'COLUMN', N'Duur'
 GO
@@ -129,6 +139,8 @@ GO
 EXEC sp_addextendedproperty N'Description', 'CPK', 'SCHEMA', N'dbo', 'TABLE', N'CPK_historie', NULL, NULL
 GO
 EXEC sp_addextendedproperty N'Description', 'This is Training', 'SCHEMA', N'dbo', 'TABLE', N'CPK_historie', 'COLUMN', N'Training'
+GO
+EXEC sp_addextendedproperty N'Description', 'This is aaa', 'SCHEMA', N'dbo', 'TABLE', N'CPK_historie', 'COLUMN', N'aaaId'
 GO
 EXEC sp_addextendedproperty N'Description', 'This is Duur', 'SCHEMA', N'dbo', 'TABLE', N'CPK_historie', 'COLUMN', N'Duur'
 GO
@@ -156,6 +168,7 @@ AS
 	    (Id,
 		 [RowVersion],
 		Training,
+aaaId,
 Duur,
 Kosten,
 ModifiedBy,
@@ -169,6 +182,7 @@ ModifiedOnUTC,
 		SELECT Id,
 			   [RowVersion],
 			  Training,
+aaaId,
 Duur,
 Kosten,
 ModifiedBy,
@@ -184,6 +198,7 @@ ModifiedOnUTC,
 		SELECT Id,
 			   [RowVersion],
 			   Training,
+aaaId,
 Duur,
 Kosten,
 ModifiedBy,
@@ -198,6 +213,7 @@ ModifiedOnUTC,
 		(Id,
 		 [RowVersion],
 		Training,
+aaaId,
 Duur,
 Kosten,
 ModifiedBy,
@@ -212,6 +228,7 @@ ModifiedOnUTC,
 		SELECT Id,
 			   [RowVersion],
 			   Training,
+aaaId,
 Duur,
 Kosten,
 ModifiedBy,
@@ -228,6 +245,7 @@ ModifiedOnUTC,
 	SELECT Id,
            [RowVersion],
 		  Training,
+aaaId,
 Duur,
 Kosten,
 ModifiedBy,

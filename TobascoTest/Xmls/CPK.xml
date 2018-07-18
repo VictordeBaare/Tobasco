@@ -16,11 +16,25 @@
       </Namespaces>
     </EntityLocation>
   </EntityLocations>
+    <Database project="Database">
+        <StoredProcedures folder="Stp" generate="true">
+            <Insert generate="true"></Insert>
+            <Update generate="true"></Update>
+            <Delete generate="true"></Delete>
+            <GetById generate="true"></GetById>
+            <Merge generate="false"></Merge>
+        </StoredProcedures>
+        <Tables folder="Table" generate="true">
+            <Historie generate="true"></Historie>
+        </Tables>
+    </Database>
   <Properties>
     <Property name="Training" required="true">
       <DataType name="String" size="100"></DataType>
     </Property>
-
+      <Property name="aaa" required="true">
+          <DataType name="ReadonlyChild" type="CPK1"></DataType>
+      </Property>
     <Property name="Duur" required="true">
       <DataType name="String" size="100"></DataType>
     </Property>

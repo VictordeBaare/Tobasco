@@ -16,7 +16,7 @@ namespace Tobasco.Model.Builders.RepositoryBuilders
 		public string Build()
 		{
 			var template = new Template();
-			if (GetChildProperties.Any())
+			if (GetChildProperties.Any() || GetChildReadonlyProperties.Any())
 			{
 				template.SetTemplate(RepositoryResources.RepositoryGetFullByIdReader);
 				template.Fill(GetParatmers());
@@ -98,15 +98,15 @@ namespace Tobasco.Model.Builders.RepositoryBuilders
 				builder.AppendLine("}");
 				list.Add(builder.ToString());
 			}
-
+            //TODO check de parameters op required
 			foreach (var prop in GetChildReadonlyProperties)
 			{
-				var builder = new StringBuilder();
-				builder.AppendLine($"if ({prop.Name}Dict.ContainsKey({prop.Name}))");
-				builder.AppendLine("{");
-				builder.AppendLine($"item.{prop.Name} = {prop.Name}Dict[{prop.Name}];");
-				builder.AppendLine("}");
-				list.Add(builder.ToString());
+                    var builder = new StringBuilder();
+                    builder.AppendLine($"if ({prop.Name}.HasValue && {prop.Name}Dict.ContainsKey({prop.Name}.Value))");
+                    builder.AppendLine("{");
+                    builder.AppendLine($"item.{prop.Name} = {prop.Name}Dict[{prop.Name}.Value];");
+                    builder.AppendLine("}");
+                    list.Add(builder.ToString());			
 			}
 
 			return list;

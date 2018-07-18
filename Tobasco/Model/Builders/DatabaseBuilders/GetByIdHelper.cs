@@ -26,7 +26,8 @@ namespace Tobasco.Model.Builders.DatabaseBuilders
 		{
 			var parameters = new TemplateParameter();
 			parameters.Add(SqlConstants.StpPropertyNames,
-				GetNonChildCollectionProperties.OrderByDescending(x => x.Property.DataType.Datatype != Datatype.Child)
+				GetNonChildCollectionProperties.OrderByDescending(x => x.Property.DataType.Datatype != Datatype.ReadonlyChild)
+                .ThenByDescending(x => x.Property.DataType.Datatype != Datatype.Child)
 				.ThenBy(x => x.Property.Name)
 				.Select(x => $"{x.SelectSqlParameterNaam},"));
 			parameters.Add(SqlConstants.DeclareChilds, DeclareChilds);
