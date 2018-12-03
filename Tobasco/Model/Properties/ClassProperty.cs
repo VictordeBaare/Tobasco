@@ -131,6 +131,9 @@ namespace Tobasco.Model.Properties
                         case Datatype.FlagEnum:
                             _getValueType = $"{_property.DataType.Type}{isRequired}";
                             break;
+                        case Datatype.Time:
+                            _getValueType = $"TimeSpan{isRequired}";
+                            break;
                         default:
                             throw new Exception("Value type kon niet bepaald worden.");
                     }
@@ -140,6 +143,6 @@ namespace Tobasco.Model.Properties
             }
         }
 
-        
+
     }
 }

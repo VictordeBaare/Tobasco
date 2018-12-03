@@ -153,10 +153,12 @@ namespace Tobasco.Model.DatabaseProperties
                         return "uniqueidentifier";
                     case Datatype.ByteArray:
                         return "varbinary(max)";
+                    case Datatype.Time:
+                        return "time";
                     default:
                         throw new Exception("Value type could not be determined.");
                 }
-            }            
+            }
         }
 
         protected virtual string GetDbValueType
