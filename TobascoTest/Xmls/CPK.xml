@@ -21,7 +21,7 @@
             <Insert generate="true"></Insert>
             <Update generate="true"></Update>
             <Delete generate="true"></Delete>
-            <GetById generate="true"></GetById>
+            <GetById generate="false"></GetById>
             <Merge generate="false"></Merge>
         </StoredProcedures>
         <Tables folder="Table" generate="true">

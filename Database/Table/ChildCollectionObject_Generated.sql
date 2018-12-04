@@ -44,7 +44,7 @@ CREATE NONCLUSTERED INDEX IX_ChildCollectionObject_FileMetOverervingId ON [dbo].
 GO
 
 GO
-CREATE TRIGGER [dbo].tu_ChildCollectionObject
+CREATE TRIGGER [dbo].[tu_ChildCollectionObject]
             ON [dbo].ChildCollectionObject
            FOR UPDATE
 AS
@@ -84,7 +84,7 @@ NULL
       FROM Deleted;
 END;
 GO
-CREATE TRIGGER [dbo].td_ChildCollectionObject
+CREATE TRIGGER [dbo].[td_ChildCollectionObject]
             ON [dbo].ChildCollectionObject
 		   FOR DELETE
 AS

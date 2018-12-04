@@ -33,7 +33,7 @@ CREATE NONCLUSTERED INDEX IX_CPK52_historie_Id
 GO
 
 GO
-CREATE TRIGGER [dbo].tu_CPK52
+CREATE TRIGGER [dbo].[tu_CPK52]
             ON [dbo].CPK52
            FOR UPDATE
 AS
@@ -70,7 +70,7 @@ NULL
       FROM Deleted;
 END;
 GO
-CREATE TRIGGER [dbo].td_CPK52
+CREATE TRIGGER [dbo].[td_CPK52]
             ON [dbo].CPK52
 		   FOR DELETE
 AS

@@ -562,7 +562,7 @@ namespace Tobasco.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to CREATE TRIGGER [dbo].td_%TableName%
+        ///   Looks up a localized string similar to CREATE TRIGGER [dbo].[td_%TableName%]
         ///            ON [dbo].%TableName%
         ///		   FOR DELETE
         ///AS
@@ -587,7 +587,7 @@ namespace Tobasco.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to CREATE TRIGGER [dbo].td_%TableName%
+        ///   Looks up a localized string similar to CREATE TRIGGER [dbo].[td_%TableName%]
         ///            ON [dbo].%TableName%
         ///		   FOR DELETE
         ///AS
@@ -613,7 +613,7 @@ namespace Tobasco.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to CREATE TRIGGER [dbo].tu_%TableName%
+        ///   Looks up a localized string similar to CREATE TRIGGER [dbo].[tu_%TableName%]
         ///            ON [dbo].%TableName%
         ///           FOR UPDATE
         ///AS
@@ -639,7 +639,7 @@ namespace Tobasco.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to CREATE TRIGGER [dbo].tu_%TableName%
+        ///   Looks up a localized string similar to CREATE TRIGGER [dbo].[tu_%TableName%]
         ///            ON [dbo].%TableName%
         ///           FOR UPDATE
         ///AS

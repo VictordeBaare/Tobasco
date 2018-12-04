@@ -19,6 +19,6 @@
 
 	processor.BeginProcessing(Host.ResolvePath("Xmls"), options =>
             {
-                options.CleanUnusedTxt4Files = false;				
+                options.ForceCleanAndGenerate = false;
             });
 #>

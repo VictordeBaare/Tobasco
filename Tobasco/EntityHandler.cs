@@ -12,12 +12,14 @@ namespace Tobasco
 	public class EntityHandler
 	{
 		private readonly Entity _entity;
-		private readonly Dictionary<string, ClassBuilderBase> _classBuilderDictionary;
+        private readonly bool _isChanged;
+        private readonly Dictionary<string, ClassBuilderBase> _classBuilderDictionary;
 
-		public EntityHandler(Entity entity)
+		public EntityHandler(Entity entity, bool isChanged)
 		{
 			_entity = entity;
-			_classBuilderDictionary = new Dictionary<string, ClassBuilderBase>();
+            _isChanged = isChanged;
+            _classBuilderDictionary = new Dictionary<string, ClassBuilderBase>();
 		}
 
 		public string GetMapperInterface(string naam)
@@ -153,6 +155,7 @@ namespace Tobasco
 
 		public Entity Entity => _entity;
 
+        public bool IsChanged => _isChanged;
 
 		public ClassBuilderBase GetClassBuilder(EntityLocation entitylocation)
 		{

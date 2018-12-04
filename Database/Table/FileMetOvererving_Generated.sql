@@ -50,7 +50,7 @@ CREATE NONCLUSTERED INDEX IX_UQ_FileMetOvererving_UId
 GO
 
 GO
-CREATE TRIGGER [dbo].tu_FileMetOvererving
+CREATE TRIGGER [dbo].[tu_FileMetOvererving]
             ON [dbo].FileMetOvererving
            FOR UPDATE
 AS
@@ -98,7 +98,7 @@ NULL
       FROM Deleted;
 END;
 GO
-CREATE TRIGGER [dbo].td_FileMetOvererving
+CREATE TRIGGER [dbo].[td_FileMetOvererving]
             ON [dbo].FileMetOvererving
 		   FOR DELETE
 AS

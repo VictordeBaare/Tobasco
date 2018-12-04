@@ -8,20 +8,19 @@ namespace Tobasco.Manager
 {
     public static class EntityManager
     {
-        private static Dictionary<string, string> _nameWithPath;
-        private static Dictionary<string, Func<string, EntityHandler>> _entityHandlers;
+        private static Dictionary<string, LoadedEntity> loadedEntitiesDictionary;
         private static XmlSerializer _entityserializer = new XmlSerializer(typeof(Entity));
 
-        public static void Initialise(List<NameWithPath> entities)
+        public static void Initialise(List<LoadedEntity> entities)
         {
-            _nameWithPath = new Dictionary<string, string>();
-            _entityHandlers = new Dictionary<string, Func<string, EntityHandler>>();
+            loadedEntitiesDictionary = new Dictionary<string, LoadedEntity>();
+            EntityHandlers = new Dictionary<string, Func<string, EntityHandler>>();
             foreach (var entity in entities)
             {
-                if (!_entityHandlers.ContainsKey(entity.Name))
+                if (!EntityHandlers.ContainsKey(entity.Name))
                 {
-                    _entityHandlers.Add(entity.Name, GetHandler);
-                    _nameWithPath.Add(entity.Name, entity.Path);
+                    EntityHandlers.Add(entity.Name, GetHandler);
+                    loadedEntitiesDictionary.Add(entity.Name, entity);
                 }
                 else
                 {
@@ -30,32 +29,32 @@ namespace Tobasco.Manager
             }
         }
 
-        public static Dictionary<string, Func<string, EntityHandler>> EntityHandlers => _entityHandlers;
+        public static Dictionary<string, Func<string, EntityHandler>> EntityHandlers;
         
         public static EntityHandler GetEntityOnName(string name)
         {
-            if (_entityHandlers.ContainsKey(name))
+            if (EntityHandlers.ContainsKey(name))
             {
-                return _entityHandlers[name](name);
+                return EntityHandlers[name](name);
             }
             throw new ArgumentOutOfRangeException(nameof(name), $"There is no entity with the name: {name}");
         }
 
         private static EntityHandler GetHandler(string name)
         {
-            var filepath = _nameWithPath[name];
+            var loadedEntity = loadedEntitiesDictionary[name];
 
             try
             {
-                using (var reader = new StreamReader(filepath))
+                using (var reader = new StreamReader(loadedEntity.Path))
                 {
                     var entity = (Entity)_entityserializer.Deserialize(reader);
-                    return new EntityHandler(entity);
+                    return new EntityHandler(entity, loadedEntity.IsChanged);
                 }
             }
             catch (Exception ex)
             {
-                throw new InvalidOperationException($"Error with reading xml: {filepath}", ex);
+                throw new InvalidOperationException($"Error with reading xml: {loadedEntity.Path}", ex);
             }
         }
     }

@@ -148,7 +148,7 @@ BEGIN
 	 WHERE %TableName%.Id = @id;
 END;</value>
   </data>
-	<data name="GetFullObjectByIds" xml:space="preserve">
+  <data name="GetFullObjectByIds" xml:space="preserve">
     <value>CREATE PROCEDURE [dbo].%TableName%_GetFullByIds
 	@Ids AS [dbo].BigintType READONLY
 AS
@@ -171,7 +171,7 @@ BEGIN
                   );
 END;</value>
   </data>
-	<data name="GetFullObjectByIdsWithUid" xml:space="preserve">
+  <data name="GetFullObjectByIdsWithUid" xml:space="preserve">
     <value>CREATE PROCEDURE [dbo].%TableName%_GetFullByIds
 	@Ids AS [dbo].BigintType READONLY
 AS
@@ -195,7 +195,7 @@ BEGIN
                   );
 END;</value>
   </data>
-	<data name="GetFullObjectByEntityWithUid" xml:space="preserve">
+  <data name="GetFullObjectByEntityWithUid" xml:space="preserve">
     <value>CREATE PROCEDURE [dbo].%TableName%_GetFullById
 	@id bigint
 AS
@@ -281,7 +281,7 @@ BEGIN
 	 WHERE Id = @Id;
 END;</value>
   </data>
-<data name="SqlGetByReferenceId" xml:space="preserve">
+  <data name="SqlGetByReferenceId" xml:space="preserve">
     <value>CREATE PROCEDURE [dbo].%TableName%_GetFullBy%ReferenceName%
 	@%ReferenceName% bigint
 AS
@@ -296,7 +296,7 @@ BEGIN
 	EXEC [dbo].%TableName%_GetFullByIds @Ids;
 END;</value>
   </data>
-	<data name="SqlGetByReferenceIdList" xml:space="preserve">
+  <data name="SqlGetByReferenceIdList" xml:space="preserve">
     <value>CREATE PROCEDURE [dbo].%TableName%_GetFullBy%ReferenceName%s
 	@%ReferenceName% [dbo].BigintType READONLY
 AS
@@ -315,7 +315,6 @@ BEGIN
 	EXEC [dbo].%TableName%_GetFullByIds @Ids;
 END;</value>
   </data>
-	
   <data name="SqlHistorieTable" xml:space="preserve">
     <value>CREATE TABLE [dbo].[%TableName%_historie] (
     [Id]                          bigint             NOT NULL
@@ -656,7 +655,7 @@ END</value>
 );</value>
   </data>
   <data name="SqlTriggerDelete" xml:space="preserve">
-    <value>CREATE TRIGGER [dbo].td_%TableName%
+    <value>CREATE TRIGGER [dbo].[td_%TableName%]
             ON [dbo].%TableName%
 		   FOR DELETE
 AS
@@ -675,7 +674,7 @@ BEGIN
 END;</value>
   </data>
   <data name="SqlTriggerDeleteWithUid" xml:space="preserve">
-    <value>CREATE TRIGGER [dbo].td_%TableName%
+    <value>CREATE TRIGGER [dbo].[td_%TableName%]
             ON [dbo].%TableName%
 		   FOR DELETE
 AS
@@ -695,7 +694,7 @@ BEGIN
 END;</value>
   </data>
   <data name="SqlTriggerUpdate" xml:space="preserve">
-    <value>CREATE TRIGGER [dbo].tu_%TableName%
+    <value>CREATE TRIGGER [dbo].[tu_%TableName%]
             ON [dbo].%TableName%
            FOR UPDATE
 AS
@@ -715,7 +714,7 @@ BEGIN
 END;</value>
   </data>
   <data name="SqlTriggerUpdateWithUid" xml:space="preserve">
-    <value>CREATE TRIGGER [dbo].tu_%TableName%
+    <value>CREATE TRIGGER [dbo].[tu_%TableName%]
             ON [dbo].%TableName%
            FOR UPDATE
 AS

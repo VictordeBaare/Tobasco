@@ -177,7 +177,7 @@
     <Compile Include="Model\InterfaceImplementation.cs" />
     <Compile Include="Model\GenerateElement.cs" />
     <Compile Include="Model\Module.cs" />
-    <Compile Include="Model\NameWithPath.cs" />
+    <Compile Include="Model\LoadedEntity.cs" />
     <Compile Include="Model\Properties\NumericProperty.cs" />
     <Compile Include="Model\Properties\StringProperty.cs" />
     <Compile Include="Model\Properties\ClassProperty.cs" />

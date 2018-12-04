@@ -61,47 +61,37 @@ namespace Tobasco
                     var processor = new Generation.FileProcessor(_dte, _templateFile, _templateProjectItem);
 
                     OutputPaneManager.WriteToOutputPane("Load xmls.");
-                    XmlLoader loader = new XmlLoader();
-                    loader.Load(path);
+                    XmlLoader loader = new XmlLoader(_dte);
+                    loader.Load(path, _options);
                     OutputPaneManager.WriteToOutputPane("Start generating.");
 
-                    var outputFiles = FileOutputManager.ResolveSingleOutputFiles();                    
-                    
+                    var outputFiles = FileOutputManager.ResolveSingleOutputFiles();
+
                     foreach (var handlerFunc in EntityManager.EntityHandlers)
-                    {                        
-                        outputFiles.AddRange(FileOutputManager.ResolveEntityFiles(handlerFunc.Value(handlerFunc.Key)));                        
-                    }
-
-                    if (_options.GenerateSubSet)
                     {
-                        OutputPaneManager.WriteToOutputPane($"Generate a subset of the xmls. {string.Join(", ", _options.EntitiesToGenerate)}");
-
-                        foreach (var file in outputFiles.Where(x => _options.EntitiesToGenerate.Contains(x.Name.Replace("_CRUD", ""))))
-                        {
-                            processor.ProcessClassFile(file);
-                        }
+                        outputFiles.AddRange(FileOutputManager.ResolveEntityFiles(handlerFunc.Value(handlerFunc.Key)));
                     }
-                    else
+                    
+                    foreach (var file in outputFiles)
                     {
-                        OutputPaneManager.WriteToOutputPane("Generate all the xmls.");
-
-                        foreach (var file in outputFiles)
-                        {
-                            processor.ProcessClassFile(file);
-                        }
+                        processor.ProcessClassFile(file);
                     }
-
-                    if (!_options.GenerateSubSet)
+                                        
+                    if (_options.ForceCleanAndGenerate)
                     {
                         OutputPaneManager.WriteToOutputPane("Clean existing .txt4 placeholders.");
 
-                        processor.CleanTemplateFiles();
-                    }
-                    if (_options.CleanUnusedTxt4Files)
-                    {
+                        processor.CleanTemplateFiles(path);
+
                         OutputPaneManager.WriteToOutputPane("Remove existing old .txt4 placeholders.");
 
                         processor.RemoveUnusedTemplateFiles();
+
+                        OutputPaneManager.WriteToOutputPane("Done with cleaning");
+                    }
+                    else
+                    {
+                        OutputPaneManager.WriteToOutputPane("The .txt4 placeholders will not be cleaned. This means that items will not be removed.");
                     }
                 }
                 catch (Exception ex)

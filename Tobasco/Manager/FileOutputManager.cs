@@ -29,17 +29,19 @@ namespace Tobasco.Manager
         internal static List<OutputFile> ResolveEntityFiles(EntityHandler handler)
         {
             var outputFiles = new List<OutputFile>();
-
-            outputFiles.AddRange(handler.GetEntityLocations.SelectMany(x => handler.GetClassBuilder(x).Build()));
-            if (handler.GetRepository != null && handler.GetRepository.Generate)
+            if (handler.IsChanged)
             {
-                outputFiles.AddRange(handler.GetRepositoryBuilder.Build());
-            }
-            outputFiles.AddRange(handler.GetDatabaseBuilder.Build());
-            if (handler.GetMappers != null && handler.GetMappers.Generate)
-            {
-                outputFiles.AddRange(handler.GetMappers.Mapper.SelectMany(x => handler.GetMapperBuilder.Build(x)));
-            }
+                outputFiles.AddRange(handler.GetEntityLocations.SelectMany(x => handler.GetClassBuilder(x).Build()));
+                if (handler.GetRepository != null && handler.GetRepository.Generate)
+                {
+                    outputFiles.AddRange(handler.GetRepositoryBuilder.Build());
+                }
+                outputFiles.AddRange(handler.GetDatabaseBuilder.Build());
+                if (handler.GetMappers != null && handler.GetMappers.Generate)
+                {
+                    outputFiles.AddRange(handler.GetMappers.Mapper.SelectMany(x => handler.GetMapperBuilder.Build(x)));
+                }
+            }            
 
             return outputFiles;
         }

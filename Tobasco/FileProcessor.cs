@@ -36,8 +36,8 @@ namespace Tobasco
                 try
                 {
                     OutputPaneManager.WriteToOutputPane("Load Tobasco xmls.");
-                    XmlLoader loader = new XmlLoader();
-                    loader.Load(path);
+                    XmlLoader loader = new XmlLoader(_dte);
+                    loader.Load(path, new Generation.GenerationOptions());
                     OutputPaneManager.WriteToOutputPane("Start generating files.");
 
                     var outputFiles = FileOutputManager.ResolveSingleOutputFiles();                   

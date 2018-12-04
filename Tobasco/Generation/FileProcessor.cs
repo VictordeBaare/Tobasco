@@ -4,8 +4,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using Tobasco.FileBuilder;
 using Tobasco.Manager;
+using Tobasco.Model;
 
 namespace Tobasco.Generation
 {
@@ -51,8 +53,9 @@ namespace Tobasco.Generation
             var allHelperTemplateFullNames = solutionItems.Where(p => p.Name == VsManager.GetTemplatePlaceholderName(_templateProjectItem))
                 .Select(VsManager.GetProjectItemFullPath);
 
-            var delta = allHelperTemplateFullNames.Except(activeTemplateFullNames);
+            var delta = new HashSet<string>(allHelperTemplateFullNames.Except(activeTemplateFullNames));
 
+            //Nalopen hier ligt misschien het issue
             var dirtyHelperTemplates = solutionItems.Where(p => delta.Contains(VsManager.GetProjectItemFullPath(p)));
 
             foreach (ProjectItem item in dirtyHelperTemplates)
@@ -69,19 +72,19 @@ namespace Tobasco.Generation
             }
         }
 
-        internal void CleanTemplateFiles()
+        internal void CleanTemplateFiles(string path)
         {
-            foreach (KeyValuePair<string, ProjectItem> item in _placeholders)
+            Parallel.ForEach(_placeholders, (item) =>
             {
                 var processedFileNames = _processedFileNames[item.Key];
-                foreach(ProjectItem projectItem in item.Value.ProjectItems)
+                foreach (ProjectItem projectItem in item.Value.ProjectItems)
                 {
                     if (!processedFileNames.Contains(projectItem.Name))
                     {
                         projectItem.Delete();
                     }
                 }
-            }
+            });
         }
 
         private void RegisterProcessedFile(OutputFile outputFile)
