@@ -79,7 +79,8 @@ FileMetOvererving.TestChildProp5 = @TestChildProp5,
 FileMetOvererving.TestChildProp6 = @TestChildProp6,
 FileMetOvererving.TestChildProp7Id = @TestChildProp7Id,
 FileMetOvererving.ModifiedBy = ISNULL(@ModifiedBy, SUSER_SNAME()),
-FileMetOvererving.ModifiedOn = SYSDATETIME()            
+FileMetOvererving.ModifiedOn = SYSDATETIME(),
+FileMetOvererving.ModifiedOnUTC = SYSUTCDATETIME()            
 		OUTPUT Inserted.[RowVersion]
 			  ,Inserted.ModifiedOn
 		  INTO #Output ([RowVersion]

@@ -59,7 +59,8 @@ BEGIN
 ChildCollectionObject.TestChildProp2 = @TestChildProp2,
 ChildCollectionObject.FileMetOverervingId = @FileMetOverervingId,
 ChildCollectionObject.ModifiedBy = ISNULL(@ModifiedBy, SUSER_SNAME()),
-ChildCollectionObject.ModifiedOn = SYSDATETIME()            
+ChildCollectionObject.ModifiedOn = SYSDATETIME(),
+ChildCollectionObject.ModifiedOnUTC = SYSUTCDATETIME()            
 		OUTPUT Inserted.[RowVersion]
 			  ,Inserted.ModifiedOn
 		  INTO #Output ([RowVersion]

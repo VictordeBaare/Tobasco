@@ -29,6 +29,7 @@ namespace Tobasco.Model.Builders.DatabaseBuilders
             }
             list.Add($"{Name}.ModifiedBy = ISNULL(@ModifiedBy, SUSER_SNAME())");
             list.Add($"{Name}.ModifiedOn = SYSDATETIME()");
+            list.Add($"{Name}.ModifiedOnUTC = SYSUTCDATETIME()");
 
             return list;
         }

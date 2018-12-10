@@ -48,7 +48,8 @@ BEGIN
 		   SET 
 				ChildObject.TestChildProp1 = @TestChildProp1,
 ChildObject.ModifiedBy = ISNULL(@ModifiedBy, SUSER_SNAME()),
-ChildObject.ModifiedOn = SYSDATETIME()            
+ChildObject.ModifiedOn = SYSDATETIME(),
+ChildObject.ModifiedOnUTC = SYSUTCDATETIME()            
 		OUTPUT Inserted.[RowVersion]
 			  ,Inserted.ModifiedOn
 		  INTO #Output ([RowVersion]

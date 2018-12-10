@@ -58,7 +58,8 @@ BEGIN
 CPK4.Duur = @Duur,
 CPK4.Kosten = @Kosten,
 CPK4.ModifiedBy = ISNULL(@ModifiedBy, SUSER_SNAME()),
-CPK4.ModifiedOn = SYSDATETIME()            
+CPK4.ModifiedOn = SYSDATETIME(),
+CPK4.ModifiedOnUTC = SYSUTCDATETIME()            
 		OUTPUT Inserted.[RowVersion]
 			  ,Inserted.ModifiedOn
 		  INTO #Output ([RowVersion]
