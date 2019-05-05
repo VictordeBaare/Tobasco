@@ -43,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Builder\ClassStringBuilder.cs" />
     <Compile Include="Builder\EntityBuilder.cs" />
     <Compile Include="Builder\IBuilder.cs" />
     <Compile Include="Builder\IndentStringBuilder.cs" />
@@ -55,11 +56,16 @@
     <Compile Include="Context\Base\FileLocation.cs" />
     <Compile Include="Context\DatabaseContext.cs" />
     <Compile Include="Context\EntityContext.cs" />
+    <Compile Include="Context\Property.cs" />
     <Compile Include="Context\TobascoContext.cs" />
+    <Compile Include="Enums\Datatype.cs" />
     <Compile Include="Exceptions\OptionException.cs" />
+    <Compile Include="Extensions\EntityContextExtensions.cs" />
+    <Compile Include="Extensions\EnumExtensions.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Scaffolding\EntityScaffolder.cs" />
+    <Compile Include="Scaffolding\ScaffolderBase.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

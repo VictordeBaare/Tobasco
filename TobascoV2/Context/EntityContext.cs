@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
+using System.Xml.Serialization;
 using TobascoV2.Context.Base;
 
 namespace TobascoV2.Context
 {
+    [XmlRoot("Entity")]
     public class EntityContext 
     {
         public FileLocation EntityLocation => new FileLocation();
@@ -12,5 +14,12 @@ namespace TobascoV2.Context
         public List<string> Namespaces { get; } = new List<string>();         
 
         public bool IsAbstract { get; set; }
+
+        [XmlArray("Properties")]
+        [XmlArrayItem("Property", typeof(Property))]
+        public List<Property> Properties { get; set; }
+
+        [XmlAttribute("name")]
+        public string Name { get; set; }
     }
 }

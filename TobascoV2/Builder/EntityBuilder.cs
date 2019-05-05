@@ -6,18 +6,22 @@ using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 using TobascoV2.Constants;
 using TobascoV2.Context;
+using TobascoV2.Scaffolding;
 
 namespace TobascoV2.Builder
 {
     public class EntityBuilder : IBuilder
     {
+        private static XmlSerializer _entityserializer = new XmlSerializer(typeof(EntityContext));
+
         public void Build(IDictionary<string, string> keyValuePairs)
         {
             Assembly assembly = null;
             TobascoContext context = null;
-            string entities = string.Empty;
+            List<string> entities = new List<string>();
             var appRoot = string.Empty;
 
             if (keyValuePairs.TryGetValue(BuilderConstants.EntityAssembly, out string assemblyPath))
@@ -36,10 +40,22 @@ namespace TobascoV2.Builder
 
             if(keyValuePairs.TryGetValue(BuilderConstants.EntityPath, out string entityPath))
             {
-                entities = entityPath;
+                entities.AddRange(Directory.GetFiles(entityPath));
             }
-            
-            
+
+            ScaffoldXmls(entities, context, appRoot);
+        }
+
+        private void ScaffoldXmls(List<string> entities, TobascoContext tobascoContext, string appRoot)
+        {
+            foreach(var entity in entities)
+            {
+                using (var reader = new StreamReader(entity))
+                {
+                    var entityScaffolder = new EntityScaffolder();
+                    entityScaffolder.Scaffold((EntityContext)_entityserializer.Deserialize(reader), tobascoContext, appRoot);
+                }
+            }
         }
     }
 }

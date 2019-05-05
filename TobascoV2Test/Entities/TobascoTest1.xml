@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Entity name="CPK">
+    <EntityLocation id="dataobject">
+        <FileLocation project="TobascoTest" folder="GeneratedEntity"></FileLocation>
+        <Namespaces>
+            <Namespace value="System.Dynamic"></Namespace>
+        </Namespaces>
+        <BaseClass value="DifferentBase"></BaseClass>        
+    </EntityLocation>
+    <Properties>
+        <Property name="Training" required="true">
+            <DataType name="String" size="100"></DataType>
+        </Property>
+        <Property name="aaa" required="true">
+            <DataType name="ReadonlyChild" type="CPK1"></DataType>
+        </Property>
+        <Property name="Duur" required="true">
+            <DataType name="String" size="100"></DataType>
+        </Property>
+        <Property name="Kosten" required="true">
+            <DataType name="String" size="100"></DataType>
+        </Property>
+    </Properties>
+</Entity>

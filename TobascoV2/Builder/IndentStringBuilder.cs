@@ -42,5 +42,10 @@ namespace TobascoV2.Builder
             _stringBuilder.Append(value);
             return this;
         }
+
+        public override string ToString()
+        {
+            return _stringBuilder.ToString();
+        }
     }
 }
