@@ -1,143 +1,188 @@
 ﻿using System;
+using TobascoV2.Builder.BusinessRules;
+using TobascoV2.Constants;
+using TobascoV2.Context;
+using TobascoV2.Extensions;
 
 namespace TobascoV2.Builder
 {
-    public class ClassStringBuilder
+    public class ClassStringBuilder : IndentStringBuilder
     {
-        private IndentStringBuilder _indentStringBuilder;
+        internal ClassStringBuilder() : base(4) { }
 
-        public ClassStringBuilder()
+        internal ClassStringBuilder AddUsing(string usingNs)
         {
-            _indentStringBuilder = new IndentStringBuilder(4);
-        }
-
-        public ClassStringBuilder AddUsing(string usingNs)
-        {
-            _indentStringBuilder.AppendLine($"using {usingNs};");
-
+            SetIndent(Indent.UsingNamespace);
+            AppendLine($"using {usingNs};");
             return this;
         }
 
-        public ClassStringBuilder StartNamesspace(string ns)
+        internal ClassStringBuilder StartNamesspace(string ns)
         {
-            _indentStringBuilder.AppendLine($"namespace {ns}");
+            AppendLine($"namespace {ns}");
+            AppendLine("{");            
             return this;
         }
 
-        public ClassStringBuilder EndNamespace()
+        internal ClassStringBuilder EndNamespace()
         {
-            _indentStringBuilder.RemoveIndent().AppendLine("}");
+            SetIndent(Indent.Namespace);
+            AppendLine("}");
             return this;
         }
 
-        public ClassStringBuilder StartClass(string classname, string baseclass)
+        internal ClassStringBuilder StartAbstractClass(string classname, string baseclass)
         {
-            _indentStringBuilder.AppendLine($"public {classname} : {baseclass}");
-            _indentStringBuilder.AppendLine("{").AddIndent();
+            SetIndent(Indent.NamespaceBody);
+            AppendLine($"public abstract class {classname} : {baseclass}");
+            AppendLine("{");
             return this;
         }
 
-        public ClassStringBuilder StartClass(string classname)
+        internal ClassStringBuilder StartAbstractClass(string classname)
         {
-            _indentStringBuilder.AppendLine($"public {classname}");
-            _indentStringBuilder.AppendLine("{").AddIndent();
+            SetIndent(Indent.NamespaceBody);
+            AppendLine($"public abstract class {classname}");
+            AppendLine("{");
             return this;
         }
 
-        public ClassStringBuilder EndClass()
+        internal ClassStringBuilder StartClass(string classname, string baseclass)
         {
+            SetIndent(Indent.NamespaceBody);
+            AppendLine($"public class {classname} : {baseclass}");
+            AppendLine("{");
+            return this;
+        }
+
+        internal ClassStringBuilder StartClass(string classname)
+        {
+            SetIndent(Indent.NamespaceBody);
+            AppendLine($"public class {classname}");
+            AppendLine("{");
+            return this;
+        }
+
+        internal ClassStringBuilder EndClass()
+        {
+            SetIndent(Indent.NamespaceBody);
             return End();
         }
 
-        public ClassStringBuilder StartConstructor(string name, params string[] parameters)
+        internal ClassStringBuilder StartConstructor(string name, params string[] parameters)
         {
-            _indentStringBuilder.AppendLine($"public void {name}({string.Join(", ", parameters)})");
-            _indentStringBuilder.AppendLine("{").AddIndent();
+            SetIndent(Indent.Constructor);
+            AppendLine($"public void {name}({string.Join(", ", parameters)})");
+            AppendLine("{");
             return this;
         }
 
-        public ClassStringBuilder AddConstructorBody(string value)
+        internal ClassStringBuilder AddConstructorBody(string value)
         {
-            _indentStringBuilder.AppendLine(value);
+            SetIndent(Indent.ConstructorBody);
+            AppendLine(value);
             return this;
         }
 
-        public ClassStringBuilder EndConstructor()
+        internal ClassStringBuilder EndConstructor()
         {
+            SetIndent(Indent.Constructor);
             return End();
         }
 
-        public ClassStringBuilder AddProperty(string modifier, string dataType, string name)
+        internal ClassStringBuilder AddProperty(string modifier, XmlProperty xmlProperty)
         {
-            _indentStringBuilder.AddIndent();
-            _indentStringBuilder.AppendLine($"{modifier} {dataType} {name} {{ get; set; }}").RemoveIndent();
+            SetIndent(Indent.Property);
+            AppendLine($"{modifier} {xmlProperty.PropertyType.Name.GetDescription()} {xmlProperty.Name} {{ get; set; }}");
             return this;
         }
 
-        public ClassStringBuilder AddProperty(string modifier, string dataType, string name, string description)
+        internal ClassStringBuilder AddPropertyWithBusinessRule(string modifier, XmlProperty xmlProperty)
         {
-            _indentStringBuilder.AddIndent();
+            SetIndent(Indent.Property);
+            AddDescription(xmlProperty.Description);
+            AddBusinessRule(xmlProperty);
+            return AddProperty(modifier, xmlProperty);
+        }    
+
+        internal ClassStringBuilder StartProperty(string modifier, XmlPropertyType propertyType, string name)
+        {
+            SetIndent(Indent.Property);
+            AppendLine($"{modifier} {propertyType.Name.GetDescription()} {name}");
+            AppendLine("{");
+            return this;
+        }
+
+        internal ClassStringBuilder StartProperty(string modifier, string dataType, string name, string description)
+        {
+            SetIndent(Indent.Property);
             AddDescription(description);
-            _indentStringBuilder.AppendLine($"{modifier} {dataType} {name} {{ get; set; }}").RemoveIndent();
+            AppendLine($"{modifier} {dataType} {name}");
+            AppendLine("{");
             return this;
         }
 
-        public ClassStringBuilder StartProperty(string modifier, string dataType, string name)
+        internal ClassStringBuilder AddPropertyBody(string value)
         {
-            _indentStringBuilder.AddIndent();
-            _indentStringBuilder.AppendLine($"{modifier} {dataType} {name}");
-            _indentStringBuilder.AppendLine("{").AddIndent();
+            SetIndent(Indent.PropertyBody);
+            AppendLine(value);
             return this;
         }
 
-        public ClassStringBuilder StartProperty(string modifier, string dataType, string name, string description)
+        internal ClassStringBuilder EndProperty()
         {
-            _indentStringBuilder.AddIndent();
-            AddDescription(description);
-            _indentStringBuilder.AppendLine($"{modifier} {dataType} {name}");
-            _indentStringBuilder.AppendLine("{").AddIndent();
-            return this;
-        }
-
-        public ClassStringBuilder AddPropertyBody(string value)
-        {
-            _indentStringBuilder.AppendLine(value);
-            return this;
-        }
-
-        public ClassStringBuilder EndProperty()
-        {
+            SetIndent(Indent.Property);
             return End();
         }
 
-        public ClassStringBuilder StartMethod(string name, params string[] parameters)
+        internal ClassStringBuilder StartMethod(string name, params string[] parameters)
         {
-            _indentStringBuilder.AppendLine($"public void {name}({string.Join(", ", parameters)})");
-            _indentStringBuilder.AppendLine("{").AddIndent();
+            SetIndent(Indent.Method);
+            AppendLine($"public void {name}({string.Join(", ", parameters)})");
+            AppendLine("{");
             return this;
         }
 
-        public ClassStringBuilder EndMethod()
+        internal ClassStringBuilder EndMethod()
         {
+            SetIndent(Indent.Method);
             return End();
         }
 
         public override string ToString()
         {
-            return _indentStringBuilder.ToString();
+            return base.ToString();
         }
 
         private ClassStringBuilder End()
         {
-            _indentStringBuilder.AppendLine("{").RemoveIndent();
+            AppendLine("}");
             return this;
         }
 
-        private void AddDescription(string description)
+        private void AddBusinessRule(XmlProperty property)
         {
-            _indentStringBuilder.AppendLine("/// <summary>");
-            _indentStringBuilder.AppendLine($"/// {description}");
-            _indentStringBuilder.AppendLine("/// </summary>");
+            var rules = BusinessRuleManager.GetRules(property.PropertyType.Name.GetDescription());
+
+            if (property.Required)
+            {
+                AppendLine($"[Required(ErrorMessage = @\"{property.Name} is required\")]");
+            }
+
+            foreach (var rule in rules)
+            {
+                AppendLine(rule.GetRule(property));
+            }
+        }
+
+        private void AddDescription(string description) 
+        {
+            if (!string.IsNullOrEmpty(description))
+            {
+                AppendLine("/// <summary>");
+                AppendLine($"/// {description}");
+                AppendLine("/// </summary>");
+            }            
         }
     }
 }

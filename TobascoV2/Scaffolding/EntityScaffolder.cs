@@ -1,33 +1,31 @@
-﻿using TobascoV2.Context;
+﻿using System;
+using System.Linq;
+using TobascoV2.Context;
 using TobascoV2.Extensions;
+using TobascoV2.Scaffolding.Helpers;
 
 namespace TobascoV2.Scaffolding
 {
     internal class EntityScaffolder : ScaffolderBase
     {
-        internal void Scaffold(EntityContext entityContext, TobascoContext tobascoContext, string appRoot)
+        internal override void AddProperties(EntityContext entityContext, ITobascoContext tobascoContext)
         {
-            tobascoContext.EntityContext.Namespaces.ForEach(x => ClassBuilder.AddUsing(x));
-            entityContext.Namespaces.ForEach(x => ClassBuilder.AddUsing(x));
-            ClassBuilder.StartNamesspace(tobascoContext.EntityContext.EntityLocation.NameSpace);
-            ClassBuilder.StartClass(entityContext.Name);
-
-            entityContext.Properties.ForEach(x =>
+            var lastProperty = entityContext.Properties.Last();
+            entityContext.Properties.ForEach(property =>
             {
-                if (string.IsNullOrEmpty(x.Description))
+                if (tobascoContext.AddBusinessRules)
                 {
-                    ClassBuilder.AddProperty("public", x.PropertyType.GetDescription(), x.Name);
+                    ClassBuilder.AddPropertyWithBusinessRule("public", property);
                 }
                 else
                 {
-                    ClassBuilder.AddProperty("public", x.PropertyType.GetDescription(), x.Name, x.Description);
+                    ClassBuilder.AddProperty("public", property);
+                }
+                if (!property.Equals(lastProperty))
+                {
+                    ClassBuilder.AppendLine(string.Empty);
                 }
             });
-
-            ClassBuilder.EndClass();
-            ClassBuilder.EndNamespace();
-
-            CreateOrOverwriteFile($"{appRoot}//{entityContext.GetNameWithPath()}");
         }
     }
 }

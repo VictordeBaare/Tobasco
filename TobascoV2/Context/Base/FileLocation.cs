@@ -4,8 +4,6 @@
     {
         public string Project { get; set; }
 
-        public string Folder { get; set; }
-
-        public string NameSpace => $"{Project}.{Folder}";
+        public string Folder { get; set; }        
     }
 }

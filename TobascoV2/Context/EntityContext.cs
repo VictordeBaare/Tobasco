@@ -7,7 +7,7 @@ namespace TobascoV2.Context
     [XmlRoot("Entity")]
     public class EntityContext 
     {
-        public FileLocation EntityLocation => new FileLocation();
+        public FileLocation EntityLocation { get; set; }
 
         public string BaseClass { get; set; }
 
@@ -16,8 +16,8 @@ namespace TobascoV2.Context
         public bool IsAbstract { get; set; }
 
         [XmlArray("Properties")]
-        [XmlArrayItem("Property", typeof(Property))]
-        public List<Property> Properties { get; set; }
+        [XmlArrayItem("Property", typeof(XmlProperty))]
+        public List<XmlProperty> Properties { get; set; }
 
         [XmlAttribute("name")]
         public string Name { get; set; }

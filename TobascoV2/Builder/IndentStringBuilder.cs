@@ -1,4 +1,6 @@
-﻿using System.Text;
+﻿using System;
+using System.Text;
+using TobascoV2.Constants;
 
 namespace TobascoV2.Builder
 {
@@ -7,39 +9,42 @@ namespace TobascoV2.Builder
         private readonly int _identSize = 4;
         private readonly StringBuilder _stringBuilder;
 
-        private int _timesIndented = 0;
+        private int _indent;
 
         public IndentStringBuilder()
         {
             _stringBuilder = new StringBuilder();
         }
 
-        public IndentStringBuilder(int indentSize) : base()
+        public IndentStringBuilder(int indentSize) : this()
         {
             _identSize = indentSize;
         }
 
-        public IndentStringBuilder AddIndent()
+        internal IndentStringBuilder SetIndent(int indent)
         {
-            _timesIndented++;
-            return this;
-        }
-
-        public IndentStringBuilder RemoveIndent()
-        {
-            _timesIndented--;
+            _indent = indent;
             return this;
         }
 
         public IndentStringBuilder AppendLine(string value)
         {
-            _stringBuilder.AppendLine(value);
+            AddIndentValue()._stringBuilder.AppendLine(value);
             return this;
         }
 
         public IndentStringBuilder Append(string value)
         {
-            _stringBuilder.Append(value);
+            AddIndentValue()._stringBuilder.Append(value);
+            return this;
+        }
+
+        public IndentStringBuilder AddIndentValue()
+        {
+            if(_indent > 0)
+            {
+                _stringBuilder.Append(new string(' ', _indent * _identSize));
+            }
             return this;
         }
 
