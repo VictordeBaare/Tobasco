@@ -72,9 +72,12 @@
     <Compile Include="Extensions\AssemblyExtensions.cs" />
     <Compile Include="Extensions\FileLocationExtensions.cs" />
     <Compile Include="Extensions\EnumExtensions.cs" />
+    <Compile Include="Extensions\StringExtensions.cs" />
+    <Compile Include="Extensions\XmlPropertyExtensions.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Scaffolding\DapperEntityScaffolder.cs" />
+    <Compile Include="Scaffolding\DapperRepositoryScaffolder.cs" />
     <Compile Include="Scaffolding\EntityScaffolder.cs" />
     <Compile Include="Scaffolding\Helpers\FileLocationHelper.cs" />
     <Compile Include="Scaffolding\ScaffolderBase.cs" />

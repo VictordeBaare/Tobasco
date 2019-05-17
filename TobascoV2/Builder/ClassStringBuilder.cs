@@ -105,19 +105,21 @@ namespace TobascoV2.Builder
             return AddProperty(modifier, xmlProperty);
         }    
 
-        internal ClassStringBuilder StartProperty(string modifier, XmlPropertyType propertyType, string name)
+        internal ClassStringBuilder StartProperty(string modifier, XmlProperty xmlProperty)
         {
             SetIndent(Indent.Property);
-            AppendLine($"{modifier} {propertyType.Name.GetDescription()} {name}");
+            AddDescription(xmlProperty.Description);
+            AppendLine($"{modifier} {xmlProperty.PropertyType.Name.GetDescription()} {xmlProperty.Name}");
             AppendLine("{");
             return this;
         }
 
-        internal ClassStringBuilder StartProperty(string modifier, string dataType, string name, string description)
+        internal ClassStringBuilder StartPropertyWithBusinessRules(string modifier, XmlProperty xmlProperty)
         {
             SetIndent(Indent.Property);
-            AddDescription(description);
-            AppendLine($"{modifier} {dataType} {name}");
+            AddDescription(xmlProperty.Description);
+            AddBusinessRule(xmlProperty);
+            AppendLine($"{modifier} {xmlProperty.PropertyType.Name.GetDescription()} {xmlProperty.Name}");
             AppendLine("{");
             return this;
         }
@@ -135,11 +137,18 @@ namespace TobascoV2.Builder
             return End();
         }
 
-        internal ClassStringBuilder StartMethod(string name, params string[] parameters)
+        internal ClassStringBuilder StartMethod(string modifier, string returnValue, string name, params string[] parameters)
         {
             SetIndent(Indent.Method);
-            AppendLine($"public void {name}({string.Join(", ", parameters)})");
+            AppendLine($"public void {name}({ string.Join(", ", parameters) })");
             AppendLine("{");
+            return this;
+        }
+
+        internal ClassStringBuilder AddMethodBody(string value)
+        {
+            SetIndent(Indent.MethodBody);
+            AppendLine(value);
             return this;
         }
 

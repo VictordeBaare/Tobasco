@@ -16,7 +16,7 @@ namespace TobascoV2.Scaffolding
 
         protected ClassStringBuilder ClassBuilder { get; }
 
-        protected virtual void Scaffold(EntityContext entityContext, ITobascoContext tobascoContext, string appRoot)
+        public virtual void Scaffold(EntityContext entityContext, ITobascoContext tobascoContext, string appRoot)
         {
             AddUsingNamespaces(entityContext, tobascoContext);
 
