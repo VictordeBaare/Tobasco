@@ -8,7 +8,7 @@ namespace TobascoV2.Builder
 {
     public class ClassStringBuilder : IndentStringBuilder
     {
-        internal ClassStringBuilder() : base(4) { }
+        public ClassStringBuilder() : base(4) { }
 
         internal ClassStringBuilder AddUsing(string usingNs)
         {
@@ -63,10 +63,25 @@ namespace TobascoV2.Builder
             return this;
         }
 
+        internal ClassStringBuilder StartInterface(string interfacename)
+        {
+            SetIndent(Indent.NamespaceBody);
+            AppendLine($"public interface {interfacename}");
+            AppendLine("{");
+            return this;
+        }
+
         internal ClassStringBuilder EndClass()
         {
             SetIndent(Indent.NamespaceBody);
             return End();
+        }
+
+        internal ClassStringBuilder AddField(string value)
+        {
+            SetIndent(Indent.Field);
+            AppendLine(value);
+            return this;
         }
 
         internal ClassStringBuilder StartConstructor(string name, params string[] parameters)

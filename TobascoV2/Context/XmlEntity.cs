@@ -5,7 +5,7 @@ using TobascoV2.Context.Base;
 namespace TobascoV2.Context
 {
     [XmlRoot("Entity")]
-    public class EntityContext 
+    public class XmlEntity 
     {
         public FileLocation EntityLocation { get; set; }
 
@@ -21,5 +21,7 @@ namespace TobascoV2.Context
 
         [XmlAttribute("name")]
         public string Name { get; set; }
+
+        public DatabaseContext DatabaseContext { get; set; }
     }
 }

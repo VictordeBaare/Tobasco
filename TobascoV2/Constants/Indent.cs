@@ -13,5 +13,6 @@
         public const int PropertyBody = 3;
         public const int Method = 2;
         public const int MethodBody = 3;
+        public const int ForEachBody = 4;
     }
 }

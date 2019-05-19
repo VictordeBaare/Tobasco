@@ -2,7 +2,7 @@
 {
     public interface ITobascoContext
     {
-        EntityContext EntityContext { get; }
+        XmlEntity EntityContext { get; }
 
         DatabaseContext DatabaseContext { get; }        
 

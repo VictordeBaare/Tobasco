@@ -6,24 +6,24 @@ using TobascoV2.Scaffolding.Helpers;
 
 namespace TobascoV2.Scaffolding
 {
-    internal class EntityScaffolder : ScaffolderBase
+    internal class EntityScaffolder : ScaffolderClassBase
     {
-        internal override void AddProperties(EntityContext entityContext, ITobascoContext tobascoContext)
+        internal override void AddProperties(XmlEntity entityContext, ITobascoContext tobascoContext)
         {
             var lastProperty = entityContext.Properties.Last();
             entityContext.Properties.ForEach(property =>
             {
                 if (tobascoContext.AddBusinessRules)
                 {
-                    ClassBuilder.AddPropertyWithBusinessRule("public", property);
+                    Builder.AddPropertyWithBusinessRule("public", property);
                 }
                 else
                 {
-                    ClassBuilder.AddProperty("public", property);
+                    Builder.AddProperty("public", property);
                 }
                 if (!property.Equals(lastProperty))
                 {
-                    ClassBuilder.AppendLine(string.Empty);
+                    Builder.AppendLine(string.Empty);
                 }
             });
         }

@@ -33,13 +33,26 @@ namespace TobascoV2.Builder
             return this;
         }
 
-        public IndentStringBuilder Append(string value)
+        public virtual IndentStringBuilder AppendLine(string value, int indent)
+        {
+            SetIndent(indent);
+            AddIndentValue()._stringBuilder.AppendLine(value);
+            return this;
+        }
+
+        public virtual IndentStringBuilder Append(string value)
         {
             AddIndentValue()._stringBuilder.Append(value);
             return this;
         }
 
-        public IndentStringBuilder AddIndentValue()
+        public virtual T Append<T>(string value) where T : IndentStringBuilder
+        {
+            AddIndentValue()._stringBuilder.Append(value);
+            return (T)this;
+        }
+
+        private IndentStringBuilder AddIndentValue()
         {
             if(_indent > 0)
             {

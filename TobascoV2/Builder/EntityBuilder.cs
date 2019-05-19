@@ -11,7 +11,7 @@ namespace TobascoV2.Builder
 {
     public class EntityBuilder : IBuilder
     {
-        private static XmlSerializer _entityserializer = new XmlSerializer(typeof(EntityContext));
+        private static XmlSerializer _entityserializer = new XmlSerializer(typeof(XmlEntity));
 
         public void Build(IDictionary<string, string> commandParameters)
         {
@@ -30,7 +30,7 @@ namespace TobascoV2.Builder
                 using (var reader = new StreamReader(entity))
                 {
                     var entityScaffolder = new EntityScaffolder();
-                    entityScaffolder.Scaffold((EntityContext)_entityserializer.Deserialize(reader), tobascoContext, appRoot);
+                    entityScaffolder.Scaffold((XmlEntity)_entityserializer.Deserialize(reader), tobascoContext, appRoot);
                 }
             }
         }

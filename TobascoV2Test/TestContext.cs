@@ -6,11 +6,11 @@ namespace TobascoV2Test
 {
     public class TestContext : ITobascoContext
     {
-        public EntityContext EntityContext => GetEntityContext();
+        public XmlEntity EntityContext => GetEntityContext();
 
-        private EntityContext GetEntityContext()
+        private XmlEntity GetEntityContext()
         {
-            var entityContext = new EntityContext { EntityLocation = new FileLocation() };
+            var entityContext = new XmlEntity { EntityLocation = new FileLocation() };
             entityContext.EntityLocation.Folder = "Entities";
             entityContext.EntityLocation.Project = "TobascoV2Test";
 

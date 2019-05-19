@@ -13,6 +13,9 @@ namespace TobascoV2.Context
         [XmlAttribute("name")]
         public Datatype Name { get; set; }
 
+        [XmlAttribute("dbtype")]
+        public DataDbType DbType { get; set; }
+
         [XmlAttribute("size")]
         public string Size { get; set; }
 

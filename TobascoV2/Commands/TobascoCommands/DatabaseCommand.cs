@@ -7,11 +7,11 @@ using TobascoV2.Builder;
 
 namespace TobascoV2.Commands.TobascoCommands
 {
-    internal class DapperEntityCommand : CommandBase
+    internal class DatabaseCommand : CommandBase
     {
         protected override void Execute()
         {
-            IBuilder builder = (IBuilder)Activator.CreateInstance(typeof(DapperEntityBuilder));
+            IBuilder builder = (IBuilder)Activator.CreateInstance(typeof(DatabaseBuilder));
 
             builder.Build(new Dictionary<string, string>());
 
