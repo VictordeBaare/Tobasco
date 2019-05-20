@@ -7,13 +7,13 @@ using TobascoV2.Builder;
 
 namespace TobascoV2.Commands.TobascoCommands
 {
-    internal class DapperEntityCommand : EntityCommand
+    internal class DapperRepositoryCommand : EntityCommand
     {
         protected override void Execute()
         {
-            IBuilder builder = (IBuilder)Activator.CreateInstance(typeof(DapperEntityBuilder));
+            IBuilder builder = (IBuilder)Activator.CreateInstance(typeof(DapperRepositoryBuilder));
 
-            builder.Build(GetParameters());
+            builder.Build(GetParameters());            
         }
     }
 }

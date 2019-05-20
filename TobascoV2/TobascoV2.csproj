@@ -54,12 +54,14 @@
     <Compile Include="Builder\Helpers\BuilderParameterHelper.cs" />
     <Compile Include="Builder\IBuilder.cs" />
     <Compile Include="Builder\IndentStringBuilder.cs" />
+    <Compile Include="Builder\DapperRepositoryBuilder.cs" />
     <Compile Include="Builder\SqlStringBuilder.cs" />
     <Compile Include="Commands\Command.cs" />
     <Compile Include="Commands\CommandBase.cs" />
     <Compile Include="Commands\CommandOption.cs" />
     <Compile Include="Commands\RootCommand.cs" />
     <Compile Include="Commands\TobascoCommands\DapperEntityCommand.cs" />
+    <Compile Include="Commands\TobascoCommands\DapperRepositoryCommand.cs" />
     <Compile Include="Commands\TobascoCommands\DatabaseCommand.cs" />
     <Compile Include="Commands\TobascoCommands\EntityCommand.cs" />
     <Compile Include="Constants\BuilderConstants.cs" />

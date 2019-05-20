@@ -35,7 +35,7 @@ namespace TobascoV2.Commands.TobascoCommands
             base.Execute();
         }
 
-        private Dictionary<string, string> GetParameters()
+        protected Dictionary<string, string> GetParameters()
         {
             return new Dictionary<string, string> { { BuilderConstants.EntityAssembly, _assembly.Value },
                 { BuilderConstants.EntityContext, _context.Value },

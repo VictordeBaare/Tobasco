@@ -13,7 +13,7 @@ using TobascoV2.Scaffolding;
 
 namespace TobascoV2.Builder
 {
-    public class DatabaseBuilder : IBuilder
+    public class DapperRepositoryBuilder : IBuilder
     {
         private static XmlSerializer _entityserializer = new XmlSerializer(typeof(XmlEntity));
 
@@ -34,11 +34,10 @@ namespace TobascoV2.Builder
                 using (var reader = new StreamReader(entity))
                 {
                     var item = (XmlEntity)_entityserializer.Deserialize(reader);
-
-                    var scaffolder = new DapperTableScaffolder();
-                    scaffolder.Scaffold(item, tobascoContext, appRoot);
-                    var scaffolderStp = new DapperStoredProcedureScaffolder();
-                    scaffolderStp.Scaffold(item, tobascoContext, appRoot);
+                    var repositoryScaffolder = new DapperRepositoryScaffolder();
+                    repositoryScaffolder.Scaffold(item, tobascoContext, appRoot);
+                    var iRepositoryScaffolder = new DapperIRepositoryScaffolder();
+                    iRepositoryScaffolder.Scaffold(item, tobascoContext, appRoot);
                 }
             }
         }

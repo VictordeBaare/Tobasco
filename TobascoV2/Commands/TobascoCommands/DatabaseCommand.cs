@@ -7,15 +7,13 @@ using TobascoV2.Builder;
 
 namespace TobascoV2.Commands.TobascoCommands
 {
-    internal class DatabaseCommand : CommandBase
+    internal class DatabaseCommand : EntityCommand
     {
         protected override void Execute()
         {
             IBuilder builder = (IBuilder)Activator.CreateInstance(typeof(DatabaseBuilder));
 
-            builder.Build(new Dictionary<string, string>());
-
-            base.Execute();
+            builder.Build(GetParameters());
         }
     }
 }
