@@ -131,7 +131,6 @@ namespace Tobasco.Manager
 
         internal string GetOutputPath(string projectName, string folderName, string defaultPath)
         {
-            OutputPaneManager.WriteToOutputPane($"pf: {projectName}, {folderName}");
             if (string.IsNullOrEmpty(projectName) == true && string.IsNullOrEmpty(folderName) == true)
             {
                 return defaultPath;
