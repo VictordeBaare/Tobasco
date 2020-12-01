@@ -15,7 +15,7 @@ namespace TobascoV2.Scaffolding
         protected override void AddConstraints(XmlEntity xmlEntity, ITobascoContext tobascoContext)
         {
             Builder.AppendLine($"CREATE NONCLUSTERED INDEX IX_{xmlEntity.Name}_historie_Id");
-            Builder.AppendLine($"ON[dbo].{}_historie");
+            Builder.AppendLine($"ON[dbo].{xmlEntity.Name}_historie");
             Builder.AppendLine("(Id ASC)");
             Builder.AppendLine("INCLUDE(ModifiedOn);");
         }

@@ -19,7 +19,8 @@ namespace Tobasco
         private readonly DTE _dte;
         private readonly List<string> _templatePlaceholderList = new List<string>();
         private readonly string _templateFile;
-
+        private readonly VsManager _vsManager;
+        private readonly OutputPathResolver _opResolver;
 
         public bool UseAutoFormatting { get; set; } = false;
 
@@ -85,7 +86,7 @@ namespace Tobasco
 
             foreach (var file in files)
             {
-                var outputPath = VsManager.GetOutputPath(_dte, file, Path.GetDirectoryName(_templateFile));
+                var outputPath = _opResolver.GetOutputPath(file.ProjectName, file.FolderName, Path.GetDirectoryName(_templateFile));
                 file.FileName = Path.Combine(outputPath, file.Name) + "_Generated" + GetFileTypeExtension(file);
                 
                 var isNewOrAdjusted = IsNewFile(file);
@@ -103,7 +104,7 @@ namespace Tobasco
 
             ProjectSync(_templateProjectItem, filesToProcess);
             CleanUpTemplatePlaceholders();
-            var items = VsManager.GetOutputFilesAsProjectItems(_dte, filesToProcess);
+            var items = _vsManager.GetOutputFilesAsProjectItems(filesToProcess);
             WriteVsProperties(items, filesToProcess);
 
             filesToProcess = null;
@@ -135,12 +136,12 @@ namespace Tobasco
 
                 if (string.IsNullOrEmpty(file.FileProperties.CustomTool) == false)
                 {
-                    VsManager.SetPropertyValue(item, "CustomTool", file.FileProperties.CustomTool);
+                    _vsManager.SetPropertyValue(item, "CustomTool", file.FileProperties.CustomTool);
                 }
 
                 if (string.IsNullOrEmpty(file.FileProperties.BuildActionString) == false)
                 {
-                    VsManager.SetPropertyValue(item, "ItemType", file.FileProperties.BuildActionString);
+                    _vsManager.SetPropertyValue(item, "ItemType", file.FileProperties.BuildActionString);
                 }
             }
         }
@@ -171,21 +172,23 @@ namespace Tobasco
             OutputPaneManager.Activate(dteServiceProvider);
             ProgressBarManager.Activate(dteServiceProvider);
             _templateProjectItem = _dte.Solution.FindProjectItem(_templateFile);
+            _vsManager = new VsManager(_dte);
+            _opResolver = new OutputPathResolver(_vsManager);
 
         }
 
         private void CleanUpTemplatePlaceholders()
         {
             string[] activeTemplateFullNames = _templatePlaceholderList.ToArray();
-            string[] allHelperTemplateFullNames = VsManager.GetAllSolutionItems(_dte)
-                .Where(p => p.Name == VsManager.GetTemplatePlaceholderName(_templateProjectItem))
-                .Select(VsManager.GetProjectItemFullPath)
+            string[] allHelperTemplateFullNames = _vsManager.GetAllSolutionItems()
+                .Where(p => p.Name == _vsManager.GetTemplatePlaceholderName(_templateProjectItem))
+                .Select(_vsManager.GetProjectItemFullPath)
                 .ToArray();
 
             var delta = allHelperTemplateFullNames.Except(activeTemplateFullNames).ToArray();
 
-            var dirtyHelperTemplates = VsManager.GetAllSolutionItems(_dte)
-                .Where(p => delta.Contains(VsManager.GetProjectItemFullPath(p)));
+            var dirtyHelperTemplates = _vsManager.GetAllSolutionItems()
+                .Where(p => delta.Contains(_vsManager.GetProjectItemFullPath(p)));
 
             foreach (ProjectItem item in dirtyHelperTemplates)
             {
@@ -260,14 +263,14 @@ namespace Tobasco
 
             foreach (var item in groupedFileNames)
             {
-                ProjectItem pi = VsManager.GetTemplateProjectItem(templateProjectItem.DTE, item.FirstItem, templateProjectItem);
+                ProjectItem pi = _vsManager.GetTemplateProjectItem(item.FirstItem, templateProjectItem);
                 ProjectSyncPart(pi, item.OutputFiles);
                 if (UseAutoFormatting)
                 {
                     FormatDocument(pi.ProjectItems);
                 }
                 if (pi.Name.EndsWith("txt4"))
-                    _templatePlaceholderList.Add(VsManager.GetProjectItemFullPath(pi));
+                    _templatePlaceholderList.Add(_vsManager.GetProjectItemFullPath(pi));
             }
 
             // clean up

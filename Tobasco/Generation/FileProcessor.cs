@@ -20,6 +20,8 @@ namespace Tobasco.Generation
         private readonly ProjectItem _templateProjectItem;
         private Dictionary<string, ProjectItem> _placeholders;
         private Dictionary<string, HashSet<string>> _processedFileNames;
+        private readonly VsManager _vsManager;
+        private readonly OutputPathResolver _opResolver;
 
         internal FileProcessor(DTE dte, string templateFile, ProjectItem templateProjectItem)
         {
@@ -29,11 +31,13 @@ namespace Tobasco.Generation
             _templateProjectItem = templateProjectItem;
             _placeholders = new Dictionary<string, ProjectItem>();
             _processedFileNames = new Dictionary<string, HashSet<string>>();
+            _vsManager = new VsManager(dte);
+            _opResolver = new OutputPathResolver(_vsManager);
         }
 
         internal void ProcessClassFile(OutputFile outputFile)
         {
-            var outputPath = VsManager.GetOutputPath(_dte, outputFile, _defaultPath);
+            var outputPath = _opResolver.GetOutputPath(outputFile.ProjectName, outputFile.FolderName, _defaultPath);
             outputFile.FileName = Path.Combine(outputPath, outputFile.FullName);
 
             ProjectItem placeHolder = GetPlaceholder(outputFile);
@@ -48,15 +52,15 @@ namespace Tobasco.Generation
         
         internal void RemoveUnusedTemplateFiles()
         {
-            var solutionItems = VsManager.GetAllSolutionItems(_dte);
-            var activeTemplateFullNames = _placeholders.Values.Select(x => VsManager.GetProjectItemFullPath(x));
-            var allHelperTemplateFullNames = solutionItems.Where(p => p.Name == VsManager.GetTemplatePlaceholderName(_templateProjectItem))
-                .Select(VsManager.GetProjectItemFullPath);
+            var solutionItems = _vsManager.GetAllSolutionItems();
+            var activeTemplateFullNames = _placeholders.Values.Select(x => _vsManager.GetProjectItemFullPath(x));
+            var allHelperTemplateFullNames = solutionItems.Where(p => p.Name == _vsManager.GetTemplatePlaceholderName(_templateProjectItem))
+                .Select(_vsManager.GetProjectItemFullPath);
 
             var delta = new HashSet<string>(allHelperTemplateFullNames.Except(activeTemplateFullNames));
 
             //Nalopen hier ligt misschien het issue
-            var dirtyHelperTemplates = solutionItems.Where(p => delta.Contains(VsManager.GetProjectItemFullPath(p)));
+            var dirtyHelperTemplates = solutionItems.Where(p => delta.Contains(_vsManager.GetProjectItemFullPath(p)));
 
             foreach (ProjectItem item in dirtyHelperTemplates)
             {
@@ -124,7 +128,7 @@ namespace Tobasco.Generation
             }
             else
             {
-                ProjectItem pi = VsManager.GetTemplateProjectItem(_templateProjectItem.DTE, outputFile, _templateProjectItem);
+                ProjectItem pi = _vsManager.GetTemplateProjectItem(outputFile, _templateProjectItem);
                 _placeholders.Add(key, pi);
                 return pi;
             }

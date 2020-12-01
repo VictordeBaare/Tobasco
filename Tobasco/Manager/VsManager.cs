@@ -7,21 +7,28 @@ using System.Linq;
 
 namespace Tobasco.Manager
 {
-    internal static class VsManager
+    internal class VsManager
     {
-        internal static IEnumerable<ProjectItem> GetOutputFilesAsProjectItems(DTE dte, IEnumerable<FileBuilder.OutputFile> outputFiles)
+        private readonly DTE _dte;
+
+        public VsManager(DTE dte)
+        {
+            _dte = dte;
+        }
+
+        internal IEnumerable<ProjectItem> GetOutputFilesAsProjectItems(IEnumerable<FileBuilder.OutputFile> outputFiles)
         {
             var fileNames = (from o in outputFiles
                              select Path.GetFileName(o.Name)).ToArray();
 
-            return GetAllSolutionItems(dte).Where(f => fileNames.Contains(f.Name));
+            return GetAllSolutionItems().Where(f => fileNames.Contains(f.Name));
         }
 
-        internal static IEnumerable<ProjectItem> GetAllSolutionItems(DTE dte)
+        internal IEnumerable<ProjectItem> GetAllSolutionItems()
         {
             List<ProjectItem> itemList = new List<ProjectItem>();
 
-            foreach (Project item in GetAllProjects(dte))
+            foreach (Project item in GetAllProjects())
             {
                 if (item?.ProjectItems == null) continue;
 
@@ -31,9 +38,9 @@ namespace Tobasco.Manager
             return itemList;
         }
 
-        internal static Project GetProject(DTE dte, string projectName)
+        internal Project GetProject(string projectName)
         {
-            var project = GetAllProjects(dte).FirstOrDefault(p => p.Name == projectName);
+            var project = GetAllProjects().FirstOrDefault(p => p.Name == projectName);
             if(project != null)
             {
                 return project;
@@ -44,11 +51,11 @@ namespace Tobasco.Manager
             }
         }
 
-        internal static IEnumerable<Project> GetAllProjects(DTE dte)
+        internal IEnumerable<Project> GetAllProjects()
         {
             List<Project> projectList = new List<Project>();
 
-            var folders = dte.Solution.Projects.Cast<Project>().Where(p => p.Kind == ProjectKinds.vsProjectKindSolutionFolder);
+            var folders = _dte.Solution.Projects.Cast<Project>().Where(p => p.Kind == ProjectKinds.vsProjectKindSolutionFolder);
 
             foreach (Project folder in folders)
             {
@@ -61,7 +68,7 @@ namespace Tobasco.Manager
                 }
             }
 
-            var projects = dte.Solution.Projects.Cast<Project>().Where(p => p.Kind != ProjectKinds.vsProjectKindSolutionFolder);
+            var projects = _dte.Solution.Projects.Cast<Project>().Where(p => p.Kind != ProjectKinds.vsProjectKindSolutionFolder);
 
             if (projects.Any())
                 projectList.AddRange(projects);
@@ -69,7 +76,7 @@ namespace Tobasco.Manager
             return projectList;
         }
 
-        internal static IEnumerable<ProjectItem> GetAllProjectItemsRecursive(ProjectItems projectItems)
+        internal IEnumerable<ProjectItem> GetAllProjectItemsRecursive(ProjectItems projectItems)
         {
             foreach (ProjectItem projectItem in projectItems)
             {
@@ -85,7 +92,7 @@ namespace Tobasco.Manager
             }
         }
 
-        internal static string ExecuteVsCommand(DTE dte, ProjectItem item, params string[] command)
+        internal string ExecuteVsCommand(ProjectItem item, params string[] command)
         {
             if (item == null)
             {
@@ -106,7 +113,7 @@ namespace Tobasco.Manager
                         continue;
                     }
 
-                    DTE2 dte2 = dte as DTE2;
+                    DTE2 dte2 = _dte as DTE2;
                     dte2.ExecuteCommand(cmd, string.Empty);
                 }
 
@@ -122,9 +129,9 @@ namespace Tobasco.Manager
             return error;
         }
 
-        internal static string GetOutputPath(DTE dte, FileBuilder.OutputFile file, string defaultPath)
+        internal string GetOutputPath(string projectName, string folderName, string defaultPath)
         {
-            if (string.IsNullOrEmpty(file.ProjectName) == true && string.IsNullOrEmpty(file.FolderName) == true)
+            if (string.IsNullOrEmpty(projectName) == true && string.IsNullOrEmpty(folderName) == true)
             {
                 return defaultPath;
             }
@@ -132,26 +139,26 @@ namespace Tobasco.Manager
             Project prj = null;
             ProjectItem item = null;
 
-            if (string.IsNullOrEmpty(file.ProjectName) == false)
+            if (string.IsNullOrEmpty(projectName) == false)
             {
-                prj = GetProject(dte, file.ProjectName);
+                prj = GetProject(projectName);
             }
 
-            if (string.IsNullOrEmpty(file.FolderName) == true && prj != null)
+            if (string.IsNullOrEmpty(folderName) == true && prj != null)
             {
                 return Path.GetDirectoryName(prj.FullName);
             }
-            else if (prj != null && string.IsNullOrEmpty(file.FolderName) == false)
+            else if (prj != null && string.IsNullOrEmpty(folderName) == false)
             {
-                item = GetAllProjectItemsRecursive(prj.ProjectItems).FirstOrDefault(i => i.Name == file.FolderName);
+                item = GetAllProjectItemsRecursive(prj.ProjectItems).FirstOrDefault(i => i.Name == folderName);
                 if (item == null)
                 {
-                    throw new ArgumentNullException($"No folder was found with the name {file.FolderName} within the project {file.ProjectName}");
+                    throw new ArgumentNullException($"No folder was found with the name {folderName} within the project {projectName}");
                 }
             }
-            else if (String.IsNullOrEmpty(file.FolderName) == false)
+            else if (String.IsNullOrEmpty(folderName) == false)
             {
-                item = GetAllProjectItemsRecursive(dte.ActiveDocument.ProjectItem.ContainingProject.ProjectItems).FirstOrDefault(i => i.Name == file.FolderName);
+                item = GetAllProjectItemsRecursive(_dte.ActiveDocument.ProjectItem.ContainingProject.ProjectItems).FirstOrDefault(i => i.Name == folderName);
             }
 
             if (item != null)
@@ -162,12 +169,12 @@ namespace Tobasco.Manager
             return defaultPath;
         }
 
-        internal static string GetTemplatePlaceholderName(ProjectItem item)
+        internal string GetTemplatePlaceholderName(ProjectItem item)
         {
             return $"{Path.GetFileNameWithoutExtension(item.Name)}.txt4";
         }
 
-        internal static string GetProjectItemFullPath(ProjectItem item)
+        internal string GetProjectItemFullPath(ProjectItem item)
         {
             if (item != null && item.Properties != null && item.Properties.Item("FullPath") != null)
             {
@@ -179,7 +186,7 @@ namespace Tobasco.Manager
             }
         }
 
-        internal static void SetPropertyValue(ProjectItem item, string propertyName, object value)
+        internal void SetPropertyValue(ProjectItem item, string propertyName, object value)
         {
             Property property = item.Properties.Item(propertyName);
             if (property == null)
@@ -192,7 +199,7 @@ namespace Tobasco.Manager
             }
         }
 
-        internal static ProjectItem GetTemplateProjectItem(DTE dte, FileBuilder.OutputFile file, ProjectItem defaultItem)
+        internal ProjectItem GetTemplateProjectItem(FileBuilder.OutputFile file, ProjectItem defaultItem)
         {
             if (string.IsNullOrEmpty(file.ProjectName) && string.IsNullOrEmpty(file.FolderName))
             {
@@ -207,7 +214,7 @@ namespace Tobasco.Manager
 
             if (string.IsNullOrEmpty(file.ProjectName) == false)
             {
-                prj = GetProject(dte, file.ProjectName);
+                prj = GetProject(file.ProjectName);
             }
 
             if (string.IsNullOrEmpty(file.FolderName) == true && prj != null)
@@ -221,7 +228,7 @@ namespace Tobasco.Manager
             }
             else if (string.IsNullOrEmpty(file.FolderName) == false)
             {
-                item = GetAllProjectItemsRecursive(dte.ActiveDocument.ProjectItem.ContainingProject.ProjectItems).First(i => i.Name == file.FolderName);
+                item = GetAllProjectItemsRecursive(_dte.ActiveDocument.ProjectItem.ContainingProject.ProjectItems).First(i => i.Name == file.FolderName);
             }
 
             if (item != null)
@@ -232,7 +239,7 @@ namespace Tobasco.Manager
             return defaultItem;
         }
 
-        private static ProjectItem FindProjectItem(ProjectItems items, string fullName)
+        private ProjectItem FindProjectItem(ProjectItems items, string fullName)
         {
             ProjectItem item = (from i in items.Cast<ProjectItem>()
                                 where i.Name == Path.GetFileName(fullName)
