@@ -31,6 +31,7 @@ namespace Tobasco.Manager
             var outputFiles = new List<OutputFile>();
             if (handler.IsChanged)
             {
+                OutputPaneManager.WriteToOutputPane($"Resolve entity files for '{handler.Entity.Name}'...");
                 outputFiles.AddRange(handler.GetEntityLocations.SelectMany(x => handler.GetClassBuilder(x).Build()));
                 if (handler.GetRepository != null && handler.GetRepository.Generate)
                 {

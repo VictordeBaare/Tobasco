@@ -71,37 +71,48 @@ namespace Tobasco.Model.Builders
 
 		private void ProcessStpFile(List<OutputFile> outputFiles)
 		{
-			if (Database.StoredProcedures.Generate)
+			if (!Database.StoredProcedures.Generate)
 			{
-				var crudFile = FileManager.StartNewSqlStpFile(Name + "_CRUD", Database.Project, Database.StoredProcedures.Folder);
-
-				GenerateOnCondition("Insert", () => Database.StoredProcedures.GenerateInsert.Generate, () => crudFile.Methods.Add(GetInsertBuilder.Build()));
-
-				GenerateOnCondition("Update", () => Database.StoredProcedures.GenerateUpdate.Generate, () => crudFile.Methods.Add(GetUpdateBuilder.Build()));
-
-				GenerateOnCondition("Delete", () => Database.StoredProcedures.GenerateDelete.Generate, () => crudFile.Methods.Add(GetDeleteBuilder.Build()));
-
-				GenerateOnCondition("GetById", () => Database.StoredProcedures.GenerateGetById.Generate, () => crudFile.Methods.Add(GetByIdBuilder.Build()));
-
-				GenerateOnCondition("GetByIds", () => Database.StoredProcedures.GenerateGetById.Generate, () => crudFile.Methods.Add(GetByIdListBuilder.Build()));
-
-				GenerateOnCondition("GetByUId", () => Database.StoredProcedures.GenerateGetById.Generate && Entity.GenerateReadonlyGuid, () => crudFile.Methods.Add(GetByUIdBuilder.Build()));
-
-				GenerateOnCondition("Type", () => Database.StoredProcedures.GenerateMerge.Generate, () => crudFile.Methods.Add(GetTypeBuilder.Build()));
-
-				GenerateOnCondition("Merge", () => Database.StoredProcedures.GenerateMerge.Generate, () => crudFile.Methods.Add(GetMergeBuilder.Build()));
-
-				if (Database.StoredProcedures.GenerateGetById.Generate && Entity.Properties.Any(x => x.DataType.Datatype == Datatype.Reference))
-				{
-					foreach (var reference in Entity.Properties.Where(x => x.DataType.Datatype == Datatype.Reference))
-					{
-						crudFile.Methods.Add(GetByReferenceIdBuilder.Build(reference));
-						crudFile.Methods.Add(GetByReferenceIdListBuilder.Build(reference));
-					}
-				}
-
-				outputFiles.Add(crudFile);
+				OutputPaneManager.WriteToOutputPane("Skipping STP generation, generate attribute is set to 'false'.");
+				return;
 			}
+			var crudFile = FileManager.StartNewSqlStpFile(Name + "_CRUD", Database.Project, Database.StoredProcedures.Folder);
+
+			OutputPaneManager.WriteToOutputPane("Insert...");
+			const bool generateDefault = true;
+			GenerateOnCondition("Insert", () => Database.StoredProcedures.GenerateInsert?.Generate ?? generateDefault, () => crudFile.Methods.Add(GetInsertBuilder.Build()));
+
+			OutputPaneManager.WriteToOutputPane("Update...");
+			GenerateOnCondition("Update", () => Database.StoredProcedures.GenerateUpdate?.Generate ?? generateDefault, () => crudFile.Methods.Add(GetUpdateBuilder.Build()));
+
+			OutputPaneManager.WriteToOutputPane("Delete...");
+			GenerateOnCondition("Delete", () => Database.StoredProcedures.GenerateDelete?.Generate ?? generateDefault, () => crudFile.Methods.Add(GetDeleteBuilder.Build()));
+
+			OutputPaneManager.WriteToOutputPane("GetById...");
+			GenerateOnCondition("GetById", () => Database.StoredProcedures.GenerateGetById?.Generate ?? generateDefault, () => crudFile.Methods.Add(GetByIdBuilder.Build()));
+
+			OutputPaneManager.WriteToOutputPane("GetByIds...");
+			GenerateOnCondition("GetByIds", () => Database.StoredProcedures.GenerateGetById?.Generate ?? generateDefault, () => crudFile.Methods.Add(GetByIdListBuilder.Build()));
+
+			OutputPaneManager.WriteToOutputPane("GetByUId...");
+			GenerateOnCondition("GetByUId", () => (Database.StoredProcedures.GenerateGetById?.Generate ?? generateDefault) && Entity.GenerateReadonlyGuid, () => crudFile.Methods.Add(GetByUIdBuilder.Build()));
+
+			OutputPaneManager.WriteToOutputPane("Type...");
+			GenerateOnCondition("Type", () => Database.StoredProcedures.GenerateMerge?.Generate ?? generateDefault, () => crudFile.Methods.Add(GetTypeBuilder.Build()));
+
+			OutputPaneManager.WriteToOutputPane("Merge...");
+			GenerateOnCondition("Merge", () => Database.StoredProcedures.GenerateMerge?.Generate ?? generateDefault, () => crudFile.Methods.Add(GetMergeBuilder.Build()));
+
+			if ((Database.StoredProcedures.GenerateGetById?.Generate ?? generateDefault) && Entity.Properties.Any(x => x.DataType.Datatype == Datatype.Reference))
+			{
+				foreach (var reference in Entity.Properties.Where(x => x.DataType.Datatype == Datatype.Reference))
+				{
+					crudFile.Methods.Add(GetByReferenceIdBuilder.Build(reference));
+					crudFile.Methods.Add(GetByReferenceIdListBuilder.Build(reference));
+				}
+			}
+
+			outputFiles.Add(crudFile);
 		}
 
 		protected virtual InsertBuilder GetInsertBuilder => new InsertBuilder(Entity, Database);
